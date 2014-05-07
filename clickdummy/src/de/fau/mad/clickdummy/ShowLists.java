@@ -1,10 +1,13 @@
 package de.fau.mad.clickdummy;
 
+import java.util.ArrayList;
+
 import com.example.kobold.R;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,6 +17,9 @@ public class ShowLists extends Activity {
 	public void onCreate(Bundle savedInstanceState) {         
 
 		super.onCreate(savedInstanceState);    
+		if(savedInstanceState != null) {
+        	Log.d("PIEP222","KEIN NULL!!!");
+        }
 		setContentView(R.layout.showlists);
 		//rest of the code
 	}
@@ -37,7 +43,9 @@ public class ShowLists extends Activity {
 		}
 		else if (id == R.id.action_main) {
 			Intent startNewActivityOpen = new Intent(ShowLists.this, MainActivity.class);
-			startActivityForResult(startNewActivityOpen, 0);
+			//startActivityForResult(startNewActivityOpen, 0);
+			startActivity(startNewActivityOpen);
+
 		}
 		else if (id == R.id.action_showlists) {
 			Intent startNewActivityOpen = new Intent(ShowLists.this, ShowLists.class);
