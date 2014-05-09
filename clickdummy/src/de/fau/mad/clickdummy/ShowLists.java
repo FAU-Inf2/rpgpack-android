@@ -42,9 +42,12 @@ public class ShowLists extends Activity {
 			return true;
 		}
 		else if (id == R.id.action_main) {
-			Intent startNewActivityOpen = new Intent(ShowLists.this, MainActivity.class);
+//			finish();
+			Intent intent = new Intent(ShowLists.this, MainActivity.class);
 			//startActivityForResult(startNewActivityOpen, 0);
-			startActivity(startNewActivityOpen);
+			//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent .setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			startActivity(intent);
 
 		}
 		else if (id == R.id.action_showlists) {
