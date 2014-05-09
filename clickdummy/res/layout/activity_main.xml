@@ -18,18 +18,29 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Add"/>
+            android:text="Add" />
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/add"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
         <EditText
             android:id="@+id/textin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/add"/>
+            android:layout_toLeftOf="@id/spinner1" />
+
     </RelativeLayout>
     
     <LinearLayout
