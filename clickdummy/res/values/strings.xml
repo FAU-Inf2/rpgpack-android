@@ -8,9 +8,10 @@
     <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
     <string name="choice_prompt">Select a choice</string>
     <string-array name="choices">
-        <item>AAA</item>
-        <item>BBB</item>
-        <item>CCC</item>
+        <item>Typ</item>
+        <item>Ordner</item>
+        <item>Zahl</item>
+        <item>Text</item>
     </string-array>
 
 </resources>

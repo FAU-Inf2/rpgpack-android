@@ -7,6 +7,7 @@ import com.example.kobold.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,12 +38,14 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	 DataAdapter dataAdapter;
 	 private Spinner spinner;
 	 private static final String[]paths = {"Typ", "Ordner", "Zahl", "Text"};
-	 private ArrayList<DataHolder> allData;
+	 protected ArrayList<DataHolder> allData;
+	 private Context m_context;
 
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
+		 m_context = this;
 
 //		older version
 //		 if(savedInstanceState == null) {
@@ -90,7 +93,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	        allData.add(data);
 
 	        setUpView();
-	        dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+	        dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
 	        listView.setAdapter(dataAdapter);
 
 	 }
@@ -165,7 +168,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 //        }
 //    }
     
-    protected void addItemList() {
+    public void addItemList() {
 //        itemArrey.add(0,textIn.getText().toString());
 //        //textIn.setText("");
 //        
@@ -195,13 +198,13 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 //                    TableLayout.LayoutParams.WRAP_CONTENT);
 //            tl.addView(tr, trParams);
 //        alert.setView(tl);
-    	Log.d("PIEP","ADD ITEM!");
     	DataHolder data4 = new DataHolder(this);
     	allData.add(data4);
 //    	dataAdapter.notifyDataSetChanged();
     	ListView listView = (ListView) findViewById(R.id.listView_items);
-    	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+    	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
         listView.setAdapter(dataAdapter);
+    	Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
     }
 
     @Override
@@ -231,7 +234,6 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 //    /**
 //     * A placeholder fragment containing a simple view.

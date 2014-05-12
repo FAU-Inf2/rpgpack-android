@@ -1,8 +1,12 @@
 package de.fau.mad.clickdummy;
 
+import java.util.ArrayList;
+
 import com.example.kobold.R;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +19,12 @@ import android.widget.TextView;
 
 public class DataAdapter extends ArrayAdapter<DataHolder> {
 	private Activity myContext;
+	ArrayList<DataHolder> theData;
 
-    public DataAdapter(Activity context, int textViewResourceId, DataHolder[] objects) {
+    public DataAdapter(Activity context, int textViewResourceId, DataHolder[] objects, ArrayList<DataHolder> allData) {
         super(context, textViewResourceId, objects);
         myContext = context;
+        theData = allData;
     }
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
@@ -53,6 +59,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                     viewHolder.data.setSelected(arg2);
                     viewHolder.text.setText(viewHolder.data.getText());
+                    if(viewHolder.data.getText().equals("Ordner")){
+                    	MainActivity ma = (MainActivity) myContext;
+                    	ma.addItemList();
+                    	ma.allData.remove(viewHolder.data);
+                    }
                 }
 
                 @Override
@@ -75,7 +86,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(getItem(position).getText());
         holder.spin.setSelection(getItem(position).getSelected());
-
+        
         return view;
     }
 }
