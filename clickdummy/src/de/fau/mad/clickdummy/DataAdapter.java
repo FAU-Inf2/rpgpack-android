@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DataAdapter extends ArrayAdapter<DataHolder> {
 	private Activity myContext;
@@ -31,7 +35,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
     static class ViewHolder {
         protected DataHolder data;
         protected TextView text;
-        protected TextView text2;
+        protected EditText text2;
         protected Spinner spin;
     }
 
@@ -49,7 +53,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             // Make a new ViewHolder for this row, and modify its data and spinner:
             final ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (TextView) view.findViewById(R.id.text);
-            viewHolder.text2 = (TextView) view.findViewById(R.id.text2);
+            viewHolder.text2 = (EditText) view.findViewById(R.id.text2);
             //viewHolder.text.setText("TEST");
             viewHolder.data = new DataHolder(myContext);
             viewHolder.spin = (Spinner) view.findViewById(R.id.spin);
@@ -66,6 +70,18 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                     	MainActivity ma = (MainActivity) myContext;
                     	ma.addItemList();
                     	ma.allData.remove(viewHolder.data);
+                    }
+                    else if(arg0.getItemAtPosition(arg2).toString().equals("Text")){
+                    	viewHolder.text2.setVisibility(View.VISIBLE);
+//                    	arg1.findViewById(R.id.listView_items).invalidate();
+//                    	viewHolder.text2.setText(arg1.getId());
+                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+//                    	((ListView) arg1.getParent()).getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+//                    	this.notifyDataSetChanged();
+                    	((ListView) arg1.getParent().getParent().getParent()).invalidate();
+                    }
+                    else{
+                    	viewHolder.text2.setVisibility(View.GONE);
                     }
                 }
 
