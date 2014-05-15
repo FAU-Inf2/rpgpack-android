@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class DataAdapter extends ArrayAdapter<DataHolder> {
 	private Activity myContext;
 	ArrayList<DataHolder> theData;
