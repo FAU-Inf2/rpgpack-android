@@ -31,6 +31,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
     static class ViewHolder {
         protected DataHolder data;
         protected TextView text;
+        protected TextView text2;
         protected Spinner spin;
     }
 
@@ -48,6 +49,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             // Make a new ViewHolder for this row, and modify its data and spinner:
             final ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (TextView) view.findViewById(R.id.text);
+            viewHolder.text2 = (TextView) view.findViewById(R.id.text2);
+            //viewHolder.text.setText("TEST");
             viewHolder.data = new DataHolder(myContext);
             viewHolder.spin = (Spinner) view.findViewById(R.id.spin);
             viewHolder.spin.setAdapter(viewHolder.data.getAdapter());
@@ -85,6 +88,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         // This is what gets called every time the ListView refreshes
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(getItem(position).getText());
+        holder.text2.setText("test");
         holder.spin.setSelection(getItem(position).getSelected());
         
         return view;
