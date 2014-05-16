@@ -5,11 +5,13 @@ import com.example.kobold.R;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 public class DataHolder implements Parcelable{
 	private int selected;
     private ArrayAdapter<CharSequence> adapter;
+    private Context myContext;
 
     private DataHolder(Parcel parcel) {
         this.selected = parcel.readInt();
@@ -20,6 +22,7 @@ public class DataHolder implements Parcelable{
     public DataHolder(Context parent) {
         adapter = ArrayAdapter.createFromResource(parent, R.array.choices, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.myContext = parent;
     }
 
     public ArrayAdapter<CharSequence> getAdapter() {
@@ -36,6 +39,20 @@ public class DataHolder implements Parcelable{
 
     public void setSelected(int selected) {
         this.selected = selected;
+    }
+    
+    public void setSelected(String type) {
+    	int index = 0;
+    	for(String oneType: myContext.getResources().getStringArray(R.array.choices)){
+    		Log.d("PIEP","AAAA: " + oneType);
+    		if(oneType.equals(type)){
+    			this.selected = index;
+    			return;
+    		}
+    		index++;
+    	}
+    	Log.d("PIEP","critical error in DataHolder.setSelected(String " + type +  " ), " + type + " does not exist!");
+    	System.exit(0);
     }
 
 	@Override

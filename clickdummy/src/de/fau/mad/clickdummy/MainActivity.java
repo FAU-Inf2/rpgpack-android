@@ -168,7 +168,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 //        }
 //    }
     
-    public void addItemList() {
+    public DataHolder addItemList() {
 //        itemArrey.add(0,textIn.getText().toString());
 //        //textIn.setText("");
 //        
@@ -205,6 +205,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
     	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
         listView.setAdapter(dataAdapter);
     	Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
+    	return data4;
     }
 
     @Override
@@ -231,6 +232,10 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
         else if (id == R.id.action_showlists) {
         	Intent startNewActivityOpen = new Intent(MainActivity.this, ShowLists.class);
         	startActivityForResult(startNewActivityOpen, 0);
+        }
+        else if (id == R.id.action_add_folder) {
+        	DataHolder data = addItemList();
+        	data.setSelected("Ordner");
         }
         return super.onOptionsItemSelected(item);
     }

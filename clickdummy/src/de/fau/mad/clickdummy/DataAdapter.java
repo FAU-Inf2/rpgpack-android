@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -68,15 +70,44 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                     viewHolder.data.setSelected(arg2);
                     viewHolder.text.setText(viewHolder.data.getText());
                     if(viewHolder.data.getText().equals("Ordner")){
-                    	MainActivity ma = (MainActivity) myContext;
-                    	ma.addItemList();
-                    	ma.allData.remove(viewHolder.data);
+//                    	MainActivity ma = (MainActivity) myContext;
+//                    	ma.addItemList();
+//                    	ma.allData.remove(viewHolder.data);
+//                    	arg1.setClickable(true);
+                    	myContext.findViewById(R.id.listView_items);
+//                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+
+//                    	AdapterView<?> row = ((AdapterView<?>) arg1.getParent().getParent().getParent());
+//                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+////                    	row.setClickable(true);
+//                    	row.setOnItemClickListener(new OnItemClickListener() {
+//							@Override
+//							public void onItemClick(AdapterView<?> arg0,
+//									View arg1, int arg2, long arg3) {
+//								// TODO Auto-generated method stub
+//								Toast.makeText(myContext, "ONCLICK!!!", Toast.LENGTH_LONG).show();
+//								Intent intent = new Intent(myContext, MainActivity.class);
+//                    			myContext.startActivity(intent);
+//							}
+//                    	});
+                    	View row = ((View) arg1.getParent().getParent());
+                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+//                    	row.setClickable(true);
+                    	row.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Toast.makeText(myContext, "ONCLICK!!!", Toast.LENGTH_LONG).show();
+								Intent intent = new Intent(myContext, MainActivity.class);
+                    			myContext.startActivity(intent);
+							}
+                    	});
                     }
                     else if(arg0.getItemAtPosition(arg2).toString().equals("Text")){
                     	viewHolder.text2.setVisibility(View.VISIBLE);
 //                    	arg1.findViewById(R.id.listView_items).invalidate();
 //                    	viewHolder.text2.setText(arg1.getId());
-                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+//                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
+                    	
 //                    	((ListView) arg1.getParent()).getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
 //                    	this.notifyDataSetChanged();
                     	((ListView) arg1.getParent().getParent().getParent()).invalidate();
