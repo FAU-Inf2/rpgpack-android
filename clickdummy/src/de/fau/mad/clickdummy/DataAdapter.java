@@ -26,20 +26,27 @@ import android.widget.Toast;
 
 public class DataAdapter extends ArrayAdapter<DataHolder> {
 	private Activity myContext;
-	ArrayList<DataHolder> theData;
+//	ArrayList<DataHolder> theData;
+	
 
     public DataAdapter(Activity context, int textViewResourceId, DataHolder[] objects, ArrayList<DataHolder> allData) {
         super(context, textViewResourceId, objects);
         myContext = context;
-        theData = allData;
+//        theData = allData;
+//        adapter = new ArrayAdapter[allData.size()];
+//        for(int i=0; i<theData.size(); ++i){
+//        	adapter = ArrayAdapter.createFromResource(context, R.array.choices, android.R.layout.simple_spinner_item);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        }
     }
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
     static class ViewHolder {
         protected DataHolder data;
-        protected TextView text;
+        protected EditText text;
         protected EditText text2;
         protected Spinner spin;
+//        protected ArrayAdapter<CharSequence> adapter;
     }
 
     @Override
@@ -55,12 +62,15 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
             // Make a new ViewHolder for this row, and modify its data and spinner:
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.text = (TextView) view.findViewById(R.id.text);
+            viewHolder.text = (EditText) view.findViewById(R.id.text);
+        	viewHolder.text.setVisibility(View.INVISIBLE);
+//            viewHolder.text.setSelectAllOnFocus(true);
             viewHolder.text2 = (EditText) view.findViewById(R.id.text2);
             //viewHolder.text.setText("TEST");
             viewHolder.data = new DataHolder(myContext);
             viewHolder.spin = (Spinner) view.findViewById(R.id.spin);
             viewHolder.spin.setAdapter(viewHolder.data.getAdapter());
+//            viewHolder.spin.setAdapter(((MainActivity)myContext).getAdapter(viewHolder.data.getID()));
 
             // Used to handle events when the user changes the Spinner selection:
             viewHolder.spin.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -69,7 +79,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                     viewHolder.data.setSelected(arg2);
                     viewHolder.text.setText(viewHolder.data.getText());
-                    if(viewHolder.data.getText().equals("Ordner")){
+//                    if(((MainActivity)myContext).getAdapter(viewHolder.data.getID()).getItem(viewHolder.data.getSelected()).toString().equals("Ordner")){
+                    if(viewHolder.data.getSelectedText().equals("Ordner")){
 //                    	MainActivity ma = (MainActivity) myContext;
 //                    	ma.addItemList();
 //                    	ma.allData.remove(viewHolder.data);
@@ -124,8 +135,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             });
 
             // Update the TextView to reflect what's in the Spinner
-            viewHolder.text.setText(viewHolder.data.getText());
-
+//            viewHolder.text.setText(viewHolder.data.getText());
+//            viewHolder.text.setText("WOEFIOFWLIFOF");
+            
             view.setTag(viewHolder);
 
             Log.d("DBGINF", viewHolder.text.getText() + "");
@@ -135,7 +147,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
         // This is what gets called every time the ListView refreshes
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.text.setText(getItem(position).getText());
+//        holder.text.setText(getItem(position).getText());
         holder.text2.setText("test");
         holder.spin.setSelection(getItem(position).getSelected());
         
