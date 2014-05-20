@@ -7,6 +7,8 @@ import com.example.kobold.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +49,9 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 
+		 
+		 FragmentManager fragmentManager = getFragmentManager();
+		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //		 m_context = this;
 
 //		older version

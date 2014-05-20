@@ -63,10 +63,10 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             // Make a new ViewHolder for this row, and modify its data and spinner:
             final ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (EditText) view.findViewById(R.id.text);
-        	viewHolder.text.setVisibility(View.INVISIBLE);
+//        	viewHolder.text.setVisibility(View.INVISIBLE);
 //            viewHolder.text.setSelectAllOnFocus(true);
             viewHolder.text2 = (EditText) view.findViewById(R.id.text2);
-            //viewHolder.text.setText("TEST");
+//            viewHolder.text.setText("TEST");
             viewHolder.data = new DataHolder(myContext);
             viewHolder.spin = (Spinner) view.findViewById(R.id.spin);
             viewHolder.spin.setAdapter(viewHolder.data.getAdapter());
@@ -78,7 +78,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 @Override
                 public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                     viewHolder.data.setSelected(arg2);
-                    viewHolder.text.setText(viewHolder.data.getText());
+//                    viewHolder.text.setText(viewHolder.data.getText());
+                    
 //                    if(((MainActivity)myContext).getAdapter(viewHolder.data.getID()).getItem(viewHolder.data.getSelected()).toString().equals("Ordner")){
                     if(viewHolder.data.getSelectedText().equals("Ordner")){
 //                    	MainActivity ma = (MainActivity) myContext;
@@ -108,6 +109,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 							@Override
 							public void onClick(View v) {
 								Toast.makeText(myContext, "ONCLICK!!!", Toast.LENGTH_LONG).show();
+//								 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService (Context.LAYOUT_INFLATER_SERVICE);
+//
+//								 View lo = (View) inflater.inflate (R.layout.categories, null); 
 								Intent intent = new Intent(myContext, MainActivity.class);
                     			myContext.startActivity(intent);
 							}
@@ -149,7 +153,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         ViewHolder holder = (ViewHolder) view.getTag();
 //        holder.text.setText(getItem(position).getText());
         holder.text2.setText("test");
+//        holder.text.setText("test", TextView.BufferType.EDITABLE);
+
         holder.spin.setSelection(getItem(position).getSelected());
+//        convertView.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(), "click item",Toast.LENGTH_LONG).show();
+//            }
+//        });
         
         return view;
     }

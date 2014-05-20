@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 @SuppressLint("ValidFragment")
-public class DataHolder extends Fragment implements Parcelable{
+public class DataHolder implements Parcelable{
 	private int selected;
     private ArrayAdapter<CharSequence> adapter;
 //	private EditText editText;
@@ -55,10 +55,10 @@ public class DataHolder extends Fragment implements Parcelable{
     	return id;
     }
     
-    public String getText() {
-//        return editText.getText().toString();
-    	return "aa";
-    }
+//    public String getText() {
+////        return editText.getText().toString();
+//    	return "aa";
+//    }
 
     public int getSelected() {
         return selected;
