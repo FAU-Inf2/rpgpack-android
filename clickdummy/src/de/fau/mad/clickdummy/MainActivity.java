@@ -1,15 +1,12 @@
 package de.fau.mad.clickdummy;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import com.example.kobold.R;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemSelectedListener{
 
@@ -36,7 +29,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	 //LinkedList<View> added_views = new LinkedList<View>();
 	 private ListView lvItem;
 //	 private ArrayList<String> itemArrey;
-	 private ArrayAdapter<String> itemAdapter;
+//	 private ArrayAdapter<String> itemAdapter;
 	 DataAdapter dataAdapter;
 //	 private Spinner spinner;
 //	 private static final String[]paths = {"Typ", "Ordner", "Zahl", "Text"};
@@ -52,38 +45,13 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 		 
 		 FragmentManager fragmentManager = getFragmentManager();
 		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//		 m_context = this;
 
-//		older version
-//		 if(savedInstanceState == null) {
-//			 itemArrey = new ArrayList<String>();
-//		 }
-//		 else {
-//        	Log.d("PIEP","ONCreate restores it!!!");
-//        	itemArrey = savedInstanceState.getStringArrayList("key");
-//        }
-//        setContentView(R.layout.activity_main);
-//        if(itemArrey.size() != 0){
-//        	Log.d("PIEP","GROESSER 0! IN onCreate");
-//        }
-//        setUpView();
-//		 spinner = (Spinner)findViewById(R.id.spinner1);
-//		 ArrayAdapter<String>adapter = new ArrayAdapter<String>(MainActivity.this,
-//				 android.R.layout.simple_spinner_item,paths);
-//
-//		 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		 spinner.setAdapter(adapter);
-//		 spinner.setOnItemSelectedListener(this);
-
-		 
+		 //method: store data here
 		 if(savedInstanceState == null) {
-//			 itemArrey = new ArrayList<String>();
 			 allData = new ArrayList<DataHolder>();
-//			 Log.d("PIEP","AAAA: ");
 		 }
 		 else {
         	Log.d("PIEP","ONCreate restores it!!!");
-//        	itemArrey = savedInstanceState.getStringArrayList("key");
         	allData = savedInstanceState.getParcelableArrayList("key2");
         }
 		 
@@ -108,14 +76,8 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 
 	        setUpView();
 	        
-//	        adapters = new ArrayAdapter[allData.size()];
-//	        for(int i=0; i<allData.size(); ++i){
-//	        	adapters[i] = ArrayAdapter.createFromResource(this, R.array.choices, android.R.layout.simple_spinner_item);
-//	            adapters[i].setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//	        }
 	        
 	        if(dataAdapter == null){
-//	        	Log.d("PIEP", "DATAADAPTER == NULL");
 	        	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
 	        }
 	        else{
@@ -150,12 +112,11 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
         buttonAdd = (Button)this.findViewById(R.id.add);
         lvItem = (ListView)this.findViewById(R.id.listView_items);
 
-        //itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,itemArrey);
 //        itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,itemArrey);
         if(lvItem == null){
         	System.exit(0);
         }
-        lvItem.setAdapter(itemAdapter);
+//        lvItem.setAdapter(itemAdapter);
 
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
