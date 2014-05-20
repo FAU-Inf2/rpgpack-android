@@ -41,50 +41,55 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
+//		 setContentView(R.layout.activity_main);
+		 setContentView(R.layout.activity_main_empty);
 		 
-		 
+		 //method: use fragment to store everything
 		 FragmentManager fragmentManager = getFragmentManager();
 		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		 TemplateGeneratorFragment fragment = new TemplateGeneratorFragment();
+		 fragmentTransaction.add(R.id.main_view_empty, fragment);
+		 fragmentTransaction.commit();
+		 
 
 		 //method: store data here
-		 if(savedInstanceState == null) {
-			 allData = new ArrayList<DataHolder>();
-		 }
-		 else {
-        	Log.d("PIEP","ONCreate restores it!!!");
-        	allData = savedInstanceState.getParcelableArrayList("key2");
-        }
-		 
-		 super.onCreate(savedInstanceState);
-		 
-		 if(allData == null){
-			 allData = new ArrayList<DataHolder>();
-			 Log.d("PIEP","ONCreate: ALLDATA == NULL!!!");
-			 DataHolder data = new DataHolder(this);
-			 allData.add(data);
-		 }
-		 
-	        setContentView(R.layout.activity_main);
-
-	        ListView listView = (ListView) findViewById(R.id.listView_items);
-
-	        
-	        if(allData == null){
-	        	System.exit(0);
-	        }
-	        
-
-	        setUpView();
-	        
-	        
-	        if(dataAdapter == null){
-	        	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
-	        }
-	        else{
-	            Log.d("PIEP", "DATAADAPTER != NULL");
-	        }
-	        
-	        listView.setAdapter(dataAdapter);
+//		 if(savedInstanceState == null) {
+//			 allData = new ArrayList<DataHolder>();
+//		 }
+//		 else {
+//        	Log.d("PIEP","ONCreate restores it!!!");
+//        	allData = savedInstanceState.getParcelableArrayList("key2");
+//        }
+//		 
+//		 
+//		 if(allData == null){
+//			 allData = new ArrayList<DataHolder>();
+//			 Log.d("PIEP","ONCreate: ALLDATA == NULL!!!");
+//			 DataHolder data = new DataHolder(this);
+//			 allData.add(data);
+//		 }
+//		 
+//	        
+//
+//	        ListView listView = (ListView) findViewById(R.id.listView_items);
+//
+//	        
+//	        if(allData == null){
+//	        	System.exit(0);
+//	        }
+//	        
+//
+//	        setUpView();
+//	        
+//	        
+//	        if(dataAdapter == null){
+//	        	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+//	        }
+//	        else{
+//	            Log.d("PIEP", "DATAADAPTER != NULL");
+//	        }
+//	        
+//	        listView.setAdapter(dataAdapter);
 
 	 }
 	 
