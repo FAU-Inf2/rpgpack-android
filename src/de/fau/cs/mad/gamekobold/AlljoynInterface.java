@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.annotation.BusInterface;
 import org.alljoyn.bus.annotation.BusMethod;
