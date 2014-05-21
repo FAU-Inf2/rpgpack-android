@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_main"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/padding_main"
+    android:paddingRight="@dimen/padding_main"
+    android:paddingTop="@dimen/padding_main" >
+
+    <Button
+        android:id="@+id/Button01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_main"
+        android:onClick="startGame"
+        android:text="@string/start_game" />
+
+    <Button
+        android:id="@+id/btn_start_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_main"
+        android:onClick="startGame"
+        android:text="@string/load_game" />
+
+    <Button
+        android:id="@+id/btn_load_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_main"
+        android:onClick="loadGame"
+        android:text="@string/load_game" />
+
+    <Button
+        android:id="@+id/btn_manage_charackter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_main"
+        android:onClick="manageCharackter"
+        android:text="@string/manage_charackter" />
+
+    <Button
+        android:id="@+id/btn_tmplate_generator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_button_main"
+        android:onClick="templateGenerator"
+        android:text="@string/template_generator" />
+
+    <Button
+        android:id="@+id/btn_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_main"
+        android:onClick="alljoyn"
+        android:text="@string/alljoyn" />
+
+</LinearLayout>
