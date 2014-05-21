@@ -52,7 +52,7 @@ public class MainTemplateGenerator extends Activity implements OnItemSelectedLis
 		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		 fragment = new TemplateGeneratorFragment();
 		 fragmentTransaction.add(R.id.main_view_empty, fragment);
-//		 fragmentTransaction.commit();
+		 fragmentTransaction.commit();
 		 
 
 		 //method: store data here
@@ -153,7 +153,7 @@ public class MainTemplateGenerator extends Activity implements OnItemSelectedLis
     	//note super.onSaveInstanceState(outState) must be called at the end to recognize the changes!!!
 //    	Log.d("PIEP","GETS SAVED, size is " + itemArrey.size());
 //        outState.putStringArrayList("key", itemArrey);
-    	outState.putParcelableArrayList("key2", allData);
+//    	outState.putParcelableArrayList("key2", allData);
 //        outState.putParcelableArray("key2", allData.toArray(new DataHolder[allData.size()]));
         super.onSaveInstanceState(outState);
     }
@@ -207,7 +207,7 @@ public class MainTemplateGenerator extends Activity implements OnItemSelectedLis
     	allData.add(data4);
 //    	dataAdapter.notifyDataSetChanged();
     	ListView listView = (ListView) findViewById(R.id.listView_items);
-    	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+    	dataAdapter = new DataAdapter(this, R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
         listView.setAdapter(dataAdapter);
     	Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
     	return data4;

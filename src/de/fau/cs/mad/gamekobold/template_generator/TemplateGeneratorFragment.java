@@ -31,7 +31,7 @@ public class TemplateGeneratorFragment extends Fragment {
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
-		view = (LinearLayout) inflater.inflate(R.layout.activity_main, null);
+		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
 		mainView = view;
 		 //setUpView
 //      EditText textIn = (EditText)getView().findViewById(R.id.textin);
@@ -55,10 +55,10 @@ public class TemplateGeneratorFragment extends Fragment {
         lView = (ListView) view.findViewById(R.id.listView_items);
         allData = new ArrayList<DataHolder>();
 //        DataHolder data1 = new DataHolder((MainActivity)getActivity());
-//        allData.add(data1);
+//        allData.add(data1);theData
 //        DataHolder data2 = new DataHolder((MainActivity)getActivity());
 //        allData.add(data2);
-        DataAdapter dataAdapter = new DataAdapter(getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+        DataAdapter dataAdapter = new DataAdapter(getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
         
         lView.setAdapter(dataAdapter);
         return view;
@@ -69,7 +69,7 @@ public class TemplateGeneratorFragment extends Fragment {
 		allData.add(data4);
 		//  	dataAdapter.notifyDataSetChanged();
 		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
 		listView.setAdapter(dataAdapter);
 		Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
 		return data4;
@@ -82,7 +82,7 @@ public class TemplateGeneratorFragment extends Fragment {
 		allData.add(data4);
 		//	  	dataAdapter.notifyDataSetChanged();
 		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
 		listView.setAdapter(dataAdapter);
 		Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
 		return data4;

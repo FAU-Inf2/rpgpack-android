@@ -25,13 +25,15 @@ import android.widget.Toast;
 
 public class DataAdapter extends ArrayAdapter<DataHolder> {
 	private Activity myContext;
-//	ArrayList<DataHolder> theData;
+	DataHolder[] allData;
 	
 
-    public DataAdapter(Activity context, int textViewResourceId, DataHolder[] objects, ArrayList<DataHolder> allData) {
+    public DataAdapter(Activity context, int textViewResourceId, DataHolder[] objects) {
         super(context, textViewResourceId, objects);
         myContext = context;
-//        theData = allData;
+        allData = new DataHolder[objects.length];
+//        dataObjects = new DataHolder[objects.length];
+//        allData;
 //        adapter = new ArrayAdapter[allData.size()];
 //        for(int i=0; i<theData.size(); ++i){
 //        	adapter = ArrayAdapter.createFromResource(context, R.array.choices, android.R.layout.simple_spinner_item);
@@ -39,11 +41,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 //        }
     }
 
+//    public boolean addData(DataHolder data){
+//    	allData.add(data);
+//    	return true;
+//    }
+    
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
     static class ViewHolder {
         protected DataHolder data;
         protected EditText text;
-        protected EditText text2;
+        protected EditText invisibleTextField;
         protected Spinner spin;
 //        protected ArrayAdapter<CharSequence> adapter;
     }
@@ -55,6 +62,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         // Check to see if this row has already been painted once.
         if (convertView == null) {
 
+            Toast.makeText(getContext(), "now creating new view: ",Toast.LENGTH_SHORT).show();
+
             // If it hasn't, set up everything:
             LayoutInflater inflator = myContext.getLayoutInflater();
             view = inflator.inflate(R.layout.initialrow, null);
@@ -64,7 +73,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             viewHolder.text = (EditText) view.findViewById(R.id.text);
 //        	viewHolder.text.setVisibility(View.INVISIBLE);
 //            viewHolder.text.setSelectAllOnFocus(true);
-            viewHolder.text2 = (EditText) view.findViewById(R.id.text2);
+            viewHolder.invisibleTextField = (EditText) view.findViewById(R.id.text2);
 //            viewHolder.text.setText("TEST");
             viewHolder.data = new DataHolder(myContext);
             viewHolder.spin = (Spinner) view.findViewById(R.id.spin);
@@ -117,7 +126,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                     	});
                     }
                     else if(arg0.getItemAtPosition(arg2).toString().equals("Text")){
-                    	viewHolder.text2.setVisibility(View.VISIBLE);
+                    	viewHolder.invisibleTextField.setVisibility(View.VISIBLE);
 //                    	arg1.findViewById(R.id.listView_items).invalidate();
 //                    	viewHolder.text2.setText(arg1.getId());
 //                    	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) arg1.getParent().getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
@@ -127,7 +136,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                     	((ListView) arg1.getParent().getParent().getParent()).invalidate();
                     }
                     else{
-                    	viewHolder.text2.setVisibility(View.GONE);
+                    	viewHolder.invisibleTextField.setVisibility(View.GONE);
                     }
                 }
 
@@ -148,13 +157,15 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             view = convertView;
         }
 
+		
+
         // This is what gets called every time the ListView refreshes
         ViewHolder holder = (ViewHolder) view.getTag();
 //        holder.text.setText(getItem(position).getText());
-        holder.text2.setText("test");
+        holder.invisibleTextField.setText("test");
 //        holder.text.setText("test", TextView.BufferType.EDITABLE);
 
-        holder.spin.setSelection(getItem(position).getSelected());
+//        holder.spin.setSelection(getItem(position).getSelected());
 //        convertView.setOnClickListener(new OnClickListener() {
 //
 //            @Override
