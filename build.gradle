@@ -44,6 +44,21 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+
+    signingConfigs {
+        release {
+            storeFile       file("unknown")
+            storePassword   "unknown"
+            keyAlias        "unknown"
+            keyPassword     "unknown"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 allprojects {
