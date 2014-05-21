@@ -2,12 +2,7 @@ syntax:glob
 
 .metadata/*
 */*.orig
-
-
-clickdummy/bin/
-clickdummy/gen/
-clickdummy/.classpath
-clickdummy/.project
-clickdummy/.settings
-
-SQLiteDataExchange/bin
+bin
+gen
+.project
+.classpath
