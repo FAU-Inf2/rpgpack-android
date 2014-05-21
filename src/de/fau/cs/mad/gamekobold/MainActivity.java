@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+import de.fau.cs.mad.gamekobold.template_generator.ShowLists;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -42,7 +43,10 @@ public class MainActivity extends Activity {
 		this.notImplemented();
 	}
 	public void templateGenerator(View view) {
-		this.notImplemented();
+		Intent intent = new Intent(MainActivity.this, de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(intent);
+//		this.notImplemented();
 	}
 	
 	/* this functions starts an alljoyn test activity */

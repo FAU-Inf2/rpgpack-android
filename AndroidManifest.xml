@@ -41,6 +41,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.fau.cs.mad.gamekobold.MainActivity" />
         </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator">
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.template_generator.ShowLists"></activity>
     </application>
 
 </manifest>
