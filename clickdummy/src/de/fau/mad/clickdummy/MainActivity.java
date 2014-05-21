@@ -1,6 +1,7 @@
 package de.fau.mad.clickdummy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.example.kobold.R;
 
@@ -19,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnItemSelectedListener{
 
@@ -36,6 +38,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	 protected ArrayList<DataHolder> allData;
 //	 ArrayAdapter<CharSequence> adapters[];
 //	 private Context m_context;
+	 TemplateGeneratorFragment fragment;
 
 
 	 @Override
@@ -47,7 +50,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 		 //method: use fragment to store everything
 		 FragmentManager fragmentManager = getFragmentManager();
 		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		 TemplateGeneratorFragment fragment = new TemplateGeneratorFragment();
+		 fragment = new TemplateGeneratorFragment();
 		 fragmentTransaction.add(R.id.main_view_empty, fragment);
 		 fragmentTransaction.commit();
 		 
@@ -237,8 +240,15 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
         	startActivityForResult(startNewActivityOpen, 0);
         }
         else if (id == R.id.action_add_folder) {
-        	DataHolder data = addItemList();
-        	data.setSelected("Ordner");
+//        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
+        	String[] items = getResources().getStringArray(R.array.choices);
+        	int index = Arrays.asList(items).indexOf("Ordner");
+        	fragment.addItemList(index);
+        	
+//        	fragment.addItemList(getResources().getStringArray(R.array.choices));
+
+//        	DataHolder data = addItemList();
+//        	data.setSelected("Ordner");
         }
         return super.onOptionsItemSelected(item);
     }

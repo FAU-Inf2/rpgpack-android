@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class TemplateGeneratorFragment extends Fragment {
 	
@@ -59,20 +60,31 @@ public class TemplateGeneratorFragment extends Fragment {
 //        allData.add(data2);
         DataAdapter dataAdapter = new DataAdapter(getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
         
-       
-        
         lView.setAdapter(dataAdapter);
         return view;
     }
 	
 	public DataHolder addItemList() {
-  	DataHolder data4 = new DataHolder((MainActivity)getActivity());
-  	allData.add(data4);
-//  	dataAdapter.notifyDataSetChanged();
-  	ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-  	DataAdapter dataAdapter = new DataAdapter((MainActivity)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
-      listView.setAdapter(dataAdapter);
-  	Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
-  	return data4;
-  }
+		DataHolder data4 = new DataHolder((MainActivity)getActivity());
+		allData.add(data4);
+		//  	dataAdapter.notifyDataSetChanged();
+		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
+		DataAdapter dataAdapter = new DataAdapter((MainActivity)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+		listView.setAdapter(dataAdapter);
+		Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
+		return data4;
+	}
+	
+	public DataHolder addItemList(int selected) {
+		DataHolder data4 = new DataHolder((MainActivity)getActivity());
+		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
+		data4.setSelected(selected);
+		allData.add(data4);
+		//	  	dataAdapter.notifyDataSetChanged();
+		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
+		DataAdapter dataAdapter = new DataAdapter((MainActivity)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]), allData);
+		listView.setAdapter(dataAdapter);
+		Log.d("PIEP","ADD ITEM. now amount == " + allData.size());
+		return data4;
+	}
 }
