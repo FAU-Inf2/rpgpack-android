@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
 apply plugin: 'android'
@@ -43,5 +43,22 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+    }
+}
+
+allprojects {
+    afterEvaluate { project ->
+        def propsFile = rootProject.file('keystore.properties')
+
+        if (propsFile.exists()) {
+            def props = new Properties()
+            props.load(new FileInputStream(propsFile))
+            for (String configName : ['debug', 'release']) {
+                android.signingConfigs[configName].storeFile    = file(props['storeFile'])
+                android.signingConfigs[configName].storePassword    = props['storePassword']
+                android.signingConfigs[configName].keyAlias     = props['keyAlias']
+                android.signingConfigs[configName].keyPassword  = props['keyPassword']
+            }
+        }
     }
 }
