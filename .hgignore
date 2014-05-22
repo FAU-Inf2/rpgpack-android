@@ -7,3 +7,5 @@ gen
 .project
 .classpath
 .settings
+build
+.gradle
