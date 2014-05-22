@@ -49,6 +49,7 @@ public class DataHolder{
     	}
     }
 
+    //following would be needed if we want this class implementing Parcelable
 //	@Override
 //	public int describeContents() {
 //		// Auto-generated method stub
