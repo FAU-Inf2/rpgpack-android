@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.fau.cs.mad.gamekobold.*;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainTemplateGenerator extends Activity{
 
@@ -20,7 +21,6 @@ public class MainTemplateGenerator extends Activity{
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
 	 TemplateGeneratorFragment fragment;
-
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,22 @@ public class MainTemplateGenerator extends Activity{
         	String[] items = getResources().getStringArray(R.array.choices);
         	int index = Arrays.asList(items).indexOf("Ordner");
         	fragment.addItemList(index);
+        }
+        else if (id == R.id.action_go_above) {
+        	if(fragment.fragment_parent == null){
+                Log.d("aaa", "es existiert kein Ordner darueber");
+            	Toast.makeText(this, "es existiert kein Ordner darueber", Toast.LENGTH_LONG).show();
+        	}
+        	else{
+                Log.d("aaa", "hiding and showing above");
+        		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
+        		FragmentTransaction fa = getFragmentManager().beginTransaction();
+        		fa.hide(fragment);
+//        		fa.add(R.id.main_view_empty, fragment.fragment_parent);
+        		fa.show(fragment.fragment_parent);
+        		fa.commit();
+        	}
+//        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }

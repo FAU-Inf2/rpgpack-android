@@ -28,6 +28,9 @@ public class TemplateGeneratorFragment extends Fragment {
 	protected ArrayList<DataHolder> allData;
 	Button buttonAdd;
 	View mainView;
+	TemplateGeneratorFragment fragment_parent = null;
+	ArrayList<TemplateGeneratorFragment> children = new ArrayList<>();
+	DataAdapter dataAdapter;
 	//TODO: add relations to other fragments -> e.g. parent to go back to
 	
 	@Override
@@ -59,9 +62,11 @@ public class TemplateGeneratorFragment extends Fragment {
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
         allData = new ArrayList<DataHolder>();
-        DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
-        allData.add(data1);
-        DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+//        DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
+//        allData.add(data1);
+//        DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
+//        allData.add(data2);
+        dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
         lView.setAdapter(dataAdapter);
         return view;
     }
@@ -69,9 +74,13 @@ public class TemplateGeneratorFragment extends Fragment {
 	public DataHolder addItemList() {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
 		allData.add(newDataItem);
-		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
-		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-		listView.setAdapter(dataAdapter);
+//		allData.add(0, newDataItem);
+//		dataAdapter.add(newDataItem);
+		dataAdapter.notifyDataSetChanged();
+//		dataAdapter.add(newDataItem);
+//		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+//		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
+//		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 		return newDataItem;
 	}
@@ -81,9 +90,12 @@ public class TemplateGeneratorFragment extends Fragment {
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		newDataItem.setSelected(selected);
 		allData.add(newDataItem);
-		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-		DataAdapter dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
-		listView.setAdapter(dataAdapter);
+		dataAdapter.notifyDataSetChanged();
+
+//		dataAdapter.add(newDataItem);
+//		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
+//		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+//		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 		return newDataItem;
 	}
