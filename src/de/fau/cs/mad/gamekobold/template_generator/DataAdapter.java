@@ -232,18 +232,33 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	Toast.makeText(myContext, myContext.getResources().getResourceEntryName(((View) view.getParent().getParent()).getId()), Toast.LENGTH_LONG).show();
 //                	row.setOnClickListener(new OnClickListener() {
                 	holder.row.setOnClickListener(new OnClickListener() {
+                		//hier bei Klick neues Fragment anzeigen (== Unterordner)
 						@Override
 						public void onClick(View v) {
+							if(data.childFragment == null){
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								TemplateGeneratorFragment newFragment = new TemplateGeneratorFragment();
+								fragmentTransaction.add(R.id.main_view_empty, newFragment);
+//								fragmentTransaction.remove(((MainTemplateGenerator) myContext).fragment);
+								TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								fragmentTransaction.hide(oldFragment);
+								fragmentTransaction.commit();
+								newFragment.fragment_parent = oldFragment;
+								data.childFragment = newFragment;
+								((MainTemplateGenerator) myContext).currentFragment = newFragment;
+						        Log.d("data", "data child == null!");
+							}
+							else{
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								fragmentTransaction.hide(oldFragment);
+								fragmentTransaction.show(data.childFragment);
+								((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
+								fragmentTransaction.commit();
+						        Log.d("data", "data child NOT null!");
+							}
 //							Toast.makeText(myContext, "ONCLICK!!!", Toast.LENGTH_LONG).show();
-							FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-							TemplateGeneratorFragment newFragment = new TemplateGeneratorFragment();
-							fragmentTransaction.add(R.id.main_view_empty, newFragment);
-//							fragmentTransaction.remove(((MainTemplateGenerator) myContext).fragment);
-							TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).fragment;
-							fragmentTransaction.hide(oldFragment);
-							fragmentTransaction.commit();
-							newFragment.fragment_parent = oldFragment;
-							((MainTemplateGenerator) myContext).fragment = newFragment;
+							
 						}
                 	});
                 }

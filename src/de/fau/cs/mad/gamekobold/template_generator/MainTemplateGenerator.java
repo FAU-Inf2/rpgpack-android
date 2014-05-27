@@ -20,7 +20,9 @@ public class MainTemplateGenerator extends Activity{
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
-	 TemplateGeneratorFragment fragment;
+	 TemplateGeneratorFragment currentFragment;
+	 TemplateGeneratorFragment topFragment;
+
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,9 @@ public class MainTemplateGenerator extends Activity{
 		 //method: use fragment to store everything
 		 FragmentManager fragmentManager = getFragmentManager();
 		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		 fragment = new TemplateGeneratorFragment();
-		 fragmentTransaction.add(R.id.main_view_empty, fragment);
+		 currentFragment = new TemplateGeneratorFragment();
+		 topFragment = currentFragment;
+		 fragmentTransaction.add(R.id.main_view_empty, currentFragment);
 		 fragmentTransaction.commit();
 
 		//think it should be done in fragment: save allData (+restore)
@@ -78,10 +81,10 @@ public class MainTemplateGenerator extends Activity{
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         	String[] items = getResources().getStringArray(R.array.choices);
         	int index = Arrays.asList(items).indexOf("Ordner");
-        	fragment.addItemList(index);
+        	currentFragment.addItemList(index);
         }
         else if (id == R.id.action_go_above) {
-        	if(fragment.fragment_parent == null){
+        	if(currentFragment.fragment_parent == null){
                 Log.d("aaa", "es existiert kein Ordner darueber");
             	Toast.makeText(this, "es existiert kein Ordner darueber", Toast.LENGTH_LONG).show();
         	}
@@ -89,9 +92,10 @@ public class MainTemplateGenerator extends Activity{
                 Log.d("aaa", "hiding and showing above");
         		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
         		FragmentTransaction fa = getFragmentManager().beginTransaction();
-        		fa.hide(fragment);
+        		fa.hide(currentFragment);
 //        		fa.add(R.id.main_view_empty, fragment.fragment_parent);
-        		fa.show(fragment.fragment_parent);
+        		fa.show(currentFragment.fragment_parent);
+        		currentFragment = currentFragment.fragment_parent;
         		fa.commit();
         	}
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
