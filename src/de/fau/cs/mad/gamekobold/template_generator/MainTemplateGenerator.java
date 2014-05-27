@@ -28,15 +28,23 @@ public class MainTemplateGenerator extends Activity{
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
-		 
+		 TemplateGeneratorFragment mainFragment = (TemplateGeneratorFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
-		 FragmentManager fragmentManager = getFragmentManager();
-		 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		 currentFragment = new TemplateGeneratorFragment();
-		 topFragment = currentFragment;
-		 fragmentTransaction.add(R.id.main_view_empty, currentFragment);
-		 fragmentTransaction.commit();
-
+		 if(mainFragment == null){
+			 Log.d("aaa", "IFFFFFFFF!");
+			 FragmentManager fragmentManager = getFragmentManager();
+			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			 currentFragment = new TemplateGeneratorFragment();
+			 topFragment = currentFragment;
+			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
+			 fragmentTransaction.commit();
+		 }
+		 else{
+             Log.d("aaa", "ELSE!");
+             FragmentManager fragmentManager = getFragmentManager();
+			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			 fragmentTransaction.attach(mainFragment);
+		 }
 		//think it should be done in fragment: save allData (+restore)
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");

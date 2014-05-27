@@ -29,14 +29,34 @@ public class TemplateGeneratorFragment extends Fragment {
 	Button buttonAdd;
 	View mainView;
 	TemplateGeneratorFragment fragment_parent = null;
-	ArrayList<TemplateGeneratorFragment> children = new ArrayList<>();
+//	ArrayList<TemplateGeneratorFragment> children = new ArrayList<>();
 	DataAdapter dataAdapter;
 	//TODO: add relations to other fragments -> e.g. parent to go back to
 	
 	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        allData = new ArrayList<DataHolder>();
+//      DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
+//      allData.add(data1);
+//      DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
+//      allData.add(data2);
+      dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        
+    }
+	
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
-		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
-		mainView = view;
+//		if(mainView == null){
+			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
+			mainView = view;
+//		}
+//		else{
+//			view = mainView;
+//		}
+//		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
+//		mainView = view;
 		
 		 //set up view of line with add-button
 //      EditText textIn = (EditText)getView().findViewById(R.id.textin);
@@ -61,12 +81,7 @@ public class TemplateGeneratorFragment extends Fragment {
 		
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
-        allData = new ArrayList<DataHolder>();
-//        DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
-//        allData.add(data1);
-//        DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
-//        allData.add(data2);
-        dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        
         lView.setAdapter(dataAdapter);
         return view;
     }
