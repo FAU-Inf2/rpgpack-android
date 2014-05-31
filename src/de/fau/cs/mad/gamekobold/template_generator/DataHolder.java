@@ -26,7 +26,8 @@ public class DataHolder{
 	protected Spinner spin;
 	protected Activity myContext;
 	protected int ID;
-	protected TemplateGeneratorFragment childFragment;
+	protected FolderFragment childFragment;
+	protected TableFragment table;
 	
 	static int idCounter = 0;
 //    private DataHolder(Parcel parcel) {

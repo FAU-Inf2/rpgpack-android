@@ -96,23 +96,23 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		//hier bei Klick neues Fragment anzeigen (== Unterordner)
 						@Override
 						public void onClick(View v) {
+					        Log.d("data", "view == " + v.getParent());
 							//new subfolder -> create new fragment for it
 							if(data.childFragment == null){
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-								TemplateGeneratorFragment newFragment = new TemplateGeneratorFragment();
+								FolderFragment newFragment = new FolderFragment();
 								fragmentTransaction.add(R.id.main_view_empty, newFragment);
-								TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								fragmentTransaction.commit();
 								newFragment.fragment_parent = oldFragment;
 								data.childFragment = newFragment;
 								((MainTemplateGenerator) myContext).currentFragment = newFragment;
-						        Log.d("data", "data child == null!");
 							}
 							//fragment already exisits -> show it
 							else{
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-								TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								fragmentTransaction.show(data.childFragment);
 								((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
@@ -125,6 +125,51 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 else if(parent.getItemAtPosition(itemPosition).toString().equals("Text")){
                 	data.setVisibility(View.VISIBLE);
                 	holder.invisibleText.setVisibility(View.VISIBLE);
+                }
+                else if(parent.getItemAtPosition(itemPosition).toString().equals("Tabelle")){
+                	if(data.table == null){
+						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+						TableFragment newFragment = new TableFragment();
+						fragmentTransaction.add(R.id.main_view_empty, newFragment);
+						GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+						fragmentTransaction.hide(oldFragment);
+						fragmentTransaction.commit();
+						newFragment.fragment_parent = oldFragment;
+						data.table = newFragment;
+						((MainTemplateGenerator) myContext).currentFragment = newFragment;
+					}
+					//fragment already exisits -> show it
+					else{
+						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+						GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+						fragmentTransaction.hide(oldFragment);
+						fragmentTransaction.show(data.table);
+						((MainTemplateGenerator) myContext).currentFragment = data.table;
+						fragmentTransaction.commit();
+				        Log.d("data", "data child NOT null!");
+					}
+                	
+//                	if(data.table == null){
+//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+//						TableFragment newFragment = new TableFragment();
+//						fragmentTransaction.add(R.id.main_view_empty, newFragment);
+//						TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+//						fragmentTransaction.hide(oldFragment);
+//						fragmentTransaction.commit();
+//						newFragment.fragment_parent = oldFragment;
+//						data.table = newFragment;
+//						((MainTemplateGenerator) myContext).currentFragment = newFragment;
+//					}
+//					//fragment already exisits -> show it
+//					else{
+//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+//						TableFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+//						fragmentTransaction.hide(oldFragment);
+//						fragmentTransaction.show(data.childFragment);
+//						((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
+//						fragmentTransaction.commit();
+//				        Log.d("data", "data child NOT null!");
+//					}
                 }
                 else{
                 	data.setVisibility(View.GONE);

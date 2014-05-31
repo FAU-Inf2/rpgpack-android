@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import de.fau.cs.mad.gamekobold.*;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class MainTemplateGenerator extends Activity{
@@ -20,22 +23,23 @@ public class MainTemplateGenerator extends Activity{
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
-	 TemplateGeneratorFragment currentFragment;
-	 TemplateGeneratorFragment topFragment;
+	 GeneralFragment currentFragment;
+	 FolderFragment topFragment;
+	 OnClickListener onClickAction;
 
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
-		 TemplateGeneratorFragment mainFragment = (TemplateGeneratorFragment) getFragmentManager().findFragmentByTag("topFragment");
+		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
 		 if(mainFragment == null){
 			 Log.d("aaa", "IFFFFFFFF!");
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			 currentFragment = new TemplateGeneratorFragment();
-			 topFragment = currentFragment;
+			 currentFragment = new FolderFragment();
+			 topFragment = (FolderFragment) currentFragment;
 			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
 			 fragmentTransaction.commit();
 		 }
@@ -45,6 +49,8 @@ public class MainTemplateGenerator extends Activity{
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 fragmentTransaction.attach(mainFragment);
 		 }
+		 
+		 
 		//think it should be done in fragment: save allData (+restore)
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");

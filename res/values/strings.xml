@@ -23,7 +23,7 @@
     <string-array name="choices">
         <item>Typ</item>
         <item>Ordner</item>
-        <item>Zahl</item>
+        <item>Tabelle</item>
         <item>Text</item>
     </string-array>
 

@@ -4,10 +4,8 @@ import de.fau.cs.mad.gamekobold.*;
 
 import java.util.ArrayList;
 
-import android.app.Fragment;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,14 +19,15 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class TemplateGeneratorFragment extends Fragment {
+public class FolderFragment extends GeneralFragment {
 	
 	View view;
 	ListView lView;
 	protected ArrayList<DataHolder> allData;
+	
 	Button buttonAdd;
 	View mainView;
-	TemplateGeneratorFragment fragment_parent = null;
+//	FolderFragment fragment_parent = null;
 //	ArrayList<TemplateGeneratorFragment> children = new ArrayList<>();
 	DataAdapter dataAdapter;
 	//TODO: add relations to other fragments -> e.g. parent to go back to
@@ -86,7 +85,7 @@ public class TemplateGeneratorFragment extends Fragment {
         return view;
     }
 	
-	public DataHolder addItemList() {
+	public void addItemList() {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
 		allData.add(newDataItem);
 //		allData.add(0, newDataItem);
@@ -97,10 +96,9 @@ public class TemplateGeneratorFragment extends Fragment {
 //		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
 //		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
-		return newDataItem;
 	}
 	
-	public DataHolder addItemList(int selected) {
+	public void addItemList(int selected) {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		newDataItem.setSelected(selected);
@@ -112,6 +110,5 @@ public class TemplateGeneratorFragment extends Fragment {
 //		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
 //		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
-		return newDataItem;
 	}
 }
