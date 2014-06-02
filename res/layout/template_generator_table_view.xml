@@ -38,13 +38,44 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/spinner1"
             android:inputType="text" />
-    </RelativeLayout>
 
+        <Button
+            android:id="@+id/add_Column"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add"
+            android:text="Add Column" />
+
+        <Button
+            android:id="@+id/remove_Column"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add"
+            android:layout_toRightOf="@+id/add_Column"
+            android:text="Remove Column" />
+    </RelativeLayout>
+    
     <TableLayout
-        android:id="@+id/template_generator_table"
+        android:id="@+id/header_table"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:stretchColumns="*" >
     </TableLayout>
+
+    <ScrollView
+        android:id="@+id/table_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp" >
+
+        <TableLayout
+            android:id="@+id/template_generator_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </TableLayout>
+
+    </ScrollView>
 
 </LinearLayout>
