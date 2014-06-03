@@ -2,8 +2,10 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import de.fau.cs.mad.gamekobold.R;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,7 +13,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,6 +23,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class TableFragment extends GeneralFragment {
 
 	View view;
@@ -125,16 +130,39 @@ public class TableFragment extends GeneralFragment {
 	
 	protected void addColumnToRow(TableRow row){
 		final EditText oneColumn = new EditText(getActivity());
-		oneColumn.setSingleLine();
+//		oneColumn.setPadding(0, 55, 0, 0);
+		String uri = "@drawable/cell_shape";
+		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+//		oneColumn.setPadding(34, 34, 3, 3);
+//		oneColumn.setLayoutParams(params);
+//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+//		oneColumn.setLayoutParams(lp);
+		if (android.os.Build.VERSION.SDK_INT >= 16){
+			oneColumn.setBackground(res);
+		}
+		else{
+			oneColumn.setBackgroundDrawable(res);
+		}
+//		oneColumn.setMaxLines(1);
+//		oneColumn.setSingleLine();
+		oneColumn.setMinLines(1);
+//		oneColumn.setMaxLines(2);
+//		inputType="textMultiLine"
+//		oneColumn.setInputType(te);
 //		oneColumn.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 		oneColumn.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){
+
 //				Log.d("class", "class of Editable: " + s.getClass());
 //				s.getClass()
 				int index = table.indexOfChild(oneColumn);
 				Log.d("index", "index  == " + index);
 				int longestRow = 0;
 				int columnNumber = 0;
+				View longestView = null;
 				for (int i = 0; i < table.getChildCount(); i++) {
 					View child = table.getChildAt(i);
 					TableRow row = (TableRow) child;
@@ -147,87 +175,49 @@ public class TableFragment extends GeneralFragment {
 								if(lengthRow > longestRow){
 									longestRow = lengthRow;
 									columnNumber = x;
+									longestView = view;
 								}
 							}
 						}
 					}
 				}
-				Log.d("longest row", "textsize == " + longestRow);
-				//        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
-				//get first child -> is the one TextRow == header
-				View oneRow = headerTable.getChildAt(0);
-				View element = null;
-				if(oneRow instanceof TableRow){
-					element = ((TableRow) oneRow).getChildAt(columnNumber);
-					if(!(element instanceof EditText)){
-						Log.d("critical", "exception in TableFragment!");
-						System.exit(-1);
+				if(longestView != null){
+					longestView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					int width = longestView.getMeasuredWidth();
+					int height = longestView.getMeasuredHeight();
+					Log.d("width", "widht == " + width);
+					View singleRow = headerTable.getChildAt(0);
+					if(singleRow instanceof TableRow){
+						View textField = ((TableRow) singleRow).getChildAt(columnNumber);
+						if(textField instanceof EditText){
+							((EditText) textField).setWidth(width);
+						}
 					}
 				}
-				else{
-					Log.d("critical", "exception in TableFragment!");
-					System.exit(-1);
-				}
-				String resultingString = "";
-				for(int i=0; i<longestRow; ++i){
-					//        		resultingString.concat("-");
-					resultingString = resultingString + "-";
-				}
-				((EditText) element).setText(resultingString);
-			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-			public void onTextChanged(CharSequence s, int start, int before, int count){}
-		});
-		
-//			@Override
-//			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-//				int longestRow = 0;
-//	        	int columnNumber = 0;
-//	        	for (int i = 0; i < table.getChildCount(); i++) {
-//					View child = table.getChildAt(i);
-//					TableRow row = (TableRow) child;
-//					if (child instanceof TableRow) {
-//						for (int x = 0; x < row.getChildCount(); x++) {
-//							View view = row.getChildAt(x);
-//							int lengthRow = 0;
-//							if(view instanceof EditText){
-//								lengthRow = ((EditText) view).length();
-//								if(lengthRow > longestRow){
-//									longestRow = lengthRow;
-//									columnNumber = x;
-//								}
-//							}
-//						}
+				
+//				View oneRow = headerTable.getChildAt(0);
+//				View element = null;
+//				if(oneRow instanceof TableRow){
+//					element = ((TableRow) oneRow).getChildAt(columnNumber);
+//					if(!(element instanceof EditText)){
+//						Log.d("critical", "exception in TableFragment!");
+//						System.exit(-1);
 //					}
 //				}
-//	        	Log.d("longest row", "textsize == " + longestRow);
-////	        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
-//	        	//get first child -> is the one TextRow == header
-//	        	View oneRow = headerTable.getChildAt(0);
-//	        	View element = null;
-//	        	if(oneRow instanceof TableRow){
-//	        		element = ((TableRow) oneRow).getChildAt(columnNumber);
-//	        		if(!(element instanceof EditText)){
-//	        			Log.d("critical", "exception in TableFragment!");
-//		                System.exit(-1);
-//	        		}
-//	        	}
-//	        	else{
-//	                Log.d("critical", "exception in TableFragment!");
-//	                System.exit(-1);
-//	        	}
-//	        	String resultingString = "";
-//	        	for(int i=0; i<longestRow; ++i){
-////	        		resultingString.concat("-");
-//	        		resultingString = resultingString + "-";
-//	        	}
-//	        	((EditText) element).setText(resultingString);
-//				return false;
-//			}
-//	    }); 
-		
-		
-		
+//				else{
+//					Log.d("critical", "exception in TableFragment!");
+//					System.exit(-1);
+//				}
+//				String resultingString = "";
+//				for(int i=0; i<longestRow; ++i){
+//					resultingString = resultingString + "-";
+//				}
+//				((EditText) element).setText(resultingString);
+			}
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				
+			}
+		});
         oneColumn.setText("empty");
         row.addView(oneColumn);
 	}
