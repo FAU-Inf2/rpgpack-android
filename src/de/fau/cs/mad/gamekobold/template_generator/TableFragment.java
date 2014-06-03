@@ -23,6 +23,7 @@ public class TableFragment extends GeneralFragment {
 
 	View view;
 	TableLayout table;
+	TableLayout headerTable;
 	int amountColumns = 2;
 	
 	@Override
@@ -32,7 +33,7 @@ public class TableFragment extends GeneralFragment {
     }
 	
 	protected TableLayout createTableHeader(){
-		TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
+		headerTable = (TableLayout) view.findViewById(R.id.header_table);
 //		private static TableLayout addRowToTable(TableLayout table, String contentCol1, String contentCol2) {
 		Context context = getActivity();
 		TableRow row = new TableRow(context);
@@ -123,12 +124,64 @@ public class TableFragment extends GeneralFragment {
 	}
 	
 	protected void addColumnToRow(TableRow row){
-		EditText oneColumn = new EditText(getActivity());
+		final EditText oneColumn = new EditText(getActivity());
 		oneColumn.setSingleLine();
-		oneColumn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//		oneColumn.addTextChangedListener(new TextWatcher(){
-//	        public void afterTextChanged(Editable s) {
-//	        	int longestRow = 0;
+//		oneColumn.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+		oneColumn.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {
+//				Log.d("class", "class of Editable: " + s.getClass());
+//				s.getClass()
+				int index = table.indexOfChild(oneColumn);
+				Log.d("index", "index  == " + index);
+				int longestRow = 0;
+				int columnNumber = 0;
+				for (int i = 0; i < table.getChildCount(); i++) {
+					View child = table.getChildAt(i);
+					TableRow row = (TableRow) child;
+					if (child instanceof TableRow) {
+						for (int x = 0; x < row.getChildCount(); x++) {
+							View view = row.getChildAt(x);
+							int lengthRow = 0;
+							if(view instanceof EditText){
+								lengthRow = ((EditText) view).length();
+								if(lengthRow > longestRow){
+									longestRow = lengthRow;
+									columnNumber = x;
+								}
+							}
+						}
+					}
+				}
+				Log.d("longest row", "textsize == " + longestRow);
+				//        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
+				//get first child -> is the one TextRow == header
+				View oneRow = headerTable.getChildAt(0);
+				View element = null;
+				if(oneRow instanceof TableRow){
+					element = ((TableRow) oneRow).getChildAt(columnNumber);
+					if(!(element instanceof EditText)){
+						Log.d("critical", "exception in TableFragment!");
+						System.exit(-1);
+					}
+				}
+				else{
+					Log.d("critical", "exception in TableFragment!");
+					System.exit(-1);
+				}
+				String resultingString = "";
+				for(int i=0; i<longestRow; ++i){
+					//        		resultingString.concat("-");
+					resultingString = resultingString + "-";
+				}
+				((EditText) element).setText(resultingString);
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+			public void onTextChanged(CharSequence s, int start, int before, int count){}
+		});
+		
+//			@Override
+//			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+//				int longestRow = 0;
 //	        	int columnNumber = 0;
 //	        	for (int i = 0; i < table.getChildCount(); i++) {
 //					View child = table.getChildAt(i);
@@ -147,12 +200,17 @@ public class TableFragment extends GeneralFragment {
 //						}
 //					}
 //				}
-//	        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
+//	        	Log.d("longest row", "textsize == " + longestRow);
+////	        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
 //	        	//get first child -> is the one TextRow == header
 //	        	View oneRow = headerTable.getChildAt(0);
 //	        	View element = null;
 //	        	if(oneRow instanceof TableRow){
 //	        		element = ((TableRow) oneRow).getChildAt(columnNumber);
+//	        		if(!(element instanceof EditText)){
+//	        			Log.d("critical", "exception in TableFragment!");
+//		                System.exit(-1);
+//	        		}
 //	        	}
 //	        	else{
 //	                Log.d("critical", "exception in TableFragment!");
@@ -160,54 +218,13 @@ public class TableFragment extends GeneralFragment {
 //	        	}
 //	        	String resultingString = "";
 //	        	for(int i=0; i<longestRow; ++i){
-//	        		resultingString.concat("-");
+////	        		resultingString.concat("-");
+//	        		resultingString = resultingString + "-";
 //	        	}
 //	        	((EditText) element).setText(resultingString);
-////				headerTable = addRowToTable(headerTable, longestRow.split("-")[0], longestRow.split("-")[1]);
-//	        	
-//	        }
-//	        public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-//	        public void onTextChanged(CharSequence s, int start, int before, int count){}
-			@Override
-			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
-				int longestRow = 0;
-	        	int columnNumber = 0;
-	        	for (int i = 0; i < table.getChildCount(); i++) {
-					View child = table.getChildAt(i);
-					TableRow row = (TableRow) child;
-					if (child instanceof TableRow) {
-						for (int x = 0; x < row.getChildCount(); x++) {
-							View view = row.getChildAt(x);
-							int lengthRow = 0;
-							if(view instanceof EditText){
-								lengthRow = ((EditText) view).length();
-								if(lengthRow > longestRow){
-									longestRow = lengthRow;
-									columnNumber = x;
-								}
-							}
-						}
-					}
-				}
-	        	TableLayout headerTable = (TableLayout) view.findViewById(R.id.header_table);
-	        	//get first child -> is the one TextRow == header
-	        	View oneRow = headerTable.getChildAt(0);
-	        	View element = null;
-	        	if(oneRow instanceof TableRow){
-	        		element = ((TableRow) oneRow).getChildAt(columnNumber);
-	        	}
-	        	else{
-	                Log.d("critical", "exception in TableFragment!");
-	                System.exit(-1);
-	        	}
-	        	String resultingString = "";
-	        	for(int i=0; i<longestRow; ++i){
-	        		resultingString.concat("-");
-	        	}
-	        	((EditText) element).setText(resultingString);
-				return false;
-			}
-	    }); 
+//				return false;
+//			}
+//	    }); 
 		
 		
 		
@@ -226,10 +243,11 @@ public class TableFragment extends GeneralFragment {
 
 		    if (child instanceof TableRow) {
 		        TableRow row = (TableRow) child;
-		        EditText newColumn = new EditText(getActivity());
-		        newColumn.setText("empty");
-		        newColumn.setSingleLine();
-		        row.addView(newColumn);
+//		        EditText newColumn = new EditText(getActivity());
+//		        newColumn.setText("empty");
+//		        newColumn.setSingleLine();
+		        addColumnToRow(row);
+//		        row.addView(newColumn);
 //		        table.addView(row);		        
 //		        for (int x = 0; x < row.getChildCount(); x++) {
 //		            View view = row.getChildAt(x);
