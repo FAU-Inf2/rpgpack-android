@@ -49,7 +49,7 @@ public class TableFragment extends GeneralFragment {
 		headerTable = (TableLayout) view.findViewById(R.id.header_table);
 //		private static TableLayout addRowToTable(TableLayout table, String contentCol1, String contentCol2) {
 		Context context = getActivity();
-		TableRow row = new TableRow(context);
+		final TableRow row = new TableRow(context);
 
 		TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 		// Wrap-up the content of the row
@@ -58,15 +58,28 @@ public class TableFragment extends GeneralFragment {
 
 		// The simplified version of the table of the picture above will have two columns
 		// FIRST COLUMN
-		TableRow.LayoutParams col1Params = new TableRow.LayoutParams();
-		// Wrap-up the content of the row
-		col1Params.height = TableRow.LayoutParams.WRAP_CONTENT;
-		col1Params.width = TableRow.LayoutParams.WRAP_CONTENT;
+//		TableRow.LayoutParams col1Params = new TableRow.LayoutParams();
+//		// Wrap-up the content of the row
+//		col1Params.height = TableRow.LayoutParams.WRAP_CONTENT;
+//		col1Params.width = TableRow.LayoutParams.WRAP_CONTENT;
 		// Set the gravity to center the gravity of the column
 //		col1Params.gravity = TableRow.Gravity.CENTER;
-		EditText col1 = new EditText(context);
-		col1.setSingleLine();
+		final ResizingEditText col1 = new ResizingEditText(context, row, this);
+//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+//		col1.setLayoutParams(lp);
+		col1.setMaxLines(1);
 		col1.setText("Headline1");
+		col1.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			}
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				checkResize(0, 0, col1, row);
+			}
+		});
+		
+		
 		String uri = "@drawable/cell_shape";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
@@ -76,25 +89,36 @@ public class TableFragment extends GeneralFragment {
 		else{
 			col1.setBackgroundDrawable(res);
 		}
-		row.addView(col1, col1Params);
+		row.addView(col1);
 
 		// SECOND COLUMN
-		TableRow.LayoutParams col2Params = new TableRow.LayoutParams();
-		// Wrap-up the content of the row
-		col2Params.height = TableRow.LayoutParams.WRAP_CONTENT;
-		col2Params.width = TableRow.LayoutParams.WRAP_CONTENT;
+//		TableRow.LayoutParams col2Params = new TableRow.LayoutParams();
+//		// Wrap-up the content of the row
+//		col2Params.height = TableRow.LayoutParams.WRAP_CONTENT;
+//		col2Params.width = TableRow.LayoutParams.WRAP_CONTENT;
 		// Set the gravity to center the gravity of the column
 //		col2Params.gravity = Gravity.CENTER;
-		EditText col2 = new EditText(context);
-		col2.setSingleLine();
+		final ResizingEditText col2 = new ResizingEditText(context, row, this);
+//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+//		col2.setLayoutParams(lp);
+		col2.setMaxLines(1);
 		col2.setText("Headline2");
+		col2.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			}
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				checkResize(0, 0, col2, row);
+			}
+		});
 		if (android.os.Build.VERSION.SDK_INT >= 16){
 			col2.setBackground(res);
 		}
 		else{
 			col2.setBackgroundDrawable(res);
 		}
-		row.addView(col2, col2Params);
+		row.addView(col2);
 
 		headerTable.addView(row, rowParams);
 
@@ -114,9 +138,9 @@ public class TableFragment extends GeneralFragment {
 		});
 		
 		table = (TableLayout) view.findViewById(R.id.template_generator_table);
-		TableRow row= new TableRow(getActivity());
-		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-		row.setLayoutParams(lp);
+//		TableRow row= new TableRow(getActivity());
+//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+//		row.setLayoutParams(lp);
 		Button addColumnButton = (Button)view.findViewById(R.id.add_Column);
 		addColumnButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -153,26 +177,39 @@ public class TableFragment extends GeneralFragment {
 	}
 	
 	
-	protected void checkResize(EditText textEdited, TableRow row){
+	protected void checkResize(int width, int height, EditText textEdited, TableRow row){
+		TableLayout usedTable;
+		usedTable = table;
 		int indexOfRow = table.indexOfChild(row);
+		if(indexOfRow == -1){
+			indexOfRow = headerTable.indexOfChild(row);
+			if(indexOfRow == -1){
+				Log.d("critical", "table to search for element not known!");
+			}
+			else{
+				usedTable = headerTable;
+			}
+		}
 		Log.d("index", "index  == " + indexOfRow);
 		int indexOfColumn = -1;
-		if(table.getChildAt(indexOfRow) instanceof TableRow){
-			indexOfColumn = ((TableRow) table.getChildAt(indexOfRow)).indexOfChild(textEdited);
+		if(usedTable.getChildAt(indexOfRow) instanceof TableRow){
+			indexOfColumn = ((TableRow) usedTable.getChildAt(indexOfRow)).indexOfChild(textEdited);
 		}
-		int longestRow = 0;
+		int longestWidth = 0;
 		int ownColumnNumber = indexOfColumn;
 		View longestView = null;
-		for (int i = 0; i < table.getChildCount(); i++) {
-			View child = table.getChildAt(i);
+		for (int i = 0; i < usedTable.getChildCount(); i++) {
+			View child = usedTable.getChildAt(i);
 			TableRow oneRow = (TableRow) child;
 			if (child instanceof TableRow) {
 				View view = oneRow.getChildAt(ownColumnNumber);
-				int lengthRow = 0;
+				int elementSize = 0;
 				if(view instanceof EditText){
-					lengthRow = ((EditText) view).length();
-					if(lengthRow > longestRow){
-						longestRow = lengthRow;
+					//todo
+					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					elementSize = view.getMeasuredWidth();
+					if(elementSize > longestWidth){
+						longestWidth = elementSize;
 						longestView = view;
 					}
 				}
@@ -196,22 +233,43 @@ public class TableFragment extends GeneralFragment {
 			//but problem: edittext doesnt resize anymore if we do it
 //			longestView.forceLayout();
 			longestView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-			int width = longestView.getMeasuredWidth();
-			int height = longestView.getMeasuredHeight();
-			Log.d("width", "widht == " + width);
-			Log.d("text", "text == " + ((EditText) longestView).getText());
-			Log.d("textlength", "textLENGHT == " + ((EditText) longestView).getText().toString().length());
-			adaptAllColumnsToSize(ownColumnNumber, width, height);
+//			int width = longestView.getMeasuredWidth();
+			int longestHeight = longestView.getMeasuredHeight();
+			if(longestWidth < width){
+				longestWidth = width;
+			}
+			if(longestHeight < height){
+				longestHeight = height;
+			}
+//			Log.d("width", "widht == " + width);
+//			Log.d("text", "text == " + ((EditText) longestView).getText());
+//			Log.d("textlength", "textLENGHT == " + ((EditText) longestView).getText().toString().length());
+			adaptAllColumnsToSize(ownColumnNumber, longestWidth, longestHeight);
 		}
 	}
 	
 	protected void adaptAllColumnsToSize(int column, int width, int height){
+		Log.d("width", "to adapt width  == " + width);
 		View singleRow = headerTable.getChildAt(0);
 		if(singleRow instanceof TableRow){
-			View textField = ((TableRow) singleRow).getChildAt(column);
-			if(textField instanceof EditText){
-//				((EditText) textField).setWidth(width);
-				((EditText) textField).setMinimumWidth(width);
+			View theChildToResize = ((TableRow) singleRow).getChildAt(column);
+			if(theChildToResize instanceof EditText){
+				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
+			    ((EditText) theChildToResize).setLayoutParams(lparams);
+			    String uri = "@drawable/cell_shape";
+				int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+				Drawable res = getResources().getDrawable(imageResource);
+				if (android.os.Build.VERSION.SDK_INT >= 16){
+					((EditText) theChildToResize).setBackground(res);
+				}
+				else{
+					((EditText) theChildToResize).setBackgroundDrawable(res);
+				}
+//			    textField.invalidate();
+//			    textField.forceLayout();
+				Log.d("header table", "size is set!!!");
+//				((EditText) theChildToResize).setWidth(width);
+//				((EditText) theChildToResize).setMinimumWidth(width);
 //				textField.forceLayout();
 //				textField.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 //				int textFieldWidth = textField.getMeasuredWidth();
@@ -224,8 +282,19 @@ public class TableFragment extends GeneralFragment {
 			if(oneRow instanceof TableRow){
 				View theChildToResize = ((TableRow) oneRow).getChildAt(column);
 				if(theChildToResize instanceof EditText){
+					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
+				    ((EditText) theChildToResize).setLayoutParams(lparams);
+				    String uri = "@drawable/cell_shape";
+					int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+					Drawable res = getResources().getDrawable(imageResource);
+					if (android.os.Build.VERSION.SDK_INT >= 16){
+						((EditText) theChildToResize).setBackground(res);
+					}
+					else{
+						((EditText) theChildToResize).setBackgroundDrawable(res);
+					}
 //					((EditText) theChildToResize).setWidth(width);
-					((EditText) theChildToResize).setMinimumWidth(width);
+//					((EditText) theChildToResize).setMinimumWidth(width);
 //					((EditText) theChildToResize).setHeight(height);
 				}
 				
@@ -247,9 +316,9 @@ public class TableFragment extends GeneralFragment {
 		else{
 			oneColumn.setBackgroundDrawable(res);
 		}
-//		oneColumn.setMaxLines(1);
+		oneColumn.setMaxLines(1);
 //		oneColumn.setSingleLine();
-		oneColumn.setMinLines(1);
+//		oneColumn.setMinLines(1);
 		View theText = oneColumn;
 //		oneColumn.setMaxLines(2);
 //		inputType="textMultiLine"
@@ -311,7 +380,7 @@ public class TableFragment extends GeneralFragment {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
 			public void onTextChanged(CharSequence s, int start, int before, int count){
-				
+				checkResize(0, 0, oneColumn, row);
 			}
 		});
         oneColumn.setText("empty");
