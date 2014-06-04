@@ -17,7 +17,7 @@ public class ResizingEditText extends EditText{
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		tableFragment.checkResize(this, containingRow);
+//		tableFragment.checkResize(w, h, this, containingRow);
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
