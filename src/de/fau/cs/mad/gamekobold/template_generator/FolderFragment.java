@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 
 
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+
 
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -30,11 +32,11 @@ public class FolderFragment extends GeneralFragment {
 	/*
 	 * JACKSON START
 	 */
+	// could be done nicer if adapter could be created in constructor.
 	public ContainerTable myTable;
 	/*
 	 * JACKSON END
 	 */
-	
 	
 	View view;
 	ListView lView;
@@ -56,8 +58,8 @@ public class FolderFragment extends GeneralFragment {
 //      allData.add(data1);
 //      DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
 //      allData.add(data2);
-      dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
-        
+        dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        dataAdapter.myTable = myTable;
     }
 	
 	@Override
@@ -122,7 +124,7 @@ public class FolderFragment extends GeneralFragment {
 		 * JACKSON START
 		 */
 		if(newDataItem.getSelectedText().equals("Ordner")) {
-			newDataItem.myTable = myTable.createAndAddNewContainerTable();
+			newDataItem.myTable = dataAdapter.myTable.createAndAddNewContainerTable();
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
 			} catch (JsonGenerationException e) {
@@ -145,5 +147,12 @@ public class FolderFragment extends GeneralFragment {
 //		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
 //		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
+	}
+	
+	public void setJacksonTable(ContainerTable table) {
+		if(dataAdapter != null) {
+			dataAdapter.myTable = table;
+		}
+		myTable = table;
 	}
 }

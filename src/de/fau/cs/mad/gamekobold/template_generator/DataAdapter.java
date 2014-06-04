@@ -28,6 +28,16 @@ import android.widget.TextView;
 
 
 public class DataAdapter extends ArrayAdapter<DataHolder> {
+	/*
+	 * JACKSON START
+	 */
+	// DataAdapter only used in FolderFragments. one per fragment, so use DataAdapter for table info
+	public ContainerTable myTable;
+	/*
+	 * JACKSON END
+	 */
+	
+	
 	private Activity myContext;
 	ArrayList<DataHolder> allData;
 	
@@ -102,17 +112,20 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	if(data.myTable != null) {
-                		data.myTable = data.myTable.parentTable.replaceTableWithContainerTable(data.myTable);
-                		try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-						} catch (JsonGenerationException e) {
-							e.printStackTrace();
-						} catch (JsonMappingException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+                		data.myTable = myTable.replaceTableWithContainerTable(data.myTable);
                 	}
+                	else {
+                		data.myTable = myTable.createAndAddNewContainerTable();
+                	}
+                	try {
+						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+					} catch (JsonGenerationException e) {
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
                 	/*
                 	 * JACKSON END
                 	 */
@@ -132,7 +145,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								newFragment.myTable = (ContainerTable) data.myTable;
+								newFragment.setJacksonTable((ContainerTable) data.myTable);
 								/*
 								 * JACKSON END
 								 */
@@ -151,7 +164,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								data.childFragment.myTable = (ContainerTable) data.myTable;
+								data.childFragment.setJacksonTable((ContainerTable) data.myTable);
 								/*
 								 * JACKSON END
 								 */
@@ -186,24 +199,26 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	if(data.myTable != null) {
-                		data.myTable = data.myTable.parentTable.replaceTableWithTable(data.myTable);
-                		((Table)data.myTable).columnHeaders = new ColumnHeader[]{ 
-                				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
-                				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-                				};
-                		((Table)data.myTable).numberOfColumns = 2;
-                		Log.d("NEW TABLE","new table");
-                		try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-						} catch (JsonGenerationException e) {
-							e.printStackTrace();
-						} catch (JsonMappingException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+                		data.myTable = myTable.replaceTableWithTable(data.myTable);
                 	}
-
+                	else {
+                		data.myTable = myTable.createAndAddNewTable();
+                	}
+                	((Table)data.myTable).columnHeaders = new ColumnHeader[]{ 
+            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
+            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
+            				};
+            		((Table)data.myTable).numberOfColumns = 2;
+            		Log.d("NEW TABLE","new table");
+            		try {
+						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+					} catch (JsonGenerationException e) {
+						e.printStackTrace();
+					} catch (JsonMappingException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
                 	/*
                 	 * JACKSON END
                 	 */

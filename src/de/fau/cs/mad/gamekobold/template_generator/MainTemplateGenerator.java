@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.fau.cs.mad.gamekobold.*;
-import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.Activity;
 import android.app.Fragment;
@@ -62,18 +61,16 @@ public class MainTemplateGenerator extends Activity{
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 currentFragment = new FolderFragment();
-			 
-			 /*
-			  * JACKSON START
-			  */
-			 ((FolderFragment)currentFragment).myTable = myTemplate.characterSheet.rootTable;
-			 /*
-			  * JACKSoN END
-			  */
-			 
 			 topFragment = (FolderFragment) currentFragment;
 			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
 			 fragmentTransaction.commit();
+			 /*
+			  * JACKSON START
+			  */
+			 ((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+			 /*
+			  * JACKSON END
+			  */
 		 }
 		 else{
              Log.d("aaa", "ELSE!");
