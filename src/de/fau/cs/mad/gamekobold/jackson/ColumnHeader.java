@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ColumnHeader {
@@ -25,11 +26,11 @@ public class ColumnHeader {
 		this.hidden = hidden;
 	}
 	
-	
+	@JsonIgnore
 	public boolean isInt() {
 		return IntegerClass.TYPE_STRING.equals(type);
 	}
-	
+	@JsonIgnore
 	public boolean isString() {
 		return StringClass.TYPE_STRING.equals(type);
 	}
