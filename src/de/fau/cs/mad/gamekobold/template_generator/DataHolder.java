@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -18,7 +19,15 @@ import android.widget.AdapterView.OnItemSelectedListener;
 //atm not needed parcelable -> don't know if needed to hold data
 //public class DataHolder implements Parcelable{
 public class DataHolder{
-
+	/*
+	 * JACKSON START
+	 */
+	
+	public AbstractTable myTable;
+	/*
+	 * JACKSON END
+	 */
+	
 	protected int selected;
 	protected ArrayAdapter<CharSequence> adapter;
 	protected EditText text;

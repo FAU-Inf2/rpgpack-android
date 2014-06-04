@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -18,7 +20,13 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class MainTemplateGenerator extends Activity{
-
+	 /*
+	  * JACKSON START
+	  */
+	 public static Template myTemplate = null;
+	 /*
+	  * JACKSON END
+	  */
 	
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
@@ -32,6 +40,21 @@ public class MainTemplateGenerator extends Activity{
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
+		 
+		 /*
+		  * JACKSON START
+		  */
+		 Intent intent = getIntent();
+		 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
+		 if(template != null) {
+			 Log.d("MainTemplateGenerator", "Got template in intent!");
+			 template.print();
+			 myTemplate = template;
+		 }
+		 /*
+		  * JACKSON END
+		  */
+		 
 		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
 		 if(mainFragment == null){
@@ -39,6 +62,15 @@ public class MainTemplateGenerator extends Activity{
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 currentFragment = new FolderFragment();
+			 
+			 /*
+			  * JACKSON START
+			  */
+			 ((FolderFragment)currentFragment).myTable = myTemplate.characterSheet.rootTable;
+			 /*
+			  * JACKSoN END
+			  */
+			 
 			 topFragment = (FolderFragment) currentFragment;
 			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
 			 fragmentTransaction.commit();

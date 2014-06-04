@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -25,7 +26,14 @@ import android.widget.TextView;
 
 @SuppressLint("NewApi")
 public class TableFragment extends GeneralFragment {
-
+	/*
+	 * JACKSON START
+	 */
+	Table myTable;
+	/*
+	 * JACKSON END
+	 */
+	
 	View view;
 	TableLayout table;
 	TableLayout headerTable;

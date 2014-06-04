@@ -1,8 +1,15 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -20,6 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class FolderFragment extends GeneralFragment {
+	/*
+	 * JACKSON START
+	 */
+	public ContainerTable myTable;
+	/*
+	 * JACKSON END
+	 */
+	
 	
 	View view;
 	ListView lView;
@@ -102,6 +117,26 @@ public class FolderFragment extends GeneralFragment {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		newDataItem.setSelected(selected);
+		
+		/*
+		 * JACKSON START
+		 */
+		if(newDataItem.getSelectedText().equals("Ordner")) {
+			newDataItem.myTable = myTable.createAndAddNewContainerTable();
+			try {
+				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		/*
+		 * JACKSON END
+		 */
+		
 		allData.add(newDataItem);
 		dataAdapter.notifyDataSetChanged();
 

@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
 
 public class CreateNewTemplateActivity extends Activity {
@@ -88,6 +89,24 @@ public class CreateNewTemplateActivity extends Activity {
 				Intent intent = new Intent(CreateNewTemplateActivity.this,
 						MainTemplateGenerator.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				
+				/*
+				 * JACKSON START
+				 */
+				de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
+				jTemplate.templateName = tvTempalteName.getText().toString();
+				jTemplate.gameName = tvGameName.getText().toString();
+				//TODO author
+				jTemplate.author = "Registered Author";
+				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+				//TODO icon id
+				jTemplate.iconID = 0;
+				jTemplate.description = tvDescription.getText().toString();
+				intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
+				/*
+				 * JACKSON END 
+				 */
+				
 				startActivity(intent);
 				
 			}
