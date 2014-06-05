@@ -113,9 +113,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	if(data.myTable != null) {
                 		data.myTable = myTable.replaceTableWithContainerTable(data.myTable);
+                		Log.d("JSON_DATA_ADAPTER", "replaceTableWithContainerTable");
                 	}
                 	else {
                 		data.myTable = myTable.createAndAddNewContainerTable();
+                		Log.d("JSON_DATA_ADAPTER", "createAndAddNewContainerTable");
                 	}
                 	try {
 						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
@@ -186,6 +188,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
+                	// if a table was attached remove it
                 	if(data.myTable != null) {
                 		data.myTable.parentTable.removeTable(data.myTable);
                 	}
@@ -194,22 +197,27 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 }
                 else if(parent.getItemAtPosition(itemPosition).toString().equals("Tabelle")){
-                	
                    	/*
                 	 * JACKSON START
                 	 */
+                	// if table already existed replace it
                 	if(data.myTable != null) {
                 		data.myTable = myTable.replaceTableWithTable(data.myTable);
                 	}
+                	// if none existed create a new one
                 	else {
                 		data.myTable = myTable.createAndAddNewTable();
                 	}
+                	// set table header
                 	((Table)data.myTable).columnHeaders = new ColumnHeader[]{ 
             				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
             				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
             				};
+                	// set table column number
             		((Table)data.myTable).numberOfColumns = 2;
+            		// log
             		Log.d("NEW TABLE","new table");
+            		// try to save
             		try {
 						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
 					} catch (JsonGenerationException e) {
@@ -230,6 +238,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						/*
 						 * JACKSON START
 						 */
+						// set the table for the new created fragment
 						newFragment.myTable = (Table) data.myTable;
 						/*
 						 * JACKSON END
@@ -254,6 +263,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						/*
 						 * JACKSON START
 						 */
+						// fragment already existed, but we have to set the new table because we don't know
+						// what type it was before
 						data.table.myTable = (Table) data.myTable;
 						/*
 						 * JACKSON END
@@ -291,6 +302,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
+                	// if a table was attached then remove it because we are no longer a folder nor table
                 	if(data.myTable != null) {
                 		data.myTable.parentTable.removeTable(data.myTable);
                 	}
