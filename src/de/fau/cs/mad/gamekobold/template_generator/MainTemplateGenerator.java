@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.Activity;
 import android.app.Fragment;
@@ -72,6 +74,12 @@ public class MainTemplateGenerator extends Activity{
 			}
 			catch(IOException e) {
 				 e.printStackTrace();
+			}
+			// check if template loaded
+			if(myTemplate == null) {
+				// error while loading, so create empty template
+				// TODO show warning dialog
+				myTemplate = new Template(new CharacterSheet(new ContainerTable()));
 			}
 		 }
 		 /*
