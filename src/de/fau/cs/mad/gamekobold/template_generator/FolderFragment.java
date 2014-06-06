@@ -8,10 +8,8 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -29,6 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class FolderFragment extends GeneralFragment {

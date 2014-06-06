@@ -94,7 +94,7 @@ public class CreateNewTemplateActivity extends Activity {
 				 * JACKSON START
 				 */
 				// flag to distinguish between editing and creating 
-				intent.putExtra("MODE_CREATE_NEW_TEMPLATE", true);
+				intent.putExtra(MainTemplateGenerator.MODE_CREATE_NEW_TEMPLATE, true);
 				// create template for data transfer
 				de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data

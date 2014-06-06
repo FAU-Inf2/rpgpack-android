@@ -103,9 +103,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         ((Spinner) view.findViewById(R.id.spin)).setAdapter(data.getAdapter());
         ((Spinner) view.findViewById(R.id.spin)).setOnItemSelectedListener(new OnItemSelectedListener() {
         	@Override
-            public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id){
-                data.setSelected(itemPosition);
-                if(data.getSelectedText().equals("Ordner")){             	
+            public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
+        		data.setSelected(itemPosition);
+                if(data.getSelectedText().equals("Ordner")) {
                 	data.text.setText("UFO");
                 	holder.text.setText(data.text.getText());
                 	

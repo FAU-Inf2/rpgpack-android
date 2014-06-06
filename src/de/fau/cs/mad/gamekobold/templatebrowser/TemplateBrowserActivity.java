@@ -74,8 +74,8 @@ public class TemplateBrowserActivity extends ListActivity {
 							MainTemplateGenerator.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					// flag to distinguish between editing and creating 
-					intent.putExtra("MODE_CREATE_NEW_TEMPLATE", false);
-					intent.putExtra("TEMPLATE_FILENAME", "testTemplate.json");
+					intent.putExtra(MainTemplateGenerator.MODE_CREATE_NEW_TEMPLATE, false);
+					intent.putExtra(MainTemplateGenerator.EDIT_TEMPLATE_FILE_NAME, "testTemplate.json");
 					startActivity(intent);
 				}
 				// JACKSON end
