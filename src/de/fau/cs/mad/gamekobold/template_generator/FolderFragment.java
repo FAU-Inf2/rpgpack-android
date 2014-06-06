@@ -208,6 +208,7 @@ public class FolderFragment extends GeneralFragment {
 				// create fragment
 				newDataItem.childFragment = new FolderFragment();
 				newDataItem.childFragment.fragment_parent = this;
+				newDataItem.childFragment.jacksonTable = (ContainerTable)subTable;
 				// not working this way
 				/*FragmentManager fragmentManager = activity.getFragmentManager();
 				FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -234,6 +235,7 @@ public class FolderFragment extends GeneralFragment {
 				// create fragment
 				newDataItem.table = new TableFragment();
 				newDataItem.table.fragment_parent = this;
+				newDataItem.table.jacksonTable = (Table)subTable;
 				// not working this way
 				/*FragmentManager fragmentManager = activity.getFragmentManager();
 				FragmentTransaction transaction = fragmentManager.beginTransaction();

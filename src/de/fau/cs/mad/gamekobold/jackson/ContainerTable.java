@@ -65,6 +65,10 @@ public class ContainerTable extends AbstractTable{
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
 		}
+		// only add it if it is not already in list
+		if(subTables.contains(table)) {
+			return false;
+		}
 		return subTables.add(table);
 	}
 	
