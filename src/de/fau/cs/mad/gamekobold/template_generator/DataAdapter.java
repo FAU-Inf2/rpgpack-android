@@ -285,8 +285,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 * JACKSON START
 						 * needed if template is edited, because we can create but we cannot add the fragment during inflation
 						 */
-						if(!data.childFragment.isAdded()) {
-							fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+						if(!data.table.isAdded()) {
+							fragmentTransaction.add(R.id.main_view_empty, data.table);
 						}
 						/*
 						 * JACKSON END

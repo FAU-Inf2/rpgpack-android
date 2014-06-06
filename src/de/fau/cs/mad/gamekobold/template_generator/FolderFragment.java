@@ -190,13 +190,13 @@ public class FolderFragment extends GeneralFragment {
 			// get type id from choice array
 			String[] choices = activity.getResources().getStringArray(R.array.choices);
 			int selected = 0;
-			for(final String string : choices) {
-				if(string.equals("Ordner")) {
-					break;
-				}
-				selected++;
-			}
 			if(subTable instanceof ContainerTable) {
+				for(final String string : choices) {
+					if(string.equals("Ordner")) {
+						break;
+					}
+					selected++;
+				}
 				// container table
 				// create and add new data holder to adapter;
 				DataHolder newDataItem = new DataHolder(activity);
@@ -217,6 +217,12 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment.inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
 			else if(subTable instanceof Table) {
+				for(final String string : choices) {
+					if(string.equals("Tabelle")) {
+						break;
+					}
+					selected++;
+				}
 				// table
 				// create and add new data holder to adapter;
 				DataHolder newDataItem = new DataHolder(activity);
