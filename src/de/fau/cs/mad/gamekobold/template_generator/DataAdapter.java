@@ -284,7 +284,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 */
 						// data.table was not null, so tableFragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
-						jacksonTable.replaceTable(data.jacksonTable, data.table.jacksonTable);
+						jacksonTable.removeTable(data.jacksonTable);
+						jacksonTable.addTable(data.table.jacksonTable);
 						data.jacksonTable = data.table.jacksonTable;
 						Log.d("JSON_DATA_ADAPTER", "replaced table");
 						try {

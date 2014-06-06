@@ -8,13 +8,11 @@ import android.util.Log;
 public class ContainerTable extends AbstractTable{
 	public List<AbstractTable> subTables;
 	
-	
 	public ContainerTable createAndAddNewContainerTable() {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
 		}
 		ContainerTable table = new ContainerTable();
-	//	table.parentTable = this;
 		subTables.add(table);
 		return table;
 	}
@@ -24,7 +22,6 @@ public class ContainerTable extends AbstractTable{
 			subTables = new ArrayList<AbstractTable>();
 		}
 		Table table = new Table();
-	//	table.parentTable = this;
 		subTables.add(table);
 		return table;
 	}
@@ -34,7 +31,6 @@ public class ContainerTable extends AbstractTable{
 			subTables = new ArrayList<AbstractTable>();
 		}
 		Table table = new Table(name, headers);
-	//	table.parentTable = this;
 		subTables.add(table);
 		return table;
 	}
@@ -53,42 +49,23 @@ public class ContainerTable extends AbstractTable{
 		}
 		return null;
 	}
-	
-	public boolean replaceTable(AbstractTable oldTable, AbstractTable newTable) {
-		if(subTables != null) {
-			if(subTables.remove(oldTable)) {
-				return subTables.add(newTable);
-			}
-		}
-		return false;
-	}
-	
+		
 	// needs to be null pointer safe!
 	public boolean removeTable(AbstractTable table) {
 		if(table == null) {
 			return false;
 		}
 		if(subTables != null) {
-			if(subTables.remove(table)) {
-	//			table.parentTable = null;
-				return true;
-			}
+			return subTables.remove(table);
 		}
 		return false;
 	}
 	
 	public boolean addTable(AbstractTable table) {
-		/*if(table.parentTable != null) {
-			return false;
-		}*/
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
 		}
-		if(subTables.add(table)) {
-			//table.parentTable = this;
-			return true;
-		}
-		return false;
+		return subTables.add(table);
 	}
 	
 	public void print() {
