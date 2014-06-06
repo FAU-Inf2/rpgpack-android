@@ -45,7 +45,22 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				Template curTemplate = objects.get(position);
 				tName.setText(curTemplate.getTemplateName());
 
-			} else {
+			}
+			// JACKSON for editing last created template
+			else if(position == getCount() -2) {
+				rowView = inflater.inflate(
+						R.layout.rowlayout_newtemplate_template_browser,
+						parent, false);
+				
+				Log.e("er", "Position, getCount: " + getCount());
+				
+				TextView tName = (TextView) rowView
+						.findViewById(R.id.textView1);
+				Template curTemplate = objects.get(position);
+				tName.setText(curTemplate.getTemplateName());
+			}
+			// JACKSON end
+			else {
 				Log.e("er", "position: " + position);
 				
 				rowView = inflater.inflate(R.layout.rowlayout_template_browser,

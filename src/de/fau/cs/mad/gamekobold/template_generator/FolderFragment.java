@@ -1,18 +1,21 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.Table;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-
 
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -32,7 +35,6 @@ public class FolderFragment extends GeneralFragment {
 	/*
 	 * JACKSON START
 	 */
-	// could be done nicer if adapter could be created in constructor.
 	public ContainerTable jacksonTable;
 	/*
 	 * JACKSON END
@@ -53,13 +55,25 @@ public class FolderFragment extends GeneralFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        allData = new ArrayList<DataHolder>();
+        // nullcheck needed for jackson inflation. creates allData before onCreate is called
+        if(allData == null) {
+        	allData = new ArrayList<DataHolder>();
+        }
 //      DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
 //      allData.add(data1);
 //      DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
 //      allData.add(data2);
-        dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
+        if(dataAdapter == null) {
+        	dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        }
+        /*
+         * JACKSON START
+         */
         dataAdapter.jacksonTable = jacksonTable;
+        /*
+         * JACKSON END
+         */
     }
 	
 	@Override
@@ -97,7 +111,6 @@ public class FolderFragment extends GeneralFragment {
 		
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
-        
         lView.setAdapter(dataAdapter);
         return view;
     }
@@ -157,6 +170,73 @@ public class FolderFragment extends GeneralFragment {
 			dataAdapter.jacksonTable = table;
 		}
 		jacksonTable = table;
+	}
+	
+	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
+		// set jackson table for this fragment
+		jacksonTable = myTable;
+		if(myTable.subTables == null) {
+			return;
+		}
+		if(allData == null) {
+			allData = new ArrayList<DataHolder>();
+		}
+		//Log.d("FOLDER_FRAGMENT", "isAdded:"+isAdded());
+		//activity = getActivity();
+		if(dataAdapter == null) {
+			dataAdapter = new DataAdapter(activity, R.layout.initialrow, allData);
+		}
+		for(final AbstractTable subTable : jacksonTable.subTables) {
+			// check table type
+			// get type id from choice array
+			String[] choices = activity.getResources().getStringArray(R.array.choices);
+			int selected = 0;
+			for(final String string : choices) {
+				if(string.equals("Ordner")) {
+					break;
+				}
+				selected++;
+			}
+			if(subTable instanceof ContainerTable) {
+				// container table
+				// create and add new data holder to adapter;
+				DataHolder newDataItem = new DataHolder(activity);
+				newDataItem.selected = selected;
+				allData.add(newDataItem);
+				dataAdapter.notifyDataSetChanged(); 
+				// set data holder jackson Table
+				newDataItem.jacksonTable = subTable;
+				// create fragment
+				newDataItem.childFragment = new FolderFragment();
+				newDataItem.childFragment.fragment_parent = this;
+				// not working this way
+				/*FragmentManager fragmentManager = activity.getFragmentManager();
+				FragmentTransaction transaction = fragmentManager.beginTransaction();
+				// add and commit fragment
+				transaction.add(R.id.main_view_empty, newDataItem.childFragment).commit();*/
+				// call recursive
+				newDataItem.childFragment.inflateWithJacksonData((ContainerTable)subTable, activity);
+			}
+			else if(subTable instanceof Table) {
+				// table
+				// create and add new data holder to adapter;
+				DataHolder newDataItem = new DataHolder(activity);
+				newDataItem.selected = selected;
+				allData.add(newDataItem);
+				dataAdapter.notifyDataSetChanged();
+				// set data holder jackson Table
+				newDataItem.jacksonTable = subTable;
+				// create fragment
+				newDataItem.table = new TableFragment();
+				newDataItem.table.fragment_parent = this;
+				// not working this way
+				/*FragmentManager fragmentManager = activity.getFragmentManager();
+				FragmentTransaction transaction = fragmentManager.beginTransaction();
+				// add and commit fragment
+				transaction.add(R.id.main_view_empty, newDataItem.table).commit();*/
+				// TODO set right column stuff
+			}
+		}
 	}
 	/*
 	 * JACKSON END

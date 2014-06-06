@@ -186,6 +186,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
 								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
 								fragmentTransaction.hide(oldFragment);
+								/*
+								 * JACKSON START
+								 * needed if template is edited, because we can create but we cannot add the fragment during inflation
+								 */
+								if(!data.childFragment.isAdded()) {
+									fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+								}
+								/*
+								 * JACKSON END
+								 */
 								fragmentTransaction.show(data.childFragment);
 								((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
 								fragmentTransaction.commit();
@@ -215,11 +225,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			e.printStackTrace();
                 		}
                 	}
-                	/*if(data.jacksonTable != null) {
-                		// TODO research if parentTable is nec. parentTable should be jacksonTable of this adapter
-                		jacksonTable.removeTable(data.jacksonTable);
-                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}*/
                 	/*
                 	 * JACKSON END
                 	 */
@@ -276,6 +281,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
 						GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
 						fragmentTransaction.hide(oldFragment);
+						/*
+						 * JACKSON START
+						 * needed if template is edited, because we can create but we cannot add the fragment during inflation
+						 */
+						if(!data.childFragment.isAdded()) {
+							fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+						}
+						/*
+						 * JACKSON END
+						 */
 						fragmentTransaction.show(data.table);
 						((MainTemplateGenerator) myContext).currentFragment = data.table;
 						
@@ -349,10 +364,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			e.printStackTrace();
                 		}
                 	}
-                	/*if(data.jacksonTable != null) {
-                		jacksonTable.removeTable(data.jacksonTable);
-                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}*/
                 	/*
                 	 * JACKSON END
                 	 */

@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
 
 public class TemplateBrowserActivity extends ListActivity {
 
@@ -40,6 +40,8 @@ public class TemplateBrowserActivity extends ListActivity {
 //			templateList.add(newTemplate);
 //		}
 
+		// JACKSON add a new entry for editing the last created template
+		templateList.add(new Template("Edit last template...", "", "", "", -1));
 		// set create new template row to the end of the list
 		Template addNewTemplateRow = new Template("Create New Template...", "",
 				"", "", -1);
@@ -65,7 +67,19 @@ public class TemplateBrowserActivity extends ListActivity {
 							CreateNewTemplateActivity.class);
 					startActivity(i);
 
-				} else {
+				}
+				// JACKSON start : for editing last created template
+				else if(position == adapter.getCount() -2) {
+					Intent intent = new Intent(TemplateBrowserActivity.this,
+							MainTemplateGenerator.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					// flag to distinguish between editing and creating 
+					intent.putExtra("MODE_CREATE_NEW_TEMPLATE", false);
+					intent.putExtra("TEMPLATE_FILENAME", "testTemplate.json");
+					startActivity(intent);
+				}
+				// JACKSON end
+				else {
 					Intent i = new Intent(TemplateBrowserActivity.this,
 							TemplateDetailsActivity.class);
 					
