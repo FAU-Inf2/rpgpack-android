@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 @SuppressLint("NewApi")
@@ -58,24 +59,25 @@ public class TableFragment extends GeneralFragment {
 
 		// The simplified version of the table of the picture above will have two columns
 		// FIRST COLUMN
-//		TableRow.LayoutParams col1Params = new TableRow.LayoutParams();
+		TableRow.LayoutParams col1Params = new TableRow.LayoutParams();
 //		// Wrap-up the content of the row
-//		col1Params.height = TableRow.LayoutParams.WRAP_CONTENT;
-//		col1Params.width = TableRow.LayoutParams.WRAP_CONTENT;
+		col1Params.height = TableRow.LayoutParams.WRAP_CONTENT;
+		col1Params.width = TableRow.LayoutParams.WRAP_CONTENT;
 		// Set the gravity to center the gravity of the column
 //		col1Params.gravity = TableRow.Gravity.CENTER;
 		final ResizingEditText col1 = new ResizingEditText(context, row, this);
 //		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-//		col1.setLayoutParams(lp);
-		col1.setMaxLines(1);
+//		col1.setLayoutParams(col1Params);
+		col1.setSingleLine();
+//		col1.setMaxLines(1);
 		col1.setText("Headline1");
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
+				checkResize(0, 0, col1, row);
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
 			public void onTextChanged(CharSequence s, int start, int before, int count){
-				checkResize(0, 0, col1, row);
 			}
 		});
 		
@@ -89,7 +91,7 @@ public class TableFragment extends GeneralFragment {
 		else{
 			col1.setBackgroundDrawable(res);
 		}
-		row.addView(col1);
+		row.addView(col1, col1Params);
 
 		// SECOND COLUMN
 //		TableRow.LayoutParams col2Params = new TableRow.LayoutParams();
@@ -101,15 +103,16 @@ public class TableFragment extends GeneralFragment {
 		final ResizingEditText col2 = new ResizingEditText(context, row, this);
 //		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 //		col2.setLayoutParams(lp);
-		col2.setMaxLines(1);
+//		col2.setMaxLines(1);
+		col2.setSingleLine();
 		col2.setText("Headline2");
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
+				checkResize(0, 0, col2, row);
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
 			public void onTextChanged(CharSequence s, int start, int before, int count){
-				checkResize(0, 0, col2, row);
 			}
 		});
 		if (android.os.Build.VERSION.SDK_INT >= 16){
@@ -120,8 +123,12 @@ public class TableFragment extends GeneralFragment {
 		}
 		row.addView(col2);
 
-		headerTable.addView(row, rowParams);
-
+		headerTable.addView(row);
+		
+//		col1.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//		int elementSize = col1.getMeasuredWidth();
+//		Log.d("width", "INITAL WDTH: " + elementSize);
+		
 		return headerTable;
 	}
 	
@@ -176,6 +183,54 @@ public class TableFragment extends GeneralFragment {
 		
 	}
 	
+	private int getNeededWidth(int columnIndex) {
+		int longestWidth = -1;
+		for (int i = 0; i < headerTable.getChildCount(); i++) {
+			View child = headerTable.getChildAt(i);
+			TableRow oneRow = (TableRow) child;
+			if (child instanceof TableRow) {
+				View view = oneRow.getChildAt(columnIndex);
+				if(view != null){
+					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					int elementSize = view.getMeasuredWidth();
+					if(elementSize > longestWidth){
+						longestWidth = elementSize;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < table.getChildCount(); i++) {
+			View child = table.getChildAt(i);
+			TableRow oneRow = (TableRow) child;
+			if (child instanceof TableRow) {
+				View view = oneRow.getChildAt(columnIndex);
+				if(view != null){
+					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					int elementSize = view.getMeasuredWidth();
+					if(elementSize > longestWidth){
+						longestWidth = elementSize;
+					}
+				}
+			}
+		}
+		return longestWidth;
+	}
+	
+	private int getNeededHeight(int rowIndex, TableRow row) {
+		int maxHeight = -1;
+		for (int i = 0; i < row.getChildCount(); i++) {
+			View child = row.getChildAt(i);
+			if(child != null){
+				child.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+				int elementSize = child.getMeasuredHeight();
+				if(elementSize > maxHeight){
+					maxHeight = elementSize;
+				}
+			}
+		}
+		return maxHeight;
+	}
+	
 	
 	protected void checkResize(int width, int height, EditText textEdited, TableRow row){
 		TableLayout usedTable;
@@ -198,8 +253,8 @@ public class TableFragment extends GeneralFragment {
 		int longestWidth = 0;
 		int ownColumnNumber = indexOfColumn;
 		View longestView = null;
-		for (int i = 0; i < usedTable.getChildCount(); i++) {
-			View child = usedTable.getChildAt(i);
+		for (int i = 0; i < table.getChildCount(); i++) {
+			View child = table.getChildAt(i);
 			TableRow oneRow = (TableRow) child;
 			if (child instanceof TableRow) {
 				View view = oneRow.getChildAt(ownColumnNumber);
@@ -228,6 +283,23 @@ public class TableFragment extends GeneralFragment {
 //				}
 			}
 		}
+		for (int i = 0; i < headerTable.getChildCount(); i++) {
+			View child = headerTable.getChildAt(i);
+			TableRow oneRow = (TableRow) child;
+			if (child instanceof TableRow) {
+				View view = oneRow.getChildAt(ownColumnNumber);
+				int elementSize = 0;
+				if(view instanceof EditText){
+					//todo
+					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					elementSize = view.getMeasuredWidth();
+					if(elementSize > longestWidth){
+						longestWidth = elementSize;
+						longestView = view;
+					}
+				}
+			}
+		}
 		if(longestView != null){
 			//force layout is needed! view has old size if we don't do it!
 			//but problem: edittext doesnt resize anymore if we do it
@@ -249,13 +321,18 @@ public class TableFragment extends GeneralFragment {
 	}
 	
 	protected void adaptAllColumnsToSize(int column, int width, int height){
-		Log.d("width", "to adapt width  == " + width);
+//		Log.d("width", "to adapt width  == " + width);
 		View singleRow = headerTable.getChildAt(0);
 		if(singleRow instanceof TableRow){
 			View theChildToResize = ((TableRow) singleRow).getChildAt(column);
 			if(theChildToResize instanceof EditText){
-				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
+				Log.d("width", "to adapt width  == " + width);
+				Log.d("width", "headline width before  == " + ((EditText) theChildToResize).getWidth());
+				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,((EditText) theChildToResize).getHeight()); // Width , height
 			    ((EditText) theChildToResize).setLayoutParams(lparams);
+//			    ((EditText) theChildToResize).setWidth(width);
+				Log.d("width", "headline width after  == " + ((EditText) theChildToResize).getWidth());
+
 			    String uri = "@drawable/cell_shape";
 				int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 				Drawable res = getResources().getDrawable(imageResource);
@@ -308,16 +385,17 @@ public class TableFragment extends GeneralFragment {
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
 //		oneColumn.setPadding(34, 34, 3, 3);
-//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-//		oneColumn.setLayoutParams(lp);
+//		final LayoutParams lparams = new LayoutParams(190, 74);
+//	    oneColumn.setLayoutParams(lparams);
+		
 		if (android.os.Build.VERSION.SDK_INT >= 16){
 			oneColumn.setBackground(res);
 		}
 		else{
 			oneColumn.setBackgroundDrawable(res);
 		}
-		oneColumn.setMaxLines(1);
-//		oneColumn.setSingleLine();
+//		oneColumn.setMaxLines(1);
+		oneColumn.setSingleLine();
 //		oneColumn.setMinLines(1);
 		View theText = oneColumn;
 //		oneColumn.setMaxLines(2);
@@ -327,64 +405,48 @@ public class TableFragment extends GeneralFragment {
 //		oneColumn.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 		oneColumn.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
-//				int indexOfRow = table.indexOfChild(row);
-//				Log.d("index", "index  == " + indexOfRow);
-//				int indexOfColumn = -1;
-//				if(table.getChildAt(indexOfRow) instanceof TableRow){
-//					indexOfColumn = ((TableRow) table.getChildAt(indexOfRow)).indexOfChild(oneColumn);
-//				}
-//				int longestRow = 0;
-//				int ownColumnNumber = indexOfColumn;
-//				View longestView = null;
-//				for (int i = 0; i < table.getChildCount(); i++) {
-//					View child = table.getChildAt(i);
-//					TableRow oneRow = (TableRow) child;
-//					if (child instanceof TableRow) {
-//						View view = oneRow.getChildAt(ownColumnNumber);
-//						int lengthRow = 0;
-//						if(view instanceof EditText){
-//							lengthRow = ((EditText) view).length();
-//							if(lengthRow > longestRow){
-//								longestRow = lengthRow;
-//								longestView = view;
-//							}
-//						}
-//						//no need to traverse over all columns, the column we just changed is enough to adapt
-////						for (int x = 0; x < row.getChildCount(); x++) {
-////							View view = row.getChildAt(x);
-////							int lengthRow = 0;
-////							if(view instanceof EditText){
-////								lengthRow = ((EditText) view).length();
-////								if(lengthRow > longestRow){
-////									longestRow = lengthRow;
-////									columnNumber = x;
-////									longestView = view;
-////								}
-////							}
-////						}
-//					}
-//				}
-//				if(longestView != null){
-//					//force layout is needed! view has old size if we don't do it!
-//					//but problem: edittext doesnt resize anymore if we do it
-////					longestView.forceLayout();
-//					longestView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//					int width = longestView.getMeasuredWidth();
-//					int height = longestView.getMeasuredHeight();
-//					Log.d("width", "widht == " + width);
-//					Log.d("text", "text == " + ((EditText) longestView).getText());
-//					Log.d("textlength", "textLENGHT == " + ((EditText) longestView).getText().toString().length());
-//					adaptAllColumnsToSize(ownColumnNumber, width, height);
-//				}
+				checkResize(0, 0, oneColumn, row);
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
 			public void onTextChanged(CharSequence s, int start, int before, int count){
-				checkResize(0, 0, oneColumn, row);
 			}
 		});
-        oneColumn.setText("empty");
+        oneColumn.setText("---");
+        if(headerTable.indexOfChild(row) != -1){
+            oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+        }
         row.addView(oneColumn);
+        int columnIndex = row.indexOfChild(oneColumn);
+        int rowIndex = table.indexOfChild(row);
+        if(rowIndex == -1){
+        	rowIndex = headerTable.indexOfChild(row);
+        	if(rowIndex == -1)         Log.d("critical", "cant find row!");
+        }
+        int width = getNeededWidth(columnIndex);
+		int height = getNeededHeight(rowIndex, row);
+		int oldWidth = oneColumn.getMeasuredWidth();
+		int oldHeight = oneColumn.getMeasuredWidth();
+		Log.d("width", "before w : " + oldWidth);
+		Log.d("width", "before h : " + oldHeight);
+//		Log.d("width", "before w: " + oneColumn.getWidth());
+//		Log.d("width", "before h: " + oneColumn.getHeight());
+		Log.d("width", "setting w: " + width);
+		Log.d("width", "setting h: " + height);
+//		oneColumn.setWidth(width);
+		final LayoutParams lparams = new LayoutParams(width, height);
+	    oneColumn.setLayoutParams(lparams);
+	    oneColumn.requestLayout();
+	    oneColumn.forceLayout();
+	    oneColumn.invalidate();
+		oneColumn.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+		int newWidth = oneColumn.getMeasuredWidth();
+		int newHeight = oneColumn.getMeasuredWidth();
+		Log.d("width", "after w : " + newWidth);
+		Log.d("width", "after h : " + newHeight);
+//		Log.d("width", "after h: " + oneColumn.getHeight());
+//		final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width, height);
+//	    ((EditText) oneColumn).setLayoutParams(lparams);
 	}
 	
 	
@@ -393,13 +455,20 @@ public class TableFragment extends GeneralFragment {
 //		int elements = row.getChildCount();
 //	}
 	
+	
+
+	
+
 	protected void addColumn(){
 		amountColumns++;
+		View headerRow = headerTable.getChildAt(0);
+		TableRow row = (TableRow) headerRow;
+        addColumnToRow(row);
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
 
 		    if (child instanceof TableRow) {
-		        TableRow row = (TableRow) child;
+		        row = (TableRow) child;
 //		        EditText newColumn = new EditText(getActivity());
 //		        newColumn.setText("empty");
 //		        newColumn.setSingleLine();
@@ -412,6 +481,7 @@ public class TableFragment extends GeneralFragment {
 //		        }
 		    }
 		}
+		
         Log.d("columns", "amount == " + amountColumns);
 
 	}
@@ -435,6 +505,9 @@ public class TableFragment extends GeneralFragment {
 					//		        }
 				}
 			}
+			View headerRow = headerTable.getChildAt(0);
+			TableRow row = (TableRow) headerRow;
+			row.removeView(row.getChildAt(row.getChildCount()-1));
 			Log.d("columns", "amount == " + amountColumns);
 		}
 	}

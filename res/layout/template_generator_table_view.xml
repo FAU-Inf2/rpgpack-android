@@ -55,25 +55,34 @@
             android:text="Remove Column" />
     </RelativeLayout>
     
-    <TableLayout
-        android:id="@+id/header_table"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*" >
-    </TableLayout>
+        android:layout_height="match_parent" >
 
-    <ScrollView
-        android:id="@+id/table_scroll"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TableLayout
-            android:id="@+id/template_generator_table"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-        </TableLayout>
 
-    </ScrollView>
+            <TableLayout
+                android:id="@+id/header_table"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </TableLayout>
+
+            <ScrollView
+                android:id="@+id/table_scroll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TableLayout
+                    android:id="@+id/template_generator_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </TableLayout>
+            </ScrollView>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

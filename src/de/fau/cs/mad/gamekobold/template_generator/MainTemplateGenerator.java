@@ -57,7 +57,6 @@ public class MainTemplateGenerator extends Activity{
 		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
 		 if(mainFragment == null){
-			 Log.d("aaa", "IFFFFFFFF!");
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 currentFragment = new FolderFragment();
