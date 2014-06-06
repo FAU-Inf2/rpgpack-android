@@ -63,6 +63,7 @@ public class ContainerTable extends AbstractTable{
 		return false;
 	}
 	
+	// needs to be null pointer safe!
 	public boolean removeTable(AbstractTable table) {
 		if(table == null) {
 			return false;
