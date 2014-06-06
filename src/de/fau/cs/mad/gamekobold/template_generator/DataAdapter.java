@@ -32,7 +32,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 	 * JACKSON START
 	 */
 	// DataAdapter only used in FolderFragments. one per fragment, so use DataAdapter for table info
-	public ContainerTable myTable;
+	public ContainerTable jacksonTable;
 	/*
 	 * JACKSON END
 	 */
@@ -112,11 +112,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	if(data.myTable != null) {
-                		data.myTable = myTable.replaceTableWithContainerTable(data.myTable);
+                		data.myTable = jacksonTable.replaceTableWithContainerTable(data.myTable);
                 		Log.d("JSON_DATA_ADAPTER", "replaceTableWithContainerTable");
                 	}
                 	else {
-                		data.myTable = myTable.createAndAddNewContainerTable();
+                		data.myTable = jacksonTable.createAndAddNewContainerTable();
                 		Log.d("JSON_DATA_ADAPTER", "createAndAddNewContainerTable");
                 	}
                 	try {
@@ -202,11 +202,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	// if table already existed replace it
                 	if(data.myTable != null) {
-                		data.myTable = myTable.replaceTableWithTable(data.myTable);
+                		data.myTable = jacksonTable.replaceTableWithTable(data.myTable);
                 	}
                 	// if none existed create a new one
                 	else {
-                		data.myTable = myTable.createAndAddNewTable();
+                		data.myTable = jacksonTable.createAndAddNewTable();
                 	}
                 	// set table header
                 	((Table)data.myTable).columnHeaders = new ColumnHeader[]{ 
@@ -239,7 +239,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 * JACKSON START
 						 */
 						// set the table for the new created fragment
-						newFragment.myTable = (Table) data.myTable;
+						newFragment.jacksonTable = (Table) data.myTable;
 						/*
 						 * JACKSON END
 						 */
@@ -265,7 +265,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 */
 						// fragment already existed, but we have to set the new table because we don't know
 						// what type it was before
-						data.table.myTable = (Table) data.myTable;
+						data.table.jacksonTable = (Table) data.myTable;
 						/*
 						 * JACKSON END
 						 */

@@ -29,7 +29,7 @@ public class TableFragment extends GeneralFragment {
 	/*
 	 * JACKSON START
 	 */
-	Table myTable;
+	Table jacksonTable;
 	/*
 	 * JACKSON END
 	 */

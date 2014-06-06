@@ -33,7 +33,7 @@ public class FolderFragment extends GeneralFragment {
 	 * JACKSON START
 	 */
 	// could be done nicer if adapter could be created in constructor.
-	public ContainerTable myTable;
+	public ContainerTable jacksonTable;
 	/*
 	 * JACKSON END
 	 */
@@ -59,7 +59,7 @@ public class FolderFragment extends GeneralFragment {
 //      DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
 //      allData.add(data2);
         dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
-        dataAdapter.myTable = myTable;
+        dataAdapter.jacksonTable = jacksonTable;
     }
 	
 	@Override
@@ -124,7 +124,7 @@ public class FolderFragment extends GeneralFragment {
 		 * JACKSON START
 		 */
 		if(newDataItem.getSelectedText().equals("Ordner")) {
-			newDataItem.myTable = dataAdapter.myTable.createAndAddNewContainerTable();
+			newDataItem.myTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
 			} catch (JsonGenerationException e) {
@@ -151,8 +151,8 @@ public class FolderFragment extends GeneralFragment {
 	
 	public void setJacksonTable(ContainerTable table) {
 		if(dataAdapter != null) {
-			dataAdapter.myTable = table;
+			dataAdapter.jacksonTable = table;
 		}
-		myTable = table;
+		jacksonTable = table;
 	}
 }
