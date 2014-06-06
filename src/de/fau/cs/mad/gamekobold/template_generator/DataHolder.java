@@ -23,7 +23,7 @@ public class DataHolder{
 	 * JACKSON START
 	 */
 	
-	public AbstractTable myTable;
+	public AbstractTable jacksonTable;
 	/*
 	 * JACKSON END
 	 */

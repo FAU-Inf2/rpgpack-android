@@ -111,12 +111,12 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
-                	if(data.myTable != null) {
-                		data.myTable = jacksonTable.replaceTableWithContainerTable(data.myTable);
+                	if(data.jacksonTable != null) {
+                		data.jacksonTable = jacksonTable.replaceTableWithContainerTable(data.jacksonTable);
                 		Log.d("JSON_DATA_ADAPTER", "replaceTableWithContainerTable");
                 	}
                 	else {
-                		data.myTable = jacksonTable.createAndAddNewContainerTable();
+                		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
                 		Log.d("JSON_DATA_ADAPTER", "createAndAddNewContainerTable");
                 	}
                 	try {
@@ -147,7 +147,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								newFragment.setJacksonTable((ContainerTable) data.myTable);
+								newFragment.setJacksonTable((ContainerTable) data.jacksonTable);
 								/*
 								 * JACKSON END
 								 */
@@ -166,7 +166,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								data.childFragment.setJacksonTable((ContainerTable) data.myTable);
+								data.childFragment.setJacksonTable((ContainerTable) data.jacksonTable);
 								/*
 								 * JACKSON END
 								 */
@@ -189,8 +189,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	// if a table was attached remove it
-                	if(data.myTable != null) {
-                		data.myTable.parentTable.removeTable(data.myTable);
+                	if(data.jacksonTable != null) {
+                		data.jacksonTable.parentTable.removeTable(data.jacksonTable);
                 	}
                 	/*
                 	 * JACKSON END
@@ -201,20 +201,20 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	// if table already existed replace it
-                	if(data.myTable != null) {
-                		data.myTable = jacksonTable.replaceTableWithTable(data.myTable);
+                	if(data.jacksonTable != null) {
+                		data.jacksonTable = jacksonTable.replaceTableWithTable(data.jacksonTable);
                 	}
                 	// if none existed create a new one
                 	else {
-                		data.myTable = jacksonTable.createAndAddNewTable();
+                		data.jacksonTable = jacksonTable.createAndAddNewTable();
                 	}
                 	// set table header
-                	((Table)data.myTable).columnHeaders = new ColumnHeader[]{ 
+                	((Table)data.jacksonTable).columnHeaders = new ColumnHeader[]{ 
             				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
             				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
             				};
                 	// set table column number
-            		((Table)data.myTable).numberOfColumns = 2;
+            		((Table)data.jacksonTable).numberOfColumns = 2;
             		// log
             		Log.d("NEW TABLE","new table");
             		// try to save
@@ -239,7 +239,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 * JACKSON START
 						 */
 						// set the table for the new created fragment
-						newFragment.jacksonTable = (Table) data.myTable;
+						newFragment.jacksonTable = (Table) data.jacksonTable;
 						/*
 						 * JACKSON END
 						 */
@@ -265,7 +265,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 */
 						// fragment already existed, but we have to set the new table because we don't know
 						// what type it was before
-						data.table.jacksonTable = (Table) data.myTable;
+						data.table.jacksonTable = (Table) data.jacksonTable;
 						/*
 						 * JACKSON END
 						 */
@@ -303,8 +303,8 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	// if a table was attached then remove it because we are no longer a folder nor table
-                	if(data.myTable != null) {
-                		data.myTable.parentTable.removeTable(data.myTable);
+                	if(data.jacksonTable != null) {
+                		data.jacksonTable.parentTable.removeTable(data.jacksonTable);
                 	}
                 	/*
                 	 * JACKSON END

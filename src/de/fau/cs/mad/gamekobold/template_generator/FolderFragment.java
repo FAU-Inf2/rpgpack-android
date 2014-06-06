@@ -124,7 +124,7 @@ public class FolderFragment extends GeneralFragment {
 		 * JACKSON START
 		 */
 		if(newDataItem.getSelectedText().equals("Ordner")) {
-			newDataItem.myTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
+			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
 			} catch (JsonGenerationException e) {
