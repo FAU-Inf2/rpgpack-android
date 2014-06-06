@@ -149,10 +149,16 @@ public class FolderFragment extends GeneralFragment {
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 	}
 	
+	/*
+	 * JACKSON START
+	 */
 	public void setJacksonTable(ContainerTable table) {
 		if(dataAdapter != null) {
 			dataAdapter.jacksonTable = table;
 		}
 		jacksonTable = table;
 	}
+	/*
+	 * JACKSON END
+	 */
 }

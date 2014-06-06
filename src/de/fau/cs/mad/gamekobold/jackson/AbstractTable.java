@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 @JsonSubTypes({ @Type(value = Table.class, name = "table"), @Type(value = ContainerTable.class, name = "containertable") })
 public abstract class AbstractTable {
 	// could be done on a nicer way
-	@JsonIgnore
-	public ContainerTable parentTable;
+//	@JsonIgnore
+//	public ContainerTable parentTable;
 	
 	public String tableName;
 	

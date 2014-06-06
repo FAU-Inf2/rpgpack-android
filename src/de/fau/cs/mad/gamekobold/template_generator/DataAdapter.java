@@ -11,7 +11,6 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
-import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.util.Log;
@@ -106,32 +105,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         	@Override
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id){
                 data.setSelected(itemPosition);
-                if(data.getSelectedText().equals("Ordner")){
-                	
-                	/*
-                	 * JACKSON START
-                	 */
-                	if(data.jacksonTable != null) {
-                		data.jacksonTable = jacksonTable.replaceTableWithContainerTable(data.jacksonTable);
-                		Log.d("JSON_DATA_ADAPTER", "replaceTableWithContainerTable");
-                	}
-                	else {
-                		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
-                		Log.d("JSON_DATA_ADAPTER", "createAndAddNewContainerTable");
-                	}
-                	try {
-						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-					} catch (JsonGenerationException e) {
-						e.printStackTrace();
-					} catch (JsonMappingException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-                	/*
-                	 * JACKSON END
-                	 */
-                	
+                if(data.getSelectedText().equals("Ordner")){             	
                 	data.text.setText("UFO");
                 	holder.text.setText(data.text.getText());
                 	holder.row.setOnClickListener(new OnClickListener() {
@@ -147,7 +121,25 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								newFragment.setJacksonTable((ContainerTable) data.jacksonTable);
+								// childFragment was null, so we need to create a new table (childFragment == FolderFragment)
+								newFragment.setJacksonTable(jacksonTable.createAndAddNewContainerTable());
+								// remove old table from tree. e.g. when changing type from Table to folder
+								if(data.jacksonTable != null) {
+									jacksonTable.removeTable(data.jacksonTable);
+								}
+								// update reference in data holder
+								data.jacksonTable = newFragment.jacksonTable;
+		                		Log.d("JSON_DATA_ADAPTER", "createAndAddNewContainerTable");
+		                		try {
+									MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+									Log.d("JSON_DATA_ADAPTER", "saved template");
+								} catch (JsonGenerationException
+										| JsonMappingException e) {
+									e.printStackTrace();
+								}
+		                		catch(IOException e) {
+		                			e.printStackTrace();
+		                		}
 								/*
 								 * JACKSON END
 								 */
@@ -166,7 +158,20 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								data.childFragment.setJacksonTable((ContainerTable) data.jacksonTable);
+								// childFragment was not null, so folder Fragment already exists -> jackson table exists
+								// replace current table with the table stored in fragment
+								jacksonTable.replaceTable(data.jacksonTable, data.childFragment.jacksonTable);
+								data.jacksonTable = data.childFragment.jacksonTable;
+								try {
+									MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+									Log.d("JSON_DATA_ADAPTER", "saved template");
+								} catch (JsonGenerationException
+										| JsonMappingException e) {
+									e.printStackTrace();
+								}
+		                		catch(IOException e) {
+		                			e.printStackTrace();
+		                		}
 								/*
 								 * JACKSON END
 								 */
@@ -189,48 +194,27 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	// if a table was attached remove it
-                	if(data.jacksonTable != null) {
-                		data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}
+                	jacksonTable.removeTable(data.jacksonTable);
+                	try {
+						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+						Log.d("JSON_DATA_ADAPTER", "saved template");
+					} catch (JsonGenerationException
+							| JsonMappingException e) {
+						e.printStackTrace();
+					}
+            		catch(IOException e) {
+            			e.printStackTrace();
+            		}
+                	/*if(data.jacksonTable != null) {
+                		// TODO research if parentTable is nec. parentTable should be jacksonTable of this adapter
+                		jacksonTable.removeTable(data.jacksonTable);
+                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
+                	}*/
                 	/*
                 	 * JACKSON END
                 	 */
                 }
-                else if(parent.getItemAtPosition(itemPosition).toString().equals("Tabelle")){
-                   	/*
-                	 * JACKSON START
-                	 */
-                	// if table already existed replace it
-                	if(data.jacksonTable != null) {
-                		data.jacksonTable = jacksonTable.replaceTableWithTable(data.jacksonTable);
-                	}
-                	// if none existed create a new one
-                	else {
-                		data.jacksonTable = jacksonTable.createAndAddNewTable();
-                	}
-                	// set table header
-                	((Table)data.jacksonTable).columnHeaders = new ColumnHeader[]{ 
-            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
-            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-            				};
-                	// set table column number
-            		((Table)data.jacksonTable).numberOfColumns = 2;
-            		// log
-            		Log.d("NEW TABLE","new table");
-            		// try to save
-            		try {
-						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-					} catch (JsonGenerationException e) {
-						e.printStackTrace();
-					} catch (JsonMappingException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-                	/*
-                	 * JACKSON END
-                	 */
-                	
+                else if(parent.getItemAtPosition(itemPosition).toString().equals("Tabelle")){                	
                 	if(data.table == null){
 						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
 						TableFragment newFragment = new TableFragment();
@@ -238,8 +222,33 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						/*
 						 * JACKSON START
 						 */
-						// set the table for the new created fragment
-						newFragment.jacksonTable = (Table) data.jacksonTable;
+						// data.table was null, so create new jackson table and add it to the current tree
+						newFragment.jacksonTable = jacksonTable.createAndAddNewTable();
+						// remove old table from tree. e.g. when changing type from folder to table
+						if(data.jacksonTable != null) {
+							jacksonTable.removeTable(data.jacksonTable);
+						}
+						// update reference in data holder
+						data.jacksonTable = newFragment.jacksonTable;
+	                	// set table header
+	                	newFragment.jacksonTable.columnHeaders = new ColumnHeader[]{ 
+	            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
+	            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
+	            				};
+	                	// set table column number
+	            		newFragment.jacksonTable.numberOfColumns = 2;
+	            		// log for info
+	            		Log.d("NEW TABLE","new table");
+	            		try {
+							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+							Log.d("JSON_DATA_ADAPTER", "saved template");
+						} catch (JsonGenerationException
+								| JsonMappingException e) {
+							e.printStackTrace();
+						}
+                		catch(IOException e) {
+                			e.printStackTrace();
+                		}
 						/*
 						 * JACKSON END
 						 */
@@ -263,9 +272,20 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						/*
 						 * JACKSON START
 						 */
-						// fragment already existed, but we have to set the new table because we don't know
-						// what type it was before
-						data.table.jacksonTable = (Table) data.jacksonTable;
+						// data.table was not null, so tableFragment already exists -> jackson table exists
+						// replace current table with the table stored in fragment
+						jacksonTable.replaceTable(data.jacksonTable, data.table.jacksonTable);
+						data.jacksonTable = data.table.jacksonTable;
+						try {
+							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+							Log.d("JSON_DATA_ADAPTER", "saved template");
+						} catch (JsonGenerationException
+								| JsonMappingException e) {
+							e.printStackTrace();
+						}
+                		catch(IOException e) {
+                			e.printStackTrace();
+                		}
 						/*
 						 * JACKSON END
 						 */
@@ -303,9 +323,21 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 * JACKSON START
                 	 */
                 	// if a table was attached then remove it because we are no longer a folder nor table
-                	if(data.jacksonTable != null) {
-                		data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}
+                	jacksonTable.removeTable(data.jacksonTable);
+                	try {
+						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+						Log.d("JSON_DATA_ADAPTER", "saved template");
+					} catch (JsonGenerationException
+							| JsonMappingException e) {
+						e.printStackTrace();
+					}
+            		catch(IOException e) {
+            			e.printStackTrace();
+            		}
+                	/*if(data.jacksonTable != null) {
+                		jacksonTable.removeTable(data.jacksonTable);
+                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
+                	}*/
                 	/*
                 	 * JACKSON END
                 	 */
