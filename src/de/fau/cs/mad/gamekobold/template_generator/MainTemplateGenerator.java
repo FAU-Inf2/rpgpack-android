@@ -1,7 +1,11 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -23,6 +27,8 @@ public class MainTemplateGenerator extends Activity{
 	  * JACKSON START
 	  */
 	 public static Template myTemplate = null;
+	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
+	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
 	 /*
 	  * JACKSON END
 	  */
@@ -44,11 +50,29 @@ public class MainTemplateGenerator extends Activity{
 		  * JACKSON START
 		  */
 		 Intent intent = getIntent();
-		 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
-		 if(template != null) {
-			 Log.d("MainTemplateGenerator", "Got template in intent!");
-			 template.print();
-			 myTemplate = template;
+		 boolean creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
+		 // is a new template created?
+		 if(creationMode) {
+			 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
+			 if(template != null) {
+				 Log.d("MainTemplateGenerator", "Got template in intent!");
+				 template.print();
+				 myTemplate = template;
+			 }
+		 } else {
+			 Log.d("MainTemplateGenerator", "Edit mode!");
+			 // we are editing an old one, so load it
+			 //myTemplate = Template.loadFromJSONFile(getApplication(), fileName);
+			 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+			 try {
+				myTemplate = Template.loadFromJSONFile(getApplication(), templateFileName);
+				Log.d("MainTemplateGenerator", "Loaded Template");
+			} catch (JsonParseException | JsonMappingException e) {
+				e.printStackTrace();
+			}
+			catch(IOException e) {
+				 e.printStackTrace();
+			}
 		 }
 		 /*
 		  * JACKSON END
@@ -67,6 +91,14 @@ public class MainTemplateGenerator extends Activity{
 			  * JACKSON START
 			  */
 			 ((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+			 // TODO implement editing here?
+			 // are we editing a template?
+			 if(!creationMode) {
+				// for editing : recreate fragment structure and all adapter data
+				// inflate fragments recursive
+				Log.d("MainTemplateGenerator", "EDIT MODE!");
+				((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
+			 }
 			 /*
 			  * JACKSON END
 			  */

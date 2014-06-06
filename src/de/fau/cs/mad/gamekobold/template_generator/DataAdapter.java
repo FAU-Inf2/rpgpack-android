@@ -11,6 +11,7 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
+import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.util.Log;
@@ -103,9 +104,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         ((Spinner) view.findViewById(R.id.spin)).setAdapter(data.getAdapter());
         ((Spinner) view.findViewById(R.id.spin)).setOnItemSelectedListener(new OnItemSelectedListener() {
         	@Override
-            public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id){
-                data.setSelected(itemPosition);
-                if(data.getSelectedText().equals("Ordner")){             	
+            public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
+        		data.setSelected(itemPosition);
+                if(data.getSelectedText().equals("Ordner")) {
                 	data.text.setText("UFO");
                 	holder.text.setText(data.text.getText());
                 	
@@ -186,6 +187,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
 								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
 								fragmentTransaction.hide(oldFragment);
+								/*
+								 * JACKSON START
+								 * needed if template is edited, because we can create but we cannot add the fragment during inflation
+								 */
+								if(!data.childFragment.isAdded()) {
+									fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+								}
+								/*
+								 * JACKSON END
+								 */
 								fragmentTransaction.show(data.childFragment);
 								((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
 								fragmentTransaction.commit();
@@ -215,38 +226,27 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			e.printStackTrace();
                 		}
                 	}
-                	/*if(data.jacksonTable != null) {
-                		// TODO research if parentTable is nec. parentTable should be jacksonTable of this adapter
-                		jacksonTable.removeTable(data.jacksonTable);
-                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}*/
                 	/*
                 	 * JACKSON END
                 	 */
                 }
-                else if(parent.getItemAtPosition(itemPosition).toString().equals("Tabelle")){                	
-                	if(data.table == null){
-						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-						TableFragment newFragment = new TableFragment();
-						
+                else if(data.getSelectedText().equals("Tabelle")) {
+                	if(data.table == null){						
 						/*
 						 * JACKSON START
 						 */
 						// data.table was null, so create new jackson table and add it to the current tree
-						newFragment.jacksonTable = jacksonTable.createAndAddNewTable();
 						// remove old table from tree. e.g. when changing type from folder to table
-						if(data.jacksonTable != null) {
-							jacksonTable.removeTable(data.jacksonTable);
-						}
 						// update reference in data holder
-						data.jacksonTable = newFragment.jacksonTable;
+                		jacksonTable.removeTable(data.jacksonTable);
+                		data.jacksonTable = jacksonTable.createAndAddNewTable();
 	                	// set table header
-	                	newFragment.jacksonTable.columnHeaders = new ColumnHeader[]{ 
+                		((Table)data.jacksonTable).columnHeaders = new ColumnHeader[]{ 
 	            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
 	            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
 	            				};
 	                	// set table column number
-	            		newFragment.jacksonTable.numberOfColumns = 2;
+                		((Table)data.jacksonTable).numberOfColumns = 2;
 	            		// log for info
 	            		Log.d("NEW TABLE","created new table");
 	            		try {
@@ -259,33 +259,13 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		catch(IOException e) {
                 			e.printStackTrace();
                 		}
-						/*
-						 * JACKSON END
-						 */
-						
-						fragmentTransaction.add(R.id.main_view_empty, newFragment);
-						GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
-						fragmentTransaction.hide(oldFragment);
-						fragmentTransaction.commit();
-						newFragment.fragment_parent = oldFragment;
-						data.table = newFragment;
-						((MainTemplateGenerator) myContext).currentFragment = newFragment;
 					}
-					//fragment already exisits -> show it
 					else{
-						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-						GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
-						fragmentTransaction.hide(oldFragment);
-						fragmentTransaction.show(data.table);
-						((MainTemplateGenerator) myContext).currentFragment = data.table;
-						
-						/*
-						 * JACKSON START
-						 */
-						// data.table was not null, so tableFragment already exists -> jackson table exists
+						// if exists
+						// data.table was not null, so table Fragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
-						jacksonTable.removeTable(data.jacksonTable);
-						jacksonTable.addTable(data.table.jacksonTable);
+                		jacksonTable.removeTable(data.jacksonTable);
+                		jacksonTable.addTable(data.table.jacksonTable);
 						data.jacksonTable = data.table.jacksonTable;
 						Log.d("JSON_DATA_ADAPTER", "replaced table");
 						try {
@@ -298,13 +278,61 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		catch(IOException e) {
                 			e.printStackTrace();
                 		}
-						/*
-						 * JACKSON END
-						 */
-						
-						fragmentTransaction.commit();
-				        Log.d("data", "data child NOT null!");
 					}
+					/*
+					 * JACKSON END
+					 */
+                	
+                	holder.row.setOnClickListener(new OnClickListener() {
+                		//hier bei Klick neues Fragment anzeigen (== Unterordner)
+						@Override
+						public void onClick(View v) {
+					        Log.d("data", "view == " + v.getParent());
+							//new subfolder -> create new fragment for it
+							if(data.table == null) {
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								TableFragment newFragment = new TableFragment();
+								
+								/*
+								 * JACKSON START
+								 */
+								// data.table was null, so we need to create a new table
+								newFragment.jacksonTable = (Table) data.jacksonTable;
+								/*
+								 * JACKSON END
+								 */
+								
+								fragmentTransaction.add(R.id.main_view_empty, newFragment);
+								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								fragmentTransaction.hide(oldFragment);
+								fragmentTransaction.commit();
+								newFragment.fragment_parent = oldFragment;
+								data.table = newFragment;
+								((MainTemplateGenerator) myContext).currentFragment = newFragment;
+							}
+							//fragment already exisits -> show it
+							else{
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								fragmentTransaction.hide(oldFragment);
+								/*
+								 * JACKSON START
+								 * needed if template is edited, because we can create but we cannot add the fragment during inflation
+								 */
+								if(!data.table.isAdded()) {
+									fragmentTransaction.add(R.id.main_view_empty, data.table);
+								}
+								/*
+								 * JACKSON END
+								 */
+								fragmentTransaction.show(data.table);
+								((MainTemplateGenerator) myContext).currentFragment = data.table;
+
+								fragmentTransaction.commit();
+							}
+						}
+                	});
+                	
                 	
 //                	if(data.table == null){
 //						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
@@ -349,10 +377,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			e.printStackTrace();
                 		}
                 	}
-                	/*if(data.jacksonTable != null) {
-                		jacksonTable.removeTable(data.jacksonTable);
-                		//data.jacksonTable.parentTable.removeTable(data.jacksonTable);
-                	}*/
                 	/*
                 	 * JACKSON END
                 	 */
