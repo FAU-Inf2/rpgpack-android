@@ -47,6 +47,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 		myContext = context;
         allData = new ArrayList<DataHolder>();
         allData = objects;
+        Log.d("QUICKDIRTYFIX_constr", ""+MainTemplateGenerator.jacksonInflatingInProcess.get());
     }
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
@@ -99,6 +100,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         } else {
             view = convertView;
         }
+        Log.d("QUICKDIRTYFIX_huehue", ""+MainTemplateGenerator.inflatingInProcess);
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         final ViewHolder holder = (ViewHolder) view.getTag();
         ((Spinner) view.findViewById(R.id.spin)).setAdapter(data.getAdapter());
@@ -120,16 +122,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
                 		Log.d("JSON_DATA_ADAPTER", "created new container table");
-                		try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-							Log.d("JSON_DATA_ADAPTER", "saved template");
-						} catch (JsonGenerationException
-								| JsonMappingException e) {
-							e.printStackTrace();
-						}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
                 	}
                 	else {
                 		// if exists
@@ -139,13 +131,24 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.addTable(data.childFragment.jacksonTable);
 						data.jacksonTable = data.childFragment.jacksonTable;
 						Log.d("JSON_DATA_ADAPTER", "replaced table");
-						try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-							Log.d("JSON_DATA_ADAPTER", "saved template");
-						} catch (JsonGenerationException
-								| JsonMappingException e) {
-							e.printStackTrace();
-						}
+                	}
+           		 
+                	// onItemSelected gets called when setting data while loading a template. use this flag to eliminate
+                	// saving bug ( template is saved when data gets added)
+                	
+                	Log.d("QUICKDIRTYFIX", ""+MainTemplateGenerator.jacksonInflatingInProcess);
+                	if(MainTemplateGenerator.jacksonInflatingInProcess.get()) {
+                		Log.d("QUICKDIRTYFIX", "return");
+                	}
+                	else {
+                		// save template
+                		try {
+                			MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+                			Log.d("JSON_DATA_ADAPTER", "saved template");
+                		} catch (JsonGenerationException
+                				| JsonMappingException e) {
+                			e.printStackTrace();
+                		}
                 		catch(IOException e) {
                 			e.printStackTrace();
                 		}
@@ -215,6 +218,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	if(data.jacksonTable != null) {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
+                		// save template
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
                 			Log.d("JSON_DATA_ADAPTER", "saved template");
@@ -249,16 +253,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		((Table)data.jacksonTable).numberOfColumns = 2;
 	            		// log for info
 	            		Log.d("NEW TABLE","created new table");
-	            		try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-							Log.d("JSON_DATA_ADAPTER", "saved template");
-						} catch (JsonGenerationException
-								| JsonMappingException e) {
-							e.printStackTrace();
-						}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
 					}
 					else{
 						// if exists
@@ -268,17 +262,18 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.addTable(data.table.jacksonTable);
 						data.jacksonTable = data.table.jacksonTable;
 						Log.d("JSON_DATA_ADAPTER", "replaced table");
-						try {
-							MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
-							Log.d("JSON_DATA_ADAPTER", "saved template");
-						} catch (JsonGenerationException
-								| JsonMappingException e) {
-							e.printStackTrace();
-						}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
 					}
+                	// save template
+            		try {
+						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+						Log.d("JSON_DATA_ADAPTER", "saved template");
+					} catch (JsonGenerationException
+							| JsonMappingException e) {
+						e.printStackTrace();
+					}
+            		catch(IOException e) {
+            			e.printStackTrace();
+            		}
 					/*
 					 * JACKSON END
 					 */

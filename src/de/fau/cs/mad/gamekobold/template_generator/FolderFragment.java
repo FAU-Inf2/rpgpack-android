@@ -172,6 +172,7 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
+		Log.d("inflate", ""+MainTemplateGenerator.jacksonInflatingInProcess.get());
 		// set jackson table for this fragment
 		jacksonTable = myTable;
 		if(myTable.subTables == null) {
@@ -180,8 +181,6 @@ public class FolderFragment extends GeneralFragment {
 		if(allData == null) {
 			allData = new ArrayList<DataHolder>();
 		}
-		//Log.d("FOLDER_FRAGMENT", "isAdded:"+isAdded());
-		//activity = getActivity();
 		if(dataAdapter == null) {
 			dataAdapter = new DataAdapter(activity, R.layout.initialrow, allData);
 		}

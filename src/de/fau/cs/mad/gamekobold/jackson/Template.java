@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Template implements Parcelable{
 	@JsonIgnore
+	public static boolean USE_PRETTY_WRITER = true;
+	@JsonIgnore
 	private static final String FOLDER_NAME = "Templates";
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
@@ -60,7 +62,12 @@ public class Template implements Parcelable{
 		ObjectMapper mapper = new ObjectMapper();
 		File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
-		mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
+		if(USE_PRETTY_WRITER) {
+			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
+		}
+		else {
+			mapper.writer().writeValue(outStream, this);
+		}
 	}
 	
 	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
