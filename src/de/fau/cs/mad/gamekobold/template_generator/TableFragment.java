@@ -1,9 +1,17 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
+import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -74,6 +82,16 @@ public class TableFragment extends GeneralFragment {
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col1, row);
+				// JACKSON START
+				jacksonTable.setColumnTitle(0, s.toString());
+				try {
+					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+					Log.d("TABLE_FRAGMENT", "title changed - saved");
+				} catch (JsonGenerationException | JsonMappingException e) {
+				} catch(IOException e) {
+					
+				}
+				// JACKSON END
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -109,6 +127,16 @@ public class TableFragment extends GeneralFragment {
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col2, row);
+				// JACKSON START
+				jacksonTable.setColumnTitle(1, s.toString());
+				try {
+					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+					Log.d("TABLE_FRAGMENT", "title changed - saved");
+				} catch (JsonGenerationException | JsonMappingException e) {
+				} catch(IOException e) {
+					
+				}
+				// JACKSON END
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -412,6 +440,34 @@ public class TableFragment extends GeneralFragment {
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
+		/*
+		 * JACKSON START
+		 */
+		// only add to header cells
+		if(row == headerTable.getChildAt(0)) {
+			oneColumn.addTextChangedListener(new TextWatcher(){
+				// column index for this header cell
+				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
+				// callback
+				public void afterTextChanged(Editable s) {
+					jacksonTable.setColumnTitle(columnIndex, s.toString());
+					try {
+						MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+						Log.d("TABLE_FRAGMENT", "title changed - saved");
+					} catch (JsonGenerationException | JsonMappingException e) {
+					} catch(IOException e) {
+						
+					}
+				}
+				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+				}
+				public void onTextChanged(CharSequence s, int start, int before, int count){
+				}
+			});
+		}
+		/*
+		 * JACKSON END
+		 */
         oneColumn.setText("---");
         if(headerTable.indexOfChild(row) != -1){
             oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
@@ -482,6 +538,20 @@ public class TableFragment extends GeneralFragment {
 		    }
 		}
 		
+		/*
+		 *  JACKSON START
+		 */
+		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+		try {
+			MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+			Log.d("TABLE_FRAGMENT", "title changed - saved");
+		} catch (JsonGenerationException | JsonMappingException e) {
+		} catch(IOException e) {
+		}
+		/*
+		 *  JACKSON END
+		 */
+		
         Log.d("columns", "amount == " + amountColumns);
 
 	}
@@ -504,6 +574,19 @@ public class TableFragment extends GeneralFragment {
 					////		            view.setEnabled(false);
 					//		        }
 				}
+				/*
+				 *  JACKSON START
+				 */
+				jacksonTable.removeColumn();
+				try {
+					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+					Log.d("TABLE_FRAGMENT", "title changed - saved");
+				} catch (JsonGenerationException | JsonMappingException e) {
+				} catch(IOException e) {
+				}
+				/*
+				 *  JACKSON END
+				 */
 			}
 			View headerRow = headerTable.getChildAt(0);
 			TableRow row = (TableRow) headerRow;
@@ -511,5 +594,25 @@ public class TableFragment extends GeneralFragment {
 			Log.d("columns", "amount == " + amountColumns);
 		}
 	}
+	
+	/*
+	 * JACKSON START
+	 */
+	public void jacksonInflate(Table myTable, Activity activity) {
+	//	jacksonTable = myTable;
+		//TODO
+		// remove any data
+		jacksonTable = new Table();
+		// add the 2 default columns
+		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+		
+		//create table header
+		//adjust column number
+		//adjust column titles
+	}
+	/*
+	 * JACKSON END
+	 */
 	
 }

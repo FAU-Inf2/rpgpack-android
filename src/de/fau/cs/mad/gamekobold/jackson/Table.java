@@ -9,19 +9,26 @@ public class Table extends AbstractTable{
 	public int numberOfColumns;
 	//public String[] columnNames;
 	//public String[] columnTypes;
-	//public ArrayList<ColumnHeader> columnHeaders;
-	public ColumnHeader[] columnHeaders;
+	public ArrayList<ColumnHeader> columnHeaders;
+	//public ColumnHeader[] columnHeaders;
 	public boolean writeOnly;
 	
 	public Table() {
 	}
 	
-	public Table(String name, ColumnHeader[] headers){
+	public Table(String name, ArrayList<ColumnHeader> headers){
+		tableName = name;
+		numberOfColumns = headers.size();
+		columnHeaders = headers;
+		writeOnly = false;
+	}
+	
+	/*public Table(String name, ColumnHeader[] headers){
 		tableName = name;
 		numberOfColumns = headers.length;
 		columnHeaders = headers;
 		writeOnly = false;
-	}
+	}*/
 	
 	/*public Table(int numberOfCol, String[] types, String[] names) {
 		numberOfColumns = numberOfCol;
@@ -35,8 +42,8 @@ public class Table extends AbstractTable{
 		builder.append("Table Name:"+tableName+"\n");
 		for(int i = 0; i < numberOfColumns; i++) {
 		//	builder.append(columnNames[i]+"("+columnTypes[i]+")");
-			builder.append(columnHeaders[i].name+"("+columnHeaders[i].type+")");
-			if(columnHeaders[i].hidden) {
+			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
+			if(columnHeaders.get(i).hidden) {
 				builder.append("[hidden]");
 			}
 			if( i < numberOfColumns-1) {
@@ -57,12 +64,13 @@ public class Table extends AbstractTable{
 			rows = new ArrayList<Row>();
 		}
 		//TODO numberOfColumns == columnHeaders.size()
-		Row ret = new Row(numberOfColumns);
+		//Row ret = new Row(numberOfColumns);
+		Row ret = new Row();
 		rows.add(ret);
 		return ret;
 	}
 	
-	/*
+	
 	 public void addColumn(ColumnHeader header) {
 	 	columnHeaders.add(header);
 	 	if(rows != null) {
@@ -75,7 +83,7 @@ public class Table extends AbstractTable{
 	 
 	 public void removeColumn() {
 	 	if(!columnHeaders.isEmpty()) { 
-	 		columnHeaders.remove(columnHeader.size()-1);
+	 		columnHeaders.remove(columnHeaders.size()-1);
 	 		//rows
 	 		if(rows != null) {
 	 			for(final Row row : rows) {
@@ -85,8 +93,14 @@ public class Table extends AbstractTable{
 	 		numberOfColumns--;
 	 	}
 	 }
-	 */
-	
+	 
+	 public void setColumnTitle(int index, String title) {
+		 	if(index >= numberOfColumns) {
+		 		return;
+		 	}
+		 	columnHeaders.get(index).name = title;
+	 }	
+	 
 	/*public Table createAndAddNewTable() {
 		return createAndAddNewTable(0, null, null);
 	}

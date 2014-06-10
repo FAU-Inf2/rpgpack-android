@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -245,10 +246,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = jacksonTable.createAndAddNewTable();
 	                	// set table header
-                		((Table)data.jacksonTable).columnHeaders = new ColumnHeader[]{ 
+                		ColumnHeader[] headers = { 
 	            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
 	            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-	            				};
+                		};
+                		((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
 	                	// set table column number
                 		((Table)data.jacksonTable).numberOfColumns = 2;
 	            		// log for info

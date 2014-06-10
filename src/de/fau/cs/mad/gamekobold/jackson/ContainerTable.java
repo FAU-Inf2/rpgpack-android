@@ -1,7 +1,9 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import android.util.Log;
 
 
@@ -30,7 +32,7 @@ public class ContainerTable extends AbstractTable{
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
 		}
-		Table table = new Table(name, headers);
+		Table table = new Table(name, new ArrayList<ColumnHeader>(Arrays.asList(headers)));
 		subTables.add(table);
 		return table;
 	}

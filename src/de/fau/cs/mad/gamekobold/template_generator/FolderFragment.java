@@ -2,7 +2,9 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
+import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 
 import java.io.IOException;
@@ -234,13 +236,12 @@ public class FolderFragment extends GeneralFragment {
 				// create fragment
 				newDataItem.table = new TableFragment();
 				newDataItem.table.fragment_parent = this;
-				newDataItem.table.jacksonTable = (Table)subTable;
+				newDataItem.table.jacksonInflate((Table)subTable, activity);
 				// not working this way
 				/*FragmentManager fragmentManager = activity.getFragmentManager();
 				FragmentTransaction transaction = fragmentManager.beginTransaction();
 				// add and commit fragment
 				transaction.add(R.id.main_view_empty, newDataItem.table).commit();*/
-				// TODO set right column stuff
 			}
 		}
 	}
