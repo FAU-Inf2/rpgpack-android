@@ -11,6 +11,7 @@ public abstract class GeneralFragment extends Fragment {
 	
 	public GeneralFragment() {
 		super();
+        setRetainInstance(true);
 	}
 	
 	protected abstract void addItemList();

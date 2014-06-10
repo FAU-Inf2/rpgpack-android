@@ -13,19 +13,17 @@ import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class MainTemplateGenerator extends Activity{
+public class MainTemplateGenerator extends FragmentActivity{
 	 /*
 	  * JACKSON START
 	  */
@@ -43,7 +41,7 @@ public class MainTemplateGenerator extends Activity{
 	 //the only fragment used till now
 	 GeneralFragment currentFragment;
 	 FolderFragment topFragment;
-	 OnClickListener onClickAction;
+	 protected static Activity theActiveActivity;
 
 
 	 @Override
@@ -93,15 +91,17 @@ public class MainTemplateGenerator extends Activity{
 		  * JACKSON END
 		  */
 		 
-		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
+//		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("mainFragment");
+		 topFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
-		 if(mainFragment == null){
+		 if(topFragment == null){
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 currentFragment = new FolderFragment();
 			 topFragment = (FolderFragment) currentFragment;
 			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
 			 fragmentTransaction.commit();
+			 getFragmentManager().executePendingTransactions();
 			 /*
 			  * JACKSON START
 			  */
@@ -124,18 +124,28 @@ public class MainTemplateGenerator extends Activity{
 			  * JACKSON END
 			  */
 		 }
-		 else{
-             Log.d("aaa", "ELSE!");
-             FragmentManager fragmentManager = getFragmentManager();
-			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			 fragmentTransaction.attach(mainFragment);
+		 if(currentFragment == null){
+				Log.d("onCreate", "currentFragment == null");
+				if(savedInstanceState != null){
+					currentFragment = (GeneralFragment) getFragmentManager().getFragment(savedInstanceState, "currentFragment");
+				}
+				else{
+					currentFragment = topFragment;
+				}
 		 }
-		 
+		 else{
+			 Log.d("NICE", "mainFragment FOUND!!!");
+//             FragmentManager fragmentManager = getFragmentManager();
+//			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//			 fragmentTransaction.attach(mainFragment);
+//			 fragmentTransaction.commit();
+		 }
 		 
 		//think it should be done in fragment: save allData (+restore)
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");
 //        }
+		 theActiveActivity = this;
 	 }
 
 
@@ -143,9 +153,18 @@ public class MainTemplateGenerator extends Activity{
     protected void onSaveInstanceState(Bundle outState) {
     	//think it should be done in fragment: save allData (+restore)
 //    	outState.putParcelableArrayList("key123", allData);
+    	getFragmentManager().putFragment(outState, "currentFragment", currentFragment);
+//    	getSupportFragmentManager().putFragment(outState, "mContent", currentFragment);
         super.onSaveInstanceState(outState);
     }
     
+    
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) 
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("onRestoreInstanceState", "onRestoreInstanceState!!!");
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
