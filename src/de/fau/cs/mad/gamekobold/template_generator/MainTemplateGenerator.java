@@ -12,6 +12,7 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -36,6 +37,7 @@ public class MainTemplateGenerator extends FragmentActivity{
 	  * JACKSON END
 	  */
 	
+	 private Menu globalMenu;
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
@@ -167,10 +169,46 @@ public class MainTemplateGenerator extends FragmentActivity{
     }
     
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	if(currentFragment instanceof TableFragment){
+    		getMenuInflater().inflate(R.menu.main, menu);
+    	}
+    	else if(currentFragment instanceof FolderFragment){
+    		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+    	}
+    	else{
+    		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
+    		getMenuInflater().inflate(R.menu.main, menu);
+    	}
+//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//		getActionBar().setCustomView(R.layout.main_actionbar);
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+//		getActionBar().setCustomView(R.layout.main_actionbar);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    
+    protected void adaptActionBar(){
+    	if(currentFragment instanceof TableFragment){
+    		getMenuInflater().inflate(R.menu.main, globalMenu);
+    	}
+    	else if(currentFragment instanceof FolderFragment){
+    		getMenuInflater().inflate(R.menu.template_generator_table_layout, globalMenu);
+    	}
+    	else{
+    		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
+    		getMenuInflater().inflate(R.menu.main, globalMenu);
+    	}
+//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//		getActionBar().setCustomView(R.layout.main_actionbar);
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+//		getActionBar().setCustomView(R.layout.main_actionbar);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    	globalMenu = menu;
+//    	adaptActionBar();
+    	return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -212,6 +250,7 @@ public class MainTemplateGenerator extends FragmentActivity{
         		currentFragment = currentFragment.fragment_parent;
         		fa.commit();
         	}
+        	invalidateOptionsMenu();
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);

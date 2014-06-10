@@ -185,6 +185,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								newFragment.fragment_parent = oldFragment;
 								data.childFragment = newFragment;
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 							//fragment already exisits -> show it
 							else{
@@ -205,6 +206,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								fragmentTransaction.show(data.childFragment);
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.childFragment;
 								fragmentTransaction.commit();
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 						        Log.d("data", "data child NOT null!");
 							}
 						}
@@ -306,6 +308,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								newFragment.fragment_parent = oldFragment;
 								data.table = newFragment;
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 							//fragment already exisits -> show it
 							else{
@@ -326,6 +329,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.table;
 
 								fragmentTransaction.commit();
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 						}
                 	});
