@@ -218,12 +218,14 @@ public class MainTemplateGenerator extends FragmentActivity{
         Log.d("onRestoreInstanceState", "onRestoreInstanceState!!!");
     }
     
+    /**
+     * Menu gets its layout here -> action bar on top gets adapted
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
     	if(currentFragment instanceof TableFragment){
     		getMenuInflater().inflate(R.menu.main, menu);
-
     		ActionBar actionBar = getActionBar(); 
     		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     		actionBar.setCustomView(R.layout.actionbar_template_generator_tableview);
@@ -245,7 +247,18 @@ public class MainTemplateGenerator extends FragmentActivity{
     		Log.d("table name:", "name == " + ((TableFragment) currentFragment).tableName);
     	}
     	else if(currentFragment instanceof FolderFragment){
-    		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+    		if(currentFragment == topFragment){
+    			//now we are on top level and should allow to show the slideout menu
+    			//TODO (Pierre): add the SlideoutMenu as an item to the ActionBar
+    			//(maybe use an own "R.menu.resource_file"
+    			//which contains the button that shall open the slideout-menu)
+    			//also todo: tell the button what to do -> show slideout-menu
+    			//then replace the following line
+        		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+    		}
+    		else{
+    			getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+    		}
 //    		Log.d("menu-Creation", "MENU 2");
     	}
     	else{
