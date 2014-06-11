@@ -460,6 +460,20 @@ public class TableFragment extends GeneralFragment {
 		}
 	}
 	
+	protected void setAmountOfColumns(int amount){
+		int amountToAdd = amount - amountColumns;
+		if(amountToAdd > 0){
+			for(int i=0; i<amountToAdd; i++){
+				addColumn();
+			}
+		}
+		else{
+			for(int i=amountToAdd; i<0; i++){
+				removeColumn();
+			}
+		}
+	}
+	
 	protected void addColumnToRow(final TableRow row){
 		final ResizingEditText oneColumn = new ResizingEditText(getActivity(), row, this);
 		String uri = "@drawable/cell_shape";
@@ -646,6 +660,70 @@ public class TableFragment extends GeneralFragment {
 			 */
 			Log.d("columns", "amount == " + amountColumns);
 		}
+	}
+
+	/**
+	 * @param table
+	 * Method to set up the table for showing it in AlertDialog
+	 */
+	protected void showTableDialog(TableLayout table) {
+		table.removeAllViews();
+		for(int i=-1; i<amountColumns; i++){
+			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+			//use k columns
+			for(int k=0; k<3; k++){
+				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+				String uri = "@drawable/cell_shape";
+				int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+				Drawable res = getResources().getDrawable(imageResource);
+				if (android.os.Build.VERSION.SDK_INT >= 16){
+					oneColumn.setBackground(res);
+				}
+				else{
+					oneColumn.setBackgroundDrawable(res);
+				}
+				oneColumn.setSingleLine();
+				View theText = oneColumn;
+				//TODO: how to resize the table if too big?
+				oneColumn.addTextChangedListener(new TextWatcher(){
+					public void afterTextChanged(Editable s) {
+						//					checkResize(0, 0, oneColumn, row);
+					}
+					public void beforeTextChanged(CharSequence s, int start, int count, int after){
+					}
+					public void onTextChanged(CharSequence s, int start, int before, int count){
+					}
+				});
+				//first row -> insert column descriptions
+				if(i==-1){
+					if(k==0){
+						oneColumn.setText("Nr.");
+					}
+					else if(k==1){
+						oneColumn.setText("Spaltenname");
+					}
+					else{
+						oneColumn.setText("Spaltentyp");
+					}
+				}
+				//insert the number of the column in the first row
+				else if(k ==0){
+					oneColumn.setText(i+".");
+				}
+				else if(k==1){
+					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+					EditText headerText = (EditText) headerRow.getChildAt(i);
+					Log.d("i,k", "i==" + i + ", k==" +k);
+					oneColumn.setText(headerText.getText());					
+				}
+				row.addView(oneColumn);
+			}
+			table.addView(row);
+		}
+//		return table;
 	}
 	
 	/*

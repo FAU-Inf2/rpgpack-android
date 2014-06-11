@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.NumberPicker;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +61,6 @@ public class MainTemplateGenerator extends FragmentActivity{
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
-		 //TODO: implement AlertDialog tableViewDialog
 		 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		 LayoutInflater inflater = getLayoutInflater();
 		 
@@ -80,7 +80,7 @@ public class MainTemplateGenerator extends FragmentActivity{
 		 // Pass null as the parent view because its going in the dialog layout
 		 dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
 		 alertDialogBuilder.setView(dialogViewTableView);
-		 NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+		 final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
 		 np.setMaxValue(99);
 		 np.setMinValue(0);
 //		 np.setValue(((TableFragment) currentFragment).amountColumns);
@@ -89,7 +89,7 @@ public class MainTemplateGenerator extends FragmentActivity{
 		 .setCancelable(false)
 		 .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
 			 public void onClick(DialogInterface dialog,int id) {
-				 //TODO: adapt table
+				 ((TableFragment) currentFragment).setAmountOfColumns(np.getValue());
 			 }
 		 })
 		 .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
@@ -236,6 +236,8 @@ public class MainTemplateGenerator extends FragmentActivity{
 					dialogTableView.setTitle(((TableFragment) currentFragment).tableName);
 					NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
 					np.setValue(((TableFragment) currentFragment).amountColumns);
+					TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+					((TableFragment) currentFragment).showTableDialog(table);
 					dialogTableView.show();
 				}
     	    });
