@@ -14,14 +14,22 @@ import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainTemplateGenerator extends FragmentActivity{
@@ -37,19 +45,61 @@ public class MainTemplateGenerator extends FragmentActivity{
 	  * JACKSON END
 	  */
 	
-	 private Menu globalMenu;
+//	 private Menu globalMenu;
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
 	 GeneralFragment currentFragment;
 	 FolderFragment topFragment;
 	 protected static Activity theActiveActivity;
+	 AlertDialog dialogTableView;
+	 View dialogViewTableView;
 
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
+		 //TODO: implement AlertDialog tableViewDialog
+		 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		 LayoutInflater inflater = getLayoutInflater();
+		 
+		 //old approach with number-list
+//		 String[] numbers = new String[500];
+//		 for(Integer i=0; i<500; i++){
+//			 Integer offset = (Integer) i+1;
+//			 numbers[i] = offset.toString();
+//		 }
+//		 alertDialogBuilder.setItems(numbers, new  DialogInterface.OnClickListener() {
+//             public void onClick(DialogInterface dialog, int pos) {
+//                 //selection processing code
+//
+//         }});
+		 
+		 // Inflate and set the layout for the dialog
+		 // Pass null as the parent view because its going in the dialog layout
+		 dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+		 alertDialogBuilder.setView(dialogViewTableView);
+		 NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+		 np.setMaxValue(99);
+		 np.setMinValue(0);
+//		 np.setValue(((TableFragment) currentFragment).amountColumns);
+		 // set dialog message
+		 alertDialogBuilder
+		 .setCancelable(false)
+		 .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog,int id) {
+				 //TODO: adapt table
+			 }
+		 })
+		 .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog,int id) {
+				 dialog.cancel();
+			 }
+		 });
+		 // create alert dialog
+		 dialogTableView = alertDialogBuilder.create();
+		 
 		 
 		 /*
 		  * JACKSON START
@@ -170,44 +220,46 @@ public class MainTemplateGenerator extends FragmentActivity{
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.clear();
     	if(currentFragment instanceof TableFragment){
     		getMenuInflater().inflate(R.menu.main, menu);
+
+    		ActionBar actionBar = getActionBar(); 
+    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    		actionBar.setCustomView(R.layout.actionbar_template_generator_tableview);
+//    		setTitle(((TableFragment) currentFragment).tableName);
+    		View v = getActionBar().getCustomView();
+    	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
+    	    ((View) titleTxtView).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					dialogTableView.setTitle(((TableFragment) currentFragment).tableName);
+					NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+					np.setValue(((TableFragment) currentFragment).amountColumns);
+					dialogTableView.show();
+				}
+    	    });
+    	    titleTxtView.setText(((TableFragment) currentFragment).tableName);
+    		Log.d("table name:", "name == " + ((TableFragment) currentFragment).tableName);
     	}
     	else if(currentFragment instanceof FolderFragment){
     		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+//    		Log.d("menu-Creation", "MENU 2");
     	}
     	else{
     		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
     		getMenuInflater().inflate(R.menu.main, menu);
+//    		Log.d("menu-Creation", "MENU DEFAULT");
     	}
-//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//		getActionBar().setCustomView(R.layout.main_actionbar);
-        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
-//		getActionBar().setCustomView(R.layout.main_actionbar);
+//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
         return super.onPrepareOptionsMenu(menu);
-    }
-    
-    protected void adaptActionBar(){
-    	if(currentFragment instanceof TableFragment){
-    		getMenuInflater().inflate(R.menu.main, globalMenu);
-    	}
-    	else if(currentFragment instanceof FolderFragment){
-    		getMenuInflater().inflate(R.menu.template_generator_table_layout, globalMenu);
-    	}
-    	else{
-    		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
-    		getMenuInflater().inflate(R.menu.main, globalMenu);
-    	}
-//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//		getActionBar().setCustomView(R.layout.main_actionbar);
-        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
-//		getActionBar().setCustomView(R.layout.main_actionbar);
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	globalMenu = menu;
+//    	globalMenu = menu;
 //    	adaptActionBar();
+    	invalidateOptionsMenu();
     	return super.onCreateOptionsMenu(menu);
     }
 

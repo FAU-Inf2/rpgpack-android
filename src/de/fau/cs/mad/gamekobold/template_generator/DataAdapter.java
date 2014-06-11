@@ -52,7 +52,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
 	static class ViewHolder {
-		TextView text;
+		EditText text;
 		EditText invisibleText;
 		protected Spinner spin;
 		protected View row;
@@ -291,6 +291,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 							if(data.table == null) {
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 								TableFragment newFragment = new TableFragment();
+								newFragment.tableName = holder.text.getText().toString();
 								
 								/*
 								 * JACKSON START
@@ -325,6 +326,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON END
 								 */
+								data.table.tableName = holder.text.getText().toString();
 								fragmentTransaction.show(data.table);
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.table;
 

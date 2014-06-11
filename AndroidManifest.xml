@@ -39,12 +39,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.fau.cs.mad.gamekobold.MainActivity" />
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator" >
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator"
+            android:label="Root" >
             <intent-filter>
-  				  <action android:name="android.intent.action.MAIN" />
- 				   <category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity" >
