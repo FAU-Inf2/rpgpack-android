@@ -1,8 +1,8 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.util.List;
-import de.fau.cs.mad.gamekobold.R;
 
+import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,9 +37,9 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				rowView = inflater.inflate(
 						R.layout.rowlayout_newtemplate_template_browser,
 						parent, false);
-				
+
 				Log.e("er", "Position, getCount: " + getCount());
-				
+
 				TextView tName = (TextView) rowView
 						.findViewById(R.id.textView1);
 				Template curTemplate = objects.get(position);
@@ -47,13 +47,13 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 			}
 			// JACKSON for editing last created template
-			else if(position == getCount() -2) {
+			else if (position == getCount() - 2) {
 				rowView = inflater.inflate(
 						R.layout.rowlayout_newtemplate_template_browser,
 						parent, false);
-				
+
 				Log.e("er", "Position, getCount: " + getCount());
-				
+
 				TextView tName = (TextView) rowView
 						.findViewById(R.id.textView1);
 				Template curTemplate = objects.get(position);
@@ -62,7 +62,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 			// JACKSON end
 			else {
 				Log.e("er", "position: " + position);
-				
+
 				rowView = inflater.inflate(R.layout.rowlayout_template_browser,
 						parent, false);
 				TextView tName = (TextView) rowView
@@ -82,10 +82,10 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor()
 						+ ", " + curTemplate.getDate());
 
-				// change the icon for different games				
+				// change the icon for different games
 				TemplateIcons templateIcons = TemplateIcons.getInstance();
-				imageView
-				.setImageResource(templateIcons.getTempalteIcon(curTemplate.getIconID()));
+				imageView.setImageResource(Integer.valueOf(templateIcons
+						.getTempalteIcon(curTemplate.getIconID())));
 			}
 		} else {
 			rowView = inflater.inflate(R.layout.rowlayout_template_browser,
@@ -106,9 +106,8 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 					+ curTemplate.getDate());
 
 			TemplateIcons templateIcons = TemplateIcons.getInstance();
-			imageView
-			.setImageResource(templateIcons.getTempalteIcon(curTemplate.getIconID()));
-			
+			imageView.setImageResource(Integer.valueOf(templateIcons
+					.getTempalteIcon(curTemplate.getIconID())));
 		}
 
 		return rowView;

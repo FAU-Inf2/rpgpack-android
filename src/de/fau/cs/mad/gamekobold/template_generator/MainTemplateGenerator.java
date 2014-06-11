@@ -12,20 +12,27 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainTemplateGenerator extends Activity{
+public class MainTemplateGenerator extends FragmentActivity{
 	 /*
 	  * JACKSON START
 	  */
@@ -38,18 +45,61 @@ public class MainTemplateGenerator extends Activity{
 	  * JACKSON END
 	  */
 	
+//	 private Menu globalMenu;
 	 protected DataAdapter dataAdapter;
 	 protected ArrayList<DataHolder> allData;
 	 //the only fragment used till now
 	 GeneralFragment currentFragment;
 	 FolderFragment topFragment;
-	 OnClickListener onClickAction;
+	 protected static Activity theActiveActivity;
+	 AlertDialog dialogTableView;
+	 View dialogViewTableView;
 
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
+		 //TODO: implement AlertDialog tableViewDialog
+		 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		 LayoutInflater inflater = getLayoutInflater();
+		 
+		 //old approach with number-list
+//		 String[] numbers = new String[500];
+//		 for(Integer i=0; i<500; i++){
+//			 Integer offset = (Integer) i+1;
+//			 numbers[i] = offset.toString();
+//		 }
+//		 alertDialogBuilder.setItems(numbers, new  DialogInterface.OnClickListener() {
+//             public void onClick(DialogInterface dialog, int pos) {
+//                 //selection processing code
+//
+//         }});
+		 
+		 // Inflate and set the layout for the dialog
+		 // Pass null as the parent view because its going in the dialog layout
+		 dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+		 alertDialogBuilder.setView(dialogViewTableView);
+		 NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+		 np.setMaxValue(99);
+		 np.setMinValue(0);
+//		 np.setValue(((TableFragment) currentFragment).amountColumns);
+		 // set dialog message
+		 alertDialogBuilder
+		 .setCancelable(false)
+		 .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog,int id) {
+				 //TODO: adapt table
+			 }
+		 })
+		 .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog,int id) {
+				 dialog.cancel();
+			 }
+		 });
+		 // create alert dialog
+		 dialogTableView = alertDialogBuilder.create();
+		 
 		 
 		 /*
 		  * JACKSON START
@@ -93,15 +143,17 @@ public class MainTemplateGenerator extends Activity{
 		  * JACKSON END
 		  */
 		 
-		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
+//		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("mainFragment");
+		 topFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
 		 //method: use fragment to store everything
-		 if(mainFragment == null){
+		 if(topFragment == null){
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 currentFragment = new FolderFragment();
 			 topFragment = (FolderFragment) currentFragment;
 			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
 			 fragmentTransaction.commit();
+			 getFragmentManager().executePendingTransactions();
 			 /*
 			  * JACKSON START
 			  */
@@ -124,18 +176,28 @@ public class MainTemplateGenerator extends Activity{
 			  * JACKSON END
 			  */
 		 }
-		 else{
-             Log.d("aaa", "ELSE!");
-             FragmentManager fragmentManager = getFragmentManager();
-			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			 fragmentTransaction.attach(mainFragment);
+		 if(currentFragment == null){
+				Log.d("onCreate", "currentFragment == null");
+				if(savedInstanceState != null){
+					currentFragment = (GeneralFragment) getFragmentManager().getFragment(savedInstanceState, "currentFragment");
+				}
+				else{
+					currentFragment = topFragment;
+				}
 		 }
-		 
+		 else{
+			 Log.d("NICE", "mainFragment FOUND!!!");
+//             FragmentManager fragmentManager = getFragmentManager();
+//			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//			 fragmentTransaction.attach(mainFragment);
+//			 fragmentTransaction.commit();
+		 }
 		 
 		//think it should be done in fragment: save allData (+restore)
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");
 //        }
+		 theActiveActivity = this;
 	 }
 
 
@@ -143,15 +205,62 @@ public class MainTemplateGenerator extends Activity{
     protected void onSaveInstanceState(Bundle outState) {
     	//think it should be done in fragment: save allData (+restore)
 //    	outState.putParcelableArrayList("key123", allData);
+    	getFragmentManager().putFragment(outState, "currentFragment", currentFragment);
+//    	getSupportFragmentManager().putFragment(outState, "mContent", currentFragment);
         super.onSaveInstanceState(outState);
     }
     
     
     @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) 
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("onRestoreInstanceState", "onRestoreInstanceState!!!");
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.clear();
+    	if(currentFragment instanceof TableFragment){
+    		getMenuInflater().inflate(R.menu.main, menu);
+
+    		ActionBar actionBar = getActionBar(); 
+    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    		actionBar.setCustomView(R.layout.actionbar_template_generator_tableview);
+//    		setTitle(((TableFragment) currentFragment).tableName);
+    		View v = getActionBar().getCustomView();
+    	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
+    	    ((View) titleTxtView).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					dialogTableView.setTitle(((TableFragment) currentFragment).tableName);
+					NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+					np.setValue(((TableFragment) currentFragment).amountColumns);
+					dialogTableView.show();
+				}
+    	    });
+    	    titleTxtView.setText(((TableFragment) currentFragment).tableName);
+    		Log.d("table name:", "name == " + ((TableFragment) currentFragment).tableName);
+    	}
+    	else if(currentFragment instanceof FolderFragment){
+    		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+//    		Log.d("menu-Creation", "MENU 2");
+    	}
+    	else{
+    		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
+    		getMenuInflater().inflate(R.menu.main, menu);
+//    		Log.d("menu-Creation", "MENU DEFAULT");
+    	}
+//        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+//    	globalMenu = menu;
+//    	adaptActionBar();
+    	invalidateOptionsMenu();
+    	return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -193,6 +302,7 @@ public class MainTemplateGenerator extends Activity{
         		currentFragment = currentFragment.fragment_parent;
         		fa.commit();
         	}
+        	invalidateOptionsMenu();
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);

@@ -45,8 +45,8 @@ public class TemplateDetailsActivity extends Activity {
 		tvInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 				+ curTemplate.getDate());
 
-		ivIcon.setImageResource(templateIcons.getTempalteIcon(curTemplate
-				.getIconID()));
+		ivIcon.setImageResource(Integer.valueOf(templateIcons.getTempalteIcon(curTemplate
+				.getIconID())));
 
 		tvDescription.setText(curTemplate.getDescription());
 

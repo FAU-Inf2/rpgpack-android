@@ -1,19 +1,28 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,7 +32,10 @@ import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
 
 public class CreateNewTemplateActivity extends Activity {
+	private Uri imageUri;
 
+	private static final int PICK_FROM_CAMERA = 1;
+	private static final int PICK_FROM_FILE = 2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,12 +47,61 @@ public class CreateNewTemplateActivity extends Activity {
 		final TextView tvGameName = (TextView) findViewById(R.id.editText2);
 		final TextView tvDescription = (TextView) findViewById(R.id.editText3);
 		Button createTemplateButton = (Button) findViewById(R.id.button2);
+		final String[] items = new String[] { "von Kamera", "von SD-Karte" };
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.select_dialog_item, items);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+		builder.setTitle("Bild hinzufügen");
+		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				if (item == 0) {
+					// create an intent to open Camera app
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					// create temporary file to hold the image from Camera.
+					File file = new File(Environment
+							.getExternalStorageDirectory(), "tmp_avatar_"
+							+ String.valueOf(System.currentTimeMillis())
+							+ ".jpg");
+					imageUri = Uri.fromFile(file);
+
+					try {
+						intent.putExtra(
+								android.provider.MediaStore.EXTRA_OUTPUT,
+								imageUri);
+						intent.putExtra("return-data", true);
+
+						startActivityForResult(intent, PICK_FROM_CAMERA);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					dialog.cancel();
+				} else {
+					// if user choose to select image from sdcard, start the
+					// intent to open image chooser dialog.
+					// the image chooser dialog will display list File Manager
+					// (if exist) apps and default Gallery app.
+					Intent intent = new Intent();
+
+					intent.setType("image/*");
+					intent.setAction(Intent.ACTION_GET_CONTENT);
+
+					startActivityForResult(Intent.createChooser(intent,
+							"Complete action using"), PICK_FROM_FILE);
+				}
+			}
+		});
+
+		final AlertDialog dialog = builder.create();
 		addImageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// open OpenPictureDialog
-
+				Toast.makeText(getApplicationContext(),
+						"You want to pick a picture!", Toast.LENGTH_SHORT)
+						.show();
+				dialog.show();
 			}
 		});
 
@@ -123,6 +184,51 @@ public class CreateNewTemplateActivity extends Activity {
 	}
 
 	@Override
+	// to handle the selected image
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != RESULT_OK)
+			return;
+
+		Bitmap bitmap = null;
+		String path = "";
+
+		if (requestCode == PICK_FROM_FILE) {
+			// get the uri of selected image
+			imageUri = data.getData();
+
+			// Assume user selects the image from sdcard using Gallery app. The
+			// uri from Gallery app does not give the real path to selected
+			// image, so it has to be resolved on content provider. Method
+			// getRealPathFromURI used to resolve the real path from the uri.
+			path = getRealPathFromURI(imageUri); // from Gallery
+
+			// If the path is null, assume user selects the image using File
+			// Manager app. File Manager app returns different information than
+			// Gallery app. To get the real path to selected image, use
+			// getImagePath method from the uri
+			if (path == null)
+				path = imageUri.getPath(); // from File Manager
+
+			if (path != null)
+				bitmap = BitmapFactory.decodeFile(path);
+
+		} else {
+			// If user choose to take picture from camera, get the real path of
+			// temporary file
+			path = imageUri.getPath();
+			bitmap = BitmapFactory.decodeFile(path);
+
+		}
+
+		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButton1);
+		addImageButton.setImageBitmap(bitmap);
+		//TODO store image path for later use
+		//TemplateIcons.getInstance().addTemplateIcon(path); 
+		
+	}
+
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -157,6 +263,23 @@ public class CreateNewTemplateActivity extends Activity {
 					R.layout.fragment_create_new_template, container, false);
 			return rootView;
 		}
+	}
+	
+	public String getRealPathFromURI(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media.DATA };
+		Cursor cursor = getContentResolver().query(contentUri, proj, null,
+				null, null);
+		if (cursor == null)
+			return null;
+
+		int column_index = cursor
+				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+		if (cursor.moveToFirst()) {
+			return cursor.getString(column_index);
+		} else
+			return null;
+
 	}
 
 }

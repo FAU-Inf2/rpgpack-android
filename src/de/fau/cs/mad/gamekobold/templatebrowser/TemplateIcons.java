@@ -8,43 +8,46 @@ import de.fau.cs.mad.gamekobold.R;
 public class TemplateIcons {
 
 	private static TemplateIcons instance = null;
-	
-	private Map<Integer, Integer> iconMap;
+
+	private Map<Integer, String> iconMap;
 	private Integer iconID = 0;
-	
+
 	private TemplateIcons() {
 		initialiseIcons();
 	}
 
-	public static TemplateIcons getInstance(){
+	public static TemplateIcons getInstance() {
 		if (instance == null) {
 			instance = new TemplateIcons();
 		}
 		return instance;
 	}
-	
-	public Integer addTemplateIcon(int iconReference) {
+
+	public Integer addTemplateIcon(String iconReference) {
 		int myID = iconID;
 		iconMap.put(myID, iconReference);
 		iconID++;
 		return myID;
 	}
 
-	public int getTempalteIcon(int iconID) {
+	// public Integer addTemplateIcon(int iconReference) {
+	// int myID = iconID;
+	// iconMap.put(myID, iconReference);
+	// iconID++;
+	// return myID;
+	// }
+
+	public String getTempalteIcon(int iconID) {
 		return iconMap.get(iconID);
 	}
-	
+
 	private void initialiseIcons() {
-		this.iconMap = new HashMap<Integer, Integer>();
-		this.addTemplateIcon(R.drawable.addphoto);
-		this.addTemplateIcon(R.drawable.addphoto_grey);
-		this.addTemplateIcon(R.drawable.dragon);
-		this.addTemplateIcon(R.drawable.vampir);
-		this.addTemplateIcon(R.drawable.eye);
+		this.iconMap = new HashMap<Integer, String>();
+		this.addTemplateIcon(Integer.toString(R.drawable.addphoto));
+		this.addTemplateIcon(Integer.toString(R.drawable.addphoto_grey));
+		this.addTemplateIcon(Integer.toString(R.drawable.dragon));
+		this.addTemplateIcon(Integer.toString(R.drawable.vampir));
+		this.addTemplateIcon(Integer.toString(R.drawable.eye));
 	}
+
 }
-
-
-
-
-

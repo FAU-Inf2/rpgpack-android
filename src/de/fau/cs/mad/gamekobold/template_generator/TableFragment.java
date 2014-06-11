@@ -48,6 +48,7 @@ public class TableFragment extends GeneralFragment {
 	TableLayout table;
 	TableLayout headerTable;
 	int amountColumns = 2;
+	String tableName;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

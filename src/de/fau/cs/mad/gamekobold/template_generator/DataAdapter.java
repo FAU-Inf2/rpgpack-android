@@ -39,13 +39,13 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 	 */
 	
 	
-	private Activity myContext;
+//	private Activity MainTemplateGenerator.theActiveActivity;
 	ArrayList<DataHolder> allData;
 	
 
 	public DataAdapter(Activity context, int textViewResourceId, ArrayList<DataHolder> objects) {
 		super(context, textViewResourceId, objects);
-		myContext = context;
+//		MainTemplateGenerator.theActiveActivity = context;
         allData = new ArrayList<DataHolder>();
         allData = objects;
         Log.d("QUICKDIRTYFIX_constr", ""+MainTemplateGenerator.jacksonInflatingInProcess.get());
@@ -53,7 +53,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
 	static class ViewHolder {
-		TextView text;
+		EditText text;
 		EditText invisibleText;
 		protected Spinner spin;
 		protected View row;
@@ -88,7 +88,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             Log.d("set tag", "convertview is NULL, " + this.getItemId(viewPosition));
 
             // If it hasn't, set up everything:
-            LayoutInflater inflator = myContext.getLayoutInflater();
+            LayoutInflater inflator = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
             view = inflator.inflate(R.layout.initialrow, null);
 
             final ViewHolder holder = new ViewHolder();
@@ -144,7 +144,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	else {
                 		// save template
                 		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
                 			Log.d("JSON_DATA_ADAPTER", "saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
@@ -165,7 +165,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 					        Log.d("data", "view == " + v.getParent());
 							//new subfolder -> create new fragment for it
 							if(data.childFragment == null) {
-								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 								FolderFragment newFragment = new FolderFragment();
 								
 								/*
@@ -177,19 +177,21 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON END
 								 */
-								
+//								fragmentTransaction.repl
 								fragmentTransaction.add(R.id.main_view_empty, newFragment);
-								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+//								((MainTemplateGenerator) getContext()).getApplicationContext().getCurrentActivity();
+								GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								fragmentTransaction.commit();
 								newFragment.fragment_parent = oldFragment;
 								data.childFragment = newFragment;
-								((MainTemplateGenerator) myContext).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 							//fragment already exisits -> show it
 							else{
-								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
+								GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								/*
 								 * JACKSON START
@@ -197,13 +199,15 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								 */
 								if(!data.childFragment.isAdded()) {
 									fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+							        Log.d("jackson", "jackson did add to fragmentTransaction!");
 								}
 								/*
 								 * JACKSON END
 								 */
 								fragmentTransaction.show(data.childFragment);
-								((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.childFragment;
 								fragmentTransaction.commit();
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 						        Log.d("data", "data child NOT null!");
 							}
 						}
@@ -221,7 +225,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonTable = null;
                 		// save template
                 		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
                 			Log.d("JSON_DATA_ADAPTER", "saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
@@ -267,7 +271,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 					}
                 	// save template
             		try {
-						MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+						MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
 						Log.d("JSON_DATA_ADAPTER", "saved template");
 					} catch (JsonGenerationException
 							| JsonMappingException e) {
@@ -287,8 +291,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 					        Log.d("data", "view == " + v.getParent());
 							//new subfolder -> create new fragment for it
 							if(data.table == null) {
-								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 								TableFragment newFragment = new TableFragment();
+								newFragment.tableName = holder.text.getText().toString();
 								
 								/*
 								 * JACKSON START
@@ -300,17 +305,18 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								 */
 								
 								fragmentTransaction.add(R.id.main_view_empty, newFragment);
-								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								fragmentTransaction.commit();
 								newFragment.fragment_parent = oldFragment;
 								data.table = newFragment;
-								((MainTemplateGenerator) myContext).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 							//fragment already exisits -> show it
 							else{
-								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-								GeneralFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
+								GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								/*
 								 * JACKSON START
@@ -322,33 +328,35 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON END
 								 */
+								data.table.tableName = holder.text.getText().toString();
 								fragmentTransaction.show(data.table);
-								((MainTemplateGenerator) myContext).currentFragment = data.table;
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.table;
 
 								fragmentTransaction.commit();
+								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
 						}
                 	});
                 	
                 	
 //                	if(data.table == null){
-//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
+//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 //						TableFragment newFragment = new TableFragment();
 //						fragmentTransaction.add(R.id.main_view_empty, newFragment);
-//						TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+//						TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 //						fragmentTransaction.hide(oldFragment);
 //						fragmentTransaction.commit();
 //						newFragment.fragment_parent = oldFragment;
 //						data.table = newFragment;
-//						((MainTemplateGenerator) myContext).currentFragment = newFragment;
+//						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
 //					}
 //					//fragment already exisits -> show it
 //					else{
-//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) myContext).getFragmentManager().beginTransaction();
-//						TableFragment oldFragment = ((MainTemplateGenerator) myContext).currentFragment;
+//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
+//						TableFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 //						fragmentTransaction.hide(oldFragment);
 //						fragmentTransaction.show(data.childFragment);
-//						((MainTemplateGenerator) myContext).currentFragment = data.childFragment;
+//						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.childFragment;
 //						fragmentTransaction.commit();
 //				        Log.d("data", "data child NOT null!");
 //					}
@@ -364,7 +372,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
                 		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(myContext, "testTemplate.json");
+                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
                 			Log.d("JSON_DATA_ADAPTER", "saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
