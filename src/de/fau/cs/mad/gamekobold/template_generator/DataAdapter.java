@@ -101,7 +101,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         } else {
             view = convertView;
         }
-        Log.d("QUICKDIRTYFIX_huehue", ""+MainTemplateGenerator.inflatingInProcess);
+        Log.d("QUICKDIRTYFIX_getView", ""+MainTemplateGenerator.inflatingInProcess);
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         final ViewHolder holder = (ViewHolder) view.getTag();
         ((Spinner) view.findViewById(R.id.spin)).setAdapter(data.getAdapter());
@@ -236,23 +236,23 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 }
                 else if(data.getSelectedText().equals("Tabelle")) {
+					/*
+					 * JACKSON START
+					 */
                 	if(data.table == null){						
-						/*
-						 * JACKSON START
-						 */
 						// data.table was null, so create new jackson table and add it to the current tree
 						// remove old table from tree. e.g. when changing type from folder to table
 						// update reference in data holder
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = jacksonTable.createAndAddNewTable();
 	                	// set table header
-                		ColumnHeader[] headers = { 
+                		/*ColumnHeader[] headers = { 
 	            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
 	            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-                		};
-                		((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
+                		};*/
+                		//((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
 	                	// set table column number
-                		((Table)data.jacksonTable).numberOfColumns = 2;
+                		//((Table)data.jacksonTable).numberOfColumns = 2;
 	            		// log for info
 	            		Log.d("NEW TABLE","created new table");
 					}

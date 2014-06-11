@@ -39,6 +39,7 @@ public class TableFragment extends GeneralFragment {
 	 * JACKSON START
 	 */
 	Table jacksonTable;
+	boolean jacksonHasBeenInflated = false;
 	/*
 	 * JACKSON END
 	 */
@@ -54,7 +55,7 @@ public class TableFragment extends GeneralFragment {
         setRetainInstance(true);
     }
 	
-	protected TableLayout createTableHeader(){
+	protected TableLayout createTableHeader() {
 		headerTable = (TableLayout) view.findViewById(R.id.header_table);
 //		private static TableLayout addRowToTable(TableLayout table, String contentCol1, String contentCol2) {
 		Context context = getActivity();
@@ -127,7 +128,9 @@ public class TableFragment extends GeneralFragment {
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col2, row);
-				// JACKSON START
+				/*
+				 *  JACKSON START
+				 */
 				jacksonTable.setColumnTitle(1, s.toString());
 				try {
 					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
@@ -136,7 +139,9 @@ public class TableFragment extends GeneralFragment {
 				} catch(IOException e) {
 					
 				}
-				// JACKSON END
+				/*
+				 *  JACKSON END
+				 */
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -156,7 +161,7 @@ public class TableFragment extends GeneralFragment {
 //		col1.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 //		int elementSize = col1.getMeasuredWidth();
 //		Log.d("width", "INITAL WDTH: " + elementSize);
-		
+				
 		return headerTable;
 	}
 	
@@ -189,6 +194,54 @@ public class TableFragment extends GeneralFragment {
 			}
 		});
 		addItemList();
+		
+		/*
+		 * JACKSON START
+		 */
+		Log.d("TableFragment", "jacksonHasBeenInflated:"+jacksonHasBeenInflated);
+		if(jacksonHasBeenInflated) {
+			final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+			// create the right amount of columns
+			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
+			Log.d("jackson table inflating","amountCol:"+amountColumns);
+			while(amountColumns < jacksonTableColumnNumber) {
+				addColumn();
+				Log.d("jackson table inflating","addColumn()");
+			}
+			while(amountColumns > jacksonTableColumnNumber) {
+				removeColumn();
+				Log.d("jackson table inflating","removeColumn()");
+			}
+			// set titles
+			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+			for(int i = 0; i < amountColumns; i++) {
+				View view = headerRow.getChildAt(i);
+				//((ResizingEditText)view).setText(jacksonTable.columnHeaders.get(i).name);
+				//((ResizingEditText)view).setText("foo");
+			}
+			Log.d("TABLE_FRAGMENT", "loaded table header data");
+			jacksonHasBeenInflated = false;
+		}
+		else {
+			// add the 2 default columns
+			jacksonTable.addColumn(new ColumnHeader("Headline1", StringClass.TYPE_STRING));
+			jacksonTable.addColumn(new ColumnHeader("Headline2", StringClass.TYPE_STRING));
+			// save template
+    		try {
+    			MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+    			Log.d("JSON_DATA_ADAPTER", "saved template");
+    		} catch (JsonGenerationException
+    				| JsonMappingException e) {
+    			e.printStackTrace();
+    		}
+    		catch(IOException e) {
+    			e.printStackTrace();
+    		}
+			Log.d("TableFragment", "added default columns");
+		}
+		/*
+		 * JACKSON END
+		 */
 
 		return view;
 	}
@@ -208,7 +261,6 @@ public class TableFragment extends GeneralFragment {
 	@Override
 	protected void addItemList(int selected) {
 		addItemList();
-		
 	}
 	
 	private int getNeededWidth(int columnIndex) {
@@ -446,7 +498,7 @@ public class TableFragment extends GeneralFragment {
 		// only add to header cells
 		if(row == headerTable.getChildAt(0)) {
 			oneColumn.addTextChangedListener(new TextWatcher(){
-				// column index for this header cell
+				// column index for this header cell  !index! no + 1 needed
 				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
 				// callback
 				public void afterTextChanged(Editable s) {
@@ -515,10 +567,26 @@ public class TableFragment extends GeneralFragment {
 
 	
 
-	protected void addColumn(){
+	protected void addColumn() {
 		amountColumns++;
 		View headerRow = headerTable.getChildAt(0);
 		TableRow row = (TableRow) headerRow;
+		/*
+		 *  JACKSON START
+		 */
+		// only add column if were are not loading our inflated data
+		if(!jacksonHasBeenInflated) {
+			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			try {
+				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+				Log.d("TABLE_FRAGMENT", "title changed - saved");
+			} catch (JsonGenerationException | JsonMappingException e) {
+			} catch(IOException e) {
+			}
+		}
+		/*
+		 *  JACKSON END
+		 */
         addColumnToRow(row);
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
@@ -537,23 +605,7 @@ public class TableFragment extends GeneralFragment {
 //		        }
 		    }
 		}
-		
-		/*
-		 *  JACKSON START
-		 */
-		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-		try {
-			MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-			Log.d("TABLE_FRAGMENT", "title changed - saved");
-		} catch (JsonGenerationException | JsonMappingException e) {
-		} catch(IOException e) {
-		}
-		/*
-		 *  JACKSON END
-		 */
-		
         Log.d("columns", "amount == " + amountColumns);
-
 	}
 	
 	protected void removeColumn(){
@@ -574,23 +626,23 @@ public class TableFragment extends GeneralFragment {
 					////		            view.setEnabled(false);
 					//		        }
 				}
-				/*
-				 *  JACKSON START
-				 */
-				jacksonTable.removeColumn();
-				try {
-					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-					Log.d("TABLE_FRAGMENT", "title changed - saved");
-				} catch (JsonGenerationException | JsonMappingException e) {
-				} catch(IOException e) {
-				}
-				/*
-				 *  JACKSON END
-				 */
 			}
 			View headerRow = headerTable.getChildAt(0);
 			TableRow row = (TableRow) headerRow;
 			row.removeView(row.getChildAt(row.getChildCount()-1));
+			/*
+			 *  JACKSON START
+			 */
+			jacksonTable.removeColumn();
+			try {
+				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+				Log.d("TABLE_FRAGMENT", "title changed - saved");
+			} catch (JsonGenerationException | JsonMappingException e) {
+			} catch(IOException e) {
+			}
+			/*
+			 *  JACKSON END
+			 */
 			Log.d("columns", "amount == " + amountColumns);
 		}
 	}
@@ -599,20 +651,10 @@ public class TableFragment extends GeneralFragment {
 	 * JACKSON START
 	 */
 	public void jacksonInflate(Table myTable, Activity activity) {
-	//	jacksonTable = myTable;
-		//TODO
-		// remove any data
-		jacksonTable = new Table();
-		// add the 2 default columns
-		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-		jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-		
-		//create table header
-		//adjust column number
-		//adjust column titles
+		jacksonTable = myTable;
+		jacksonHasBeenInflated = true;
 	}
 	/*
 	 * JACKSON END
 	 */
-	
 }

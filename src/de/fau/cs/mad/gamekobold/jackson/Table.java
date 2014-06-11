@@ -14,6 +14,10 @@ public class Table extends AbstractTable{
 	public boolean writeOnly;
 	
 	public Table() {
+		tableName = "";
+		columnHeaders = new ArrayList<ColumnHeader>();
+		numberOfColumns = 0;
+		writeOnly = false;
 	}
 	
 	public Table(String name, ArrayList<ColumnHeader> headers){
@@ -72,7 +76,7 @@ public class Table extends AbstractTable{
 	
 	
 	 public void addColumn(ColumnHeader header) {
-	 	columnHeaders.add(header);
+		columnHeaders.add(header);
 	 	if(rows != null) {
 	 		for(final Row row : rows) {
 	 			row.addColumn(header);
@@ -81,8 +85,9 @@ public class Table extends AbstractTable{
 		numberOfColumns++;
 	 }
 	 
+	 // TODO choose column id
 	 public void removeColumn() {
-	 	if(!columnHeaders.isEmpty()) { 
+	 	if(!columnHeaders.isEmpty()) {
 	 		columnHeaders.remove(columnHeaders.size()-1);
 	 		//rows
 	 		if(rows != null) {

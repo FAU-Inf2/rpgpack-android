@@ -117,8 +117,8 @@ public class MainTemplateGenerator extends Activity{
 				Log.d("maintemplategenerator", ""+jacksonInflatingInProcess);
 				((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
 				// unset flag for dirty fix
-				jacksonInflatingInProcess.set(false);
-				inflatingInProcess = false;
+				//jacksonInflatingInProcess.set(false);
+				//inflatingInProcess = false;
 			 }
 			 /*
 			  * JACKSON END

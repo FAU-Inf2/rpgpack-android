@@ -203,7 +203,7 @@ public class FolderFragment extends GeneralFragment {
 				DataHolder newDataItem = new DataHolder(activity);
 				newDataItem.selected = selected;
 				allData.add(newDataItem);
-				dataAdapter.notifyDataSetChanged(); 
+				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
 				// create fragment

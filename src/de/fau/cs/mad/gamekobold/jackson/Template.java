@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //TODO Log.d anpassen bzw loeschen
 //TODO print() auskommentieren?
-
 public class Template implements Parcelable{
 	@JsonIgnore
 	public static boolean USE_PRETTY_WRITER = true;
