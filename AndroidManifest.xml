@@ -57,5 +57,6 @@
         <activity android:name="de.fau.cs.mad.gamekobold.template_generator.ShowLists" >
         </activity>
     </application>
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
