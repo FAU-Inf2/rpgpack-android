@@ -238,13 +238,13 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
 			Log.d("jackson table inflating","amountCol:"+amountColumns);
 			while(amountColumns < jacksonTableColumnNumber) {
-				addColumn();
 				Log.d("jackson table inflating","addColumn()");
+				addColumn();
 			}
 			
 			while(amountColumns > jacksonTableColumnNumber) {
-				removeColumn();
 				Log.d("jackson table inflating","removeColumn()");
+				removeColumn();
 			}
 			// set titles
 			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
@@ -693,12 +693,15 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			/*
 			 *  JACKSON START
 			 */
-			jacksonTable.removeColumn();
-			try {
-				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("TABLE_FRAGMENT", "removed column - saved");
-			} catch (JsonGenerationException | JsonMappingException e) {
-			} catch(IOException e) {
+			// only remove column if we are not inflating
+			if(!jacksonHasBeenInflated) {
+				jacksonTable.removeColumn();
+				try {
+					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+					Log.d("TABLE_FRAGMENT", "removed column - saved");
+				} catch (JsonGenerationException | JsonMappingException e) {
+				} catch(IOException e) {
+				}
 			}
 			/*
 			 *  JACKSON END
