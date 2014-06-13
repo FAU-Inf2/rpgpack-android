@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 @JsonSubTypes({ @Type(value = IntegerClass.class, name = "integerclass"), @Type(value = StringClass.class, name = "stringclass") })
 
 //for getType()
-@JsonIgnoreProperties({ "type"})
+@JsonIgnoreProperties({"type"})
 
 public abstract class AbstractColumnEntry {
 	//protected String type;

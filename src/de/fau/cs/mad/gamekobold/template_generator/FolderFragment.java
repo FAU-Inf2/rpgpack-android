@@ -112,10 +112,7 @@ public class FolderFragment extends GeneralFragment {
 		/*
 		 * JACKSON START
 		 */
-		newDataItem.jacksonSkipNextSave = false;
-		for(final DataHolder holder : allData) {
-			holder.jacksonSkipNextSave = true;
-		}
+		newDataItem.jacksonDoSaveOnNextChance = true;
 		/*
 		 * JACKSON END
 		 */
@@ -138,14 +135,15 @@ public class FolderFragment extends GeneralFragment {
 		/*
 		 * JACKSON START
 		 */
-		newDataItem.jacksonSkipNextSave = false;
-		for(final DataHolder holder : allData) {
-			holder.jacksonSkipNextSave = true;
-		}
+		// not needed because we save right here
+		// we do it here because if the new created item is not visible it would not
+		// be saved
+		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
+				Log.d("FOLDER_FRAGMENT", "added item -> saved template");
 			} catch (JsonGenerationException e) {
 				e.printStackTrace();
 			} catch (JsonMappingException e) {
@@ -197,7 +195,6 @@ public class FolderFragment extends GeneralFragment {
 			int selected = 0;
 			// create new data holder
 			DataHolder newDataItem = new DataHolder(activity);
-			newDataItem.jacksonSkipNextSave = true;
 			if(subTable instanceof ContainerTable) {
 				for(final String string : choices) {
 					if(string.equals("Ordner")) {
