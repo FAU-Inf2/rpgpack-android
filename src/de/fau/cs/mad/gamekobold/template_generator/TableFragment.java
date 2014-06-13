@@ -858,17 +858,17 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 					oneColumn.setBackgroundDrawable(res);
 				}
 				oneColumn.setSingleLine();
-				View theText = oneColumn;
-				//TODO: how to resize the table if too big?
-				oneColumn.addTextChangedListener(new TextWatcher(){
-					public void afterTextChanged(Editable s) {
-						//					checkResize(0, 0, oneColumn, row);
-					}
-					public void beforeTextChanged(CharSequence s, int start, int count, int after){
-					}
-					public void onTextChanged(CharSequence s, int start, int before, int count){
-					}
-				});
+//				View theText = oneColumn;
+//				//TODO: how to resize the table if too big?
+//				oneColumn.addTextChangedListener(new TextWatcher(){
+//					public void afterTextChanged(Editable s) {
+//						//					checkResize(0, 0, oneColumn, row);
+//					}
+//					public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//					}
+//					public void onTextChanged(CharSequence s, int start, int before, int count){
+//					}
+//				});
 				//first row -> insert column descriptions
 				if(i==-1){
 					if(k==0){
@@ -889,7 +889,20 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
 					EditText headerText = (EditText) headerRow.getChildAt(i);
 //					Log.d("i,k", "i=="  + ", k==" +k);
-					oneColumn.setText(headerText.getText());					
+					oneColumn.setText(headerText.getText());
+					final int index = i;
+					oneColumn.addTextChangedListener(new TextWatcher(){
+						public void afterTextChanged(Editable s) {
+							TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+							EditText headerText = (EditText) headerRow.getChildAt(index);
+							headerText.setText(s);
+							//					checkResize(0, 0, oneColumn, row);
+						}
+						public void beforeTextChanged(CharSequence s, int start, int count, int after){
+						}
+						public void onTextChanged(CharSequence s, int start, int before, int count){
+						}
+					});
 				}
 				row.addView(oneColumn);
 			}
