@@ -241,4 +241,9 @@ public class FolderFragment extends GeneralFragment {
 	/*
 	 * JACKSON END
 	 */
+
+	@Override
+	public void showDialog() {
+		// TODO Auto-generated method stub
+	}
 }

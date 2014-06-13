@@ -12,8 +12,10 @@ import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +30,7 @@ import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -49,11 +52,36 @@ public class TableFragment extends GeneralFragment {
 	TableLayout headerTable;
 	int amountColumns = 2;
 	String tableName;
+	AlertDialog dialogTableView;
+	View dialogViewTableView;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTemplateGenerator.theActiveActivity);
+        LayoutInflater inflater = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
+        dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+        alertDialogBuilder.setView(dialogViewTableView);
+        final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+        np.setMaxValue(99);
+        np.setMinValue(0);
+        //		 np.setValue(((TableFragment) currentFragment).amountColumns);
+        // set dialog message
+        alertDialogBuilder
+        .setCancelable(false)
+        .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
+        	public void onClick(DialogInterface dialog,int id) {
+        		setAmountOfColumns(np.getValue());
+        	}
+        })
+        .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog,int id) {
+				 dialog.cancel();
+			 }
+		 });
+		 // create alert dialog
+		 dialogTableView = alertDialogBuilder.create();
     }
 	
 	protected TableLayout createTableHeader() {
@@ -666,7 +694,7 @@ public class TableFragment extends GeneralFragment {
 	 * @param table
 	 * Method to set up the table for showing it in AlertDialog
 	 */
-	protected void showTableDialog(TableLayout table) {
+	protected void prepareTableForDialog(TableLayout table) {
 		table.removeAllViews();
 		for(int i=-1; i<amountColumns; i++){
 			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
@@ -736,4 +764,14 @@ public class TableFragment extends GeneralFragment {
 	/*
 	 * JACKSON END
 	 */
+
+	@Override
+	public void showDialog() {
+		dialogTableView.setTitle(tableName);
+		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+		np.setValue(amountColumns);
+		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+		prepareTableForDialog(table);
+		dialogTableView.show();
+	}
 }

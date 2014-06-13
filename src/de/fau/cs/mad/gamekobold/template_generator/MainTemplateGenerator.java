@@ -53,16 +53,15 @@ public class MainTemplateGenerator extends FragmentActivity{
 	 GeneralFragment currentFragment;
 	 FolderFragment topFragment;
 	 protected static Activity theActiveActivity;
-	 AlertDialog dialogTableView;
-	 View dialogViewTableView;
+//	 AlertDialog dialogTableView;
+//	 View dialogViewTableView;
 
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_empty);
-		 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		 LayoutInflater inflater = getLayoutInflater();
+		 
 		 
 		 //old approach with number-list
 //		 String[] numbers = new String[500];
@@ -78,27 +77,7 @@ public class MainTemplateGenerator extends FragmentActivity{
 		 
 		 // Inflate and set the layout for the dialog
 		 // Pass null as the parent view because its going in the dialog layout
-		 dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
-		 alertDialogBuilder.setView(dialogViewTableView);
-		 final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
-		 np.setMaxValue(99);
-		 np.setMinValue(0);
-//		 np.setValue(((TableFragment) currentFragment).amountColumns);
-		 // set dialog message
-		 alertDialogBuilder
-		 .setCancelable(false)
-		 .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
-			 public void onClick(DialogInterface dialog,int id) {
-				 ((TableFragment) currentFragment).setAmountOfColumns(np.getValue());
-			 }
-		 })
-		 .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
-			 public void onClick(DialogInterface dialog,int id) {
-				 dialog.cancel();
-			 }
-		 });
-		 // create alert dialog
-		 dialogTableView = alertDialogBuilder.create();
+		 
 		 
 		 
 		 /*
@@ -235,12 +214,7 @@ public class MainTemplateGenerator extends FragmentActivity{
     	    ((View) titleTxtView).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					dialogTableView.setTitle(((TableFragment) currentFragment).tableName);
-					NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
-					np.setValue(((TableFragment) currentFragment).amountColumns);
-					TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
-					((TableFragment) currentFragment).showTableDialog(table);
-					dialogTableView.show();
+					currentFragment.showDialog();
 				}
     	    });
     	    titleTxtView.setText(((TableFragment) currentFragment).tableName);
