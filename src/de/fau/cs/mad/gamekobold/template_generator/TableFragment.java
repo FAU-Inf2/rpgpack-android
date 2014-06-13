@@ -787,7 +787,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 
 	@Override
 	public void showDialog() {
-		dialogTableView.setTitle(elementName);
+//		dialogTableView.setTitle(elementName);
 		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
 		np.setValue(amountColumns);
 		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));

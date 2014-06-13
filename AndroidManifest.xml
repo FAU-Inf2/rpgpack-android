@@ -41,7 +41,9 @@
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator"
-            android:label="Root" >
+            android:label="Root"
+            android:theme="@style/template_generator_style" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
