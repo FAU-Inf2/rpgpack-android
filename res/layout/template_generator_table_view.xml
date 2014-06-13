@@ -12,48 +12,35 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainTemplateGenerator" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
 
         <Button
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Add" />
-
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/add"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />
-
-        <EditText
-            android:id="@+id/textin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/spinner1"
-            android:inputType="text" />
+            android:layout_weight="1.0"
+            android:text="Add Row" />
 
         <Button
             android:id="@+id/add_Column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add"
+            android:layout_weight="1.0"
+            android:layout_toRightOf="@+id/add"
             android:text="Add Column" />
 
         <Button
             android:id="@+id/remove_Column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add"
             android:layout_toRightOf="@+id/add_Column"
+            android:layout_weight="1.0"
             android:text="Remove Column" />
-    </RelativeLayout>
+
+    </LinearLayout>
     
     <HorizontalScrollView
         android:layout_width="match_parent"

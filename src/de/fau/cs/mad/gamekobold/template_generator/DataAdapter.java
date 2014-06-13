@@ -205,6 +205,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 						        Log.d("data", "data child NOT null!");
 							}
+							data.childFragment.elementName = holder.text.getText().toString();
 						}
                 	});
                 }
@@ -294,7 +295,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 							if(data.table == null) {
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 								TableFragment newFragment = new TableFragment();
-								newFragment.tableName = holder.text.getText().toString();
+//								newFragment.elementName = holder.text.getText().toString();
 								
 								/*
 								 * JACKSON START
@@ -329,13 +330,14 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON END
 								 */
-								data.table.tableName = holder.text.getText().toString();
+								
 								fragmentTransaction.show(data.table);
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.table;
 
 								fragmentTransaction.commit();
 								((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
 							}
+							data.table.elementName = holder.text.getText().toString();
 						}
                 	});
                 	

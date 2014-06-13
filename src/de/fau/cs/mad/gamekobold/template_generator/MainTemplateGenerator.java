@@ -195,7 +195,7 @@ public class MainTemplateGenerator extends FragmentActivity {
     		getMenuInflater().inflate(R.menu.main, menu);
     		ActionBar actionBar = getActionBar(); 
     		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    		actionBar.setCustomView(R.layout.actionbar_template_generator_tableview);
+    		actionBar.setCustomView(R.layout.actionbar_template_generator);
 //    		setTitle(((TableFragment) currentFragment).tableName);
     		View v = getActionBar().getCustomView();
     	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
@@ -205,8 +205,9 @@ public class MainTemplateGenerator extends FragmentActivity {
 					currentFragment.showDialog();
 				}
     	    });
-    	    titleTxtView.setText(((TableFragment) currentFragment).tableName);
-    		Log.d("table name:", "name == " + ((TableFragment) currentFragment).tableName);
+    	    titleTxtView.setText(currentFragment.elementName);
+//    	    titleTxtView.setTextColor(getResources().getColor(R.color.blue));
+    		Log.d("table name:", "name == " + currentFragment.elementName);
     	}
     	else if(currentFragment instanceof FolderFragment){
     		if(currentFragment == topFragment){
@@ -221,6 +222,18 @@ public class MainTemplateGenerator extends FragmentActivity {
     		else{
     			getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
     		}
+    		ActionBar actionBar = getActionBar(); 
+    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    		actionBar.setCustomView(R.layout.actionbar_template_generator);
+    		View v = getActionBar().getCustomView();
+    	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
+    	    ((View) titleTxtView).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					currentFragment.showDialog();
+				}
+    	    });
+    	    titleTxtView.setText(currentFragment.elementName);
 //    		Log.d("menu-Creation", "MENU 2");
     	}
     	else{

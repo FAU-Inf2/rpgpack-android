@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content" >
 
+    <TextView
+        android:id="@+id/spaltenanzahl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="25dp"
+        android:text="Spaltenanzahl"
+        android:textSize="18sp" />
+    
     <NumberPicker
         android:id="@+id/numberPicker1"
+        android:layout_toRightOf="@+id/spaltenanzahl"
         android:layout_width="wrap_content"
         android:layout_height="80dp" />
 
     <ScrollView
         android:id="@+id/table_scroll"
-        android:layout_width="fill_parent"
+        android:layout_below="@+id/numberPicker1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <TableLayout
@@ -22,4 +33,4 @@
         </TableLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>
