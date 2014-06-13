@@ -821,9 +821,14 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		dialogTable.addView(row);
 	}
 	
+//	protected void adaptDialogTable(TableLayout dialogTable){
+//		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
+//		adaptDialogTable(dialogTable, rowsNeeded);
+//	}
+	
 	protected void adaptDialogTable(TableLayout dialogTable){
 		int firstRowToAdd = dialogTable.getChildCount();
-		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
+		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();;
 		//first step: adapt all needed Column-names from headerTable
 		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
 		for(int i=1; i<oldColumnsToAdept; i++){
@@ -917,7 +922,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 
 	@Override
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-		// TODO Auto-generated method stub
-		
+		setAmountOfColumns(newVal);
+//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
+		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
 	}
 }
