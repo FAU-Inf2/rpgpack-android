@@ -51,7 +51,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	TableLayout table;
 	TableLayout headerTable;
 	int amountColumns = 2;
-	String tableName;
 	AlertDialog dialogTableView;
 	View dialogViewTableView;
 	
@@ -768,7 +767,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 
 	@Override
 	public void showDialog() {
-		dialogTableView.setTitle(tableName);
+		dialogTableView.setTitle(elementName);
 		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
 		np.setValue(amountColumns);
 		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
