@@ -114,33 +114,38 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	// we changed type to folder, so check if childFragment exists
                 	if(data.childFragment == null) {
-                		// it does not exist, so we create a table and store it in data holder
+                		// if it does not exist we check if we already have create a container table
+                		// if not we create a new one
                 		// when the user clicks on the row we attach the table to the fragment
-                		jacksonTable.removeTable(data.jacksonTable);
-                		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
-                		Log.d("JSON_DATA_ADAPTER", "created new container table");
+                		// TODO anstatt instanceof (langsam?!) typ info in abstract table
+                		if(!(data.jacksonTable instanceof ContainerTable)) {
+                			jacksonTable.removeTable(data.jacksonTable);
+                			data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
+                			Log.d("JSON_DATA_ADAPTER", "created new container table");
+                			data.jacksonDoSaveOnNextChance = true;
+                		}
                 	}
                 	else {
                 		// if exists
 						// childFragment was not null, so folder Fragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
-                		jacksonTable.removeTable(data.jacksonTable);
-                		jacksonTable.addTable(data.childFragment.jacksonTable);
-						data.jacksonTable = data.childFragment.jacksonTable;
-						Log.d("JSON_DATA_ADAPTER", "replaced table");
+                		if(data.jacksonTable != data.childFragment.jacksonTable) {
+                			jacksonTable.removeTable(data.jacksonTable);
+                			jacksonTable.addTable(data.childFragment.jacksonTable);
+                			data.jacksonTable = data.childFragment.jacksonTable;
+                			Log.d("JSON_DATA_ADAPTER", "replaced container table");
+                			data.jacksonDoSaveOnNextChance = true;
+                		}
                 	}
            		 
                 	// onItemSelected gets called when setting data while loading a template. use this flag to eliminate
                 	// saving bug ( template is saved when data gets added)
-                	if(data.jacksonSkipNextSave) {
-                		data.jacksonSkipNextSave = false;
-                		Log.d("DATA_ADAPTER", "NO SAVE!");
-                	}
-                	else {
+                	if(data.jacksonDoSaveOnNextChance) {
+                		data.jacksonDoSaveOnNextChance = false;
                 		// save template
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "Folder -> saved template");
+                			Log.d("JSON_DATA_ADAPTER", "Container Table -> saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
                 			e.printStackTrace();
@@ -215,7 +220,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
-            		data.jacksonSkipNextSave = false;
                 	// if a table was attached remove it
                 	if(data.jacksonTable != null) {
                 		jacksonTable.removeTable(data.jacksonTable);
@@ -240,37 +244,42 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 					/*
 					 * JACKSON START
 					 */
-                	if(data.table == null){						
-						// data.table was null, so create new jackson table and add it to the current tree
-						// remove old table from tree. e.g. when changing type from folder to table
-						// update reference in data holder
-                		jacksonTable.removeTable(data.jacksonTable);
-                		data.jacksonTable = jacksonTable.createAndAddNewTable();
-	                	// set table header
-                		/*ColumnHeader[] headers = { 
-	            				new ColumnHeader("spalte1", StringClass.TYPE_STRING),
-	            				new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-                		};*/
-                		//((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
-	                	// set table column number
-                		//((Table)data.jacksonTable).numberOfColumns = 2;
-	            		// log for info
-	            		Log.d("NEW TABLE","created new table");
+                	if(data.table == null){	
+                   		// if it does not exist we check if we already have created a table
+                		// if not we create a new one
+                		// when the user clicks on the row we attach the table to the fragment
+                		// TODO anstatt instanceof (langsam?!) typ info in abstract table
+                		if(!(data.jacksonTable instanceof Table)) {
+                			jacksonTable.removeTable(data.jacksonTable);
+                			data.jacksonTable = jacksonTable.createAndAddNewTable();
+                			//set table header
+                			/*ColumnHeader[] headers = { 
+	            					new ColumnHeader("spalte1", StringClass.TYPE_STRING),
+	            					new ColumnHeader("spalte2", StringClass.TYPE_STRING),
+                			};*/
+                			//((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
+                			//set table column number
+                			//((Table)data.jacksonTable).numberOfColumns = 2;
+                			// log for info
+                			Log.d("NEW TABLE","created new table");
+                			data.jacksonDoSaveOnNextChance = true;
+                		}
 					}
 					else{
 						// if exists
 						// data.table was not null, so table Fragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
-                		jacksonTable.removeTable(data.jacksonTable);
-                		jacksonTable.addTable(data.table.jacksonTable);
-						data.jacksonTable = data.table.jacksonTable;
-						Log.d("JSON_DATA_ADAPTER", "replaced table");
+                		if(data.jacksonTable != data.table.jacksonTable) {
+                			jacksonTable.removeTable(data.jacksonTable);
+                			jacksonTable.addTable(data.table.jacksonTable);
+                			data.jacksonTable = data.table.jacksonTable;
+                			Log.d("JSON_DATA_ADAPTER", "replaced table");
+                			data.jacksonDoSaveOnNextChance = true;
+                		}
 					}
                 	// save template
-                	if(data.jacksonSkipNextSave) {
-                		data.jacksonSkipNextSave = false;
-                		Log.d("DATA_ADAPTER", "NO SAVE!");
-                	} else {
+                	if(data.jacksonDoSaveOnNextChance) {
+                		data.jacksonDoSaveOnNextChance = false;
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
                 			Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
@@ -370,7 +379,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
-            		data.jacksonSkipNextSave = false;
                 	// if a table was attached then remove it because we are no longer a folder nor table
                 	if(data.jacksonTable != null) {
                 		jacksonTable.removeTable(data.jacksonTable);
