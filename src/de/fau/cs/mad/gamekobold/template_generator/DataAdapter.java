@@ -46,7 +46,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 //		MainTemplateGenerator.theActiveActivity = context;
         allData = new ArrayList<DataHolder>();
         allData = objects;
-        Log.d("QUICKDIRTYFIX_constr", ""+MainTemplateGenerator.jacksonInflatingInProcess.get());
     }
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
@@ -99,7 +98,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         } else {
             view = convertView;
         }
-        Log.d("QUICKDIRTYFIX_getView", ""+MainTemplateGenerator.inflatingInProcess);
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         final ViewHolder holder = (ViewHolder) view.getTag();
         ((Spinner) view.findViewById(R.id.spin)).setAdapter(data.getAdapter());
@@ -134,16 +132,15 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
            		 
                 	// onItemSelected gets called when setting data while loading a template. use this flag to eliminate
                 	// saving bug ( template is saved when data gets added)
-                	
-                	Log.d("QUICKDIRTYFIX", ""+MainTemplateGenerator.jacksonInflatingInProcess);
-                	if(MainTemplateGenerator.jacksonInflatingInProcess.get()) {
-                		Log.d("QUICKDIRTYFIX", "return");
+                	if(data.jacksonSkipNextSave) {
+                		data.jacksonSkipNextSave = false;
+                		Log.d("DATA_ADAPTER", "NO SAVE!");
                 	}
                 	else {
                 		// save template
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "saved template");
+                			Log.d("JSON_DATA_ADAPTER", "Folder -> saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
                 			e.printStackTrace();
@@ -217,6 +214,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
+            		data.jacksonSkipNextSave = false;
                 	// if a table was attached remove it
                 	if(data.jacksonTable != null) {
                 		jacksonTable.removeTable(data.jacksonTable);
@@ -224,7 +222,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		// save template
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "saved template");
+                			Log.d("JSON_DATA_ADAPTER", "Text -> saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
                 			e.printStackTrace();
@@ -268,16 +266,21 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						Log.d("JSON_DATA_ADAPTER", "replaced table");
 					}
                 	// save template
-            		try {
-						MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-						Log.d("JSON_DATA_ADAPTER", "saved template");
-					} catch (JsonGenerationException
-							| JsonMappingException e) {
-						e.printStackTrace();
-					}
-            		catch(IOException e) {
-            			e.printStackTrace();
-            		}
+                	if(data.jacksonSkipNextSave) {
+                		data.jacksonSkipNextSave = false;
+                		Log.d("DATA_ADAPTER", "NO SAVE!");
+                	} else {
+                		try {
+                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
+                			Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
+                		} catch (JsonGenerationException
+                				| JsonMappingException e) {
+                			e.printStackTrace();
+                		}
+                		catch(IOException e) {
+            				e.printStackTrace();
+            			}
+                	}
 					/*
 					 * JACKSON END
 					 */
@@ -365,13 +368,14 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	/*
                 	 * JACKSON START
                 	 */
+            		data.jacksonSkipNextSave = false;
                 	// if a table was attached then remove it because we are no longer a folder nor table
                 	if(data.jacksonTable != null) {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
                 		try {
                 			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "saved template");
+                			Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
                 		} catch (JsonGenerationException
                 				| JsonMappingException e) {
                 			e.printStackTrace();

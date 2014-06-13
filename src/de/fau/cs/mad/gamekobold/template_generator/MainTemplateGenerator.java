@@ -40,8 +40,6 @@ public class MainTemplateGenerator extends FragmentActivity {
 	 public static Template myTemplate = null;
 	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
-	 public static volatile AtomicBoolean jacksonInflatingInProcess = null;
-	 public static volatile boolean inflatingInProcess = false;
 	 /*
 	  * JACKSON END
 	  */
@@ -83,9 +81,6 @@ public class MainTemplateGenerator extends FragmentActivity {
 		 /*
 		  * JACKSON START
 		  */
-		 if(jacksonInflatingInProcess == null) {
-			 jacksonInflatingInProcess =  new AtomicBoolean(false);
-		 }
 		 Intent intent = getIntent();
 		 boolean creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
 		 // is a new template created?
@@ -142,14 +137,7 @@ public class MainTemplateGenerator extends FragmentActivity {
 				// for editing : recreate fragment structure and all adapter data
 				// inflate fragments recursive
 				Log.d("MainTemplateGenerator", "EDIT MODE!");
-				// set flag for dirty fix
-				jacksonInflatingInProcess.set(true);
-				inflatingInProcess = true;
-				Log.d("maintemplategenerator", ""+jacksonInflatingInProcess);
 				((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
-				// unset flag for dirty fix
-				jacksonInflatingInProcess.set(false);
-				inflatingInProcess = false;
 			 }
 			 /*
 			  * JACKSON END

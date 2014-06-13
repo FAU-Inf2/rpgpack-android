@@ -22,8 +22,8 @@ public class DataHolder{
 	/*
 	 * JACKSON START
 	 */
-	
 	public AbstractTable jacksonTable;
+	public boolean jacksonSkipNextSave = false;
 	/*
 	 * JACKSON END
 	 */

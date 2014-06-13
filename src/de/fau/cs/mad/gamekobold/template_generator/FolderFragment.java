@@ -109,6 +109,16 @@ public class FolderFragment extends GeneralFragment {
 	
 	public void addItemList() {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
+		/*
+		 * JACKSON START
+		 */
+		newDataItem.jacksonSkipNextSave = false;
+		for(final DataHolder holder : allData) {
+			holder.jacksonSkipNextSave = true;
+		}
+		/*
+		 * JACKSON END
+		 */
 		allData.add(newDataItem);
 //		allData.add(0, newDataItem);
 //		dataAdapter.add(newDataItem);
@@ -128,6 +138,10 @@ public class FolderFragment extends GeneralFragment {
 		/*
 		 * JACKSON START
 		 */
+		newDataItem.jacksonSkipNextSave = false;
+		for(final DataHolder holder : allData) {
+			holder.jacksonSkipNextSave = true;
+		}
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			try {
@@ -165,7 +179,6 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
-		Log.d("inflate", ""+MainTemplateGenerator.jacksonInflatingInProcess.get());
 		// set jackson table for this fragment
 		jacksonTable = myTable;
 		if(myTable.subTables == null) {
@@ -182,6 +195,9 @@ public class FolderFragment extends GeneralFragment {
 			// get type id from choice array
 			String[] choices = activity.getResources().getStringArray(R.array.choices);
 			int selected = 0;
+			// create new data holder
+			DataHolder newDataItem = new DataHolder(activity);
+			newDataItem.jacksonSkipNextSave = true;
 			if(subTable instanceof ContainerTable) {
 				for(final String string : choices) {
 					if(string.equals("Ordner")) {
@@ -189,10 +205,9 @@ public class FolderFragment extends GeneralFragment {
 					}
 					selected++;
 				}
-				// container table
-				// create and add new data holder to adapter;
-				DataHolder newDataItem = new DataHolder(activity);
+				// container table				
 				newDataItem.selected = selected;
+				// add data holder to adapter
 				allData.add(newDataItem);
 				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
@@ -217,9 +232,8 @@ public class FolderFragment extends GeneralFragment {
 					selected++;
 				}
 				// table
-				// create and add new data holder to adapter;
-				DataHolder newDataItem = new DataHolder(activity);
 				newDataItem.selected = selected;
+				// add data holder to adapter
 				allData.add(newDataItem);
 				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
