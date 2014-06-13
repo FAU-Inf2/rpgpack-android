@@ -9,9 +9,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.*;
-import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
-import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;

@@ -2,9 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
-import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
-import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 
 import java.io.IOException;

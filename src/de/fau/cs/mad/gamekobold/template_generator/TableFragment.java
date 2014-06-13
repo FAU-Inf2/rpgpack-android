@@ -229,8 +229,12 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		 * JACKSON START
 		 */
 		Log.d("TableFragment", "jacksonHasBeenInflated:"+jacksonHasBeenInflated);
-		if(jacksonHasBeenInflated) {
-			final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+		// check if we have inflated the table with some data
+		// BUT also check if we got any saved columns (they are only created if user goes into table!)
+		// so if there are no saved columns or we didn't load any data we add the default columns 
+		if(jacksonHasBeenInflated && (jacksonTableColumnNumber > 0)) {
+			
 			// create the right amount of columns
 			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
 			Log.d("jackson table inflating","amountCol:"+amountColumns);
@@ -238,6 +242,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				addColumn();
 				Log.d("jackson table inflating","addColumn()");
 			}
+			
 			while(amountColumns > jacksonTableColumnNumber) {
 				removeColumn();
 				Log.d("jackson table inflating","removeColumn()");
@@ -246,8 +251,18 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
 			for(int i = 0; i < amountColumns; i++) {
 				View view = headerRow.getChildAt(i);
-				//((ResizingEditText)view).setText(jacksonTable.columnHeaders.get(i).name);
-				//((ResizingEditText)view).setText("foo");
+				Log.d("TABLE INFLATING", "setting column header title:"+jacksonTable.columnHeaders.get(i).name);
+				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
+				// check size
+				checkResize(0, 0, (EditText)view, headerRow);
+		        int width = getNeededWidth(i);
+				int height = getNeededHeight(0, headerRow);
+				final LayoutParams lparams = new LayoutParams(width, height);
+			    view.setLayoutParams(lparams);
+			    view.requestLayout();
+			    view.forceLayout();
+			    view.invalidate();
+				view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
 			jacksonHasBeenInflated = false;
@@ -546,7 +561,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
 				// callback
 				public void afterTextChanged(Editable s) {
-					jacksonTable.setColumnTitle(columnIndex, s.toString());
+					if(!jacksonHasBeenInflated) {
+						jacksonTable.setColumnTitle(columnIndex, s.toString());
+					}
 					try {
 						MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
 						Log.d("TABLE_FRAGMENT", "title changed - saved");
@@ -623,7 +640,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("TABLE_FRAGMENT", "title changed - saved");
+				Log.d("TABLE_FRAGMENT", "added column - saved");
 			} catch (JsonGenerationException | JsonMappingException e) {
 			} catch(IOException e) {
 			}
@@ -680,7 +697,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.removeColumn();
 			try {
 				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("TABLE_FRAGMENT", "title changed - saved");
+				Log.d("TABLE_FRAGMENT", "removed column - saved");
 			} catch (JsonGenerationException | JsonMappingException e) {
 			} catch(IOException e) {
 			}

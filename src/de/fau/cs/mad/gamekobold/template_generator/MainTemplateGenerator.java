@@ -33,7 +33,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainTemplateGenerator extends FragmentActivity{
+public class MainTemplateGenerator extends FragmentActivity {
 	 /*
 	  * JACKSON START
 	  */
@@ -148,8 +148,8 @@ public class MainTemplateGenerator extends FragmentActivity{
 				Log.d("maintemplategenerator", ""+jacksonInflatingInProcess);
 				((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
 				// unset flag for dirty fix
-				//jacksonInflatingInProcess.set(false);
-				//inflatingInProcess = false;
+				jacksonInflatingInProcess.set(false);
+				inflatingInProcess = false;
 			 }
 			 /*
 			  * JACKSON END
@@ -248,7 +248,8 @@ public class MainTemplateGenerator extends FragmentActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
 //    	globalMenu = menu;
 //    	adaptActionBar();
-    	invalidateOptionsMenu();
+    	//TODO benni: hat bei mir den stackoverflow gefixt. keine ahnung warum
+    	//invalidateOptionsMenu();
     	return super.onCreateOptionsMenu(menu);
     }
 
