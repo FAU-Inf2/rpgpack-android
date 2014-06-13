@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -40,6 +41,9 @@ public class MainTemplateGenerator extends FragmentActivity {
 	 public static Template myTemplate = null;
 	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
+	 
+	 //needed for saving
+	 public static Activity myActivity = null;
 	 /*
 	  * JACKSON END
 	  */
@@ -81,6 +85,7 @@ public class MainTemplateGenerator extends FragmentActivity {
 		 /*
 		  * JACKSON START
 		  */
+		 myActivity = this;
 		 Intent intent = getIntent();
 		 boolean creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
 		 // is a new template created?
@@ -298,5 +303,28 @@ public class MainTemplateGenerator extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    
+    /*
+     * JACKSON START
+     */
+    // remove this later if we know our filename
+    public static void saveTemplate() {
+    	saveTemplate("");
+    }
+    public static void saveTemplate(String filename) {
+    	//filename currently ignored
+		try {
+			if( (myActivity != null) && (myTemplate != null) ) {
+				myTemplate.saveToJSON(myActivity, "testTemplate.json");
+				Log.d("MAIN_TEMPALTE_GENERATOR", "saved Template");
+			}
+		} catch (JsonGenerationException | JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    /*
+     * JACKSON END
+     */
 }

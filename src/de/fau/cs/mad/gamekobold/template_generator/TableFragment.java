@@ -112,16 +112,15 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col1, row);
-				// JACKSON START
+				/*
+				 *  JACKSON START
+				 */
 				jacksonTable.setColumnTitle(0, s.toString());
-				try {
-					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-					Log.d("TABLE_FRAGMENT", "title changed - saved");
-				} catch (JsonGenerationException | JsonMappingException e) {
-				} catch(IOException e) {
-					
-				}
-				// JACKSON END
+				Log.d("TABLE_FRAGMENT", "title changed - saved");
+				MainTemplateGenerator.saveTemplate();
+				/*
+				 *  JACKSON END
+				 */
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -161,13 +160,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 *  JACKSON START
 				 */
 				jacksonTable.setColumnTitle(1, s.toString());
-				try {
-					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-					Log.d("TABLE_FRAGMENT", "title changed - saved");
-				} catch (JsonGenerationException | JsonMappingException e) {
-				} catch(IOException e) {
-					
-				}
+				Log.d("TABLE_FRAGMENT", "title changed - saved");
+				MainTemplateGenerator.saveTemplate();
 				/*
 				 *  JACKSON END
 				 */
@@ -271,17 +265,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.addColumn(new ColumnHeader("Headline1", StringClass.TYPE_STRING));
 			jacksonTable.addColumn(new ColumnHeader("Headline2", StringClass.TYPE_STRING));
 			// save template
-    		try {
-    			MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-    			Log.d("JSON_DATA_ADAPTER", "saved template");
-    		} catch (JsonGenerationException
-    				| JsonMappingException e) {
-    			e.printStackTrace();
-    		}
-    		catch(IOException e) {
-    			e.printStackTrace();
-    		}
 			Log.d("TableFragment", "added default columns");
+			MainTemplateGenerator.saveTemplate();
 		}
 		/*
 		 * JACKSON END
@@ -563,13 +548,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 					if(!jacksonHasBeenInflated) {
 						jacksonTable.setColumnTitle(columnIndex, s.toString());
 					}
-					try {
-						MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-						Log.d("TABLE_FRAGMENT", "title changed - saved");
-					} catch (JsonGenerationException | JsonMappingException e) {
-					} catch(IOException e) {
-						
-					}
+					Log.d("TABLE_FRAGMENT", "title changed - save");
+					MainTemplateGenerator.saveTemplate();
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
@@ -637,12 +617,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		// only add column if were are not loading our inflated data
 		if(!jacksonHasBeenInflated) {
 			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			try {
-				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("TABLE_FRAGMENT", "added column - saved");
-			} catch (JsonGenerationException | JsonMappingException e) {
-			} catch(IOException e) {
-			}
+			Log.d("TABLE_FRAGMENT", "added column - save");
+			MainTemplateGenerator.saveTemplate();
 		}
 		/*
 		 *  JACKSON END
@@ -696,12 +672,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			// only remove column if we are not inflating
 			if(!jacksonHasBeenInflated) {
 				jacksonTable.removeColumn();
-				try {
-					MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-					Log.d("TABLE_FRAGMENT", "removed column - saved");
-				} catch (JsonGenerationException | JsonMappingException e) {
-				} catch(IOException e) {
-				}
+				Log.d("TABLE_FRAGMENT", "removed column - save");
+				MainTemplateGenerator.saveTemplate();
 			}
 			/*
 			 *  JACKSON END

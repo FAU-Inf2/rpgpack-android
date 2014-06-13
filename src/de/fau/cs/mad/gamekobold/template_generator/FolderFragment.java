@@ -8,9 +8,6 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import android.app.Activity;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -19,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -104,6 +102,7 @@ public class FolderFragment extends GeneralFragment {
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
         lView.setAdapter(dataAdapter);
+        
         return view;
     }
 	
@@ -141,16 +140,7 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			try {
-				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("FOLDER_FRAGMENT", "added item -> saved template");
-			} catch (JsonGenerationException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			MainTemplateGenerator.saveTemplate();
 		}
 		/*
 		 * JACKSON END
