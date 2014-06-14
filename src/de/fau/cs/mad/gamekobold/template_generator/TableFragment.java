@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.R.color;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
@@ -30,6 +31,7 @@ import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.NumberPicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -86,29 +88,28 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	protected TableLayout createTableHeader() {
 		headerTable = (TableLayout) view.findViewById(R.id.header_table);
+		headerTable.setStretchAllColumns(true);
 //		private static TableLayout addRowToTable(TableLayout table, String contentCol1, String contentCol2) {
 		Context context = getActivity();
 		final TableRow row = new TableRow(context);
 
 		TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 		// Wrap-up the content of the row
-		rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-		rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+		rowParams.height = TableRow.LayoutParams.MATCH_PARENT;
+		rowParams.width = TableRow.LayoutParams.MATCH_PARENT;
 
 		// The simplified version of the table of the picture above will have two columns
 		// FIRST COLUMN
-		TableRow.LayoutParams col1Params = new TableRow.LayoutParams();
+		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
 //		// Wrap-up the content of the row
-		col1Params.height = TableRow.LayoutParams.WRAP_CONTENT;
-		col1Params.width = TableRow.LayoutParams.WRAP_CONTENT;
+		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
+		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		// Set the gravity to center the gravity of the column
 //		col1Params.gravity = TableRow.Gravity.CENTER;
 		final ResizingEditText col1 = new ResizingEditText(context, row, this);
-//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-//		col1.setLayoutParams(col1Params);
-		col1.setSingleLine();
-//		col1.setMaxLines(1);
 		col1.setText("Headline1");
+		setTableStyle(col1);
+
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col1, row);
@@ -128,18 +129,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
-		
-		
-		String uri = "@drawable/cell_shape";
-		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-		Drawable res = getResources().getDrawable(imageResource);
-		if (android.os.Build.VERSION.SDK_INT >= 16){
-			col1.setBackground(res);
-		}
-		else{
-			col1.setBackgroundDrawable(res);
-		}
-		row.addView(col1, col1Params);
+		row.addView(col1);
 
 		// SECOND COLUMN
 //		TableRow.LayoutParams col2Params = new TableRow.LayoutParams();
@@ -149,10 +139,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		// Set the gravity to center the gravity of the column
 //		col2Params.gravity = Gravity.CENTER;
 		final ResizingEditText col2 = new ResizingEditText(context, row, this);
-//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-//		col2.setLayoutParams(lp);
-//		col2.setMaxLines(1);
-		col2.setSingleLine();
+		setTableStyle(col2);
 		col2.setText("Headline2");
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -177,15 +164,12 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
-		if (android.os.Build.VERSION.SDK_INT >= 16){
-			col2.setBackground(res);
-		}
-		else{
-			col2.setBackgroundDrawable(res);
-		}
+		
 		row.addView(col2);
+		
 
 		headerTable.addView(row);
+		
 		
 //		col1.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 //		int elementSize = col1.getMeasuredWidth();
@@ -196,7 +180,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
-		view = (LinearLayout) inflater.inflate(R.layout.template_generator_table_view, null);
+		view = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
         createTableHeader();
         
 		Button buttonAdd = (Button)view.findViewById(R.id.add);
@@ -207,9 +191,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		});
 		
 		table = (TableLayout) view.findViewById(R.id.template_generator_table);
-//		TableRow row= new TableRow(getActivity());
-//		TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-//		row.setLayoutParams(lp);
 		Button addColumnButton = (Button)view.findViewById(R.id.add_Column);
 		addColumnButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -257,10 +238,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		        int width = getNeededWidth(i);
 				int height = getNeededHeight(0, headerRow);
 				final LayoutParams lparams = new LayoutParams(width, height);
-			    view.setLayoutParams(lparams);
-			    view.requestLayout();
-			    view.forceLayout();
-			    view.invalidate();
+//			    view.setLayoutParams(lparams);
 				view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
@@ -293,8 +271,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	//adds a new row to the listview
 	protected void addItemList() {
 	        TableRow row= new TableRow(getActivity());
-	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-	        row.setLayoutParams(lp);
+//	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+//	        row.setLayoutParams(lp);
 	        table.addView(row);
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);
@@ -440,6 +418,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //			Log.d("width", "widht == " + width);
 //			Log.d("text", "text == " + ((EditText) longestView).getText());
 //			Log.d("textlength", "textLENGHT == " + ((EditText) longestView).getText().toString().length());
+			//TODO: uncomment
 			adaptAllColumnsToSize(ownColumnNumber, longestWidth, longestHeight);
 		}
 	}
@@ -454,7 +433,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				Log.d("width", "headline width before  == " + ((EditText) theChildToResize).getWidth());
 				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,((EditText) theChildToResize).getHeight()); // Width , height
 			    ((EditText) theChildToResize).setLayoutParams(lparams);
-//			    ((EditText) theChildToResize).setWidth(width);
 				Log.d("width", "headline width after  == " + ((EditText) theChildToResize).getWidth());
 
 			    String uri = "@drawable/cell_shape";
@@ -469,13 +447,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //			    textField.invalidate();
 //			    textField.forceLayout();
 				Log.d("header table", "size is set!!!");
-//				((EditText) theChildToResize).setWidth(width);
-//				((EditText) theChildToResize).setMinimumWidth(width);
-//				textField.forceLayout();
-//				textField.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//				int textFieldWidth = textField.getMeasuredWidth();
-//				int textFieldHeight = textField.getMeasuredHeight();
-//				((EditText) textField).setPadding(width-textFieldWidth, textField.getPaddingTop(), textField.getPaddingRight(), textField.getPaddingBottom());
 			}
 		}
 		for(int i=0; i<table.getChildCount(); i++){
@@ -494,9 +465,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 					else{
 						((EditText) theChildToResize).setBackgroundDrawable(res);
 					}
-//					((EditText) theChildToResize).setWidth(width);
-//					((EditText) theChildToResize).setMinimumWidth(width);
-//					((EditText) theChildToResize).setHeight(height);
 				}
 				
 			}
@@ -519,28 +487,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	protected void addColumnToRow(final TableRow row){
 		final ResizingEditText oneColumn = new ResizingEditText(getActivity(), row, this);
-		String uri = "@drawable/cell_shape";
-		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-		Drawable res = getResources().getDrawable(imageResource);
-//		oneColumn.setPadding(34, 34, 3, 3);
-//		final LayoutParams lparams = new LayoutParams(190, 74);
-//	    oneColumn.setLayoutParams(lparams);
-		
-		if (android.os.Build.VERSION.SDK_INT >= 16){
-			oneColumn.setBackground(res);
-		}
-		else{
-			oneColumn.setBackgroundDrawable(res);
-		}
-//		oneColumn.setMaxLines(1);
-		oneColumn.setSingleLine();
-//		oneColumn.setMinLines(1);
-		View theText = oneColumn;
-//		oneColumn.setMaxLines(2);
-//		inputType="textMultiLine"
-//		oneColumn.setInputType(te);Row.LayoutParams.WRAP_CONTENT);
-//		oneColumn.setLayoutParams(lp);
-//		oneColumn.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+		setTableStyle(oneColumn);
 		oneColumn.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, oneColumn, row);
@@ -604,9 +551,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //		oneColumn.setWidth(width);
 		final LayoutParams lparams = new LayoutParams(width, height);
 	    oneColumn.setLayoutParams(lparams);
-	    oneColumn.requestLayout();
-	    oneColumn.forceLayout();
-	    oneColumn.invalidate();
 		oneColumn.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 		int newWidth = oneColumn.getMeasuredWidth();
 		int newHeight = oneColumn.getMeasuredWidth();
@@ -724,17 +668,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			//use k columns
 			for(int k=0; k<3; k++){
 				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
-				String uri = "@drawable/cell_shape";
-				int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-				Drawable res = getResources().getDrawable(imageResource);
-				if (android.os.Build.VERSION.SDK_INT >= 16){
-					oneColumn.setBackground(res);
-				}
-				else{
-					oneColumn.setBackgroundDrawable(res);
-				}
-				oneColumn.setSingleLine();
-				View theText = oneColumn;
+				setTableStyle(oneColumn);
 				//TODO: how to resize the table if too big?
 				oneColumn.addTextChangedListener(new TextWatcher(){
 					public void afterTextChanged(Editable s) {
@@ -845,6 +779,26 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //		adaptDialogTable(dialogTable, rowsNeeded);
 //	}
 	
+	protected void setTableStyle(EditText text){
+		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
+//		// Wrap-up the content of the row
+		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
+		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
+		text.setLayoutParams(colParams);
+		
+		String uri = "@drawable/cell_shape";
+		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+		if (android.os.Build.VERSION.SDK_INT >= 16){
+			text.setBackground(res);
+		}
+		else{
+			text.setBackgroundDrawable(res);
+		}
+		text.setTextColor(getResources().getColor(R.color.background));
+		text.setSingleLine();
+	}
+	
 	protected void adaptDialogTable(TableLayout dialogTable){
 		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();;
@@ -872,16 +826,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			//use k columns
 			for(int k=0; k<3; k++){
 				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
-				String uri = "@drawable/cell_shape";
-				int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-				Drawable res = getResources().getDrawable(imageResource);
-				if (android.os.Build.VERSION.SDK_INT >= 16){
-					oneColumn.setBackground(res);
-				}
-				else{
-					oneColumn.setBackgroundDrawable(res);
-				}
-				oneColumn.setSingleLine();
+				setTableStyle(oneColumn);
 //				View theText = oneColumn;
 //				//TODO: how to resize the table if too big?
 //				oneColumn.addTextChangedListener(new TextWatcher(){
