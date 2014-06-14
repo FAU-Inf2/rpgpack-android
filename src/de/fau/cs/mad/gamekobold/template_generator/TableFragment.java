@@ -108,7 +108,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //		col1Params.gravity = TableRow.Gravity.CENTER;
 		final ResizingEditText col1 = new ResizingEditText(context, row, this);
 		col1.setText("Headline1");
-		setTableStyle(col1);
+		setHeaderTableStyle(col1);
 
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -139,7 +139,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		// Set the gravity to center the gravity of the column
 //		col2Params.gravity = Gravity.CENTER;
 		final ResizingEditText col2 = new ResizingEditText(context, row, this);
-		setTableStyle(col2);
+		setHeaderTableStyle(col2);
 		col2.setText("Headline2");
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -415,10 +415,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			if(longestHeight < height){
 				longestHeight = height;
 			}
-//			Log.d("width", "widht == " + width);
-//			Log.d("text", "text == " + ((EditText) longestView).getText());
-//			Log.d("textlength", "textLENGHT == " + ((EditText) longestView).getText().toString().length());
-			//TODO: uncomment
 			adaptAllColumnsToSize(ownColumnNumber, longestWidth, longestHeight);
 		}
 	}
@@ -487,7 +483,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	protected void addColumnToRow(final TableRow row){
 		final ResizingEditText oneColumn = new ResizingEditText(getActivity(), row, this);
-		setTableStyle(oneColumn);
 		oneColumn.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, oneColumn, row);
@@ -527,9 +522,14 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		/*
 		 * JACKSON END
 		 */
-        oneColumn.setText("---");
+        
         if(headerTable.indexOfChild(row) != -1){
+        	setHeaderTableStyle(oneColumn);
             oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+        }
+        else{
+        	setTableStyle(oneColumn);
+        	oneColumn.setText("---");
         }
         row.addView(oneColumn);
         int columnIndex = row.indexOfChild(oneColumn);
@@ -781,12 +781,30 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	protected void setTableStyle(EditText text){
 		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
-//		// Wrap-up the content of the row
 		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		text.setLayoutParams(colParams);
 		
 		String uri = "@drawable/cell_shape";
+		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+		if (android.os.Build.VERSION.SDK_INT >= 16){
+			text.setBackground(res);
+		}
+		else{
+			text.setBackgroundDrawable(res);
+		}
+		text.setTextColor(getResources().getColor(R.color.background));
+		text.setSingleLine();
+	}
+	
+	protected void setHeaderTableStyle(EditText text){
+		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
+		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
+		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
+		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
+		
+		String uri = "@drawable/cell_shape_green";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
 		if (android.os.Build.VERSION.SDK_INT >= 16){
