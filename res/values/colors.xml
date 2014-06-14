@@ -6,8 +6,11 @@
 <color name="grey">#808080</color>
 <color name="white">#ffffff</color>
 <color name="black">#000000</color>
+<color name="own_grey">#9a9fa9</color>
 <color name="background">#414e60</color>
 <color name="background_dark">#27364f</color>
 <color name="background_green">#16a085</color>
+<color name="background_light">#797f8d</color>
+
 
 </resources>
