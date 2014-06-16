@@ -185,6 +185,7 @@ public class FolderFragment extends GeneralFragment {
 			int selected = 0;
 			// create new data holder
 			DataHolder newDataItem = new DataHolder(activity);
+			newDataItem.text.setText(subTable.tableName);
 			if(subTable instanceof ContainerTable) {
 				for(final String string : choices) {
 					if(string.equals("Ordner")) {
@@ -201,6 +202,7 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.jacksonTable = subTable;
 				// create fragment
 				newDataItem.childFragment = new FolderFragment();
+				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
 				newDataItem.childFragment.jacksonTable = (ContainerTable)subTable;
 				// not working this way
@@ -227,6 +229,7 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.jacksonTable = subTable;
 				// create fragment
 				newDataItem.table = new TableFragment();
+				newDataItem.table.elementName = subTable.tableName;
 				newDataItem.table.fragment_parent = this;
 				newDataItem.table.jacksonInflate((Table)subTable, activity);
 				// not working this way

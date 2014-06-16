@@ -105,6 +105,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
         		data.setSelected(itemPosition);
                 if(data.getSelectedText().equals("Ordner")) {
+                	/*if(data.text.toString().isEmpty()) {
+                		data.text.setText("UFO");
+                	}*/
                 	data.text.setText("UFO");
                 	holder.text.setText(data.text.getText());
                 	
