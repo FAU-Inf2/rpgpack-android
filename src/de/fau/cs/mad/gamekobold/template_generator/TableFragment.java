@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.NumberPicker;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -272,6 +273,24 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);
 	        }
+	        
+	        final ScrollView sv = (ScrollView) view.findViewById(R.id.table_scroll);
+	        //invalidating didnt change anything
+//	        table.invalidate();
+//	        table.refreshDrawableState();
+//	        sv.invalidate();
+//	        sv.requestLayout();
+//	        row.invalidate();
+//	        row.requestLayout();
+//	        sv.scrollTo(0, sv.getBottom());
+//	        sv.fullScroll(ScrollView.FOCUS_DOWN);
+	        //we have to do scrolling in seperate thread to make sure the new item is already inserted
+	        sv.post(new Runnable() {
+	            @Override
+	            public void run() {
+	            	sv.fullScroll(ScrollView.FOCUS_DOWN);
+	            }
+	        });
 	}
 
 	//adds a new row to the listview
