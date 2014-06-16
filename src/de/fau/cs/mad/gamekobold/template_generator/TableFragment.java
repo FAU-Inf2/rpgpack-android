@@ -23,13 +23,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -264,12 +269,40 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		addItemList();
 		return view;
 	}
+	
+	protected TableRow contextMenuRow;
+	
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if(v instanceof TableRow){
+			contextMenuRow = (TableRow) v;
+		}
+		MenuInflater inflater = MainTemplateGenerator.theActiveActivity.getMenuInflater();
+		inflater.inflate(R.menu.template_generator_remove_table_item, menu);
+	}
+	
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.removeTableRow:
+			removeRow(contextMenuRow);
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+	}
+	
+	protected void removeRow(TableRow row) {
+        table.removeView(row);
+}
 
 	//adds a new row to the listview
 	protected void addItemList() {
 	        TableRow row= new TableRow(getActivity());
 //	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 //	        row.setLayoutParams(lp);
+	        registerForContextMenu(row);
 	        table.addView(row);
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);

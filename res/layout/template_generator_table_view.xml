@@ -34,8 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add_Column"
             android:text="Remove Column" />
+    </RelativeLayout>
 
-    </RelativeLayout><LinearLayout
+    <LinearLayout
         android:id="@+id/container_horiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

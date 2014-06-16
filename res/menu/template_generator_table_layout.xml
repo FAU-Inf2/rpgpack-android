@@ -10,11 +10,19 @@
     <item android:id="@+id/action_main" android:title="@string/action_main"></item>
     <item android:id="@+id/action_showlists" android:title="@string/action_showlists"></item>
     <item
+        android:id="@+id/action_edit_mode"
+        android:title="Edit"
+        android:icon="@drawable/edit_icon"
+        android:showAsAction="ifRoom">
+    </item>
+    <item
         android:id="@+id/action_add_folder"
         android:title="Erstelle neuen Ordner"
         android:icon="@drawable/ic_menu_archive"
         android:showAsAction="ifRoom">
     </item>
+    
+    
 <item android:id="@+id/action_go_above" android:title="@string/action_go_above"></item>
     
 </menu>
