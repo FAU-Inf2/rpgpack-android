@@ -140,7 +140,9 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			MainTemplateGenerator.saveTemplate();
+			//newDataItem.jacksonTable.tableName = "UFO";
+			//newDataItem.text.setText("UFO");
+			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
 		 * JACKSON END

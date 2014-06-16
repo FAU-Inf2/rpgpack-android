@@ -121,7 +121,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(0, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -151,7 +151,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(1, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -256,7 +256,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.addColumn(new ColumnHeader("Headline2", StringClass.TYPE_STRING));
 			// save template
 			Log.d("TableFragment", "added default columns");
-			MainTemplateGenerator.saveTemplate();
+			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
 		 * JACKSON END
@@ -495,16 +495,20 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		 */
 		// only add to header cells
 		if(row == headerTable.getChildAt(0)) {
+			jacksonTable.setColumnTitle(((TableRow)headerTable.getChildAt(0)).getChildCount(),
+							"Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
 			oneColumn.addTextChangedListener(new TextWatcher(){
 				// column index for this header cell  !index! no + 1 needed
 				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
 				// callback
 				public void afterTextChanged(Editable s) {
 					if(!jacksonHasBeenInflated) {
-						jacksonTable.setColumnTitle(columnIndex, s.toString());
+						// only save if the title changed
+						if(jacksonTable.setColumnTitle(columnIndex, s.toString())) {
+							Log.d("TABLE_FRAGMENT", "title changed - save");
+							MainTemplateGenerator.saveTemplateAsync();	
+						}
 					}
-					Log.d("TABLE_FRAGMENT", "title changed - save");
-					MainTemplateGenerator.saveTemplate();
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
@@ -572,7 +576,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		if(!jacksonHasBeenInflated) {
 			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 			Log.d("TABLE_FRAGMENT", "added column - save");
-			MainTemplateGenerator.saveTemplate();
+			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
 		 *  JACKSON END
@@ -627,7 +631,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			if(!jacksonHasBeenInflated) {
 				jacksonTable.removeColumn();
 				Log.d("TABLE_FRAGMENT", "removed column - save");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 			}
 			/*
 			 *  JACKSON END

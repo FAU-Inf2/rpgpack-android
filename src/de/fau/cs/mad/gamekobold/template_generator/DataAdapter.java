@@ -108,6 +108,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	// check if data.text is not empty, so we can use this name
                 	if(data.text.getEditableText().toString().isEmpty()) {
                 		data.text.setText("UFO");
+                		data.jacksonTable.tableName = "UFO";
                 	}
                 	holder.text.setText(data.text.getText());
                 	
@@ -153,7 +154,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonDoSaveOnNextChance = false;
                 		// save template
                 		Log.d("JSON_DATA_ADAPTER", "Container Table -> save template");
-                		MainTemplateGenerator.saveTemplate();                		
+                		MainTemplateGenerator.saveTemplateAsync();                		
                 	}
                 	/*
                 	 * JACKSON END
@@ -228,7 +229,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonTable = null;
                 		// save template
                 		Log.d("JSON_DATA_ADAPTER", "Text -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
                 	/*
                 	 * JACKSON END
@@ -282,7 +283,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	if(data.jacksonDoSaveOnNextChance) {
                 		data.jacksonDoSaveOnNextChance = false;
                 		Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
 					/*
 					 * JACKSON END
@@ -377,7 +378,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
                 		Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
                 	/*
                 	 * JACKSON END

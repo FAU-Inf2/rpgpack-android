@@ -21,6 +21,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -308,7 +309,7 @@ public class MainTemplateGenerator extends FragmentActivity {
      * JACKSON START
      */
     // remove this later if we know our filename
-    public static void saveTemplate() {
+    /*public static void saveTemplate() {
     	saveTemplate("");
     }
     public static void saveTemplate(String filename) {
@@ -322,6 +323,48 @@ public class MainTemplateGenerator extends FragmentActivity {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+    }*/
+    
+    public static void saveTemplateAsync() {
+    	saveTemplateAsync("testTemplate.json");
+    }
+    
+    public static void saveTemplateAsync(String filename) {
+    	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
+    	task.execute(new String[] {filename});
+    }
+    
+    private static class JacksonSaveTemplateTask extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			if(params.length != 1) {
+				return Boolean.FALSE;
+			}
+			String filename = params[0];
+			try {
+				if( (myActivity != null) && (myTemplate != null) ) {
+					myTemplate.saveToJSON(myActivity, filename);
+					//Log.d("MAIN_TEMPALTE_GENERATOR", "saved Template");
+				}
+			} catch (JsonGenerationException | JsonMappingException e) {
+				e.printStackTrace();
+				return Boolean.FALSE;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return Boolean.FALSE;
+			}	
+			return Boolean.TRUE;
+		}
+    	
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(!result) {
+				Toast.makeText(myActivity, "Failed to save template!", Toast.LENGTH_LONG).show();
+			}
+			else {
+				Log.d("MainTemplateGenerator", "saved template async");
+			}
 		}
     }
     /*
