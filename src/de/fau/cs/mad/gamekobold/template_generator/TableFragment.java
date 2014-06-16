@@ -200,7 +200,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				removeColumn();
 			}
 		});
-		addItemList();
+		//addItemList();
 		
 		TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
 		addRowBelow.setOnClickListener(new View.OnClickListener() {
@@ -261,7 +261,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		/*
 		 * JACKSON END
 		 */
-
+		addItemList();
 		return view;
 	}
 
