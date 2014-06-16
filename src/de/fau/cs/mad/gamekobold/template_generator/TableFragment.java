@@ -519,6 +519,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
         if(headerTable.indexOfChild(row) != -1){
         	setHeaderTableStyle(oneColumn);
             oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+            oneColumn.setHint(oneColumn.getEditableText().toString());
         }
         else{
         	setTableStyle(oneColumn);
