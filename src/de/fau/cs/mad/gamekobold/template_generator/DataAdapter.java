@@ -5,14 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,6 +105,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
         		data.setSelected(itemPosition);
                 if(data.getSelectedText().equals("Ordner")) {
+                	/*if(data.text.toString().isEmpty()) {
+                		data.text.setText("UFO");
+                	}*/
                 	data.text.setText("UFO");
                 	holder.text.setText(data.text.getText());
                 	
@@ -114,7 +116,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	// we changed type to folder, so check if childFragment exists
                 	if(data.childFragment == null) {
-                		// if it does not exist we check if we already have create a container table
+                		// if it does not exist we check if we already have created a container table
                 		// if not we create a new one
                 		// when the user clicks on the row we attach the table to the fragment
                 		// TODO anstatt instanceof (langsam?!) typ info in abstract table
@@ -124,12 +126,17 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			Log.d("JSON_DATA_ADAPTER", "created new container table");
                 			data.jacksonDoSaveOnNextChance = true;
                 		}
+                		else  {
+                			// remove here because we are going to add it again
+                			holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+                		}
                 	}
                 	else {
                 		// if exists
 						// childFragment was not null, so folder Fragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
                 		if(data.jacksonTable != data.childFragment.jacksonTable) {
+                			holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
                 			jacksonTable.removeTable(data.jacksonTable);
                 			jacksonTable.addTable(data.childFragment.jacksonTable);
                 			data.jacksonTable = data.childFragment.jacksonTable;
@@ -137,22 +144,16 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			data.jacksonDoSaveOnNextChance = true;
                 		}
                 	}
+                	// TODO noch mal schauen ob man das net wo anders hinpacken kann
+        			holder.text.addTextChangedListener(data.jacksonTable.tableNameTextWatcher);
            		 
                 	// onItemSelected gets called when setting data while loading a template. use this flag to eliminate
                 	// saving bug ( template is saved when data gets added)
                 	if(data.jacksonDoSaveOnNextChance) {
                 		data.jacksonDoSaveOnNextChance = false;
                 		// save template
-                		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "Container Table -> saved template");
-                		} catch (JsonGenerationException
-                				| JsonMappingException e) {
-                			e.printStackTrace();
-                		}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
+                		Log.d("JSON_DATA_ADAPTER", "Container Table -> save template");
+                		MainTemplateGenerator.saveTemplate();                		
                 	}
                 	/*
                 	 * JACKSON END
@@ -222,19 +223,12 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	// if a table was attached remove it
                 	if(data.jacksonTable != null) {
+                		holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
                 		// save template
-                		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "Text -> saved template");
-                		} catch (JsonGenerationException
-                				| JsonMappingException e) {
-                			e.printStackTrace();
-                		}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
+                		Log.d("JSON_DATA_ADAPTER", "Text -> saved template");
+                		MainTemplateGenerator.saveTemplate();
                 	}
                 	/*
                 	 * JACKSON END
@@ -264,12 +258,17 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			Log.d("NEW TABLE","created new table");
                 			data.jacksonDoSaveOnNextChance = true;
                 		}
+            			// remove here because we are going to add it again
+                		else {
+                			holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+                		}
 					}
 					else{
 						// if exists
 						// data.table was not null, so table Fragment already exists -> jackson table exists
 						// replace current table with the table stored in fragment
                 		if(data.jacksonTable != data.table.jacksonTable) {
+                			holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
                 			jacksonTable.removeTable(data.jacksonTable);
                 			jacksonTable.addTable(data.table.jacksonTable);
                 			data.jacksonTable = data.table.jacksonTable;
@@ -277,19 +276,13 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 			data.jacksonDoSaveOnNextChance = true;
                 		}
 					}
+        			holder.text.addTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+                	
                 	// save template
                 	if(data.jacksonDoSaveOnNextChance) {
                 		data.jacksonDoSaveOnNextChance = false;
-                		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
-                		} catch (JsonGenerationException
-                				| JsonMappingException e) {
-                			e.printStackTrace();
-                		}
-                		catch(IOException e) {
-            				e.printStackTrace();
-            			}
+                		Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
+                		MainTemplateGenerator.saveTemplate();
                 	}
 					/*
 					 * JACKSON END
@@ -381,18 +374,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	 */
                 	// if a table was attached then remove it because we are no longer a folder nor table
                 	if(data.jacksonTable != null) {
+                		holder.text.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
-                		try {
-                			MainTemplateGenerator.myTemplate.saveToJSON(MainTemplateGenerator.theActiveActivity, "testTemplate.json");
-                			Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
-                		} catch (JsonGenerationException
-                				| JsonMappingException e) {
-                			e.printStackTrace();
-                		}
-                		catch(IOException e) {
-                			e.printStackTrace();
-                		}
+                		Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
+                		MainTemplateGenerator.saveTemplate();
                 	}
                 	/*
                 	 * JACKSON END

@@ -8,9 +8,6 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import android.app.Activity;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -19,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -104,6 +102,7 @@ public class FolderFragment extends GeneralFragment {
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
         lView.setAdapter(dataAdapter);
+        
         return view;
     }
 	
@@ -141,16 +140,7 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			try {
-				MainTemplateGenerator.myTemplate.saveToJSON(getActivity(), "testTemplate.json");
-				Log.d("FOLDER_FRAGMENT", "added item -> saved template");
-			} catch (JsonGenerationException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			MainTemplateGenerator.saveTemplate();
 		}
 		/*
 		 * JACKSON END
@@ -195,6 +185,7 @@ public class FolderFragment extends GeneralFragment {
 			int selected = 0;
 			// create new data holder
 			DataHolder newDataItem = new DataHolder(activity);
+			newDataItem.text.setText(subTable.tableName);
 			if(subTable instanceof ContainerTable) {
 				for(final String string : choices) {
 					if(string.equals("Ordner")) {
@@ -211,6 +202,7 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.jacksonTable = subTable;
 				// create fragment
 				newDataItem.childFragment = new FolderFragment();
+				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
 				newDataItem.childFragment.jacksonTable = (ContainerTable)subTable;
 				// not working this way
@@ -237,6 +229,7 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.jacksonTable = subTable;
 				// create fragment
 				newDataItem.table = new TableFragment();
+				newDataItem.table.elementName = subTable.tableName;
 				newDataItem.table.fragment_parent = this;
 				newDataItem.table.jacksonInflate((Table)subTable, activity);
 				// not working this way
