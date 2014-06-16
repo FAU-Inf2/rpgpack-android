@@ -185,7 +185,12 @@ public class FolderFragment extends GeneralFragment {
 			int selected = 0;
 			// create new data holder
 			DataHolder newDataItem = new DataHolder(activity);
-			newDataItem.text.setText(subTable.tableName);
+			if(subTable.tableName == null) {
+				newDataItem.text.setText("");	
+			}
+			else {
+				newDataItem.text.setText(subTable.tableName);
+			}
 			if(subTable instanceof ContainerTable) {
 				for(final String string : choices) {
 					if(string.equals("Ordner")) {

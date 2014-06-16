@@ -105,10 +105,10 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
         		data.setSelected(itemPosition);
                 if(data.getSelectedText().equals("Ordner")) {
-                	/*if(data.text.toString().isEmpty()) {
+                	// check if data.text is not empty, so we can use this name
+                	if(data.text.getEditableText().toString().isEmpty()) {
                 		data.text.setText("UFO");
-                	}*/
-                	data.text.setText("UFO");
+                	}
                 	holder.text.setText(data.text.getText());
                 	
                 	/*
@@ -302,7 +302,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON START
 								 */
-								// data.table was null, so we need to create a new table
 								newFragment.jacksonTable = (Table) data.jacksonTable;
 								/*
 								 * JACKSON END

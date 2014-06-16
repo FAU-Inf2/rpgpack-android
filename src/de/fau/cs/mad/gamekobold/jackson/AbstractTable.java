@@ -36,7 +36,7 @@ public abstract class AbstractTable {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				Log.d("YEEE", "HAAAAAAAAAAAAAAAAAAAAAAW");
+			//	Log.d("YEEE", "HAAAAAAAAAAAAAAAAAAAAAAW");
 				tableName = s.toString();
 				MainTemplateGenerator.saveTemplate();
 			}
