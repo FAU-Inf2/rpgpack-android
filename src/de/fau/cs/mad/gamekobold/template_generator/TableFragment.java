@@ -238,12 +238,13 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				View view = headerRow.getChildAt(i);
 				Log.d("TABLE INFLATING", "setting column header title:"+jacksonTable.columnHeaders.get(i).name);
 				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
+				setHeaderTableStyle((EditText)view);
 				// check size
 				checkResize(0, 0, (EditText)view, headerRow);
 		        int width = getNeededWidth(i);
 				int height = getNeededHeight(0, headerRow);
 				final LayoutParams lparams = new LayoutParams(width, height);
-//			    view.setLayoutParams(lparams);
+			    view.setLayoutParams(lparams);
 				view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
