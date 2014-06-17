@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -83,6 +84,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
         .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
         		setAmountOfColumns(np.getValue());
+        		TableLayout otherTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+//        		todo
+        		adaptHeaderTable(otherTable);
         	}
         })
         .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
@@ -93,6 +97,18 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		 // create alert dialog
 		 dialogTableView = alertDialogBuilder.create();
     }
+	
+	protected void adaptHeaderTable(TableLayout otherTable){
+//		TODO: make following lines work -> adapt original Table
+		int amountRows = otherTable.getChildCount()-1;
+		for(int i=1; i<amountRows+1; i++){
+			String otherString = ((EditText) ((TableRow) otherTable.getChildAt(i)).getChildAt(1)).getText().toString();
+			Log.d("String got:", "offset=" + i + ", name=" + otherString);
+			EditText textToChange = ((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i-1));
+			textToChange.setText(otherString);
+			setHeaderTableStyle(textToChange);
+		}
+	}
 	
 	protected TableLayout createTableHeader() {
 		headerTable = (TableLayout) view.findViewById(R.id.header_table);
@@ -303,11 +319,11 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //	        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 //	        row.setLayoutParams(lp);
 	        registerForContextMenu(row);
-	        table.addView(row);
+	        
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);
 	        }
-	        
+	        table.addView(row);
 	        final ScrollView sv = (ScrollView) view.findViewById(R.id.table_scroll);
 	        //invalidating didnt change anything
 //	        table.invalidate();
@@ -325,6 +341,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	            	sv.fullScroll(ScrollView.FOCUS_DOWN);
 	            }
 	        });
+	        for(int i=0; i<((TableRow) headerTable.getChildAt(0)).getChildCount(); i++){
+	        	setHeaderTableStyle((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i));
+	        }
 	}
 
 	//adds a new row to the listview
@@ -552,7 +571,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
         if(headerTable.indexOfChild(row) != -1){
         	setHeaderTableStyle(oneColumn);
             oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
-            oneColumn.setHint(oneColumn.getEditableText().toString());
+//            oneColumn.setHint(oneColumn.getEditableText().toString());
         }
         else{
         	setTableStyle(oneColumn);
@@ -669,59 +688,59 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		}
 	}
 
-	/**
-	 * @param dialogTable
-	 * Method to set up the table for showing it in AlertDialog
-	 */
-	protected void prepareTableForDialog(TableLayout dialogTable) {
-		dialogTable.removeAllViews();
-		for(int i=-1; i<amountColumns; i++){
-			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
-			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
-			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
-			//use k columns
-			for(int k=0; k<3; k++){
-				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
-				setTableStyle(oneColumn);
-				//TODO: how to resize the table if too big?
-				oneColumn.addTextChangedListener(new TextWatcher(){
-					public void afterTextChanged(Editable s) {
-						//					checkResize(0, 0, oneColumn, row);
-					}
-					public void beforeTextChanged(CharSequence s, int start, int count, int after){
-					}
-					public void onTextChanged(CharSequence s, int start, int before, int count){
-					}
-				});
-				//first row -> insert column descriptions
-				if(i==-1){
-					if(k==0){
-						oneColumn.setText("Nr.");
-					}
-					else if(k==1){
-						oneColumn.setText("Spaltenname");
-					}
-					else{
-						oneColumn.setText("Spaltentyp");
-					}
-				}
-				//insert the number of the column in the first row
-				else if(k ==0){
-					oneColumn.setText(i+".");
-				}
-				else if(k==1){
-					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-					EditText headerText = (EditText) headerRow.getChildAt(i);
-					Log.d("i,k", "i==" + i + ", k==" +k);
-					oneColumn.setText(headerText.getText());					
-				}
-				row.addView(oneColumn);
-			}
-			dialogTable.addView(row);
-		}
-//		return table;
-	}
+//	/**
+//	 * @param dialogTable
+//	 * Method to set up the table for showing it in AlertDialog
+//	 */
+//	protected void prepareTableForDialog(TableLayout dialogTable) {
+//		dialogTable.removeAllViews();
+//		for(int i=-1; i<amountColumns; i++){
+//			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+//			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+//			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+//			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+//			//use k columns
+//			for(int k=0; k<3; k++){
+//				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+//				setTableStyle(oneColumn);
+//				//TODO: how to resize the table if too big?
+//				oneColumn.addTextChangedListener(new TextWatcher(){
+//					public void afterTextChanged(Editable s) {
+//						//					checkResize(0, 0, oneColumn, row);
+//					}
+//					public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//					}
+//					public void onTextChanged(CharSequence s, int start, int before, int count){
+//					}
+//				});
+//				//first row -> insert column descriptions
+//				if(i==-1){
+//					if(k==0){
+//						oneColumn.setText("Nr.");
+//					}
+//					else if(k==1){
+//						oneColumn.setText("Spaltenname");
+//					}
+//					else{
+//						oneColumn.setText("Spaltentyp");
+//					}
+//				}
+//				//insert the number of the column in the first row
+//				else if(k ==0){
+//					oneColumn.setText(i+".");
+//				}
+//				else if(k==1){
+//					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+//					EditText headerText = (EditText) headerRow.getChildAt(i);
+//					Log.d("i,k", "i==" + i + ", k==" +k);
+//					oneColumn.setText(headerText.getText());					
+//				}
+//				row.addView(oneColumn);
+//			}
+//			dialogTable.addView(row);
+//		}
+////		return table;
+//	}
 	
 	/*
 	 * JACKSON START
@@ -745,49 +764,49 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		dialogTableView.show();
 	}
 	
-	protected void initializeDialogTable(TableLayout dialogTable){
-		final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
-		TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
-		rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-		rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
-		//use k columns
-		for(int k=0; k<3; k++){
-			final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
-			String uri = "@drawable/cell_shape";
-			int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-			Drawable res = getResources().getDrawable(imageResource);
-			if (android.os.Build.VERSION.SDK_INT >= 16){
-				oneColumn.setBackground(res);
-			}
-			else{
-				oneColumn.setBackgroundDrawable(res);
-			}
-			oneColumn.setSingleLine();
-			View theText = oneColumn;
-			//TODO: how to resize the table if too big?
-			oneColumn.addTextChangedListener(new TextWatcher(){
-				public void afterTextChanged(Editable s) {
-					//					checkResize(0, 0, oneColumn, row);
-				}
-				public void beforeTextChanged(CharSequence s, int start, int count, int after){
-				}
-				public void onTextChanged(CharSequence s, int start, int before, int count){
-				}
-			});
-			//first row -> insert column descriptions
-			if(k==0){
-				oneColumn.setText("Nr.");
-			}
-			else if(k==1){
-				oneColumn.setText("Spaltenname");
-			}
-			else{
-				oneColumn.setText("Spaltentyp");
-			}
-			row.addView(oneColumn);
-		}
-		dialogTable.addView(row);
-	}
+//	protected void initializeDialogTable(TableLayout dialogTable){
+//		final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+//		TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+//		rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+//		rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+//		//use k columns
+//		for(int k=0; k<3; k++){
+//			final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+//			String uri = "@drawable/cell_shape";
+//			int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+//			Drawable res = getResources().getDrawable(imageResource);
+//			if (android.os.Build.VERSION.SDK_INT >= 16){
+//				oneColumn.setBackground(res);
+//			}
+//			else{
+//				oneColumn.setBackgroundDrawable(res);
+//			}
+//			oneColumn.setSingleLine();
+//			View theText = oneColumn;
+//			//TODO: how to resize the table if too big?
+//			oneColumn.addTextChangedListener(new TextWatcher(){
+//				public void afterTextChanged(Editable s) {
+//					//					checkResize(0, 0, oneColumn, row);
+//				}
+//				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//				}
+//				public void onTextChanged(CharSequence s, int start, int before, int count){
+//				}
+//			});
+//			//first row -> insert column descriptions
+//			if(k==0){
+//				oneColumn.setText("Nr.");
+//			}
+//			else if(k==1){
+//				oneColumn.setText("Spaltenname");
+//			}
+//			else{
+//				oneColumn.setText("Spaltentyp");
+//			}
+//			row.addView(oneColumn);
+//		}
+//		dialogTable.addView(row);
+//	}
 	
 //	protected void adaptDialogTable(TableLayout dialogTable){
 //		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
@@ -841,6 +860,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected void setHeaderTableStyle(EditText text){
+		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
 		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
 		String uri = "@drawable/cell_shape_green";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
@@ -857,7 +877,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	protected void adaptDialogTable(TableLayout dialogTable){
 		int firstRowToAdd = dialogTable.getChildCount();
-		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();;
+		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
 		//first step: adapt all needed Column-names from headerTable
 		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
 		for(int i=1; i<oldColumnsToAdept; i++){
@@ -939,11 +959,201 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
 		}
 	}
-
+	
+	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow){
+		int firstRowToAdd = dialogTable.getChildCount();
+		int rowsNeeded = rowsToShow;
+		//first step: adapt all needed Column-names from headerTable
+		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
+		for(int i=1; i<oldColumnsToAdept; i++){
+			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+			EditText headerText = (EditText) headerRow.getChildAt(i-1);
+			EditText textToSet = (EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1);
+			if(headerText == null){
+				textToSet.setText("");
+			}
+			else{
+				textToSet.setText(headerText.getText());
+			}
+		}
+		//test if header is set
+//		if(dialogTable.getChildCount() == 0){
+////			Log.e("TableFragment.java", "dialog table of Table Fragment should be initialisized, but already has children!");
+////			dialogTable.removeAllViews();
+//			initializeDialogTable(dialogTable);
+//		}
+		//second step: add rows if needed
+		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
+			Log.d("dialog", "add");
+			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+			//use k columns
+			for(int k=0; k<3; k++){
+				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+				setTableStyle(oneColumn);
+//				View theText = oneColumn;
+//				//TODO: how to resize the table if too big?
+//				oneColumn.addTextChangedListener(new TextWatcher(){
+//					public void afterTextChanged(Editable s) {
+//						//					checkResize(0, 0, oneColumn, row);
+//					}
+//					public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//					}
+//					public void onTextChanged(CharSequence s, int start, int before, int count){
+//					}
+//				});
+				//first row -> insert column descriptions
+				if(i==-1){
+					if(k==0){
+						oneColumn.setText("Nr.");
+					}
+					else if(k==1){
+						oneColumn.setText("Spaltenname");
+					}
+					else{
+						oneColumn.setText("Spaltentyp");
+					}
+				}
+				//insert the number of the column in the first row
+				else if(k ==0){
+					oneColumn.setText((i+1)+".");
+				}
+				else if(k==1){
+					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+					EditText headerText = (EditText) headerRow.getChildAt(i);
+//					Log.d("i,k", "i=="  + ", k==" +k);
+					if(headerText == null){
+						oneColumn.setText("");
+					}
+					else{
+						oneColumn.setText(headerText.getText());
+					}
+					final int index = i;
+					oneColumn.addTextChangedListener(new TextWatcher(){
+						public void afterTextChanged(Editable s) {
+							//dont edit it now, but after pressing "tabelle speichern"
+//							TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+//							EditText headerText = (EditText) headerRow.getChildAt(index);
+//							headerText.setText(s);
+							//					checkResize(0, 0, oneColumn, row);
+						}
+						public void beforeTextChanged(CharSequence s, int start, int count, int after){
+						}
+						public void onTextChanged(CharSequence s, int start, int before, int count){
+						}
+					});
+				}
+				row.addView(oneColumn);
+			}
+			dialogTable.addView(row);
+		}
+		//last step: remove rows if needed
+		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
+			Log.d("dialog", "remove");
+			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
+		}
+	}
+	
+	protected void adaptDialogTableFast(TableLayout dialogTable, int rowsToShow){
+		int firstRowToAdd = dialogTable.getChildCount();
+		int rowsNeeded = rowsToShow;
+		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
+			Log.d("dialog", "add");
+			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+			//use k columns
+			for(int k=0; k<3; k++){
+				final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+				setTableStyle(oneColumn);
+				if(i==-1){
+					if(k==0){
+						oneColumn.setText("Nr.");
+					}
+					else if(k==1){
+						oneColumn.setText("Spaltenname");
+					}
+					else{
+						oneColumn.setText("Spaltentyp");
+					}
+				}
+				//insert the number of the column in the first row
+				else if(k ==0){
+					oneColumn.setText((i+1)+".");
+				}
+				else if(k==1){
+					TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+					EditText headerText = (EditText) headerRow.getChildAt(i);
+//					Log.d("i,k", "i=="  + ", k==" +k);
+					if(headerText == null){
+						oneColumn.setText("");
+					}
+					else{
+						oneColumn.setText(headerText.getText());
+					}
+					final int index = i;
+					oneColumn.addTextChangedListener(new TextWatcher(){
+						public void afterTextChanged(Editable s) {
+							//dont edit it now, but after pressing "tabelle speichern"
+//							TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+//							EditText headerText = (EditText) headerRow.getChildAt(index);
+//							headerText.setText(s);
+							//					checkResize(0, 0, oneColumn, row);
+						}
+						public void beforeTextChanged(CharSequence s, int start, int count, int after){
+						}
+						public void onTextChanged(CharSequence s, int start, int before, int count){
+						}
+					});
+				}
+				row.addView(oneColumn);
+			}
+			dialogTable.addView(row);
+		}
+		//last step: remove rows if needed
+		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
+			Log.d("dialog", "remove");
+			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
+		}
+	}
+	
+	private class Runner implements Runnable {
+		int newValue = -1;
+		public Runner(int newVal){
+			newValue = newVal;
+		}
+	     @Override
+	     public void run() {
+//	    	 setAmountOfColumns(newValue);
+	    	 adaptDialogTableFast(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newValue);
+	    }
+	};
+	
 	@Override
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-		setAmountOfColumns(newVal);
-//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
-		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
+//		new AdaptColumns().execute(newVal);
+		final int newValue = newVal;
+		MainTemplateGenerator.theActiveActivity.runOnUiThread(new Runner(newVal));
+		
+//		setAmountOfColumns(newVal);
+//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
 	}
+	
+	private class AdaptColumns extends AsyncTask<Integer, Void, Void> {
+	     protected Void doInBackground(Integer... params) {
+//	    	setAmountOfColumns(params[0]);
+//	 		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
+	 		return null;
+	     }
+
+	     protected void onProgressUpdate(Integer... progress) {
+	     }
+
+	     protected void onPostExecute(Long result) {
+	     }
+	 }
+
 }
