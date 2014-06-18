@@ -11,7 +11,6 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +76,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
     @Override
     public View getView(int viewPosition, View convertView, ViewGroup parent) {
+    	Log.d("GETVIEW","getview-pos:"+viewPosition);
     	final DataHolder data = this.getItem(viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
@@ -111,7 +111,13 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonTable.tableName = "UFO";
                 	}
                 	holder.text.setText(data.text.getText());
-                	
+                	/*if(data.jacksonTable.tableName.isEmpty()) {
+                		data.jacksonTable.tableName = "UFO";
+                		Log.d("ISEMPTY","TRUE");
+                	} 
+                	Log.d("TABLENAME",""+data.jacksonTable.tableName);
+                	data.text.setText(data.jacksonTable.tableName);
+                	holder.text.setText(data.text.getText());*/
                 	/*
                 	 * JACKSON START
                 	 */

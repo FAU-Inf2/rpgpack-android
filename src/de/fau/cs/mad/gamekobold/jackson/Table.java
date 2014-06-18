@@ -110,6 +110,9 @@ public class Table extends AbstractTable{
 			return false;
 	 	}
 	 	ColumnHeader header = columnHeaders.get(index);
+		Log.d("Table-setColumnTitle", "index:"+index);
+		Log.d("Table-setColumnTitle", "old:"+header.name);
+		Log.d("Table-setColumnTitle", "new:"+title);
 	 	if(!header.name.equals(title)) {
 		 	header.name = title;
 		 	return true;

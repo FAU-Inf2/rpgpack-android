@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -140,8 +139,6 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getSelectedText().equals("Ordner")) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			//newDataItem.jacksonTable.tableName = "UFO";
-			//newDataItem.text.setText("UFO");
 			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
