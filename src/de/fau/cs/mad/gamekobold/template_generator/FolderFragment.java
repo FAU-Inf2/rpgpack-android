@@ -8,17 +8,24 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FolderFragment extends GeneralFragment {
@@ -91,12 +98,14 @@ public class FolderFragment extends GeneralFragment {
 //          }
 //      });
 //      note: adapter for spinner item atm not instantiated (probably not needed at all)
-      Button buttonAdd = (Button)view.findViewById(R.id.add);
-      buttonAdd.setOnClickListener(new View.OnClickListener() {
-          public void onClick(View v) {
-          	addItemList();
-          }
-      });
+      
+      TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
+		addRowBelow.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addItemList();
+			}
+		});
+		setAddButtonStyle(addRowBelow);
 		
 		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
@@ -104,6 +113,23 @@ public class FolderFragment extends GeneralFragment {
         
         return view;
     }
+	
+	@SuppressLint("NewApi")
+	protected void setAddButtonStyle(TextView text){
+		TableRow.LayoutParams textViewParams = new TableRow.LayoutParams();
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		String uri = "@drawable/cell_shape_add_folder";
+		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+		if (android.os.Build.VERSION.SDK_INT >= 16){
+			text.setBackground(res);
+		}
+		else{
+			text.setBackgroundDrawable(res);
+		}
+		text.setTextColor(getResources().getColor(R.color.own_grey));
+		text.setSingleLine();
+	}
 	
 	public void addItemList() {
 		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
@@ -118,6 +144,14 @@ public class FolderFragment extends GeneralFragment {
 //		allData.add(0, newDataItem);
 //		dataAdapter.add(newDataItem);
 		dataAdapter.notifyDataSetChanged();
+		final ListView myListView = (ListView) view.findViewById(R.id.listView_items);
+		myListView.post(new Runnable() {
+	        @Override
+	        public void run() {
+	            // Select the last row so it will scroll into view...
+	            myListView.setSelection(dataAdapter.getCount() - 1);
+	        }
+	    });
 //		dataAdapter.add(newDataItem);
 //		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
 //		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);

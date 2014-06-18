@@ -14,17 +14,20 @@
     <string name="btn_call_service">Call Service</string>
     <string name="answer_from_service">Answer From Service</string>
     <string name="signal_from_service">Signal from Service</string>
-    
-    
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
     <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
     <string name="choice_prompt">Select a choice</string>
+
     <string-array name="choices">
         <item>Typ</item>
         <item>Ordner</item>
         <item>Tabelle</item>
         <item>Text</item>
     </string-array>
+
+    <string name="popup_titel">Item Information</string>
+    <string name="add_item">Add Item</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

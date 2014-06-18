@@ -43,13 +43,12 @@
             android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator"
             android:label="Root"
             android:theme="@style/template_generator_style" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity" >
@@ -58,7 +57,12 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.template_generator.ShowLists" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
+        </activity>
     </application>
-     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

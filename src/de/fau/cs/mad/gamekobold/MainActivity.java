@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import android.app.Activity;
 import android.app.ActionBar;
@@ -40,7 +41,11 @@ public class MainActivity extends Activity {
 	}
 
 	public void manageCharackter(View view) {
-		this.notImplemented();
+		//Charakter Kurz-Übersicht
+		Intent intent = new Intent(MainActivity.this,
+				MatrixViewActivity.class);
+		startActivity(intent);
+		
 	}
 
 	public void templateGenerator(View view) {

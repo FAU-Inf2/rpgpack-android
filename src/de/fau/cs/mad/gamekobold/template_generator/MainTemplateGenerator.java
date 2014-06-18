@@ -202,7 +202,7 @@ public class MainTemplateGenerator extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
     	if(currentFragment instanceof TableFragment){
-    		getMenuInflater().inflate(R.menu.main, menu);
+    		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
     		ActionBar actionBar = getActionBar(); 
     		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     		actionBar.setCustomView(R.layout.actionbar_template_generator);
@@ -283,6 +283,12 @@ public class MainTemplateGenerator extends FragmentActivity {
         	startActivityForResult(startNewActivityOpen, 0);
         }
         else if (id == R.id.action_add_folder) {
+//        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
+        	String[] items = getResources().getStringArray(R.array.choices);
+        	int index = Arrays.asList(items).indexOf("Ordner");
+        	currentFragment.addItemList(index);
+        }
+        else if (id == R.id.action_edit_mode) {
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         	String[] items = getResources().getStringArray(R.array.choices);
         	int index = Arrays.asList(items).indexOf("Ordner");
