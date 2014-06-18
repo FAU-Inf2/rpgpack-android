@@ -1244,6 +1244,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	@Override
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+		if(oldVal == newVal){
+			return;
+		}
 //		new AdaptColumns().execute(newVal);
 		final int newValue = newVal;
 		MainTemplateGenerator.theActiveActivity.runOnUiThread(new Runner(newVal));

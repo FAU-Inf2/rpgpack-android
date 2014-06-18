@@ -20,10 +20,9 @@
     <string name="choice_prompt">Select a choice</string>
 
     <string-array name="choices">
-        <item>Typ</item>
         <item>Ordner</item>
         <item>Tabelle</item>
-        <item>Text</item>
+        <item>Matrix</item>
     </string-array>
 
     <string name="popup_titel">Item Information</string>

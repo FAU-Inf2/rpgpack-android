@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -196,11 +197,23 @@ public class MainTemplateGenerator extends FragmentActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
+    	ActionBar actionBar = getActionBar(); 
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+		if(currentFragment != topFragment){
+			actionBar.setCustomView(R.layout.actionbar_template_generator_back_button);
+			ImageButton backButton = (ImageButton) findViewById(R.id.button_back);
+			backButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					goAbove();
+				}
+			});
+		}
+		else{
+			actionBar.setCustomView(R.layout.actionbar_template_generator);
+		}
     	if(currentFragment instanceof TableFragment){
-    		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
-    		ActionBar actionBar = getActionBar(); 
-    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    		actionBar.setCustomView(R.layout.actionbar_template_generator);
 //    		setTitle(((TableFragment) currentFragment).tableName);
     		View v = getActionBar().getCustomView();
     	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
@@ -215,21 +228,24 @@ public class MainTemplateGenerator extends FragmentActivity {
     		Log.d("table name:", "name == " + currentFragment.elementName);
     	}
     	else if(currentFragment instanceof FolderFragment){
+    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     		if(currentFragment == topFragment){
     			//now we are on top level and should allow to show the slideout menu
     			//TODO (Pierre): add the SlideoutMenu as an item to the ActionBar
     			//(maybe use an own "R.menu.resource_file"
     			//which contains the button that shall open the slideout-menu)
     			//also todo: tell the button what to do -> show slideout-menu
-    			//then replace the following line
-        		getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
+    			//adapt the following lines (commented out)
+//    			actionBar.setCustomView(R.layout.actionbar_template_generator_back_button);
+//    			ImageButton slideOutButton = (ImageButton) findViewById(R.id.button_back);
+//    			backButton.setOnClickListener(new View.OnClickListener() {
+//    				@Override
+//    				public void onClick(View v) {
+//    					showSlideoutMenu();
+//    				}
+//    			});
+    			
     		}
-    		else{
-    			getMenuInflater().inflate(R.menu.template_generator_table_layout, menu);
-    		}
-    		ActionBar actionBar = getActionBar(); 
-    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    		actionBar.setCustomView(R.layout.actionbar_template_generator);
     		View v = getActionBar().getCustomView();
     	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
     	    ((View) titleTxtView).setOnClickListener(new OnClickListener() {
@@ -290,24 +306,28 @@ public class MainTemplateGenerator extends FragmentActivity {
         	currentFragment.addItemList(index);
         }
         else if (id == R.id.action_go_above) {
-        	if(currentFragment.fragment_parent == null){
-                Log.d("aaa", "es existiert kein Ordner darueber");
-            	Toast.makeText(this, "es existiert kein Ordner darueber", Toast.LENGTH_LONG).show();
-        	}
-        	else{
-                Log.d("aaa", "hiding and showing above");
-        		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
-        		FragmentTransaction fa = getFragmentManager().beginTransaction();
-        		fa.hide(currentFragment);
-//        		fa.add(R.id.main_view_empty, fragment.fragment_parent);
-        		fa.show(currentFragment.fragment_parent);
-        		currentFragment = currentFragment.fragment_parent;
-        		fa.commit();
-        	}
-        	invalidateOptionsMenu();
+        	goAbove();
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    protected void goAbove(){
+    	if(currentFragment.fragment_parent == null){
+            Log.d("aaa", "es existiert kein Ordner darueber");
+        	Toast.makeText(this, "es existiert kein Ordner darueber", Toast.LENGTH_LONG).show();
+    	}
+    	else{
+            Log.d("aaa", "hiding and showing above");
+    		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
+    		FragmentTransaction fa = getFragmentManager().beginTransaction();
+    		fa.hide(currentFragment);
+//    		fa.add(R.id.main_view_empty, fragment.fragment_parent);
+    		fa.show(currentFragment.fragment_parent);
+    		currentFragment = currentFragment.fragment_parent;
+    		fa.commit();
+    	}
+    	invalidateOptionsMenu();
     }
     
     /*

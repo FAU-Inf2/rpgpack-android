@@ -106,9 +106,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         		data.setSelected(itemPosition);
                 if(data.getSelectedText().equals("Ordner")) {
                 	// check if data.text is not empty, so we can use this name
-                	if(data.text.getEditableText().toString().isEmpty()) {
-                		data.text.setText("UFO");
-                	}
+//                	if(data.text.getEditableText().toString().isEmpty()) {
+//                		data.text.setText("Ordner");
+//                	}
                 	holder.text.setText(data.text.getText());
                 	
                 	/*
