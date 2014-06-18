@@ -108,6 +108,9 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	// check if data.text is not empty, so we can use this name
                 	if(data.text.getEditableText().toString().isEmpty()) {
                 		data.text.setText("UFO");
+                		if (data.jacksonTable == null) {
+                			data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
+                		}
                 		data.jacksonTable.tableName = "UFO";
                 	}
                 	holder.text.setText(data.text.getText());
