@@ -99,11 +99,25 @@ public class Table extends AbstractTable{
 	 	}
 	 }
 	 
-	 public void setColumnTitle(int index, String title) {
-		 	if(index >= numberOfColumns) {
-		 		return;
-		 	}
-		 	columnHeaders.get(index).name = title;
+	 /**
+	  * 
+	  * @param index index of column
+	  * @param title new title
+	  * @return true if title changed, false otherwise
+	  */
+	 public boolean setColumnTitle(int index, String title) {
+		if(index >= numberOfColumns) {
+			return false;
+	 	}
+	 	ColumnHeader header = columnHeaders.get(index);
+		Log.d("Table-setColumnTitle", "index:"+index);
+		Log.d("Table-setColumnTitle", "old:"+header.name);
+		Log.d("Table-setColumnTitle", "new:"+title);
+	 	if(!header.name.equals(title)) {
+		 	header.name = title;
+		 	return true;
+		}
+	 	return false;
 	 }	
 	 
 	/*public Table createAndAddNewTable() {

@@ -21,6 +21,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -87,38 +88,42 @@ public class MainTemplateGenerator extends FragmentActivity {
 		  * JACKSON START
 		  */
 		 myActivity = this;
-		 Intent intent = getIntent();
-		 boolean creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
-		 // is a new template created?
-		 if(creationMode) {
-			 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
-			 if(template != null) {
-				 Log.d("MainTemplateGenerator", "Got template in intent!");
-				 template.print();
-				 myTemplate = template;
+		 boolean creationMode = true;
+		 if(savedInstanceState == null) {
+			 Intent intent = getIntent();
+			 creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
+			 // is a new template created?
+			 if(creationMode) {
+				 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
+				 if(template != null) {
+					 Log.d("MainTemplateGenerator", "Got template in intent!");
+					 template.print();
+					 myTemplate = template;
+				 }
+			 } else {
+				 Log.d("MainTemplateGenerator", "Edit mode!");
+				 // we are editing an old one, so load it
+				 //myTemplate = Template.loadFromJSONFile(getApplication(), fileName);
+				 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+				 try {
+					 myTemplate = Template.loadFromJSONFile(getApplication(), templateFileName);
+					 Log.d("MainTemplateGenerator", "Loaded Template");
+				 } catch (JsonParseException | JsonMappingException e) {
+					 e.printStackTrace();
+				 }
+				 catch(IOException e) {
+					 e.printStackTrace();
+				 }
+				 // check if template loaded
+				 if(myTemplate == null) {
+					 // error while loading, so create empty template
+					 // TODO show warning dialog
+					 myTemplate = new Template(new CharacterSheet(new ContainerTable()));
+					 Toast.makeText(getApplication(), "Failed to load Template:"+templateFileName, Toast.LENGTH_SHORT).show();
+				 }
 			 }
-		 } else {
-			 Log.d("MainTemplateGenerator", "Edit mode!");
-			 // we are editing an old one, so load it
-			 //myTemplate = Template.loadFromJSONFile(getApplication(), fileName);
-			 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-			 try {
-				myTemplate = Template.loadFromJSONFile(getApplication(), templateFileName);
-				Log.d("MainTemplateGenerator", "Loaded Template");
-			} catch (JsonParseException | JsonMappingException e) {
-				e.printStackTrace();
-			}
-			catch(IOException e) {
-				 e.printStackTrace();
-			}
-			// check if template loaded
-			if(myTemplate == null) {
-				// error while loading, so create empty template
-				// TODO show warning dialog
-				myTemplate = new Template(new CharacterSheet(new ContainerTable()));
-				Toast.makeText(getApplication(), "Failed to load Template:"+templateFileName, Toast.LENGTH_SHORT).show();
-			}
 		 }
+		 // TODO save in onPause
 		 /*
 		  * JACKSON END
 		  */
@@ -334,7 +339,7 @@ public class MainTemplateGenerator extends FragmentActivity {
      * JACKSON START
      */
     // remove this later if we know our filename
-    public static void saveTemplate() {
+    /*public static void saveTemplate() {
     	saveTemplate("");
     }
     public static void saveTemplate(String filename) {
@@ -348,6 +353,48 @@ public class MainTemplateGenerator extends FragmentActivity {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+    }*/
+    
+    public static void saveTemplateAsync() {
+    	saveTemplateAsync("testTemplate.json");
+    }
+    
+    public static void saveTemplateAsync(String filename) {
+    	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
+    	task.execute(new String[] {filename});
+    }
+    
+    private static class JacksonSaveTemplateTask extends AsyncTask<String, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			if(params.length != 1) {
+				return Boolean.FALSE;
+			}
+			String filename = params[0];
+			try {
+				if( (myActivity != null) && (myTemplate != null) ) {
+					myTemplate.saveToJSON(myActivity, filename);
+					//Log.d("MAIN_TEMPALTE_GENERATOR", "saved Template");
+				}
+			} catch (JsonGenerationException | JsonMappingException e) {
+				e.printStackTrace();
+				return Boolean.FALSE;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return Boolean.FALSE;
+			}	
+			return Boolean.TRUE;
+		}
+    	
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if(!result) {
+				Toast.makeText(myActivity, "Failed to save template!", Toast.LENGTH_LONG).show();
+			}
+			else {
+				Log.d("MainTemplateGenerator", "saved template async");
+			}
 		}
     }
     /*

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
+import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -59,7 +60,14 @@ public class Template implements Parcelable{
 	//TODO vllt unter files/Templates/ speichern
 	public void saveToJSON(Context context, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		File dir;
+		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			dir = Environment.getExternalStorageDirectory();
+		}
+		else {
+			dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		}
+		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
 		if(USE_PRETTY_WRITER) {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
@@ -71,7 +79,14 @@ public class Template implements Parcelable{
 	
 	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		File dir;
+		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			dir = Environment.getExternalStorageDirectory();
+		}
+		else {
+			dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		}
+		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
 		Template template = mapper.readValue(inStream, Template.class);
 		return template;

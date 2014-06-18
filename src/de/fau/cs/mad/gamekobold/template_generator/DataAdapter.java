@@ -11,7 +11,6 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +76,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
     @Override
     public View getView(int viewPosition, View convertView, ViewGroup parent) {
+    	Log.d("GETVIEW","getview-pos:"+viewPosition);
     	final DataHolder data = this.getItem(viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
@@ -109,8 +109,17 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 //                	if(data.text.getEditableText().toString().isEmpty()) {
 //                		data.text.setText("Ordner");
 //                	}
+					if (data.jacksonTable == null) {
+                			data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
+                	}
                 	holder.text.setText(data.text.getText());
-                	
+                	/*if(data.jacksonTable.tableName.isEmpty()) {
+                		data.jacksonTable.tableName = "UFO";
+                		Log.d("ISEMPTY","TRUE");
+                	} 
+                	Log.d("TABLENAME",""+data.jacksonTable.tableName);
+                	data.text.setText(data.jacksonTable.tableName);
+                	holder.text.setText(data.text.getText());*/
                 	/*
                 	 * JACKSON START
                 	 */
@@ -153,7 +162,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonDoSaveOnNextChance = false;
                 		// save template
                 		Log.d("JSON_DATA_ADAPTER", "Container Table -> save template");
-                		MainTemplateGenerator.saveTemplate();                		
+                		MainTemplateGenerator.saveTemplateAsync();                		
                 	}
                 	/*
                 	 * JACKSON END
@@ -228,7 +237,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		data.jacksonTable = null;
                 		// save template
                 		Log.d("JSON_DATA_ADAPTER", "Text -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
                 	/*
                 	 * JACKSON END
@@ -282,7 +291,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 	if(data.jacksonDoSaveOnNextChance) {
                 		data.jacksonDoSaveOnNextChance = false;
                 		Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
 					/*
 					 * JACKSON END
@@ -377,7 +386,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
                 		jacksonTable.removeTable(data.jacksonTable);
                 		data.jacksonTable = null;
                 		Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
-                		MainTemplateGenerator.saveTemplate();
+                		MainTemplateGenerator.saveTemplateAsync();
                 	}
                 	/*
                 	 * JACKSON END

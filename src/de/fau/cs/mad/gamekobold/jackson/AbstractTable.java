@@ -25,6 +25,7 @@ public abstract class AbstractTable {
 	public abstract void print();
 	
 	public AbstractTable() {
+		tableName = "";
 		tableNameTextWatcher = new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -36,9 +37,12 @@ public abstract class AbstractTable {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-			//	Log.d("YEEE", "HAAAAAAAAAAAAAAAAAAAAAAW");
-				tableName = s.toString();
-				MainTemplateGenerator.saveTemplate();
+				//Log.d("AbstractTable", "oldName:\""+tableName+"\"");
+				//Log.d("AbstractTable", "newName:\""+s.toString()+"\"");
+				if(!tableName.equals(s.toString())) {
+					tableName = s.toString();
+					MainTemplateGenerator.saveTemplateAsync();
+				}
 			}
 		};
 	}

@@ -3,9 +3,6 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.color;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
@@ -58,7 +55,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	 * JACKSON START
 	 */
 	Table jacksonTable;
-	boolean jacksonHasBeenInflated = false;
+	boolean jacksonInflateWithData = false;
 	/*
 	 * JACKSON END
 	 */
@@ -147,7 +144,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(0, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -177,7 +174,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(1, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -239,12 +236,12 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		/*
 		 * JACKSON START
 		 */
-		Log.d("TableFragment", "jacksonHasBeenInflated:"+jacksonHasBeenInflated);
+		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
 		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
 		// check if we have inflated the table with some data
 		// BUT also check if we got any saved columns (they are only created if user goes into table!)
 		// so if there are no saved columns or we didn't load any data we add the default columns 
-		if(jacksonHasBeenInflated && (jacksonTableColumnNumber > 0)) {
+		if(jacksonInflateWithData && (jacksonTableColumnNumber > 0)) {
 			
 			// create the right amount of columns
 			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
@@ -274,7 +271,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
-			jacksonHasBeenInflated = false;
+			jacksonInflateWithData = false;
 		}
 		else {
 			// add the 2 default columns
@@ -282,7 +279,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.addColumn(new ColumnHeader("Headline2", StringClass.TYPE_STRING));
 			// save template
 			Log.d("TableFragment", "added default columns");
-			MainTemplateGenerator.saveTemplate();
+			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
 		 * JACKSON END
@@ -552,16 +549,24 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		 */
 		// only add to header cells
 		if(row == headerTable.getChildAt(0)) {
+			// guard. only set column title to default if we are not currently inflating with data
+			if(!jacksonInflateWithData) {
+			jacksonTable.setColumnTitle(((TableRow)headerTable.getChildAt(0)).getChildCount(),
+							"Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+			}
 			oneColumn.addTextChangedListener(new TextWatcher(){
 				// column index for this header cell  !index! no + 1 needed
 				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
 				// callback
 				public void afterTextChanged(Editable s) {
-					if(!jacksonHasBeenInflated) {
-						jacksonTable.setColumnTitle(columnIndex, s.toString());
+					// guard. only set column title if we are not currently inflating with data
+					if(!jacksonInflateWithData) {
+						// only save if the title changed
+						if(jacksonTable.setColumnTitle(columnIndex, s.toString())) {
+							Log.d("TABLE_FRAGMENT", "title changed - save");
+							MainTemplateGenerator.saveTemplateAsync();	
+						}
 					}
-					Log.d("TABLE_FRAGMENT", "title changed - save");
-					MainTemplateGenerator.saveTemplate();
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
@@ -625,11 +630,11 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		/*
 		 *  JACKSON START
 		 */
-		// only add column if were are not loading our inflated data
-		if(!jacksonHasBeenInflated) {
+		// guard. only add column if we are not lnflating with data
+		if(!jacksonInflateWithData) {
 			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 			Log.d("TABLE_FRAGMENT", "added column - save");
-			MainTemplateGenerator.saveTemplate();
+			MainTemplateGenerator.saveTemplateAsync();
 		}
 		/*
 		 *  JACKSON END
@@ -680,11 +685,11 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			/*
 			 *  JACKSON START
 			 */
-			// only remove column if we are not inflating
-			if(!jacksonHasBeenInflated) {
+			// guard. only remove column if we are not currently inflating with data
+			if(!jacksonInflateWithData) {
 				jacksonTable.removeColumn();
 				Log.d("TABLE_FRAGMENT", "removed column - save");
-				MainTemplateGenerator.saveTemplate();
+				MainTemplateGenerator.saveTemplateAsync();
 			}
 			/*
 			 *  JACKSON END
@@ -751,8 +756,10 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	 * JACKSON START
 	 */
 	public void jacksonInflate(Table myTable, Activity activity) {
+		// set table
 		jacksonTable = myTable;
-		jacksonHasBeenInflated = true;
+		// set flag, so tha we are inflating the views with data from jackson model
+		jacksonInflateWithData = true;
 	}
 	/*
 	 * JACKSON END
