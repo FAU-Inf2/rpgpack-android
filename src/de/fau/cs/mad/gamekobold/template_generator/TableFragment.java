@@ -348,12 +348,6 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	        }
 	}
 
-	//adds a new row to the listview
-	@Override
-	protected void addItemList(int selected) {
-		addItemList();
-	}
-	
 	private int getNeededWidth(int columnIndex) {
 		int longestWidth = -1;
 		for (int i = 0; i < headerTable.getChildCount(); i++) {

@@ -4,8 +4,10 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.template_generator.DataHolder.element_type;
 
 import java.io.IOException;
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
@@ -80,21 +82,21 @@ public class FolderFragment extends GeneralFragment {
         createTable.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addItemList(0);
+				addItemList(element_type.table);
 				dialogCreateElement.cancel();
 			}
 		});
         createCollection.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addItemList(1);
+				addItemList(element_type.matrix);
 				dialogCreateElement.cancel();
 			}
 		});
         createFolder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addItemList(2);
+				addItemList(element_type.folder);
 				dialogCreateElement.cancel();
 			}
 		});
@@ -167,37 +169,38 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void addItemList() {
-		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
-		/*
-		 * JACKSON START
-		 */
-		newDataItem.jacksonDoSaveOnNextChance = true;
-		/*
-		 * JACKSON END
-		 */
-		allData.add(newDataItem);
-//		allData.add(0, newDataItem);
-//		dataAdapter.add(newDataItem);
-		dataAdapter.notifyDataSetChanged();
-		final ListView myListView = (ListView) view.findViewById(R.id.listView_items);
-		myListView.post(new Runnable() {
-	        @Override
-	        public void run() {
-	            // Select the last row so it will scroll into view...
-	            myListView.setSelection(dataAdapter.getCount() - 1);
-	        }
-	    });
-//		dataAdapter.add(newDataItem);
-//		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
-//		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-//		listView.setAdapter(dataAdapter);
-		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
+		addItemList(element_type.folder);
+//		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
+//		/*
+//		 * JACKSON START
+//		 */
+//		newDataItem.jacksonDoSaveOnNextChance = true;
+//		/*
+//		 * JACKSON END
+//		 */
+//		allData.add(newDataItem);
+////		allData.add(0, newDataItem);
+////		dataAdapter.add(newDataItem);
+//		dataAdapter.notifyDataSetChanged();
+//		final ListView myListView = (ListView) view.findViewById(R.id.listView_items);
+//		myListView.post(new Runnable() {
+//	        @Override
+//	        public void run() {
+//	            // Select the last row so it will scroll into view...
+//	            myListView.setSelection(dataAdapter.getCount() - 1);
+//	        }
+//	    });
+////		dataAdapter.add(newDataItem);
+////		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
+////		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
+////		listView.setAdapter(dataAdapter);
+//		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 	}
 	
-	public void addItemList(int selected) {
-		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
+	public void addItemList(element_type selected) {
+		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity(), selected);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
-		newDataItem.setSelected(selected);
+//		newDataItem.setSelected(selected);
 		
 		/*
 		 * JACKSON START
@@ -216,6 +219,14 @@ public class FolderFragment extends GeneralFragment {
 		
 		allData.add(newDataItem);
 		dataAdapter.notifyDataSetChanged();
+		final ListView myListView = (ListView) view.findViewById(R.id.listView_items);
+		myListView.post(new Runnable() {
+	        @Override
+	        public void run() {
+	            // Select the last row so it will scroll into view...
+	            myListView.setSelection(dataAdapter.getCount() - 1);
+	        }
+	    });
 
 //		dataAdapter.add(newDataItem);
 //		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
@@ -252,7 +263,9 @@ public class FolderFragment extends GeneralFragment {
 			String[] choices = activity.getResources().getStringArray(R.array.choices);
 			int selected = 0;
 			// create new data holder
-			DataHolder newDataItem = new DataHolder(activity);
+			//XXX: @Benni: ich (Julian) habe das 2. Argument fuer new DataHolder hinzugefuegt
+			//wusste nicht welcher da jetzt richtig waere...
+			DataHolder newDataItem = new DataHolder(activity, element_type.folder);
 			if(subTable.tableName == null) {
 				newDataItem.text.setText("");	
 			}

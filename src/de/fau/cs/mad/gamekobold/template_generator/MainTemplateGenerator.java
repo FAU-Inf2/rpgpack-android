@@ -13,6 +13,7 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.template_generator.DataHolder.element_type;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -303,13 +304,13 @@ public class MainTemplateGenerator extends FragmentActivity {
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         	String[] items = getResources().getStringArray(R.array.choices);
         	int index = Arrays.asList(items).indexOf("Ordner");
-        	currentFragment.addItemList(index);
+        	currentFragment.addItemList();
         }
         else if (id == R.id.action_edit_mode) {
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         	String[] items = getResources().getStringArray(R.array.choices);
         	int index = Arrays.asList(items).indexOf("Ordner");
-        	currentFragment.addItemList(index);
+        	currentFragment.addItemList();
         }
         else if (id == R.id.action_go_above) {
         	goAbove();

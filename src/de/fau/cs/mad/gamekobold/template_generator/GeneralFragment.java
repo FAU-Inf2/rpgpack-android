@@ -17,7 +17,6 @@ public abstract class GeneralFragment extends Fragment {
 	}
 	
 	protected abstract void addItemList();
-	protected abstract void addItemList(int selected);
 
 	public abstract void showDialog();
 

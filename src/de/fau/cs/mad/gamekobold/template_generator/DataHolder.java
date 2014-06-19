@@ -37,13 +37,19 @@ public class DataHolder{
 	protected int ID;
 	protected FolderFragment childFragment;
 	protected TableFragment table;
+	protected element_type type;
+	
+	enum element_type{
+		table, matrix, folder;
+	}
 	
 	static int idCounter = 0;
 //    private DataHolder(Parcel parcel) {
 //        this.selected = parcel.readInt();
 //    }
     
-	public DataHolder(Context parent) {
+	public DataHolder(Context parent, element_type typeOfElement) {
+		type = typeOfElement;
 		myContext = (Activity) parent;
         adapter = ArrayAdapter.createFromResource(parent, R.array.choices, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -118,12 +124,21 @@ public class DataHolder{
         adapter = newAdapter;
     }
 
-    public int getSelected() {
-        return selected;
+    public element_type getSelected() {
+        return type;
     }
     
     public String getSelectedText() {
-        return adapter.getItem(selected).toString();
+    	switch(type){
+    	case folder:
+    		return "Ordner";
+    	case matrix:
+    		return "Matrix";
+    	case table:
+    		return "Tabelle";
+    	}
+    	return "";
+//        return adapter.getItem(selected).toString();
     }
     
     protected void setVisibility(int visibility){
@@ -134,9 +149,9 @@ public class DataHolder{
     	return invisibleTextField.getVisibility();
     }
 
-    public void setSelected(int selectedNow) {
-        this.selected = selectedNow;
-    }
+//    public void setSelected(int selectedNow) {
+//        this.selected = selectedNow;
+//    }
     
     public void setSelected(String type) {
     	for(int i=0 ; i<adapter.getCount() ; ++i){
