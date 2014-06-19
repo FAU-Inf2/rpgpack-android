@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/clickdummy_background"
+    android:gravity="center" >
+
+    <TextView
+        android:id="@+id/choose_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/padding_below_big"
+        android:paddingTop="@dimen/padding_below_big"
+        android:text="Name des Elements:"
+        android:textSize="@dimen/text_xl" />
+
+    <EditText
+        android:id="@+id/enter_name_of_element"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choose_create"
+        android:gravity="center"
+        android:hint="Name"
+        android:paddingBottom="@dimen/padding_below_xxl"
+        android:paddingTop="@dimen/padding_below_big" />
+
+    <TextView
+        android:id="@+id/element_type_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter_name_of_element"
+        android:gravity="center"
+        android:paddingBottom="@dimen/padding_below_big"
+        android:paddingTop="@dimen/padding_below_big"
+        android:text="Typ des Elements:"
+        android:textSize="@dimen/text_xl" />
+
+    <RelativeLayout
+        android:id="@+id/create_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/element_type_selection"
+        android:gravity="center" >
+
+        <ImageButton
+            android:id="@+id/create_table"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:background="@null"
+            android:gravity="left"
+            android:scaleType="fitStart"
+            android:src="@drawable/table_icon" />
+
+        <ImageButton
+            android:id="@+id/create_collection"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_toRightOf="@+id/create_table"
+            android:background="@null"
+            android:gravity="center"
+            android:scaleType="fitStart"
+            android:src="@drawable/collection_icon" />
+
+        <ImageButton
+            android:id="@+id/create_folder"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_toRightOf="@+id/create_collection"
+            android:background="@null"
+            android:gravity="right"
+            android:scaleType="fitStart"
+            android:src="@drawable/folder_icon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_buttons"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/name_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/padding_xxl"
+            android:text="Tabelle" />
+
+        <TextView
+            android:id="@+id/name_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/name_table"
+            android:gravity="center"
+            android:text="Matrix" />
+
+        <TextView
+            android:id="@+id/name_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/name_collection"
+            android:paddingLeft="@dimen/padding_xxl"
+            android:text="Ordner" />
+    </RelativeLayout>
+
+</RelativeLayout>
