@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
-import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@class")
@@ -41,7 +41,7 @@ public abstract class AbstractTable {
 				//Log.d("AbstractTable", "newName:\""+s.toString()+"\"");
 				if(!tableName.equals(s.toString())) {
 					tableName = s.toString();
-					MainTemplateGenerator.saveTemplateAsync();
+					TemplateGeneratorActivity.saveTemplateAsync();
 				}
 			}
 		};

@@ -4,22 +4,18 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
-import de.fau.cs.mad.gamekobold.template_generator.DataHolder.element_type;
+import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 
-import java.io.IOException;
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +23,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,11 +37,11 @@ public class FolderFragment extends GeneralFragment {
 	
 	View view;
 	ListView lView;
-	protected ArrayList<DataHolder> allData;
+	protected ArrayList<FolderElementData> allData;
 	
 	Button buttonAdd;
 	View mainView;
-	DataAdapter dataAdapter;
+	FolderElementAdapter dataAdapter;
 	AlertDialog dialogCreateElement;
 	View dialogViewCreateElement;
 	
@@ -58,11 +50,11 @@ public class FolderFragment extends GeneralFragment {
         super.onCreate(savedInstanceState);
         // nullcheck needed for jackson inflation. creates allData before onCreate is called
         if(allData == null) {
-        	allData = new ArrayList<DataHolder>();
+        	allData = new ArrayList<FolderElementData>();
         }
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
         if(dataAdapter == null) {
-        	dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
+        	dataAdapter = new FolderElementAdapter((TemplateGeneratorActivity)getActivity(), R.layout.initialrow, allData);
         }
         /*
          * JACKSON START
@@ -71,8 +63,8 @@ public class FolderFragment extends GeneralFragment {
         /*
          * JACKSON END
          */
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTemplateGenerator.theActiveActivity);
-        LayoutInflater inflater = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+        LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
         alertDialogBuilder.setView(dialogViewCreateElement);
         alertDialogBuilder.setCancelable(true);
@@ -105,41 +97,17 @@ public class FolderFragment extends GeneralFragment {
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
-//		if(mainView == null){
-			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
-			mainView = view;
-//		}
-//		else{
-//			view = mainView;
-//		}
-//		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
-//		mainView = view;
-		
-		 //set up view of line with add-button
-//      EditText textIn = (EditText)getView().findViewById(R.id.textin);
-//      textIn.setOnKeyListener(new View.OnKeyListener() {
-//
-//          public boolean onKey(View v, int keyCode, KeyEvent event) {
-//              // TODO Auto-generated method stub
-//
-//              if (keyCode == KeyEvent.KEYCODE_ENTER) {
-//                  addItemList();
-//              }
-//              return true;
-//          }
-//      });
-//      note: adapter for spinner item atm not instantiated (probably not needed at all)
-      
-      TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
+		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
+		mainView = view;
+		TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
 		addRowBelow.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-//				addItemList();
+				//				addItemList();
 				dialogCreateElement.show();
 			}
 		});
 		setAddButtonStyle(addRowBelow);
 		
-		//setting up the list view with an item
         lView = (ListView) view.findViewById(R.id.listView_items);
         lView.setAdapter(dataAdapter);
         
@@ -151,10 +119,9 @@ public class FolderFragment extends GeneralFragment {
 		dialogCreateElement.show();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	protected void setAddButtonStyle(TextView text){
-		TableRow.LayoutParams textViewParams = new TableRow.LayoutParams();
-		Display display = getActivity().getWindowManager().getDefaultDisplay();
 		String uri = "@drawable/cell_shape_add_folder";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
@@ -170,38 +137,11 @@ public class FolderFragment extends GeneralFragment {
 	
 	public void addItemList() {
 		addItemList(element_type.folder);
-//		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity());
-//		/*
-//		 * JACKSON START
-//		 */
-//		newDataItem.jacksonDoSaveOnNextChance = true;
-//		/*
-//		 * JACKSON END
-//		 */
-//		allData.add(newDataItem);
-////		allData.add(0, newDataItem);
-////		dataAdapter.add(newDataItem);
-//		dataAdapter.notifyDataSetChanged();
-//		final ListView myListView = (ListView) view.findViewById(R.id.listView_items);
-//		myListView.post(new Runnable() {
-//	        @Override
-//	        public void run() {
-//	            // Select the last row so it will scroll into view...
-//	            myListView.setSelection(dataAdapter.getCount() - 1);
-//	        }
-//	    });
-////		dataAdapter.add(newDataItem);
-////		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
-////		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-////		listView.setAdapter(dataAdapter);
-//		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 	}
 	
 	public void addItemList(element_type selected) {
-		DataHolder newDataItem = new DataHolder((MainTemplateGenerator)getActivity(), selected);
+		FolderElementData newDataItem = new FolderElementData((TemplateGeneratorActivity)getActivity(), selected);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
-//		newDataItem.setSelected(selected);
-		
 		/*
 		 * JACKSON START
 		 */
@@ -211,7 +151,7 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getType() == element_type.folder){
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			MainTemplateGenerator.saveTemplateAsync();
+			TemplateGeneratorActivity.saveTemplateAsync();
 		}
 		/*
 		 * JACKSON END
@@ -227,11 +167,6 @@ public class FolderFragment extends GeneralFragment {
 	            myListView.setSelection(dataAdapter.getCount() - 1);
 	        }
 	    });
-
-//		dataAdapter.add(newDataItem);
-//		ListView listView = (ListView) mainView.findViewById(R.id.listView_items);
-//		dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData.toArray(new DataHolder[allData.size()]));
-//		listView.setAdapter(dataAdapter);
 		Log.d("addItemList","ADD ITEM. now amount == " + allData.size());
 	}
 	
@@ -252,20 +187,21 @@ public class FolderFragment extends GeneralFragment {
 			return;
 		}
 		if(allData == null) {
-			allData = new ArrayList<DataHolder>();
+			allData = new ArrayList<FolderElementData>();
 		}
 		if(dataAdapter == null) {
-			dataAdapter = new DataAdapter(activity, R.layout.initialrow, allData);
+			dataAdapter = new FolderElementAdapter(activity, R.layout.initialrow, allData);
 		}
 		for(final AbstractTable subTable : jacksonTable.subTables) {
 			// check table type
 			// get type id from choice array
-			String[] choices = activity.getResources().getStringArray(R.array.choices);
-			int selected = 0;
+//			String[] choices = activity.getResources().getStringArray(R.array.choices);
+			//XXX: @Benni: ich (Julian) habe das auskommentiert
+//			int selected = 0;
 			// create new data holder
 			//XXX: @Benni: ich (Julian) habe das 2. Argument fuer new DataHolder hinzugefuegt
 			//wusste nicht welcher da jetzt richtig waere...
-			DataHolder newDataItem = new DataHolder(activity, element_type.folder);
+			FolderElementData newDataItem = new FolderElementData(activity, element_type.folder);
 			if(subTable.tableName == null) {
 				newDataItem.text.setText("");	
 			}
@@ -273,12 +209,13 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.text.setText(subTable.tableName);
 			}
 			if(subTable instanceof ContainerTable) {
-				for(final String string : choices) {
-					if(string.equals("Ordner")) {
-						break;
-					}
-					selected++;
-				}
+				//XXX: @Benni: ich (Julian) habe das auskommentiert -> for schleife+inhalt
+//				for(final String string : choices) {
+//					if(string.equals("Ordner")) {
+//						break;
+//					}
+//					selected++;
+//				}
 				// container table				
 				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
 //				newDataItem.selected = selected;
@@ -302,12 +239,13 @@ public class FolderFragment extends GeneralFragment {
 				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
 			else if(subTable instanceof Table) {
-				for(final String string : choices) {
-					if(string.equals("Tabelle")) {
-						break;
-					}
-					selected++;
-				}
+				//XXX: @Benni: ich (Julian) habe das auskommentiert -> for schleife+inhalt
+//				for(final String string : choices) {
+//					if(string.equals("Tabelle")) {
+//						break;
+//					}
+//					selected++;
+//				}
 				// table
 				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
 //				newDataItem.selected = selected;

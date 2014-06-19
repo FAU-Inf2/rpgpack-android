@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    tools:context=".MainTemplateGenerator" >
+    tools:context=".TemplateGeneratorActivity" >
 
     <RelativeLayout
         android:id="@+id/three_buttons"

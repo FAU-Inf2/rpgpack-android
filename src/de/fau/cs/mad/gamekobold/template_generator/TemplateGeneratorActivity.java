@@ -2,8 +2,6 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -13,31 +11,24 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
-import de.fau.cs.mad.gamekobold.template_generator.DataHolder.element_type;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainTemplateGenerator extends FragmentActivity {
+public class TemplateGeneratorActivity extends FragmentActivity {
 	 /*
 	  * JACKSON START
 	  */
@@ -52,8 +43,8 @@ public class MainTemplateGenerator extends FragmentActivity {
 	  */
 	
 //	 private Menu globalMenu;
-	 protected DataAdapter dataAdapter;
-	 protected ArrayList<DataHolder> allData;
+	 protected FolderElementAdapter dataAdapter;
+	 protected ArrayList<FolderElementData> allData;
 	 //the only fragment used till now
 	 GeneralFragment currentFragment;
 	 FolderFragment topFragment;
@@ -238,7 +229,7 @@ public class MainTemplateGenerator extends FragmentActivity {
     		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     		if(currentFragment == topFragment){
     			//now we are on top level and should allow to show the slideout menu
-    			//TODO (Pierre): add the SlideoutMenu as an item to the ActionBar
+    			//TODO (Anna): add the SlideoutMenu as an item to the ActionBar
     			//(maybe use an own "R.menu.resource_file"
     			//which contains the button that shall open the slideout-menu)
     			//also todo: tell the button what to do -> show slideout-menu
@@ -266,7 +257,7 @@ public class MainTemplateGenerator extends FragmentActivity {
     	}
     	else{
     		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
-    		getMenuInflater().inflate(R.menu.main, menu);
+    		getMenuInflater().inflate(R.menu.template_generator_standard, menu);
 //    		Log.d("menu-Creation", "MENU DEFAULT");
     	}
 //        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
@@ -292,25 +283,15 @@ public class MainTemplateGenerator extends FragmentActivity {
             return true;
         }
         else if (id == R.id.action_main) {
-        	Intent startNewActivityOpen = new Intent(MainTemplateGenerator.this, MainTemplateGenerator.class);
+        	Intent startNewActivityOpen = new Intent(TemplateGeneratorActivity.this, TemplateGeneratorActivity.class);
 //        	startNewActivityOpen.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         	startActivityForResult(startNewActivityOpen, 0);
         }
-        else if (id == R.id.action_showlists) {
-        	Intent startNewActivityOpen = new Intent(MainTemplateGenerator.this, ShowLists.class);
-        	startActivityForResult(startNewActivityOpen, 0);
-        }
         else if (id == R.id.action_add_folder) {
-//        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
-        	String[] items = getResources().getStringArray(R.array.choices);
-        	int index = Arrays.asList(items).indexOf("Ordner");
         	currentFragment.addItemList();
         }
         else if (id == R.id.action_edit_mode) {
-//        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
-        	String[] items = getResources().getStringArray(R.array.choices);
-        	int index = Arrays.asList(items).indexOf("Ordner");
-        	currentFragment.addItemList();
+        	
         }
         else if (id == R.id.action_go_above) {
         	goAbove();

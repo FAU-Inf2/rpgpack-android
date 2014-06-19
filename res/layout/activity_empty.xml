@@ -6,6 +6,6 @@
     android:background="@drawable/clickdummy_background"
     android:launchMode="singleInstance"
     android:orientation="vertical"
-    tools:context=".MainTemplateGenerator" >
+    tools:context=".TemplateGeneratorActivity" >
 
 </LinearLayout>

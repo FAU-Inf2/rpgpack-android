@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
-import de.fau.cs.mad.gamekobold.template_generator.DataHolder.element_type;
+import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.util.Log;
@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 
-public class DataAdapter extends ArrayAdapter<DataHolder> {
+public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	/*
 	 * JACKSON START
 	 */
@@ -29,12 +29,12 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 	 */
 	
 	
-	ArrayList<DataHolder> allData;
+	ArrayList<FolderElementData> allData;
 	
 
-	public DataAdapter(Activity context, int textViewResourceId, ArrayList<DataHolder> objects) {
+	public FolderElementAdapter(Activity context, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
-        allData = new ArrayList<DataHolder>();
+        allData = new ArrayList<FolderElementData>();
         allData = objects;
     }
 
@@ -50,7 +50,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 	}
 
 	@Override
-	public DataHolder getItem(int position) {
+	public FolderElementData getItem(int position) {
 	    return allData.get(position);
 	}
 
@@ -61,12 +61,12 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 
     @Override
     public View getView(int viewPosition, View convertView, ViewGroup parent) {
-    	final DataHolder data = this.getItem(viewPosition);
+    	final FolderElementData data = this.getItem(viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
         if (convertView == null) {
             // If it hasn't, set up everything:
-            LayoutInflater inflator = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
+            LayoutInflater inflator = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
             view = inflator.inflate(R.layout.initialrow, null);
             final ViewHolder holder = new ViewHolder();
             holder.elementName = (EditText) view.findViewById(R.id.text);
@@ -124,7 +124,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         		data.jacksonDoSaveOnNextChance = false;
         		// save template
         		Log.d("JSON_DATA_ADAPTER", "Container Table -> save template");
-        		MainTemplateGenerator.saveTemplateAsync();                		
+        		TemplateGeneratorActivity.saveTemplateAsync();                		
         	}
         	/*
         	 * JACKSON END
@@ -134,7 +134,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         		@Override
         		public void onClick(View v) {
         			if(data.childFragment == null) {
-        				FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
+        				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
         				FolderFragment newFragment = new FolderFragment();
 
         				/*
@@ -147,18 +147,19 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         				 * JACKSON END
         				 */
         				fragmentTransaction.add(R.id.main_view_empty, newFragment);
-        				GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
+        				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
         				fragmentTransaction.hide(oldFragment);
+        				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
         				newFragment.fragment_parent = oldFragment;
         				data.childFragment = newFragment;
-        				((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
-        				((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
         			}
         			//fragment already exisits -> show it
         			else{
-        				FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
-        				GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
+        				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+        				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
         				fragmentTransaction.hide(oldFragment);
         				/*
         				 * JACKSON START
@@ -172,9 +173,10 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         				 * JACKSON END
         				 */
         				fragmentTransaction.show(data.childFragment);
-        				((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.childFragment;
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = data.childFragment;
+        				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
-        				((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
         			}
         			data.childFragment.elementName = holder.elementName.getText().toString();
         		}
@@ -228,7 +230,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         	if(data.jacksonDoSaveOnNextChance) {
         		data.jacksonDoSaveOnNextChance = false;
         		Log.d("JSON_DATA_ADAPTER", "Table -> saved template");
-        		MainTemplateGenerator.saveTemplateAsync();
+        		TemplateGeneratorActivity.saveTemplateAsync();
         	}
 			/*
 			 * JACKSON END
@@ -239,7 +241,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 				@Override
 				public void onClick(View v) {
 					if(((TableFragment) data.childFragment) == null) {
-						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
 						TableFragment newFragment = new TableFragment();
 						/*
 						 * JACKSON START
@@ -250,18 +252,19 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 */
 						
 						fragmentTransaction.add(R.id.main_view_empty, newFragment);
-						GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.hide(oldFragment);
+						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
 						newFragment.fragment_parent = oldFragment;
 						data.childFragment = newFragment;
-						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
-						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					//fragment already exisits -> show it
 					else{
-						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
-						GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.hide(oldFragment);
 						/*
 						 * JACKSON START
@@ -275,10 +278,10 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 						 */
 						
 						fragmentTransaction.show(((TableFragment) data.childFragment));
-						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = ((TableFragment) data.childFragment);
-
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((TableFragment) data.childFragment);
+						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
-						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).invalidateOptionsMenu();
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					((TableFragment) data.childFragment).elementName = holder.elementName.getText().toString();
 				}
@@ -294,7 +297,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
         		jacksonTable.removeTable(data.jacksonTable);
         		data.jacksonTable = null;
         		Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
-        		MainTemplateGenerator.saveTemplateAsync();
+        		TemplateGeneratorActivity.saveTemplateAsync();
         	}
         	/*
         	 * JACKSON END

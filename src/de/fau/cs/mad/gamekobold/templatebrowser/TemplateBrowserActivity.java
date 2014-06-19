@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
 
@@ -71,11 +71,11 @@ public class TemplateBrowserActivity extends ListActivity {
 				// JACKSON start : for editing last created template
 				else if(position == adapter.getCount() -2) {
 					Intent intent = new Intent(TemplateBrowserActivity.this,
-							MainTemplateGenerator.class);
+							TemplateGeneratorActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					// flag to distinguish between editing and creating 
-					intent.putExtra(MainTemplateGenerator.MODE_CREATE_NEW_TEMPLATE, false);
-					intent.putExtra(MainTemplateGenerator.EDIT_TEMPLATE_FILE_NAME, "testTemplate.json");
+					intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
+					intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, "testTemplate.json");
 					startActivity(intent);
 				}
 				// JACKSON end

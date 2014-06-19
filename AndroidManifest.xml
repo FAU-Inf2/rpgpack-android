@@ -40,7 +40,7 @@
                 android:value="de.fau.cs.mad.gamekobold.MainActivity" />
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator"
+            android:name="de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity"
             android:label="Root"
             android:theme="@style/template_generator_style" >
             <intent-filter>

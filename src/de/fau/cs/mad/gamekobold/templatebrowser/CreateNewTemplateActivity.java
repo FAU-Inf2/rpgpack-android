@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.Template;
-import de.fau.cs.mad.gamekobold.template_generator.MainTemplateGenerator;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class CreateNewTemplateActivity extends Activity {
 	private Uri imageUri;
@@ -52,7 +52,7 @@ public class CreateNewTemplateActivity extends Activity {
 				android.R.layout.select_dialog_item, items);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle("Bild hinzufügen");
+		builder.setTitle("Bild hinzufï¿½gen");
 		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				if (item == 0) {
@@ -148,14 +148,14 @@ public class CreateNewTemplateActivity extends Activity {
 				// TODO we have to save newTempalte-data!! or it will be lost!
 				
 				Intent intent = new Intent(CreateNewTemplateActivity.this,
-						MainTemplateGenerator.class);
+						TemplateGeneratorActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				
 				/*
 				 * JACKSON START
 				 */
 				// flag to distinguish between editing and creating 
-				intent.putExtra(MainTemplateGenerator.MODE_CREATE_NEW_TEMPLATE, true);
+				intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, true);
 				// create template for data transfer
 				de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data

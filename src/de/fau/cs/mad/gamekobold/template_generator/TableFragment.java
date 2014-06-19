@@ -8,7 +8,7 @@ import de.fau.cs.mad.gamekobold.R.color;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
-import de.fau.cs.mad.gamekobold.template_generator.DataAdapter.ViewHolder;
+import de.fau.cs.mad.gamekobold.template_generator.FolderElementAdapter.ViewHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,8 +71,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTemplateGenerator.theActiveActivity);
-        LayoutInflater inflater = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+        LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
         alertDialogBuilder.setView(dialogViewTableView);
         final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
@@ -131,7 +131,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		// Set the gravity to center the gravity of the column
 //		col1Params.gravity = TableRow.Gravity.CENTER;
-		final ResizingEditText col1 = new ResizingEditText(context, row, this);
+		final EditText col1 = new EditText(context);
 //		col1.setText("Headline1");
 		col1.setHint("Headline1");
 		setHeaderTableStyle(col1);
@@ -144,7 +144,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(0, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplateAsync();
+				TemplateGeneratorActivity.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -163,7 +163,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //		col2Params.width = TableRow.LayoutParams.WRAP_CONTENT;
 		// Set the gravity to center the gravity of the column
 //		col2Params.gravity = Gravity.CENTER;
-		final ResizingEditText col2 = new ResizingEditText(context, row, this);
+		final EditText col2 = new EditText(context);
 		setHeaderTableStyle(col2);
 		col2.setHint("Headline2");
 		col2.addTextChangedListener(new TextWatcher(){
@@ -174,7 +174,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				 */
 				jacksonTable.setColumnTitle(1, s.toString());
 				Log.d("TABLE_FRAGMENT", "title changed - saved");
-				MainTemplateGenerator.saveTemplateAsync();
+				TemplateGeneratorActivity.saveTemplateAsync();
 				/*
 				 *  JACKSON END
 				 */
@@ -279,7 +279,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			jacksonTable.addColumn(new ColumnHeader("Headline2", StringClass.TYPE_STRING));
 			// save template
 			Log.d("TableFragment", "added default columns");
-			MainTemplateGenerator.saveTemplateAsync();
+			TemplateGeneratorActivity.saveTemplateAsync();
 		}
 		/*
 		 * JACKSON END
@@ -296,7 +296,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		if(v instanceof TableRow){
 			contextMenuRow = (TableRow) v;
 		}
-		MenuInflater inflater = MainTemplateGenerator.theActiveActivity.getMenuInflater();
+		MenuInflater inflater = TemplateGeneratorActivity.theActiveActivity.getMenuInflater();
 		inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 	}
 	
@@ -528,7 +528,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected void addColumnToRow(final TableRow row){
-		final ResizingEditText oneColumn = new ResizingEditText(getActivity(), row, this);
+		final EditText oneColumn = new EditText(getActivity());
 		oneColumn.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, oneColumn, row);
@@ -558,7 +558,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 						// only save if the title changed
 						if(jacksonTable.setColumnTitle(columnIndex, s.toString())) {
 							Log.d("TABLE_FRAGMENT", "title changed - save");
-							MainTemplateGenerator.saveTemplateAsync();	
+							TemplateGeneratorActivity.saveTemplateAsync();	
 						}
 					}
 				}
@@ -628,7 +628,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		if(!jacksonInflateWithData) {
 			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 			Log.d("TABLE_FRAGMENT", "added column - save");
-			MainTemplateGenerator.saveTemplateAsync();
+			TemplateGeneratorActivity.saveTemplateAsync();
 		}
 		/*
 		 *  JACKSON END
@@ -683,7 +683,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			if(!jacksonInflateWithData) {
 				jacksonTable.removeColumn();
 				Log.d("TABLE_FRAGMENT", "removed column - save");
-				MainTemplateGenerator.saveTemplateAsync();
+				TemplateGeneratorActivity.saveTemplateAsync();
 			}
 			/*
 			 *  JACKSON END
@@ -930,7 +930,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
 			Log.d("dialog", "add");
-			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
 			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
@@ -940,11 +940,11 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				if(k==2 && i != -1){
 //					DialogSpinnerAdapter<CharSequence> adapter = (DialogSpinnerAdapter<CharSequence>) ArrayAdapter.createFromResource(MainTemplateGenerator.theActiveActivity, R.array.choices, android.R.layout.simple_spinner_item);
 //				    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					Spinner spin = new Spinner(MainTemplateGenerator.theActiveActivity);
+					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
 //					spin.setAdapter(adapter);
 					
 					String [] spin_arry = getResources().getStringArray(R.array.choices);
-					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(MainTemplateGenerator.theActiveActivity, spin_arry));
+					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
 //		        ((Spinner) view.findViewById(R.id.spin)).setOnItemSelectedListener(new OnItemSelectedListener() {
 					theView = spin;
 					setSpinnerStyle(spin);
@@ -969,7 +969,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //					spin.setLayoutParams(spinnerParams);
 				}
 				else{
-					final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
 					setTableStyle((EditText) oneColumn);
 					//				View theText = oneColumn;
 					//				//TODO: how to resize the table if too big?
@@ -1061,7 +1061,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
 			Log.d("dialog", "add");
-			final TableRow row = new TableRow(MainTemplateGenerator.theActiveActivity);
+			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
 			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
@@ -1071,11 +1071,11 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 				if(k==2 && i != -1){
 //					DialogSpinnerAdapter<CharSequence> adapter = (DialogSpinnerAdapter<CharSequence>) ArrayAdapter.createFromResource(MainTemplateGenerator.theActiveActivity, R.array.choices, android.R.layout.simple_spinner_item);
 //				    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					Spinner spin = new Spinner(MainTemplateGenerator.theActiveActivity);
+					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
 //					spin.setAdapter(adapter);
 					
 					String [] spin_arry = getResources().getStringArray(R.array.choices);
-					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(MainTemplateGenerator.theActiveActivity, spin_arry));
+					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
 //		        ((Spinner) view.findViewById(R.id.spin)).setOnItemSelectedListener(new OnItemSelectedListener() {
 					theView = spin;
 					setSpinnerStyle(spin);
@@ -1100,7 +1100,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //					spin.setLayoutParams(spinnerParams);
 				}
 				else{
-					final EditText oneColumn = new EditText(MainTemplateGenerator.theActiveActivity);
+					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
 					setTableStyle((EditText) oneColumn);
 					//				View theText = oneColumn;
 					//				//TODO: how to resize the table if too big?
@@ -1250,7 +1250,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		}
 //		new AdaptColumns().execute(newVal);
 		final int newValue = newVal;
-		MainTemplateGenerator.theActiveActivity.runOnUiThread(new Runner(newVal));
+		TemplateGeneratorActivity.theActiveActivity.runOnUiThread(new Runner(newVal));
 		
 //		setAmountOfColumns(newVal);
 //		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
