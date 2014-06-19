@@ -309,13 +309,24 @@ public class TemplateGeneratorActivity extends FragmentActivity {
             Log.d("aaa", "hiding and showing above");
     		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
     		FragmentTransaction fa = getFragmentManager().beginTransaction();
-    		fa.hide(currentFragment);
+    		fa.detach(currentFragment);
 //    		fa.add(R.id.main_view_empty, fragment.fragment_parent);
-    		fa.show(currentFragment.fragment_parent);
+    		fa.attach(currentFragment.fragment_parent);
     		currentFragment = currentFragment.fragment_parent;
+//    		fa.addToBackStack(name);
     		fa.commit();
     	}
     	invalidateOptionsMenu();
+    }
+    
+    @Override
+    public void onBackPressed(){
+    	FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();  
+        }
     }
     
     /*

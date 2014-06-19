@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/clickdummy_background" >
 
+    <RelativeLayout
+        android:id="@+id/auswahl"
+        android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+        
     <TextView
         android:id="@+id/spaltenanzahl"
         android:layout_width="wrap_content"
@@ -17,12 +22,19 @@
     <NumberPicker
         android:id="@+id/numberPicker1"
         android:layout_toRightOf="@+id/spaltenanzahl"
+        android:paddingBottom="18dp"
         android:layout_width="wrap_content"
-        android:layout_height="80dp" />
+        android:layout_height="wrap_content" />
+    
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/auswahl"
+    android:layout_height="wrap_content">
     <ScrollView
         android:id="@+id/table_scroll"
-        android:layout_below="@+id/numberPicker1"
+        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -33,5 +45,6 @@
             android:orientation="vertical" >
         </TableLayout>
     </ScrollView>
+     </LinearLayout>
 
 </RelativeLayout>

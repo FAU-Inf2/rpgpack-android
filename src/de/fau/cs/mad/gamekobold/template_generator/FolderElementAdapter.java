@@ -148,9 +148,10 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				 */
         				fragmentTransaction.add(R.id.main_view_empty, newFragment);
         				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-        				fragmentTransaction.hide(oldFragment);
+        				fragmentTransaction.detach(oldFragment);
         				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
+    					Log.d("backstack", "backstack filled!");
         				newFragment.fragment_parent = oldFragment;
         				data.childFragment = newFragment;
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
@@ -160,7 +161,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         			else{
         				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
         				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-        				fragmentTransaction.hide(oldFragment);
+        				fragmentTransaction.detach(oldFragment);
         				/*
         				 * JACKSON START
         				 * needed if template is edited, because we can create but we cannot add the fragment during inflation
@@ -172,7 +173,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				/*
         				 * JACKSON END
         				 */
-        				fragmentTransaction.show(data.childFragment);
+        				fragmentTransaction.attach(data.childFragment);
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = data.childFragment;
         				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
@@ -253,7 +254,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						
 						fragmentTransaction.add(R.id.main_view_empty, newFragment);
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-						fragmentTransaction.hide(oldFragment);
+						fragmentTransaction.detach(oldFragment);
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
 						newFragment.fragment_parent = oldFragment;
@@ -265,7 +266,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 					else{
 						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-						fragmentTransaction.hide(oldFragment);
+						fragmentTransaction.detach(oldFragment);
 						/*
 						 * JACKSON START
 						 * needed if template is edited, because we can create but we cannot add the fragment during inflation
@@ -277,7 +278,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						 * JACKSON END
 						 */
 						
-						fragmentTransaction.show(((TableFragment) data.childFragment));
+						fragmentTransaction.attach(((TableFragment) data.childFragment));
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((TableFragment) data.childFragment);
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
@@ -320,4 +321,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         
         return view;
     }
+    
+    
 }

@@ -66,6 +66,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	int amountColumns = 2;
 	AlertDialog dialogTableView;
 	View dialogViewTableView;
+	TableLayout dialogTable;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,11 +75,26 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
         LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
         alertDialogBuilder.setView(dialogViewTableView);
         final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+//        final CustomNumberPicker np = ((CustomNumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
         np.setMaxValue(99);
         np.setMinValue(0);
-        np.setOnValueChangedListener(this);
+        np.setWrapSelectorWheel(false);
+        np.setValue(0);
+//        np.setOnValueChangedListener(this);
+//        np.setOnScrollListener(new NumberPicker.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
+//                if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+//                    //We get the different between oldValue and the new value
+////                	int newVal = numberPicker.getValue();
+////                	adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
+////                    int valueDiff = numberPicker.getValue() - oldValue;
+//                }
+//            }
+//        });
         //		 np.setValue(((TableFragment) currentFragment).amountColumns);
         // set dialog message
         alertDialogBuilder
@@ -86,9 +102,10 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
         .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
         		setAmountOfColumns(np.getValue());
-        		TableLayout otherTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+        		//XXX XXX XXX
+//        		TableLayout otherTable = new TableLayout(getActivity());
 //        		todo
-        		adaptHeaderTable(otherTable);
+        		adaptHeaderTable(dialogTable);
         	}
         })
         .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
@@ -761,12 +778,16 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 
 	@Override
 	public void showDialog() {
+		Log.d("dialog", "SHOWN!!!!");
+
 //		dialogTableView.setTitle(elementName);
-		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
-		np.setValue(amountColumns);
-		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+//		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+//		np.setValue(amountColumns);
+		//XXX XXX
+//		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+//		TableLayout table = new TableLayout(getActivity());
 //		prepareTableForDialog(table);
-		adaptDialogTable(table);
+		adaptDialogTable(dialogTable, 10);
 		dialogTableView.show();
 	}
 	
@@ -911,6 +932,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected void adaptDialogTable(TableLayout dialogTable){
+		Log.d("dialog", "ADAPT!!!!!");
+
 		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
 		//first step: adapt all needed Column-names from headerTable
@@ -1037,6 +1060,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow){
+		dialogTable.removeAllViews();
 		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = rowsToShow;
 		//first step: adapt all needed Column-names from headerTable
@@ -1249,9 +1273,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			return;
 		}
 //		new AdaptColumns().execute(newVal);
-		final int newValue = newVal;
-		TemplateGeneratorActivity.theActiveActivity.runOnUiThread(new Runner(newVal));
-		
+//		final int newValue = newVal;
+//		TemplateGeneratorActivity.theActiveActivity.runOnUiThread(new Runner(newVal));
+//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
 //		setAmountOfColumns(newVal);
 //		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
 	}
