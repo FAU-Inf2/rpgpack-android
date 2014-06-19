@@ -64,6 +64,7 @@ public class MainTemplateGenerator extends FragmentActivity {
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
+		 theActiveActivity = this;
 		 setContentView(R.layout.activity_empty);
 		 
 		 
@@ -175,7 +176,7 @@ public class MainTemplateGenerator extends FragmentActivity {
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");
 //        }
-		 theActiveActivity = this;
+		 
 	 }
 
 

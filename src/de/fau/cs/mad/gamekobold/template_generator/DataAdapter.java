@@ -35,13 +35,11 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 	 */
 	
 	
-//	private Activity MainTemplateGenerator.theActiveActivity;
 	ArrayList<DataHolder> allData;
 	
 
 	public DataAdapter(Activity context, int textViewResourceId, ArrayList<DataHolder> objects) {
 		super(context, textViewResourceId, objects);
-//		MainTemplateGenerator.theActiveActivity = context;
         allData = new ArrayList<DataHolder>();
         allData = objects;
     }
@@ -105,21 +103,10 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
             public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
         		data.setSelected(itemPosition);
                 if(data.getSelectedText().equals("Ordner")) {
-                	// check if data.text is not empty, so we can use this name
-//                	if(data.text.getEditableText().toString().isEmpty()) {
-//                		data.text.setText("Ordner");
-//                	}
 					if (data.jacksonTable == null) {
                 			data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
                 	}
                 	holder.text.setText(data.text.getText());
-                	/*if(data.jacksonTable.tableName.isEmpty()) {
-                		data.jacksonTable.tableName = "UFO";
-                		Log.d("ISEMPTY","TRUE");
-                	} 
-                	Log.d("TABLENAME",""+data.jacksonTable.tableName);
-                	data.text.setText(data.jacksonTable.tableName);
-                	holder.text.setText(data.text.getText());*/
                 	/*
                 	 * JACKSON START
                 	 */
@@ -187,9 +174,7 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 								/*
 								 * JACKSON END
 								 */
-//								fragmentTransaction.repl
 								fragmentTransaction.add(R.id.main_view_empty, newFragment);
-//								((MainTemplateGenerator) getContext()).getApplicationContext().getCurrentActivity();
 								GeneralFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
 								fragmentTransaction.hide(oldFragment);
 								fragmentTransaction.commit();
@@ -306,8 +291,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 							if(data.table == null) {
 								FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
 								TableFragment newFragment = new TableFragment();
-//								newFragment.elementName = holder.text.getText().toString();
-								
 								/*
 								 * JACKSON START
 								 */
@@ -350,29 +333,6 @@ public class DataAdapter extends ArrayAdapter<DataHolder> {
 							data.table.elementName = holder.text.getText().toString();
 						}
                 	});
-                	
-                	
-//                	if(data.table == null){
-//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
-//						TableFragment newFragment = new TableFragment();
-//						fragmentTransaction.add(R.id.main_view_empty, newFragment);
-//						TemplateGeneratorFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
-//						fragmentTransaction.hide(oldFragment);
-//						fragmentTransaction.commit();
-//						newFragment.fragment_parent = oldFragment;
-//						data.table = newFragment;
-//						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = newFragment;
-//					}
-//					//fragment already exisits -> show it
-//					else{
-//						FragmentTransaction fragmentTransaction = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).getFragmentManager().beginTransaction();
-//						TableFragment oldFragment = ((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment;
-//						fragmentTransaction.hide(oldFragment);
-//						fragmentTransaction.show(data.childFragment);
-//						((MainTemplateGenerator) MainTemplateGenerator.theActiveActivity).currentFragment = data.childFragment;
-//						fragmentTransaction.commit();
-//				        Log.d("data", "data child NOT null!");
-//					}
                 }
                 else{
                 	data.setVisibility(View.GONE);

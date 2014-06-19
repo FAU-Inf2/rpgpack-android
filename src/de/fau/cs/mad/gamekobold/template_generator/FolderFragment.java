@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 //import android.support.v4.app.Fragment;
@@ -21,9 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +47,9 @@ public class FolderFragment extends GeneralFragment {
 	
 	Button buttonAdd;
 	View mainView;
-//	FolderFragment fragment_parent = null;
-//	ArrayList<TemplateGeneratorFragment> children = new ArrayList<>();
 	DataAdapter dataAdapter;
-	//TODO: add relations to other fragments -> e.g. parent to go back to
+	AlertDialog dialogCreateElement;
+	View dialogViewCreateElement;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +58,6 @@ public class FolderFragment extends GeneralFragment {
         if(allData == null) {
         	allData = new ArrayList<DataHolder>();
         }
-//      DataHolder data1 = new DataHolder((MainTemplateGenerator)getActivity());
-//      allData.add(data1);
-//      DataHolder data2 = new DataHolder((MainTemplateGenerator)getActivity());
-//      allData.add(data2);
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
         if(dataAdapter == null) {
         	dataAdapter = new DataAdapter((MainTemplateGenerator)getActivity(), R.layout.initialrow, allData);
@@ -70,6 +69,36 @@ public class FolderFragment extends GeneralFragment {
         /*
          * JACKSON END
          */
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTemplateGenerator.theActiveActivity);
+        LayoutInflater inflater = MainTemplateGenerator.theActiveActivity.getLayoutInflater();
+        dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
+        alertDialogBuilder.setView(dialogViewCreateElement);
+        alertDialogBuilder.setCancelable(true);
+        ImageButton createTable = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_table);
+        ImageButton createCollection= (ImageButton) dialogViewCreateElement.findViewById(R.id.create_collection);
+        ImageButton createFolder = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_folder);
+        createTable.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addItemList(0);
+				dialogCreateElement.cancel();
+			}
+		});
+        createCollection.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addItemList(1);
+				dialogCreateElement.cancel();
+			}
+		});
+        createFolder.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addItemList(2);
+				dialogCreateElement.cancel();
+			}
+		});
+        dialogCreateElement = alertDialogBuilder.create();
     }
 	
 	@Override
@@ -102,7 +131,8 @@ public class FolderFragment extends GeneralFragment {
       TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
 		addRowBelow.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				addItemList();
+//				addItemList();
+				dialogCreateElement.show();
 			}
 		});
 		setAddButtonStyle(addRowBelow);
@@ -113,6 +143,11 @@ public class FolderFragment extends GeneralFragment {
         
         return view;
     }
+	
+	@Override
+	public void showDialog() {
+		dialogCreateElement.show();
+	}
 	
 	@SuppressLint("NewApi")
 	protected void setAddButtonStyle(TextView text){
@@ -281,9 +316,4 @@ public class FolderFragment extends GeneralFragment {
 	/*
 	 * JACKSON END
 	 */
-
-	@Override
-	public void showDialog() {
-		// TODO Auto-generated method stub
-	}
 }
