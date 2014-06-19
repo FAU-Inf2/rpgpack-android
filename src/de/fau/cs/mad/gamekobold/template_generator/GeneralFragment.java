@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.util.ArrayList;
 
+import de.fau.cs.mad.gamekobold.jackson.Table;
 import android.app.Fragment;
 
 public abstract class GeneralFragment extends Fragment {

@@ -209,7 +209,7 @@ public class FolderFragment extends GeneralFragment {
 		// we do it here because if the new created item is not visible it would not
 		// be saved
 		// newDataItem.jacksonDoSaveOnNextChance = true;
-		if(newDataItem.getSelectedText().equals("Ordner")) {
+		if(newDataItem.getType() == element_type.folder){
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			MainTemplateGenerator.saveTemplateAsync();
 		}
@@ -280,7 +280,9 @@ public class FolderFragment extends GeneralFragment {
 					selected++;
 				}
 				// container table				
-				newDataItem.selected = selected;
+				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
+//				newDataItem.selected = selected;
+				newDataItem.type = element_type.folder;
 				// add data holder to adapter
 				allData.add(newDataItem);
 				dataAdapter.notifyDataSetChanged();
@@ -290,14 +292,14 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment = new FolderFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
-				newDataItem.childFragment.jacksonTable = (ContainerTable)subTable;
+				((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
 				// not working this way
 				/*FragmentManager fragmentManager = activity.getFragmentManager();
 				FragmentTransaction transaction = fragmentManager.beginTransaction();
 				// add and commit fragment
 				transaction.add(R.id.main_view_empty, newDataItem.childFragment).commit();*/
 				// call recursive
-				newDataItem.childFragment.inflateWithJacksonData((ContainerTable)subTable, activity);
+				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
 			else if(subTable instanceof Table) {
 				for(final String string : choices) {
@@ -307,17 +309,19 @@ public class FolderFragment extends GeneralFragment {
 					selected++;
 				}
 				// table
-				newDataItem.selected = selected;
+				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
+//				newDataItem.selected = selected;
+				newDataItem.type = element_type.folder;
 				// add data holder to adapter
 				allData.add(newDataItem);
 				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
 				// create fragment
-				newDataItem.table = new TableFragment();
-				newDataItem.table.elementName = subTable.tableName;
-				newDataItem.table.fragment_parent = this;
-				newDataItem.table.jacksonInflate((Table)subTable, activity);
+				newDataItem.childFragment = new TableFragment();
+				newDataItem.childFragment.elementName = subTable.tableName;
+				newDataItem.childFragment.fragment_parent = this;
+				((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);
 				// not working this way
 				/*FragmentManager fragmentManager = activity.getFragmentManager();
 				FragmentTransaction transaction = fragmentManager.beginTransaction();
