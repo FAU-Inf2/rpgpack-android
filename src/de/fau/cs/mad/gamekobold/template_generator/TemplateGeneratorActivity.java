@@ -2,19 +2,19 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.*;
-import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
-import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -82,6 +82,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		  */
 		 myActivity = this;
 		 boolean creationMode = true;
+		 CountDownLatch countDownLatch = null;
 		 if(savedInstanceState == null) {
 			 Intent intent = getIntent();
 			 creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
@@ -96,9 +97,19 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 } else {
 				 Log.d("MainTemplateGenerator", "Edit mode!");
 				 // we are editing an old one, so load it
-				 //myTemplate = Template.loadFromJSONFile(getApplication(), fileName);
+				 // get file name
 				 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-				 try {
+				 // create new async task
+				 jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
+				 // set field
+				 task.generatorActivity = this;
+				 // create the CountDownLatch and set its counter to 1
+				 countDownLatch = new CountDownLatch(1);
+				 // set countDownLatch
+				 task.countDownLatch = countDownLatch;
+				 // start
+				 task.execute(templateFileName);
+				 /*try {
 					 myTemplate = Template.loadFromJSONFile(getApplication(), templateFileName);
 					 Log.d("MainTemplateGenerator", "Loaded Template");
 				 } catch (JsonParseException | JsonMappingException e) {
@@ -113,7 +124,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 					 // TODO show warning dialog
 					 myTemplate = new Template(new CharacterSheet(new ContainerTable()));
 					 Toast.makeText(getApplication(), "Failed to load Template:"+templateFileName, Toast.LENGTH_SHORT).show();
-				 }
+				 }*/
 			 }
 		 }
 		 // TODO save in onPause
@@ -135,14 +146,19 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 /*
 			  * JACKSON START
 			  */
-			 ((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
-			 // are we editing a template?
-			 if(!creationMode) {
+			 // if we are creating a new one, a template has been already created.
+			 // So we set the jackson table
+			 // if we are editing a template, the async task will set the table and start inflation
+			 if(creationMode) {
+				 ((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+			 }
+			 /*// are we editing a template?
+			 else {
 				// for editing : recreate fragment structure and all adapter data
 				// inflate fragments recursive
 				Log.d("MainTemplateGenerator", "EDIT MODE!");
-				((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
-			 }
+			//	((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
+			 }*/
 			 /*
 			  * JACKSON END
 			  */
@@ -168,7 +184,17 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");
 //        }
-		 
+		 /*
+		  * JACKSON START
+		  */
+		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
+		 // onCreate finishes
+		 if(countDownLatch != null) {
+			countDownLatch.countDown();
+		 }
+		 /*
+		  * JACKSON END
+		  */
 	 }
 
 
@@ -349,6 +375,10 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			e.printStackTrace();
 		}
     }*/
+    public void inflate() {
+    	((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+   	 	((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
+    }
     
     public static void saveTemplateAsync() {
     	saveTemplateAsync("testTemplate.json");
@@ -388,6 +418,88 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			}
 			else {
 				Log.d("MainTemplateGenerator", "saved template async");
+			}
+		}
+    }
+    
+    /**
+     * Class for loading a template asynchronously. Shows a ProgressDialog, waits for the activity to finish creation
+     * and then inflates it with the loaded data. The ProgessDialog is automatically closed when the whole loading
+     * process has finished.
+     * ! You have to manually set the fields "generator" and "countDownLatch"! 
+     * @author fortysix
+     */
+    private class jacksonLoadTemplateAsync extends AsyncTask<String, Void, Template> {
+    	private ProgressDialog pd;
+    	
+    	public TemplateGeneratorActivity generatorActivity;
+    	public CountDownLatch countDownLatch;
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		if(generatorActivity == null || countDownLatch == null) {
+    			return;
+    		}
+    		pd = new ProgressDialog(myActivity);
+    		pd.setTitle("Loading Template...");
+    		pd.setMessage("Please wait...");
+    		pd.setCancelable(false);
+    		pd.setIndeterminate(true);
+    		pd.show();
+    	}
+    	
+		@Override
+		protected Template doInBackground(String... params) {
+    		if(generatorActivity == null || countDownLatch == null) {
+    			return null;
+    		}
+			final String FILE_NAME = params[0];
+			Template template = null;
+			try {
+				template = Template.loadFromJSONFile(generatorActivity, FILE_NAME);
+				for(int i = 0; i < 12; i++) {
+					Thread.sleep(200);
+				}
+			} catch (JsonParseException | JsonMappingException e) {
+				return null;
+			}
+			catch (IOException e) {
+				return null;
+			} catch (InterruptedException e) {
+				return null;
+			}
+			return template;
+		}
+		
+		@Override
+		protected void onPostExecute(Template result) {
+			// wrong set up
+			if(generatorActivity == null || countDownLatch == null) {
+				if(pd != null){
+					pd.dismiss();
+				}
+				return;
+			}
+			// no result
+			if(result == null) {
+				Toast.makeText(generatorActivity, "Failed to load template", Toast.LENGTH_LONG).show();
+				if(pd != null){
+					pd.dismiss();
+				}
+				return;
+			}
+			myTemplate = result;
+			try {
+				countDownLatch.await();
+			} catch (InterruptedException e) {
+				if(pd != null){
+					pd.dismiss();
+				}
+				return;
+			}
+			generatorActivity.inflate();
+			if(pd != null){
+				pd.dismiss();
 			}
 		}
     }
