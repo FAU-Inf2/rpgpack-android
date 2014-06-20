@@ -415,9 +415,12 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			Template template = null;
 			try {
 				template = Template.loadFromJSONFile(generatorActivity, FILE_NAME);
+				// TODO this is just for test purpose
+				// remove this later!
 				for(int i = 0; i < 12; i++) {
 					Thread.sleep(200);
 				}
+				//
 			} catch (JsonParseException | JsonMappingException e) {
 				return null;
 			}
