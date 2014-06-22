@@ -153,6 +153,12 @@ public class FolderFragment extends GeneralFragment {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
 			TemplateGeneratorActivity.saveTemplateAsync();
 		}
+		else if(newDataItem.getType() == element_type.table) {
+			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewTable();
+		}
+		else if(newDataItem.getType() == element_type.matrix) {
+			
+		}
 		/*
 		 * JACKSON END
 		 */

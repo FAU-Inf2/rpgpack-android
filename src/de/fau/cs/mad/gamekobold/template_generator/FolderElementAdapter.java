@@ -2,12 +2,14 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	static class ViewHolder {
 		EditText elementName;
 		protected View row;
+		TextWatcher jacksonTableNameChangeWatcher = null;
 	}
 	
 	@Override
@@ -78,15 +81,17 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         final ViewHolder holder = (ViewHolder) view.getTag();
         if(data.type == element_type.folder){
-        	if (data.jacksonTable == null) {
+        	Log.d("folder","viewpos:"+viewPosition+" convertView:"+convertView+" parten:"+parent);
+        	/*if (data.jacksonTable == null) {
         		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
-        	}
-        	holder.elementName.setText(data.text.getText());
+        	}*/
+        	//data.text.setText(data.jacksonTable.tableName);
+        //	holder.elementName.setText(data.text.getText());
         	/*
         	 * JACKSON START
         	 */
         	// we changed type to folder, so check if childFragment exists
-        	if(data.childFragment == null) {
+        	/*if(data.childFragment == null) {
         		// if it does not exist we check if we already have created a container table
         		// if not we create a new one
         		// when the user clicks on the row we attach the table to the fragment
@@ -114,9 +119,11 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         			Log.d("JSON_DATA_ADAPTER", "replaced container table");
         			data.jacksonDoSaveOnNextChance = true;
         		}
-        	}
+        	}*/
         	// TODO noch mal schauen ob man das net wo anders hinpacken kann
-        	holder.elementName.addTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+        	//holder.elementName.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+        	//holder.elementName.addTextChangedListener(data.jacksonTable.tableNameTextWatcher);
+        	
 
         	// onItemSelected gets called when setting data while loading a template. use this flag to eliminate
         	// saving bug ( template is saved when data gets added)
@@ -187,6 +194,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 			/*
 			 * JACKSON START
 			 */
+        	/*
         	if(data.childFragment == null){	
            		// if it does not exist we check if we already have created a table
         		// if not we create a new one
@@ -196,10 +204,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         			jacksonTable.removeTable(data.jacksonTable);
         			data.jacksonTable = jacksonTable.createAndAddNewTable();
         			//set table header
-        			/*ColumnHeader[] headers = { 
-        					new ColumnHeader("spalte1", StringClass.TYPE_STRING),
-        					new ColumnHeader("spalte2", StringClass.TYPE_STRING),
-        			};*/
         			//((Table)data.jacksonTable).columnHeaders = new ArrayList<ColumnHeader>(Arrays.asList(headers)) ;
         			//set table column number
         			//((Table)data.jacksonTable).numberOfColumns = 2;
@@ -226,7 +230,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         		}
 			}
 			holder.elementName.addTextChangedListener(data.jacksonTable.tableNameTextWatcher);
-        	
+        	*/
         	// save template
         	if(data.jacksonDoSaveOnNextChance) {
         		data.jacksonDoSaveOnNextChance = false;
@@ -288,10 +292,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				}
         	});
         }
-        else{
-        	/*
-        	 * JACKSON START
-        	 */
+        /*else{
         	// if a table was attached then remove it because we are no longer a folder nor table
         	if(data.jacksonTable != null) {
         		holder.elementName.removeTextChangedListener(data.jacksonTable.tableNameTextWatcher);
@@ -300,10 +301,38 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         		Log.d("JSON_DATA_ADAPTER", "Else -> saved template");
         		TemplateGeneratorActivity.saveTemplateAsync();
         	}
-        	/*
-        	 * JACKSON END
-        	 */
+        }*/
+        /*
+         * JACKSON START
+         */
+        // check if we are converting a view
+        if(convertView != null) {
+        	// if so we need to remove the old TextWatcher
+        	holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
+        	Log.d("TableNameChangeWatcher", "convert View");
         }
+        // set view.elementName according to data
+        holder.elementName.setText(data.text.getText());
+        // add TextWatcher
+        holder.elementName.addTextChangedListener(data.nameChangeWatcher);
+        // save which TextWatcher is currently added. needed for removal
+        holder.jacksonTableNameChangeWatcher = data.nameChangeWatcher;
+        Log.d("TableNameChangeWatcher", "set watcher");
+        /*if(holder.jacksonTableNameChangeWatcher != data.jacksonTable.tableNameTextWatcher) {
+    		Log.d("nameWatcher"," != ");
+    		Log.d("nameWatcher", "for:"+data.jacksonTable);
+    		Log.d("nameWatcher", "for:"+holder.elementName);
+    		if(holder.jacksonTableNameChangeWatcher != null) {
+    			holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
+    			Log.d("nameWatcher","removed:"+holder.jacksonTableNameChangeWatcher);
+    		}
+			holder.jacksonTableNameChangeWatcher = data.jacksonTable.tableNameTextWatcher;
+    		holder.elementName.addTextChangedListener(holder.jacksonTableNameChangeWatcher);
+    		Log.d("nameWatcher","added:"+holder.jacksonTableNameChangeWatcher);
+    	}*/
+        /*
+         * JACKSON END
+         */
         //set image left of the element
         ImageView elementSymbol = (ImageView) view.findViewById(R.id.element_symbol);
         switch (this.getItem(viewPosition).getType()){
@@ -317,7 +346,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         	elementSymbol.setImageResource(R.drawable.collection_icon);
         	break;
         }
-        holder.elementName.setText(data.text.getText());
+        //holder.elementName.setText(data.text.getText());
         
         return view;
     }

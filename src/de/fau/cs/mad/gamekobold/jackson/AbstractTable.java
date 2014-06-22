@@ -17,8 +17,8 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 @JsonSubTypes({ @Type(value = Table.class, name = "table"), @Type(value = ContainerTable.class, name = "containertable") })
 public abstract class AbstractTable {
 	// TODO anstatt hier den table watcher vllt irgendwie im GeneralFragment eine setTitle funktion und dort mit einbringen
-	@JsonIgnore
-	public TextWatcher tableNameTextWatcher;
+	//@JsonIgnore
+	//public TextWatcher tableNameTextWatcher;
 	
 	public String tableName;
 	
@@ -26,7 +26,7 @@ public abstract class AbstractTable {
 	
 	public AbstractTable() {
 		tableName = "";
-		tableNameTextWatcher = new TextWatcher() {
+		/*tableNameTextWatcher = new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 			}
@@ -37,13 +37,12 @@ public abstract class AbstractTable {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				//Log.d("AbstractTable", "oldName:\""+tableName+"\"");
-				//Log.d("AbstractTable", "newName:\""+s.toString()+"\"");
+				Log.d("AbstractTable", "oldName:\""+tableName+"\" newName:\""+s.toString()+"\"");
 				if(!tableName.equals(s.toString())) {
 					tableName = s.toString();
 					TemplateGeneratorActivity.saveTemplateAsync();
 				}
 			}
-		};
+		};*/
 	}
 }
