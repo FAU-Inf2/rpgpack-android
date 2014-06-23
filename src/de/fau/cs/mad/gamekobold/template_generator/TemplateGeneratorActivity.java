@@ -12,6 +12,7 @@ import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -313,10 +314,12 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
     		FragmentTransaction fa = getFragmentManager().beginTransaction();
     		fa.detach(currentFragment);
+    		currentFragment.fragment_parent.backStackElement = currentFragment;
 //    		fa.add(R.id.main_view_empty, fragment.fragment_parent);
     		fa.attach(currentFragment.fragment_parent);
     		currentFragment = currentFragment.fragment_parent;
 //    		fa.addToBackStack(name);
+    		fa.addToBackStack(null);
     		fa.commit();
     	}
     	invalidateOptionsMenu();
@@ -327,9 +330,17 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	FragmentManager fm = getFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
+            currentFragment = currentFragment.backStackElement;
         } else {
-            super.onBackPressed();  
+        	DialogFragment dialog = WarningLeaveDialog.newInstance();
+        	dialog.show(fm, "");
+//            super.onBackPressed();  
         }
+        invalidateOptionsMenu();
+    }
+    
+    protected void superBackPressed(){
+    	super.onBackPressed();
     }
     
     /*

@@ -156,6 +156,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				fragmentTransaction.add(R.id.main_view_empty, newFragment);
         				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
         				fragmentTransaction.detach(oldFragment);
+        				newFragment.backStackElement = oldFragment;
         				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
     					Log.d("backstack", "backstack filled!");
@@ -169,6 +170,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
         				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
         				fragmentTransaction.detach(oldFragment);
+        				data.childFragment.backStackElement = oldFragment;
         				/*
         				 * JACKSON START
         				 * needed if template is edited, because we can create but we cannot add the fragment during inflation
@@ -259,6 +261,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						fragmentTransaction.add(R.id.main_view_empty, newFragment);
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.detach(oldFragment);
+						newFragment.backStackElement = oldFragment;
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
 						newFragment.fragment_parent = oldFragment;
@@ -283,6 +286,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						 */
 						
 						fragmentTransaction.attach(((TableFragment) data.childFragment));
+						data.childFragment.backStackElement = oldFragment;
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((TableFragment) data.childFragment);
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
