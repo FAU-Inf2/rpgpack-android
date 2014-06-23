@@ -151,14 +151,14 @@ public class FolderFragment extends GeneralFragment {
 		// newDataItem.jacksonDoSaveOnNextChance = true;
 		if(newDataItem.getType() == element_type.folder){
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewContainerTable();
-			TemplateGeneratorActivity.saveTemplateAsync();
 		}
 		else if(newDataItem.getType() == element_type.table) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewTable();
 		}
 		else if(newDataItem.getType() == element_type.matrix) {
-			
+			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewMatrixTable();
 		}
+		TemplateGeneratorActivity.saveTemplateAsync();
 		/*
 		 * JACKSON END
 		 */

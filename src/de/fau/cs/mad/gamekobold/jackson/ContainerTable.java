@@ -37,8 +37,17 @@ public class ContainerTable extends AbstractTable{
 		return table;
 	}
 	
+	public MatrixTable createAndAddNewMatrixTable() {
+		if(subTables == null) {
+			subTables = new ArrayList<AbstractTable>();
+		}
+		MatrixTable table = new MatrixTable();
+		subTables.add(table);
+		return table;		
+	}
+	
 	// not nec needed
-	public ContainerTable replaceAndCreateNewContainerTable(AbstractTable table) {
+	/*public ContainerTable replaceAndCreateNewContainerTable(AbstractTable table) {
 		if(removeTable(table)) {
 			return createAndAddNewContainerTable();
 		}
@@ -50,7 +59,7 @@ public class ContainerTable extends AbstractTable{
 			return createAndAddNewTable();
 		}
 		return null;
-	}
+	}*/
 		
 	// needs to be null pointer safe!
 	public boolean removeTable(AbstractTable table) {

@@ -14,7 +14,9 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@class")
-@JsonSubTypes({ @Type(value = Table.class, name = "table"), @Type(value = ContainerTable.class, name = "containertable") })
+@JsonSubTypes({ @Type(value = Table.class, name = "table"),
+				@Type(value = ContainerTable.class, name = "containertable"),
+				@Type(value = MatrixTable.class, name ="matrixtable")})
 public abstract class AbstractTable {
 	// TODO anstatt hier den table watcher vllt irgendwie im GeneralFragment eine setTitle funktion und dort mit einbringen
 	//@JsonIgnore

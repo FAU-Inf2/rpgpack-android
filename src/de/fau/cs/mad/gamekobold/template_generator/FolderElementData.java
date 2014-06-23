@@ -41,7 +41,6 @@ public class FolderElementData{
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			@Override
 			public void afterTextChanged(Editable s) {
-				// temp fix for missing matrix table
 				if(jacksonTable == null) {
 					return;
 				}
