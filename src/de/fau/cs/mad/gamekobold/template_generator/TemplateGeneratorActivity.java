@@ -91,9 +91,12 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 if(creationMode) {
 				 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
 				 if(template != null) {
-					 Log.d("MainTemplateGenerator", "Got template in intent!");
+					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
 					 template.print();
 					 myTemplate = template;
+				 }
+				 else {
+					 //TODO show error?!
 				 }
 			 } else {
 				 Log.d("MainTemplateGenerator", "Edit mode!");

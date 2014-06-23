@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 
@@ -55,14 +56,14 @@ public class FolderFragment extends GeneralFragment {
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
         if(dataAdapter == null) {
         	dataAdapter = new FolderElementAdapter((TemplateGeneratorActivity)getActivity(), R.layout.initialrow, allData);
+            /*
+             * JACKSON START
+             */
+            dataAdapter.jacksonTable = jacksonTable;
+            /*
+             * JACKSON END
+             */
         }
-        /*
-         * JACKSON START
-         */
-        dataAdapter.jacksonTable = jacksonTable;
-        /*
-         * JACKSON END
-         */
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
         LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
@@ -189,46 +190,34 @@ public class FolderFragment extends GeneralFragment {
 	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
 		// set jackson table for this fragment
 		jacksonTable = myTable;
+		// check if there are any sub tables in this folder
 		if(myTable.subTables == null) {
 			return;
 		}
+		// initialize fields for this FolderFragment, so we can add data
 		if(allData == null) {
 			allData = new ArrayList<FolderElementData>();
 		}
 		if(dataAdapter == null) {
 			dataAdapter = new FolderElementAdapter(activity, R.layout.initialrow, allData);
+			dataAdapter.jacksonTable = jacksonTable;
 		}
+		// add data
 		for(final AbstractTable subTable : jacksonTable.subTables) {
-			// check table type
-			// get type id from choice array
-//			String[] choices = activity.getResources().getStringArray(R.array.choices);
-			//XXX: @Benni: ich (Julian) habe das auskommentiert
-//			int selected = 0;
-			// create new data holder
-			//XXX: @Benni: ich (Julian) habe das 2. Argument fuer new DataHolder hinzugefuegt
-			//wusste nicht welcher da jetzt richtig waere...
-			FolderElementData newDataItem = new FolderElementData(activity, element_type.folder);
-			if(subTable.tableName == null) {
-				newDataItem.text.setText("");	
-			}
-			else {
-				newDataItem.text.setText(subTable.tableName);
-			}
+			FolderElementData newDataItem;
+			// switch type if sub table
 			if(subTable instanceof ContainerTable) {
-				//XXX: @Benni: ich (Julian) habe das auskommentiert -> for schleife+inhalt
-//				for(final String string : choices) {
-//					if(string.equals("Ordner")) {
-//						break;
-//					}
-//					selected++;
-//				}
-				// container table				
-				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
-//				newDataItem.selected = selected;
-				newDataItem.type = element_type.folder;
+				// create new folder element
+				newDataItem = new FolderElementData(activity, element_type.folder);
+				// set its name
+				if(subTable.tableName == null) {
+					newDataItem.text.setText("");	
+				}
+				else {
+					newDataItem.text.setText(subTable.tableName);
+				}
 				// add data holder to adapter
 				allData.add(newDataItem);
-				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
 				// create fragment
@@ -236,29 +225,21 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
 				((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
-				// not working this way
-				/*FragmentManager fragmentManager = activity.getFragmentManager();
-				FragmentTransaction transaction = fragmentManager.beginTransaction();
-				// add and commit fragment
-				transaction.add(R.id.main_view_empty, newDataItem.childFragment).commit();*/
 				// call recursive
 				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
 			else if(subTable instanceof Table) {
-				//XXX: @Benni: ich (Julian) habe das auskommentiert -> for schleife+inhalt
-//				for(final String string : choices) {
-//					if(string.equals("Tabelle")) {
-//						break;
-//					}
-//					selected++;
-//				}
-				// table
-				//XXX: @Benni: ich (Julian) habe das geaendert (auskommentiert steht da der vorige Code)
-//				newDataItem.selected = selected;
-				newDataItem.type = element_type.folder;
+				// create new folder element
+				newDataItem = new FolderElementData(activity, element_type.table);
+				// set its name
+				if(subTable.tableName == null) {
+					newDataItem.text.setText("");	
+				}
+				else {
+					newDataItem.text.setText(subTable.tableName);
+				}
 				// add data holder to adapter
 				allData.add(newDataItem);
-				dataAdapter.notifyDataSetChanged();
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
 				// create fragment
@@ -266,12 +247,29 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
 				((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);
-				// not working this way
-				/*FragmentManager fragmentManager = activity.getFragmentManager();
-				FragmentTransaction transaction = fragmentManager.beginTransaction();
-				// add and commit fragment
-				transaction.add(R.id.main_view_empty, newDataItem.table).commit();*/
 			}
+			else if(subTable instanceof MatrixTable) {
+				// create new folder element
+				newDataItem = new FolderElementData(activity, element_type.matrix);
+				// set its name
+				if(subTable.tableName == null) {
+					newDataItem.text.setText("");	
+				}
+				else {
+					newDataItem.text.setText(subTable.tableName);
+				}
+				// add data holder to adapter
+				allData.add(newDataItem);
+				// set data holder jackson Table
+				newDataItem.jacksonTable = subTable;
+				// create fragment
+				// TODO add matrix inflation
+				/*newDataItem.childFragment = new TableFragment();
+				newDataItem.childFragment.elementName = subTable.tableName;
+				newDataItem.childFragment.fragment_parent = this;
+				((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);*/
+			}
+			dataAdapter.notifyDataSetChanged();
 		}
 	}
 	/*

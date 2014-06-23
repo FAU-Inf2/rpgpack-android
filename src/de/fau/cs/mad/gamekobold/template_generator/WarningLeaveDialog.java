@@ -32,13 +32,20 @@ public class WarningLeaveDialog extends DialogFragment{
 			public void onClick(DialogInterface dialog, int id) {
 				//TODO: hier sollte verworfen werden
 				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
-			} }); 
+			} });
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}}); 
 		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ja & speichern", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
+				/*
+				 * JACKSON START
+				 */
+				TemplateGeneratorActivity.saveTemplateAsync();
+				/*
+				 * JACKSON END
+				 */
 				Intent intent = new Intent(getActivity(), MainActivity.class);
 				startActivity(intent);
 				//((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
