@@ -17,6 +17,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -36,7 +37,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 public static Template myTemplate = null;
 	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
-	 
+	 public static boolean skipNextOnPauseSave = false;
+	 public static boolean forceSaveOnNextOnPause = false;
 	 //needed for saving
 	 public static Activity myActivity = null;
 	 /*
@@ -84,6 +86,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		 myActivity = this;
 		 boolean creationMode = true;
 		 CountDownLatch countDownLatch = null;
+		 Log.d("Saved instance state", ""+savedInstanceState);
 		 if(savedInstanceState == null) {
 			 Intent intent = getIntent();
 			 creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
@@ -115,7 +118,6 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				 task.execute(templateFileName);
 			 }
 		 }
-		 // TODO save in onPause
 		 /*
 		  * JACKSON END
 		  */
@@ -265,9 +267,16 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	else{
     		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
     		getMenuInflater().inflate(R.menu.template_generator_standard, menu);
-//    		Log.d("menu-Creation", "MENU DEFAULT");
+//    		Log.d("menu-Creation", "MENU DEFAULT");.s
     	}
 //        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+    	
+    	MenuItem myItem = menu.findItem(R.id.action_auto_save_on_exit);
+    	if(myItem != null) {
+    		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+    		// TODO final string key name
+    		myItem.setChecked(prefs.getBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false));
+    	}
         return super.onPrepareOptionsMenu(menu);
     }
     
@@ -304,6 +313,29 @@ public class TemplateGeneratorActivity extends FragmentActivity {
         	goAbove();
 //        	Toast.makeText(this, "selected: " + getResources().getIdentifier("choices", "values", getPackageName()) ,Toast.LENGTH_LONG).show();
         }
+        /*
+         * JACKSON START
+         */
+        else if(id == R.id.action_save_template) {
+        	saveTemplateAsync();
+        }
+        else if(id == R.id.action_auto_save_on_exit) {
+    		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+    		SharedPreferences.Editor editor = prefs.edit();
+        	if(item.isChecked()) {
+        		item.setChecked(false);
+        		editor.putBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false);
+        	}
+        	else {
+        		item.setChecked(true);
+        		editor.putBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", true);
+        	}
+    		editor.commit();
+        	Log.d("AUTO SAVE","state:"+item.isChecked());
+        }
+        /*
+         * JACKSON END
+         */
         return super.onOptionsItemSelected(item);
     }
     
@@ -344,6 +376,29 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     
     protected void superBackPressed(){
     	super.onBackPressed();
+    }
+    
+    @Override
+    protected void onPause() {
+    	/*
+    	 * JACKSON START
+    	 */
+    	// TODO bei zurueck das verwerfen beruecksichtigen!!
+    	if(!skipNextOnPauseSave || forceSaveOnNextOnPause) {
+    		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+    		
+    		if(prefs.getBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false) || forceSaveOnNextOnPause) {
+    			forceSaveOnNextOnPause = false;
+    			saveTemplateAsync();
+    		}
+    	}
+    	else {
+    		skipNextOnPauseSave = false;	
+    	}
+    	/*
+    	 * JACKSON END
+    	 */
+    	super.onPause();
     }
     
     /*

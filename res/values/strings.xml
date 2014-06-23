@@ -28,5 +28,7 @@
     <string name="popup_titel">Item Information</string>
     <string name="add_item">Add Item</string>
     <string name="cancel">Cancel</string>
+    <string name="menu_item_save_template">Save template</string>
+    <string name="action_auto_save_on_exit">Auto save on exit</string>
 
 </resources>

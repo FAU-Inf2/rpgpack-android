@@ -1,7 +1,6 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.MainActivity;
-import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,6 +30,9 @@ public class WarningLeaveDialog extends DialogFragment{
 		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ja & verwerfen", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				//TODO: hier sollte verworfen werden
+				// JACKSON START
+				TemplateGeneratorActivity.skipNextOnPauseSave = true;
+				// JACKSON END
 				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
 			} });
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
@@ -41,8 +43,8 @@ public class WarningLeaveDialog extends DialogFragment{
 			public void onClick(DialogInterface dialog, int id) {
 				/*
 				 * JACKSON START
-				 */
-				TemplateGeneratorActivity.saveTemplateAsync();
+				 */ 
+				TemplateGeneratorActivity.forceSaveOnNextOnPause = true;
 				/*
 				 * JACKSON END
 				 */

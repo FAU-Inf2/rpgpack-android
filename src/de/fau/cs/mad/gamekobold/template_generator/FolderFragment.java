@@ -159,7 +159,7 @@ public class FolderFragment extends GeneralFragment {
 		else if(newDataItem.getType() == element_type.matrix) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewMatrixTable();
 		}
-		TemplateGeneratorActivity.saveTemplateAsync();
+		//TemplateGeneratorActivity.saveTemplateAsync();
 		/*
 		 * JACKSON END
 		 */
