@@ -63,6 +63,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	View view;
 	TableLayout table;
 	TableLayout headerTable;
+	// also set in createTableHeader !! onCreate is called when orientation is rotated ->
+	// amountColumns = #before change but we recreate the header table with 2 columns
 	int amountColumns = 2;
 	AlertDialog dialogTableView;
 	View dialogViewTableView;
@@ -70,7 +72,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);             
         setRetainInstance(true);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
         LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
@@ -130,6 +132,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected TableLayout createTableHeader() {
+		Log.d("TableFragment", "createTableHeader()");
+		amountColumns = 2;
 		headerTable = (TableLayout) view.findViewById(R.id.header_table);
 //		private static TableLayout addRowToTable(TableLayout table, String contentCol1, String contentCol2) {
 		Context context = getActivity();
@@ -204,7 +208,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		
 		row.addView(col2);
 		
-
+		// TODO research if more and more rows are added when rotating a device!
 		headerTable.addView(row);
 		
 		
@@ -216,7 +220,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d("TableFragment", "ON_CREATE_VIEW");
 		view = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
         createTableHeader();
         
@@ -274,9 +279,12 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 			}
 			// set titles
 			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
+			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
 			for(int i = 0; i < amountColumns; i++) {
 				View view = headerRow.getChildAt(i);
-				Log.d("TABLE INFLATING", "setting column header title:"+jacksonTable.columnHeaders.get(i).name);
+				Log.d("TableFragment-onCreateView", "view:"+view);
+				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
 				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
 				setHeaderTableStyle((EditText)view);
 				// check size

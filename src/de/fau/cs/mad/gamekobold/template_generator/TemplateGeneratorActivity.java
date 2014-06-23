@@ -37,6 +37,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 public static Template myTemplate = null;
 	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
+	 public static final String AUTO_SAVE_TEMPLATE_ON_EXIT = "AUTO_SAVE_TEMPLATE_ON_EXIT";
 	 public static boolean skipNextOnPauseSave = false;
 	 public static boolean forceSaveOnNextOnPause = false;
 	 //needed for saving
@@ -117,6 +118,9 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				 // start
 				 task.execute(templateFileName);
 			 }
+		 }
+		 else {
+			 Log.d("TemplateGeneratorActivity", "got savedInstance");
 		 }
 		 /*
 		  * JACKSON END
@@ -274,8 +278,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	MenuItem myItem = menu.findItem(R.id.action_auto_save_on_exit);
     	if(myItem != null) {
     		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-    		// TODO final string key name
-    		myItem.setChecked(prefs.getBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false));
+    		myItem.setChecked(prefs.getBoolean(AUTO_SAVE_TEMPLATE_ON_EXIT, false));
     	}
         return super.onPrepareOptionsMenu(menu);
     }
@@ -324,11 +327,11 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     		SharedPreferences.Editor editor = prefs.edit();
         	if(item.isChecked()) {
         		item.setChecked(false);
-        		editor.putBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false);
+        		editor.putBoolean(AUTO_SAVE_TEMPLATE_ON_EXIT, false);
         	}
         	else {
         		item.setChecked(true);
-        		editor.putBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", true);
+        		editor.putBoolean(AUTO_SAVE_TEMPLATE_ON_EXIT, true);
         	}
     		editor.commit();
         	Log.d("AUTO SAVE","state:"+item.isChecked());
@@ -383,11 +386,9 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	/*
     	 * JACKSON START
     	 */
-    	// TODO bei zurueck das verwerfen beruecksichtigen!!
     	if(!skipNextOnPauseSave || forceSaveOnNextOnPause) {
     		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-    		
-    		if(prefs.getBoolean("AUTO_SAVE_TEMPLATE_ON_EXIT", false) || forceSaveOnNextOnPause) {
+    		if(prefs.getBoolean(AUTO_SAVE_TEMPLATE_ON_EXIT, false) || forceSaveOnNextOnPause) {
     			forceSaveOnNextOnPause = false;
     			saveTemplateAsync();
     		}

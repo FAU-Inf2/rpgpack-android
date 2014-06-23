@@ -49,7 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity" android:clearTaskOnLaunch="true" android:launchMode="singleTask">
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity" >
         </activity>
