@@ -124,12 +124,13 @@ public class TemplateBrowserActivity extends ListActivity {
 					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
 							File file = new File(longClickedTemplate.filePath);
 							if(file != null) {
-								if(file.delete()) {
+								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
+								// TODO removing item from list not working
+								/*if(file.delete()) {
 									removeItem(longClickedTemplate);
-								}
+								}*/
 							}
 						}
 					});
