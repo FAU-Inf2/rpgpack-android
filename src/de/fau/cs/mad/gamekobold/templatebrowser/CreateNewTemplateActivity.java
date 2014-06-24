@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
@@ -145,10 +146,12 @@ public class CreateNewTemplateActivity extends Activity {
 //				startActivity(i);
 
 				
-				// TODO we have to save newTempalte-data!! or it will be lost!
 				
+//				Intent intent = new Intent(CreateNewTemplateActivity.this,
+//						TemplateGeneratorActivity.class);
+				// it goes to welcome activity
 				Intent intent = new Intent(CreateNewTemplateActivity.this,
-						TemplateGeneratorActivity.class);
+						TemplateGeneratorWelcomeActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				
 				/*

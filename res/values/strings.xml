@@ -30,5 +30,7 @@
     <string name="cancel">Cancel</string>
     <string name="menu_item_save_template">Save template</string>
     <string name="action_auto_save_on_exit">Auto save on exit</string>
+    <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
+    <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
 
 </resources>
