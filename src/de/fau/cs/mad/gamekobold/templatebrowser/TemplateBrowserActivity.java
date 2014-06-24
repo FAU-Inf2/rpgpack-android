@@ -15,6 +15,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -82,13 +84,23 @@ public class TemplateBrowserActivity extends ListActivity {
 				}
 				// JACKSON start : for editing last created template
 				else if(position == adapter.getCount() -2) {
-					Intent intent = new Intent(TemplateBrowserActivity.this,
-							TemplateGeneratorActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// flag to distinguish between editing and creating 
-					intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
-					intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, "testTemplate.json");
-					startActivity(intent);
+					// get shared preferences
+					SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
+					// get last edited template file name
+					String templateFileName = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
+					// check for existence
+					if(templateFileName.equals("")) {
+						Toast.makeText(myActivity, "No template edited", Toast.LENGTH_LONG).show();
+					}
+					else {
+						Intent intent = new Intent(TemplateBrowserActivity.this,
+								TemplateGeneratorActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						// flag to distinguish between editing and creating 
+						intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
+						intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, templateFileName);
+						startActivity(intent);	
+					}
 				}
 				// JACKSON end
 				else {
@@ -127,6 +139,7 @@ public class TemplateBrowserActivity extends ListActivity {
 							File file = new File(longClickedTemplate.filePath);
 							if(file != null) {
 								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
+								removeItem(longClickedTemplate);
 								// TODO removing item from list not working
 								/*if(file.delete()) {
 									removeItem(longClickedTemplate);
@@ -146,6 +159,8 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 	}
 
+	// TODO reload data. we could be comming back from the generator. otherwise the new template
+	// won't show
 	@Override
 	protected void onResume() {
 		super.onResume();

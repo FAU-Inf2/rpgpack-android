@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,6 +21,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 //TODO Log.d anpassen bzw loeschen
 //TODO print() auskommentieren?
 public class Template implements Parcelable{
@@ -64,14 +68,14 @@ public class Template implements Parcelable{
 	}
 	
 	//TODO vllt unter files/Templates/ speichern
-	public void saveToJSON(Context context, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
+	public void saveToJSON(Activity activity, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		File dir;
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 			dir = Environment.getExternalStorageDirectory();
 		}
 		else {
-			dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+			dir = activity.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		}
 		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
@@ -81,6 +85,12 @@ public class Template implements Parcelable{
 		else {
 			mapper.writer().writeValue(outStream, this);
 		}
+		// save in shared preferences the last edited template file name
+		
+		SharedPreferences pref = activity.getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
+		SharedPreferences.Editor edit = pref.edit();
+		edit.putString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, fileName);
+		edit.commit();
 	}
 	
 	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {

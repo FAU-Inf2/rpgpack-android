@@ -88,28 +88,40 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						.getTempalteIcon(curTemplate.getIconID())));
 			}
 		} else {
-			rowView = inflater.inflate(R.layout.rowlayout_template_browser,
-					parent, false);
-			TextView tName = (TextView) rowView.findViewById(R.id.textView1);
-			TextView tGame = (TextView) rowView.findViewById(R.id.textView2);
-			TextView tAdditionalInfo = (TextView) rowView
-					.findViewById(R.id.textView3);
+			// check for last 2 lines -> edit last template, create new template.
+			// they use an other layout
+			if(position >= getCount()-2) {
+				rowView = inflater.inflate( R.layout.rowlayout_newtemplate_template_browser,
+						parent, false);
+				TextView tName = (TextView) rowView
+						.findViewById(R.id.textView1);
+				Template curTemplate = objects.get(position);
+				tName.setText(curTemplate.getTemplateName());
+			}
+			else {
+				rowView = inflater.inflate(R.layout.rowlayout_template_browser,
+						parent, false);				
 
-			ImageView imageView = (ImageView) rowView
-					.findViewById(R.id.imageView1);
+				TextView tName = (TextView) rowView.findViewById(R.id.textView1);
+				TextView tGame = (TextView) rowView.findViewById(R.id.textView2);
+				TextView tAdditionalInfo = (TextView) rowView
+						.findViewById(R.id.textView3);
 
-			Template curTemplate = objects.get(position);
+				ImageView imageView = (ImageView) rowView
+						.findViewById(R.id.imageView1);
 
-			tName.setText(curTemplate.getTemplateName());
-			tGame.setText(curTemplate.getGameName());
-			tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
-					+ curTemplate.getDate());
+				Template curTemplate = objects.get(position);
 
-			TemplateIcons templateIcons = TemplateIcons.getInstance();
-			imageView.setImageResource(Integer.valueOf(templateIcons
-					.getTempalteIcon(curTemplate.getIconID())));
+				tName.setText(curTemplate.getTemplateName());
+				tGame.setText(curTemplate.getGameName());
+				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
+						+ curTemplate.getDate());
+
+				TemplateIcons templateIcons = TemplateIcons.getInstance();
+				imageView.setImageResource(Integer.valueOf(templateIcons
+						.getTempalteIcon(curTemplate.getIconID())));
+			}
 		}
-
 		return rowView;
 	}
 }

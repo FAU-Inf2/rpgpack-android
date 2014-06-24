@@ -38,6 +38,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	 public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
 	 public static final String AUTO_SAVE_TEMPLATE_ON_EXIT = "AUTO_SAVE_TEMPLATE_ON_EXIT";
+	 public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
+	 public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	 public static boolean skipNextOnPauseSave = false;
 	 public static boolean forceSaveOnNextOnPause = false;
 	 //needed for saving
