@@ -261,7 +261,7 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 		if(templateDir != null) {
 			if(templateDir.isDirectory()) {
-				File[] fileList = templateDir.listFiles();
+				final File[] fileList = templateDir.listFiles();
 				de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 				for(final File file : fileList) {
 					try {

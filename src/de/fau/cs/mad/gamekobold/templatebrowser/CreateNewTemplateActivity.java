@@ -37,6 +37,7 @@ public class CreateNewTemplateActivity extends Activity {
 
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class CreateNewTemplateActivity extends Activity {
 
 		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButton1);
 
-		final TextView tvTempalteName = (TextView) findViewById(R.id.editText1);
+		final TextView tvTemplateName = (TextView) findViewById(R.id.editText1);
 		final TextView tvGameName = (TextView) findViewById(R.id.editText2);
 		final TextView tvDescription = (TextView) findViewById(R.id.editText3);
 		Button createTemplateButton = (Button) findViewById(R.id.button2);
@@ -109,6 +110,12 @@ public class CreateNewTemplateActivity extends Activity {
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(tvTemplateName.getEditableText().toString().equals("")) {
+					Toast.makeText(getApplicationContext(),
+							"Please set a name for your template!", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
 				// add new template to list on template browser-view
 				Toast.makeText(getApplicationContext(),
 						"Dein Template wird erstellt!", Toast.LENGTH_SHORT)
@@ -162,7 +169,7 @@ public class CreateNewTemplateActivity extends Activity {
 				// create template for data transfer
 				de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data
-				jTemplate.templateName = tvTempalteName.getText().toString();
+				jTemplate.templateName = tvTemplateName.getText().toString();
 				jTemplate.gameName = tvGameName.getText().toString();
 				//TODO author
 				jTemplate.author = "Registered Author";
