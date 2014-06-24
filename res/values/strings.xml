@@ -33,4 +33,23 @@
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
     <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
 
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Tabelle</item>
+        <item>Matrix</item>
+        <item>Ordner</item>
+        <item>Add New Cell</item>
+    </string-array>
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_table2_red</item>
+        <item>@drawable/ic_matrix_red</item>
+        <item>@drawable/ic_folder_red</item>
+        <item>@drawable/ic_add_item2_grey</item>
+    </array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

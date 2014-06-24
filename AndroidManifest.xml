@@ -67,7 +67,7 @@
          <activity android:name="de.fau.cs.mad.gamekobold.matrix.TemplateGeneratorWelcomeActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.TemplateGeneratorWelcomeActivity"
+            android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
             android:label="@string/title_activity_template_generator_welcome" >
         </activity>
     </application>

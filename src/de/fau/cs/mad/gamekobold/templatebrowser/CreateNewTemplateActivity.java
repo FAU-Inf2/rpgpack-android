@@ -28,8 +28,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class CreateNewTemplateActivity extends Activity {
