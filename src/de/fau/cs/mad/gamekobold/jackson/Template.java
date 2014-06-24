@@ -25,7 +25,7 @@ public class Template implements Parcelable{
 	@JsonIgnore
 	public static boolean USE_PRETTY_WRITER = true;
 	@JsonIgnore
-	private static final String FOLDER_NAME = "Templates";
+	public static final String FOLDER_NAME = "Templates";
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
@@ -36,9 +36,10 @@ public class Template implements Parcelable{
 	public int iconID;
 	public String description;
 	/* Character */
-	public CharacterSheet characterSheet;
+	public CharacterSheet characterSheet = null;
 	
 	public Template() {
+		Log.d("Template", "default constructor");
 		characterSheet = new CharacterSheet();
 	}
 	
@@ -54,7 +55,12 @@ public class Template implements Parcelable{
 		Log.d("TEMPLATE", "date:" + date);
 		Log.d("TEMPLATE", "icon:" + iconID);
 		Log.d("TEMPLATE", "description:" + description);
-		characterSheet.print();
+		if(characterSheet != null) {
+			characterSheet.print();
+		}
+		else {
+			Log.d("TEMPLATE", "characterSheet:null");
+		}
 	}
 	
 	//TODO vllt unter files/Templates/ speichern
@@ -88,6 +94,14 @@ public class Template implements Parcelable{
 		}
 		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
+		Template template = mapper.readValue(inStream, Template.class);
+		return template;
+	}
+	
+	public static Template loadFromJSONFileForTemplateBrowser(File templateFile) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
+		FileInputStream inStream = new FileInputStream(templateFile);
 		Template template = mapper.readValue(inStream, Template.class);
 		return template;
 	}

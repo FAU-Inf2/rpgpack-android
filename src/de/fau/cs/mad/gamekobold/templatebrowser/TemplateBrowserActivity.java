@@ -1,12 +1,22 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,21 +24,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
 
-	List<Template> templateList = getDataForListView();
+	List<Template> templateList = null;
+	private static Activity myActivity = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_browser);
-
 		Log.e("d", "On create!!!");
-
+		myActivity = this;
+		templateList = getDataForListView(this);
 //		Template newTemplate;
 //		
 //		// take new Template object if it was sent from
@@ -88,7 +100,42 @@ public class TemplateBrowserActivity extends ListActivity {
 					i.putExtra("position", position);
 					startActivity(i);
 				}
-
+			}
+		});
+		
+		// set onItemClickListener. if the user clicks on an item we show a dialog
+		// the user then gets the option to delete the template
+		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+				final Template longClickedTemplate = templateList.get(pos);
+				
+				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.filePath);
+				
+				if(longClickedTemplate.filePath != null) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
+					builder.setTitle("Delete Template?");
+					builder.setMessage("Click yes to delete the template.");
+					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					});
+					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
+							File file = new File(longClickedTemplate.filePath);
+							if(file != null) {
+								if(file.delete()) {
+									removeItem(longClickedTemplate);
+								}
+							}
+						}
+					});
+					builder.create().show();
+				}
+				return true;
 			}
 		});
 
@@ -167,7 +214,7 @@ public class TemplateBrowserActivity extends ListActivity {
 
 	// TODO replace with real data, now it is just stub for real data from DB or
 	// json file?
-	public static List<Template> getDataForListView() {
+	public static List<Template> getDataForListView(Context context) {
 		List<Template> templateList = new ArrayList<Template>();
 
 		Template template1 = new Template(
@@ -185,9 +232,56 @@ public class TemplateBrowserActivity extends ListActivity {
 		templateList.add(template1);
 		templateList.add(template2);
 		templateList.add(template3);
-
+		/*
+		 * JACKSON START
+		 * We iterate over all files in the template directory and load the data into the list
+		 */
+		File templateDir = null;
+		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			templateDir = Environment.getExternalStorageDirectory();
+		}
+		else {
+			templateDir = context.getDir(de.fau.cs.mad.gamekobold.jackson.Template.FOLDER_NAME, Context.MODE_PRIVATE);
+		}
+		if(templateDir != null) {
+			if(templateDir.isDirectory()) {
+				File[] fileList = templateDir.listFiles();
+				de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
+				for(final File file : fileList) {
+					try {
+						loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
+					} catch (JsonParseException | JsonMappingException e) {
+						e.printStackTrace();
+					}
+					catch(IOException e) {
+						e.printStackTrace();
+					}
+					if(loadedTemplate != null) {
+						Template temp = new Template(loadedTemplate.templateName,
+								loadedTemplate.gameName,
+								loadedTemplate.author,
+								loadedTemplate.date,
+								loadedTemplate.iconID,
+								loadedTemplate.description);
+						if(temp.getTemplateName().equals("")) {
+							temp.setTemplateName(file.getName());
+						}
+						temp.filePath = file.getAbsolutePath();
+						templateList.add(temp);
+					}
+				}
+			}
+		}
+		/*
+		 * JACKSON END
+		 */
 		return templateList;
-
 	}
-
+	
+	private void removeItem(Template template) {
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
+		adapter.remove(template);
+		adapter.notifyDataSetChanged();
+	}
 }

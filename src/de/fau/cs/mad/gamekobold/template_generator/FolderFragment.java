@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -73,23 +74,26 @@ public class FolderFragment extends GeneralFragment {
         ImageButton createCollection= (ImageButton) dialogViewCreateElement.findViewById(R.id.create_collection);
         ImageButton createFolder = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_folder);
         createTable.setOnClickListener(new View.OnClickListener() {
+        //	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.table);
+				addItemList(element_type.table, "");
 				dialogCreateElement.cancel();
 			}
 		});
         createCollection.setOnClickListener(new View.OnClickListener() {
+        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.matrix);
+				addItemList(element_type.matrix, "");
 				dialogCreateElement.cancel();
 			}
 		});
         createFolder.setOnClickListener(new View.OnClickListener() {
+        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.folder);
+				addItemList(element_type.folder, "");
 				dialogCreateElement.cancel();
 			}
 		});
@@ -137,10 +141,10 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void addItemList() {
-		addItemList(element_type.folder);
+		addItemList(element_type.folder, "");
 	}
 	
-	public void addItemList(element_type selected) {
+	public void addItemList(element_type selected, String name) {
 		FolderElementData newDataItem = new FolderElementData((TemplateGeneratorActivity)getActivity(), selected);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		/*
@@ -159,6 +163,7 @@ public class FolderFragment extends GeneralFragment {
 		else if(newDataItem.getType() == element_type.matrix) {
 			newDataItem.jacksonTable = dataAdapter.jacksonTable.createAndAddNewMatrixTable();
 		}
+		newDataItem.jacksonTable.tableName = name;
 		//TemplateGeneratorActivity.saveTemplateAsync();
 		/*
 		 * JACKSON END

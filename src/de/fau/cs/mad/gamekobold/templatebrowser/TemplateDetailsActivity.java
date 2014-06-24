@@ -38,7 +38,7 @@ public class TemplateDetailsActivity extends Activity {
 			position = getIntent().getExtras().getInt("position");
 		}
 
-		Template curTemplate = TemplateBrowserActivity.getDataForListView()
+		Template curTemplate = TemplateBrowserActivity.getDataForListView(this)
 				.get(position);
 		tvTempalteName.setText(curTemplate.getTemplateName());
 		tvGameName.setText(curTemplate.getGameName());
