@@ -68,6 +68,10 @@ public class TemplateDetailsActivity extends Activity {
 			}
 		});
 
+		if(curTemplate.absoluteFilePath == null) {
+			editButton.setEnabled(false);
+		}
+		
 		// vllt in den TemplateBrowser irgendwie integrieren
 		editButton.setOnClickListener(new OnClickListener() {
 			@Override
