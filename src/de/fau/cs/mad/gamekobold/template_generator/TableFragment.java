@@ -9,10 +9,13 @@ import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementAdapter.ViewHolder;
+import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -31,7 +34,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -39,9 +44,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.NumberPicker;
+//import android.widget.NumberPicker;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -50,7 +56,7 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 @SuppressLint("NewApi")
-public class TableFragment extends GeneralFragment implements NumberPicker.OnValueChangeListener{
+public class TableFragment extends GeneralFragment {
 	/*
 	 * JACKSON START
 	 */
@@ -69,54 +75,117 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	AlertDialog dialogTableView;
 	View dialogViewTableView;
 	TableLayout dialogTable;
+	SessionMonitorEditText counter = null;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);             
         setRetainInstance(true);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
-        LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
-        dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
-        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
-        alertDialogBuilder.setView(dialogViewTableView);
-        final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
-//        final CustomNumberPicker np = ((CustomNumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
-        np.setMaxValue(99);
-        np.setMinValue(0);
-        np.setWrapSelectorWheel(false);
-        np.setValue(0);
-//        np.setOnValueChangedListener(this);
-//        np.setOnScrollListener(new NumberPicker.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
-//                if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
-//                    //We get the different between oldValue and the new value
-////                	int newVal = numberPicker.getValue();
-////                	adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
-////                    int valueDiff = numberPicker.getValue() - oldValue;
-//                }
-//            }
-//        });
-        //		 np.setValue(((TableFragment) currentFragment).amountColumns);
-        // set dialog message
-        alertDialogBuilder
-        .setCancelable(false)
-        .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog,int id) {
-        		setAmountOfColumns(np.getValue());
-        		//XXX XXX XXX
-//        		TableLayout otherTable = new TableLayout(getActivity());
-//        		todo
-        		adaptHeaderTable(dialogTable);
-        	}
-        })
-        .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
-			 public void onClick(DialogInterface dialog,int id) {
-				 dialog.cancel();
-			 }
-		 });
-		 // create alert dialog
-		 dialogTableView = alertDialogBuilder.create();
+        LayoutInflater inflater = (LayoutInflater)
+			    TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+//	      LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
+	      View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+	      dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+	      alertDialogBuilder.setView(dialogViewTableView);
+	      counter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
+	      counter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
+			@Override
+			public void onEditSessionComplete(TextView v) {
+				int valueGiven = (Integer.parseInt(v.getText().toString()));
+				if(valueGiven < 0){
+					v.setText(Integer.toString(1));
+				}
+				else if(valueGiven > 99){
+					v.setText(Integer.toString(99));
+				}
+				adaptDialogTable(dialogTable, (Integer.parseInt(v.getText().toString())));
+			}
+		});
+//	      counter.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//	          @Override
+//	          public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//	              if (actionId == EditorInfo.IME_ACTION_DONE) {
+//	            	  int valueGiven = (Integer.parseInt(counter.getText().toString()));
+//	            	  if(valueGiven < 0){
+//	            		  counter.setText(Integer.toString(1));
+//	            	  }
+//	            	  else if(valueGiven > 99){
+//	            		  counter.setText(Integer.toString(99));
+//	            	  }
+//	            	  adaptDialogTable(dialogTable, (Integer.parseInt(counter.getText().toString())));
+//	                  return true;
+//	              }
+//	              return false;
+//	          }
+//	      });
+//	      counter.addTextChangedListener(new TextWatcher(){
+//	          public void afterTextChanged(Editable s) {
+//	        	  adaptDialogTable(dialogTable, (Integer.parseInt(counter.getText().toString())));
+//	          }
+//	          public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+//	          public void onTextChanged(CharSequence s, int start, int before, int count){}
+//	      }); 
+	      
+	      ImageButton addButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_add_column);
+	      addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int oldValue = (Integer.parseInt(counter.getText().toString()));
+		  		int newValue = oldValue+1;
+		  		counter.setText(Integer.toString(newValue));
+				adaptDialogTable(dialogTable, (Integer.parseInt(counter.getText().toString())));
+			}
+		});
+	      ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
+	      subtractButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int oldValue = (Integer.parseInt(counter.getText().toString()));
+		  		int newValue = oldValue-1;
+		  		counter.setText(Integer.toString(newValue));
+				adaptDialogTable(dialogTable, (Integer.parseInt(counter.getText().toString())));
+			}
+		});
+//	      final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+	      
+//	      NumberPicker npTemp = ((NumberPicker) dialogViewTableView.findViewById(R.id.num_picker_step));
+//	      final NumberPicker np = npTemp;
+//	      final CustomNumberPicker np = ((CustomNumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+//	      np.setMaxValue(99);
+//	      np.setMinValue(0);
+//	      np.setWrapSelectorWheel(false);
+//	      np.setValue(0);
+//	      np.setOnValueChangedListener(this);
+//	      np.setOnScrollListener(new NumberPicker.OnScrollListener() {
+//	          @Override
+//	          public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
+//	              if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+//	                  //We get the different between oldValue and the new value
+////	              	int newVal = numberPicker.getValue();
+////	              	adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
+////	                  int valueDiff = numberPicker.getValue() - oldValue;
+//	              }
+//	          }
+//	      });
+	      //		 np.setValue(((TableFragment) currentFragment).amountColumns);
+	      // set dialog message
+	      alertDialogBuilder
+	      .setCancelable(false)
+	      .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
+	      	public void onClick(DialogInterface dialog,int id) {
+	      		setAmountOfColumns(Integer.parseInt(counter.getText().toString()));
+	      		//TODO uncomment
+	      		adaptHeaderTable(dialogTable);
+	      	}
+	      })
+	      .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
+				 public void onClick(DialogInterface dialog,int id) {
+					 dialog.cancel();
+				 }
+			 });
+			 // create alert dialog
+	      dialogTableView = alertDialogBuilder.create();
     }
 	
 	protected void adaptHeaderTable(TableLayout otherTable){
@@ -221,6 +290,55 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		//create dialog
+//				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+////		      LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
+//		      dialogViewTableView = inflater.inflate(R.layout.number_picker_pref123, null);
+//		      dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+//		      alertDialogBuilder.setView(dialogViewTableView);
+////		      final NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+//		      
+////		      NumberPicker npTemp = ((NumberPicker) dialogViewTableView.findViewById(R.id.num_picker_step));
+////		      final NumberPicker np = npTemp;
+////		      final CustomNumberPicker np = ((CustomNumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
+////		      np.setMaxValue(99);
+////		      np.setMinValue(0);
+////		      np.setWrapSelectorWheel(false);
+////		      np.setValue(0);
+////		      np.setOnValueChangedListener(this);
+////		      np.setOnScrollListener(new NumberPicker.OnScrollListener() {
+////		          @Override
+////		          public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
+////		              if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+////		                  //We get the different between oldValue and the new value
+//////		              	int newVal = numberPicker.getValue();
+//////		              	adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
+//////		                  int valueDiff = numberPicker.getValue() - oldValue;
+////		              }
+////		          }
+////		      });
+//		      //		 np.setValue(((TableFragment) currentFragment).amountColumns);
+//		      // set dialog message
+//		      alertDialogBuilder
+//		      .setCancelable(false)
+//		      .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
+//		      	public void onClick(DialogInterface dialog,int id) {
+////		      		setAmountOfColumns(np.getCurrent());
+//		      		//XXX XXX XXX
+////		      		TableLayout otherTable = new TableLayout(getActivity());
+////		      		todo
+//		      		adaptHeaderTable(dialogTable);
+//		      	}
+//		      })
+//		      .setNegativeButton("Zurück",new DialogInterface.OnClickListener() {
+//					 public void onClick(DialogInterface dialog,int id) {
+//						 dialog.cancel();
+//					 }
+//				 });
+//				 // create alert dialog
+//				 dialogTableView = alertDialogBuilder.create();
+				//end_create dialog
+		
 		Log.d("TableFragment", "ON_CREATE_VIEW");
 		view = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
         createTableHeader();
@@ -311,6 +429,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 		 * JACKSON END
 		 */
 		addItemList();
+		
+		
 		return view;
 	}
 	
@@ -789,6 +909,9 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	@Override
 	public void showDialog() {
 		Log.d("dialog", "SHOWN!!!!");
+//		FragmentManager fm = getFragmentManager();
+//		DialogFragment dialog = CustomNumberPickerDialog.newInstance();
+//    	dialog.show(fm, "");
 
 //		dialogTableView.setTitle(elementName);
 //		NumberPicker np = ((NumberPicker) dialogViewTableView.findViewById(R.id.numberPicker1));
@@ -797,7 +920,8 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 //		TableLayout table = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
 //		TableLayout table = new TableLayout(getActivity());
 //		prepareTableForDialog(table);
-		adaptDialogTable(dialogTable, 10);
+		adaptDialogTable(dialogTable);
+		counter.setText(Integer.toString(amountColumns));
 		dialogTableView.show();
 	}
 	
@@ -1070,7 +1194,7 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	}
 	
 	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow){
-		dialogTable.removeAllViews();
+//		dialogTable.removeAllViews();
 		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = rowsToShow;
 		//first step: adapt all needed Column-names from headerTable
@@ -1277,18 +1401,18 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	    }
 	};
 	
-	@Override
-	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-		if(oldVal == newVal){
-			return;
-		}
-//		new AdaptColumns().execute(newVal);
-//		final int newValue = newVal;
-//		TemplateGeneratorActivity.theActiveActivity.runOnUiThread(new Runner(newVal));
-//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
-//		setAmountOfColumns(newVal);
-//		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
-	}
+//	@Override
+//	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//		if(oldVal == newVal){
+//			return;
+//		}
+////		new AdaptColumns().execute(newVal);
+////		final int newValue = newVal;
+////		TemplateGeneratorActivity.theActiveActivity.runOnUiThread(new Runner(newVal));
+////		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)), newVal);
+////		setAmountOfColumns(newVal);
+////		adaptDialogTable(((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table)));
+//	}
 	
 	private class AdaptColumns extends AsyncTask<Integer, Void, Void> {
 	     protected Void doInBackground(Integer... params) {
@@ -1303,5 +1427,10 @@ public class TableFragment extends GeneralFragment implements NumberPicker.OnVal
 	     protected void onPostExecute(Long result) {
 	     }
 	 }
+
+//	@Override
+//	public void onNumberSet(int number) {
+//		Log.d("aa", "Number selected: " + number);
+//	}
 
 }
