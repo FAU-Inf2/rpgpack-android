@@ -68,6 +68,14 @@ public class Template implements Parcelable{
 	}
 	
 	//TODO vllt unter files/Templates/ speichern
+	/**
+	 * @param activity 
+	 * @param fileName file name to be used
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * Saves the template as a json file in the template directory with the given name
+	 */
 	public void saveToJSON(Activity activity, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		File dir = getTemplateDirectory(activity);
@@ -79,13 +87,17 @@ public class Template implements Parcelable{
 			mapper.writer().writeValue(outStream, this);
 		}
 		// save in shared preferences the last edited template file name
-		
 		SharedPreferences pref = activity.getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
 		SharedPreferences.Editor edit = pref.edit();
 		edit.putString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, fileName);
 		edit.commit();
 	}
-	
+
+	/**
+	 * @param context
+	 * @return the template directory
+	 * Returns the directory templates are saved for this device
+	 */
 	public static File getTemplateDirectory(Context context) {
 		File templateDir;
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -97,6 +109,16 @@ public class Template implements Parcelable{
 		return templateDir;
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @param fileName Template file name
+	 * @return Loaded template
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * Loads the template with the given file name. The file is supposed to be in the template directory.
+	 */
 	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		File dir = getTemplateDirectory(context);
@@ -105,14 +127,31 @@ public class Template implements Parcelable{
 		return template;
 	}
 	
-	public static Template loadFromJSONFile(File templateFile) throws JsonParseException, JsonMappingException, IOException {
+	/**
+	 * 
+	 * @param templateFile template to be loaded
+	 * @return the loaded template
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * 
+	 * Loads the template meta data saved in @templateFile. No template structure is loaded.
+	 * Only items like name, author, game name are loaded!
+	 */
+	public static Template loadFromJSONFileForTemplateBrowser(File templateFile) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
+		// in order to load only meta data we use mix in annotations
+		// the Template.Character sheet won't be loaded.
 		mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
 		FileInputStream inStream = new FileInputStream(templateFile);
 		Template template = mapper.readValue(inStream, Template.class);
 		return template;
 	}
-	
+
+	/**
+	 * @return Json representation of this template
+	 * @throws JsonProcessingException
+	 */
 	public String toJSON() throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writer().writeValueAsString(this);

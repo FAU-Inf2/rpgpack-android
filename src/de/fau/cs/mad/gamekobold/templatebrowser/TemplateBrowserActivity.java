@@ -263,7 +263,7 @@ public class TemplateBrowserActivity extends ListActivity {
 				de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 				for(final File file : fileList) {
 					try {
-						loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile(file);
+						loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
 					} catch (JsonParseException | JsonMappingException e) {
 						e.printStackTrace();
 					}
@@ -374,7 +374,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 					for(final File file : fileList) {
 						try {
-							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile(file);
+							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
 						} catch (JsonParseException | JsonMappingException e) {
 							e.printStackTrace();
 						}
