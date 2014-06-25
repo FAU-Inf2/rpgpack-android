@@ -70,14 +70,7 @@ public class Template implements Parcelable{
 	//TODO vllt unter files/Templates/ speichern
 	public void saveToJSON(Activity activity, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		File dir;
-		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			dir = Environment.getExternalStorageDirectory();
-		}
-		else {
-			dir = activity.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
-		}
-		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		File dir = getTemplateDirectory(activity);
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
 		if(USE_PRETTY_WRITER) {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
@@ -93,22 +86,26 @@ public class Template implements Parcelable{
 		edit.commit();
 	}
 	
-	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		File dir;
+	public static File getTemplateDirectory(Context context) {
+		File templateDir;
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			dir = Environment.getExternalStorageDirectory();
+			templateDir = Environment.getExternalStorageDirectory();
 		}
 		else {
-			dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+			templateDir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
 		}
-		//File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
+		return templateDir;
+	}
+	
+	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		File dir = getTemplateDirectory(context);
 		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
 		Template template = mapper.readValue(inStream, Template.class);
 		return template;
 	}
 	
-	public static Template loadFromJSONFileForTemplateBrowser(File templateFile) throws JsonParseException, JsonMappingException, IOException {
+	public static Template loadFromJSONFile(File templateFile) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
 		FileInputStream inStream = new FileInputStream(templateFile);
