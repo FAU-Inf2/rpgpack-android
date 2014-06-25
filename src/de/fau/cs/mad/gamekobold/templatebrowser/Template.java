@@ -9,7 +9,7 @@ public class Template implements Serializable{
 	private String date;
 	private int iconID;
 	private String description;
-	public String filePath = null;
+	public String absoluteFilePath = null;
 
 	public Template(String templateName, String gameName, String author,
 			String date, int iconID, String description) {

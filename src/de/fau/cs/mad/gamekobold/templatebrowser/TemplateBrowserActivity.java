@@ -93,13 +93,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						Toast.makeText(myActivity, "No template edited", Toast.LENGTH_LONG).show();
 					}
 					else {
-						Intent intent = new Intent(TemplateBrowserActivity.this,
-								TemplateGeneratorActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-						// flag to distinguish between editing and creating 
-						intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
-						intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, templateFileName);
-						startActivity(intent);	
+						startEditingOfTemplate(templateFileName);
 					}
 				}
 				// JACKSON end
@@ -122,9 +116,9 @@ public class TemplateBrowserActivity extends ListActivity {
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 				final Template longClickedTemplate = templateList.get(pos);
 				
-				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.filePath);
+				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.absoluteFilePath);
 				
-				if(longClickedTemplate.filePath != null) {
+				if(longClickedTemplate.absoluteFilePath != null) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
 					builder.setTitle("Delete Template?");
 					builder.setMessage("Click yes to delete the template.");
@@ -136,11 +130,11 @@ public class TemplateBrowserActivity extends ListActivity {
 					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							File file = new File(longClickedTemplate.filePath);
+							File file = new File(longClickedTemplate.absoluteFilePath);
 							if(file != null) {
 								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
 								removeItem(longClickedTemplate);
-								// TODO removing item from list not working
+								// TODO disabled while creation of new templates not working
 								/*if(file.delete()) {
 									removeItem(longClickedTemplate);
 								}*/
@@ -282,7 +276,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						if(temp.getTemplateName().equals("")) {
 							temp.setTemplateName(file.getName());
 						}
-						temp.filePath = file.getAbsolutePath();
+						temp.absoluteFilePath = file.getAbsolutePath();
 						templateList.add(temp);
 					}
 				}
@@ -299,5 +293,32 @@ public class TemplateBrowserActivity extends ListActivity {
 		ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
 		adapter.remove(template);
 		adapter.notifyDataSetChanged();
+	}
+	
+	private void startEditingOfTemplate(Template template) {
+		if(template.absoluteFilePath != null) {
+			int lastSlashPos = template.absoluteFilePath.lastIndexOf("/");
+			String fileName = null;
+			if(lastSlashPos == -1) {
+				fileName = template.absoluteFilePath;
+			}
+			else {
+				fileName = template.absoluteFilePath.substring(lastSlashPos+1);
+			}
+			startEditingOfTemplate(fileName);
+		}
+	}
+	
+	private void startEditingOfTemplate(String fileName) {
+		if(fileName.equals("")){
+			return;
+		}
+		Intent intent = new Intent(TemplateBrowserActivity.this,
+				TemplateGeneratorActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		// flag to distinguish between editing and creating 
+		intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
+		intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, fileName);
+		startActivity(intent);	
 	}
 }
