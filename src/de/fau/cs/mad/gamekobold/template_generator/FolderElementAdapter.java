@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -296,6 +297,47 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				}
         	});
         }
+        
+      //Matrix element
+        else if(data.type == element_type.matrix) {
+			
+        	holder.row.setOnClickListener(new OnClickListener() {
+        		//hier bei Klick neues Fragment anzeigen (== Matrixansicht)
+				@Override
+				public void onClick(View v) {
+					if(((MatrixFragment) data.childFragment) == null) {
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+						MatrixFragment newFragment = new MatrixFragment();
+						fragmentTransaction.add(R.id.main_view_empty, newFragment);
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+						fragmentTransaction.detach(oldFragment);
+						newFragment.backStackElement = oldFragment;
+						fragmentTransaction.addToBackStack(null);
+						fragmentTransaction.commit();
+						newFragment.fragment_parent = oldFragment;
+						data.childFragment = newFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
+					}
+					//fragment already exists -> show it
+					else{
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+						fragmentTransaction.detach(oldFragment);
+						fragmentTransaction.attach(((MatrixFragment) data.childFragment));
+						data.childFragment.backStackElement = oldFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((MatrixFragment) data.childFragment);
+						fragmentTransaction.addToBackStack(null);
+						fragmentTransaction.commit();
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
+					}
+					//((FolderFragment) data.childFragment).elementName = holder.elementName.getText().toString();
+				//	((MatrixFragment) data.childFragment).elementName = holder.elementName.getText().toString();
+
+				}
+        	});
+        }
+        
         /*else{
         	// if a table was attached then remove it because we are no longer a folder nor table
         	if(data.jacksonTable != null) {
