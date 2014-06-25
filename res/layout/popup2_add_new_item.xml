@@ -223,13 +223,15 @@
             <!-- -add your views here -->
         </LinearLayout>
 
-        <ImageView
+        <!--
+              <ImageView
             android:id="@+id/imageView_close"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="top|right"
             android:clickable="true"
             android:src="@drawable/close_button_dred" />
+        -->
     </FrameLayout>
 
 </LinearLayout>
