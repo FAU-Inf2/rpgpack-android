@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.slidingmenu.NavDrawerItem;
+import de.fau.cs.mad.gamekobold.slidingmenu.NavDrawerListAdapter;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -18,15 +20,25 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,8 +65,14 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 protected ArrayList<FolderElementData> allData;
 	 //the only fragment used till now
 	 GeneralFragment currentFragment;
-	 FolderFragment topFragment;
+	 //top level
+	 GeneralFragment topFragment;
+	 //the one above which is only visible in the slideout-menu
+	 FolderFragment rootFragment;
 	 protected static Activity theActiveActivity;
+	 private DrawerLayout mDrawerLayout;
+	 ActionBarDrawerToggle mDrawerToggle;
+	 LinearLayout mDrawerView;
 //	 AlertDialog dialogTableView;
 //	 View dialogViewTableView;
 
@@ -63,7 +81,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 theActiveActivity = this;
-		 setContentView(R.layout.activity_empty);
+		 setContentView(R.layout.activity_template_generator_welcome2);
 		 
 		 
 		 //old approach with number-list
@@ -129,14 +147,35 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		  */
 		 
 //		 FolderFragment mainFragment = (FolderFragment) getFragmentManager().findFragmentByTag("mainFragment");
-		 topFragment = (FolderFragment) getFragmentManager().findFragmentByTag("topFragment");
+		 rootFragment = (FolderFragment) getFragmentManager().findFragmentByTag("rootFragment");
+		 //create it because we need its data for slideoutmenu
+		 
+
+		 if(rootFragment == null){
+			 rootFragment = new FolderFragment();
+//			 FragmentManager fm = getFragmentManager();
+//			 FragmentTransaction ft = fm.beginTransaction();
+//			 ft.add(R.id.main_view_empty, rootFragment, "rootFragment");
+//			 ft.detach(rootFragment);
+//			 ft.commit();
+//			 getFragmentManager().executePendingTransactions();
+		 }
 		 //method: use fragment to store everything
 		 if(topFragment == null){
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			 currentFragment = new FolderFragment();
-			 topFragment = (FolderFragment) currentFragment;
-			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
+			 //before
+//			 currentFragment = new FolderFragment();
+//			 topFragment = currentFragment;
+//			 fragmentTransaction.add(R.id.main_view_empty, currentFragment, "topFragment");
+			 //now
+//			 currentFragment = rootFragment;
+//			 topFragment = currentFragment;
+			 //TODO: wieder einkommentieren -> willkommensbildschirm anzeigen
+			 topFragment = new WelcomeFragment();
+			 currentFragment = topFragment;
+			 fragmentTransaction.add(R.id.frame_layout_container, currentFragment, "topFragment");
+			 
 			 fragmentTransaction.commit();
 			 getFragmentManager().executePendingTransactions();
 			 /*
@@ -145,8 +184,9 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 // if we are creating a new one, a template has been already created.
 			 // So we set the jackson table
 			 // if we are editing a template, the async task will set the table and start inflation
+			 //TODO: 3 zeilen von mir auskommentiert (julian), da topfragment==currentfragment jetzt das welcome fragment ist
 			 if(creationMode) {
-				 ((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+				 ((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
 			 }
 			 /*
 			  * JACKSON END
@@ -168,7 +208,56 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 //			 fragmentTransaction.attach(mainFragment);
 //			 fragmentTransaction.commit();
 		 }
+		 mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
 		 
+		    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//		    TODO: einkommentieren!
+		    transaction.add(R.id.navigation_drawer, rootFragment);
+		    transaction.commit(); 
+		 mDrawerLayout = (DrawerLayout) findViewById(R.id.main_view_empty);
+		 mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+				 mDrawerLayout, /* DrawerLayout object */
+				 R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+				 R.string.drawer_open, /* "open drawer" description for accessibility */
+				 R.string.drawer_close /* "close drawer" description for accessibility */
+				 ) {
+			 public void onDrawerClosed(View view) {
+				 getActionBar().setTitle(getTitle());
+				 // creates call to onPrepareOptionsMenu() to show action bar
+				 // icons
+				 invalidateOptionsMenu();
+			 }
+
+			 public void onDrawerOpened(View drawerView) {
+				 getActionBar().setTitle(getTitle());
+				 // creates call to onPrepareOptionsMenu() to hide action bar
+				 // icons
+				 invalidateOptionsMenu();
+			 }
+		 };
+		 mDrawerLayout.setDrawerListener(mDrawerToggle);
+		 
+//		 mDrawerView.addView(rootFragment.mainView);
+		    
+		    
+//		 ((LinearLayout)rootFragment.lView.getParent()).removeView(rootFragment.lView);
+//		 ((LinearLayout)rootFragment.addRowBelow.getParent()).removeView(rootFragment.addRowBelow);
+//		 mDrawerView.addView(rootFragment.lView);
+//		 mDrawerView.addView(rootFragment.addRowBelow);
+//		 mDrawerView.setOnClickListener(new DrawerItemClickListener());
+
+		 
+		 ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
+		 NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(),
+				 navDrawerItems);
+		 //XXX: adapter setting not needed because its done in FolderFragment?
+//		 mDrawerList.setAdapter(adapter);
+//		 mDrawerView.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//		        Log.d("onclick", "recognized!!!");
+//			}
+//		});
 		//think it should be done in fragment: save allData (+restore)
 //		 if(savedInstanceState != null) {
 //        	allData = savedInstanceState.getParcelableArrayList("key2");
@@ -216,6 +305,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		if(currentFragment != topFragment){
 			actionBar.setCustomView(R.layout.actionbar_template_generator_back_button);
 			ImageButton backButton = (ImageButton) findViewById(R.id.button_back);
+			Log.d("menu-Creation", "currentFragment != topFragment");
 			backButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -224,7 +314,12 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			});
 		}
 		else{
+			Log.d("menu-Creation", "currentFragment == topFragment");
 			actionBar.setCustomView(R.layout.actionbar_template_generator);
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setHomeButtonEnabled(true);
+			boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerView);
+			menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		}
     	if(currentFragment instanceof TableFragment){
 //    		setTitle(((TableFragment) currentFragment).tableName);
@@ -241,23 +336,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     		Log.d("table name:", "name == " + currentFragment.elementName);
     	}
     	else if(currentFragment instanceof FolderFragment){
-    		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     		if(currentFragment == topFragment){
-    			//now we are on top level and should allow to show the slideout menu
-    			//TODO (Anna): add the SlideoutMenu as an item to the ActionBar
-    			//(maybe use an own "R.menu.resource_file"
-    			//which contains the button that shall open the slideout-menu)
-    			//also todo: tell the button what to do -> show slideout-menu
-    			//adapt the following lines (commented out)
-//    			actionBar.setCustomView(R.layout.actionbar_template_generator_back_button);
-//    			ImageButton slideOutButton = (ImageButton) findViewById(R.id.button_back);
-//    			backButton.setOnClickListener(new View.OnClickListener() {
-//    				@Override
-//    				public void onClick(View v) {
-//    					showSlideoutMenu();
-//    				}
-//    			});
-    			
+    			//TODO: what todo here now?
     		}
     		View v = getActionBar().getCustomView();
     	    TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
@@ -272,7 +352,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	}
     	else{
     		Log.d("menu-Creation", "App doesn't know what actionbar should be used for this Fragment!");
-    		getMenuInflater().inflate(R.menu.template_generator_standard, menu);
+//    		getMenuInflater().inflate(R.menu.template_generator_standard, menu);
 //    		Log.d("menu-Creation", "MENU DEFAULT");.s
     	}
 //        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
@@ -291,6 +371,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 //    	adaptActionBar();
     	//TODO benni: hat bei mir den stackoverflow gefixt. keine ahnung warum
     	//invalidateOptionsMenu();
+//    	MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.main, menu);
     	return super.onCreateOptionsMenu(menu);
     }
 
@@ -299,6 +381,10 @@ public class TemplateGeneratorActivity extends FragmentActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+    	if (mDrawerToggle.onOptionsItemSelected(item)) {
+//        	Log.d("click","on menu click");
+			return true;
+		}
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -373,6 +459,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
             currentFragment = currentFragment.backStackElement;
         } else {
         	DialogFragment dialog = WarningLeaveDialog.newInstance();
+			Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
         	dialog.show(fm, "");
 //            super.onBackPressed();  
         }
@@ -453,6 +540,28 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		}
     }
     
+    @Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+    
+//	private class DrawerItemClickListener implements OnClickListener {
+//		@Override
+//		public void onClick(View v) {
+//			// TODO Auto-generated method stub
+//			 Log.d("clicked", "clicked something");
+//		}
+//	}
+	
     /**
      * Class for loading a template asynchronously. Shows a ProgressDialog, waits for the activity to finish creation
      * and then inflates it with the loaded data. The ProgessDialog is automatically closed when the whole loading

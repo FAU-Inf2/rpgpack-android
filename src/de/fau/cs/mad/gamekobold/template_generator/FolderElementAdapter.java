@@ -153,7 +153,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				/*
         				 * JACKSON END
         				 */
-        				fragmentTransaction.add(R.id.main_view_empty, newFragment);
+        				fragmentTransaction.add(R.id.frame_layout_container, newFragment);
         				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
         				fragmentTransaction.detach(oldFragment);
         				newFragment.backStackElement = oldFragment;
@@ -176,7 +176,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				 * needed if template is edited, because we can create but we cannot add the fragment during inflation
         				 */
         				if(!data.childFragment.isAdded()) {
-        					fragmentTransaction.add(R.id.main_view_empty, data.childFragment);
+        					fragmentTransaction.add(R.id.frame_layout_container, data.childFragment);
         					Log.d("jackson", "jackson did add to fragmentTransaction!");
         				}
         				/*
@@ -258,7 +258,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						 * JACKSON END
 						 */
 						
-						fragmentTransaction.add(R.id.main_view_empty, newFragment);
+						fragmentTransaction.add(R.id.frame_layout_container, newFragment);
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.detach(oldFragment);
 						newFragment.backStackElement = oldFragment;
@@ -279,7 +279,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						 * needed if template is edited, because we can create but we cannot add the fragment during inflation
 						 */
 						if(!((TableFragment) data.childFragment).isAdded()) {
-							fragmentTransaction.add(R.id.main_view_empty, ((TableFragment) data.childFragment));
+							fragmentTransaction.add(R.id.frame_layout_container, ((TableFragment) data.childFragment));
 						}
 						/*
 						 * JACKSON END

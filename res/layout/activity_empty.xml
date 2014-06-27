@@ -1,11 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_view_empty"
+    android:id="@+id/main_view_e"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/clickdummy_background"
-    android:launchMode="singleInstance"
     android:orientation="vertical"
     tools:context=".TemplateGeneratorActivity" >
+    
+    <!-- The navigation drawer -->
 
-</LinearLayout>
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/list_background"
+        android:choiceMode="singleChoice"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp" />
+
+</de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout>

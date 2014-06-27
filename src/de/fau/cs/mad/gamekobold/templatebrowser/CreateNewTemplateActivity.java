@@ -154,11 +154,11 @@ public class CreateNewTemplateActivity extends Activity {
 
 				
 				
-//				Intent intent = new Intent(CreateNewTemplateActivity.this,
-//						TemplateGeneratorActivity.class);
-				// it goes to welcome activity
 				Intent intent = new Intent(CreateNewTemplateActivity.this,
-						TemplateGeneratorWelcomeActivity.class);
+						TemplateGeneratorActivity.class);
+				// it goes to welcome activity
+//				Intent intent = new Intent(CreateNewTemplateActivity.this,
+//						TemplateGeneratorWelcomeActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				
 				/*
