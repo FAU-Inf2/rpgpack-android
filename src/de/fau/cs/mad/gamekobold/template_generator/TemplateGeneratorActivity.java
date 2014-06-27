@@ -100,6 +100,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
 					 template.print();
 					 myTemplate = template;
+					 myTemplate.fileName = Template.getSanitizeFileNameForTemplate(myTemplate);
 				 }
 				 else {
 					 //TODO show error?!
@@ -418,19 +419,20 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     
     public static void saveTemplateAsync(String filename) {
     	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
-    	task.execute(new String[] {filename});
+//    	task.execute(new String[] {filename});
+    	task.execute();
     }
     
-    private static class JacksonSaveTemplateTask extends AsyncTask<String, Void, Boolean> {
+    private static class JacksonSaveTemplateTask extends AsyncTask</*String*/ Void, Void, Boolean> {
 		@Override
-		protected Boolean doInBackground(String... params) {
-			if(params.length != 1) {
+		protected Boolean doInBackground(/*String... params*/Void... params) {
+			/*if(params.length != 1) {
 				return Boolean.FALSE;
 			}
-			String filename = params[0];
+			String filename = params[0];*/
 			try {
 				if( (myActivity != null) && (myTemplate != null) ) {
-					myTemplate.saveToJSON(myActivity, filename);
+					myTemplate.saveToJSON(myActivity);
 				}
 			} catch (JsonGenerationException | JsonMappingException e) {
 				e.printStackTrace();
@@ -489,18 +491,18 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				template = Template.loadFromJSONFile(generatorActivity, FILE_NAME);
 				// TODO this is just for test purpose
 				// remove this later!
-				for(int i = 0; i < 12; i++) {
+				/*for(int i = 0; i < 12; i++) {
 					Thread.sleep(200);
-				}
+				}*/
 				//
 			} catch (JsonParseException | JsonMappingException e) {
 				return null;
 			}
 			catch (IOException e) {
 				return null;
-			} catch (InterruptedException e) {
+			}/* catch (InterruptedException e) {
 				return null;
-			}
+			}*/
 			return template;
 		}
 		

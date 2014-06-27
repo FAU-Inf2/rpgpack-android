@@ -140,11 +140,11 @@ public class TemplateBrowserActivity extends ListActivity {
 							File file = new File(longClickedTemplate.absoluteFilePath);
 							if(file != null) {
 								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
-								removeItem(longClickedTemplate);
+								//removeItem(longClickedTemplate);
 								// TODO disabled while creation of new templates not working
-								/*if(file.delete()) {
+								if(file.delete()) {
 									removeItem(longClickedTemplate);
-								}*/
+								}
 							}
 						}
 					});

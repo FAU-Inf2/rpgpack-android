@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,6 +36,8 @@ public class Template implements Parcelable{
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
+	@JsonIgnore
+	public String fileName = null;
 	public String templateName;
 	public String gameName;
 	public String author;
@@ -67,6 +72,29 @@ public class Template implements Parcelable{
 		}
 	}
 	
+	
+	public static String getSanitizeFileNameForTemplate(Template template) {
+		final String forbiddenCharacters = "/\\?%*:|\"<>1";
+		StringBuilder builder = new StringBuilder();
+		for(final char character : template.templateName.toCharArray()) {
+			if(forbiddenCharacters.indexOf(character) != -1) {
+				continue;
+			}
+			builder.append(character);
+		}
+		if(!builder.toString().isEmpty()) {
+			builder.append("-"+template.date);
+		}
+		else {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+			Date date = new Date();
+			builder.append(format.format(date));
+		}
+		
+		Log.d("sanitizeFileName:", "orig:"+template.fileName+" sani:"+builder.toString());
+		return builder.toString();
+	}
+	
 	//TODO vllt unter files/Templates/ speichern
 	/**
 	 * @param activity 
@@ -76,9 +104,12 @@ public class Template implements Parcelable{
 	 * @throws IOException
 	 * Saves the template as a json file in the template directory with the given name
 	 */
-	public void saveToJSON(Activity activity, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
+	public void saveToJSON(Activity activity) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		File dir = getTemplateDirectory(activity);
+		if(fileName == null) {
+			fileName = getSanitizeFileNameForTemplate(this);
+		}
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
 		if(USE_PRETTY_WRITER) {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
@@ -178,6 +209,7 @@ public class Template implements Parcelable{
 		dest.writeString(date);
 		dest.writeInt(iconID);
 		dest.writeString(description);
+		//dest.writeString(fileName);
 	}
 	
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -196,6 +228,7 @@ public class Template implements Parcelable{
 			ret.date = source.readString();
 			ret.iconID = source.readInt();
 			ret.description = source.readString();
+			//ret.fileName = source.readString();
 			return ret;
 		}
 	};
