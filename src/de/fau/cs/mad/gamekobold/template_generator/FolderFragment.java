@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -115,7 +114,6 @@ public class FolderFragment extends GeneralFragment {
 		
         lView = (ListView) view.findViewById(R.id.listView_items);
         lView.setAdapter(dataAdapter);
-        
         return view;
     }
 	

@@ -31,87 +31,78 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View itemView;
+		// View itemView;
+
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
-			// if it is the last row -> create new template
 			if (position == getCount() - 1) {
-				itemView = inflater
+				// if it is the last row -> create new item
+				convertView = inflater
 						.inflate(R.layout.itemlayout2_newitem_matrix_view,
 								parent, false);
 
-				Log.e("ad", "Position, getCount: " + getCount());
-				Log.e("ad", "Position: " + position);
-				TextView iName = (TextView) itemView
-						.findViewById(R.id.textView4);
-
-				TextView iValue = (TextView) itemView
-						.findViewById(R.id.textView1);
 				MatrixItem curItem = items.get(position);
+
+				TextView iName = (TextView) convertView
+						.findViewById(R.id.textView4);
+				TextView iValue = (TextView) convertView
+						.findViewById(R.id.textView1);
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
 
-			} else {
-				Log.e("ad", "position: " + position);
+				Log.e("1", "1");
 
-				itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
-						parent, false);
-				TextView iName = (TextView) itemView
+			} else {
+				convertView = inflater.inflate(
+						R.layout.itemlayout2_matrix_view, parent, false);
+				MatrixItem curItem = items.get(position);
+				TextView iName = (TextView) convertView
 						.findViewById(R.id.textView4);
-				TextView iValue = (TextView) itemView
+				TextView iValue = (TextView) convertView
 						.findViewById(R.id.textView1);
 
 				// combine min and max
-				TextView iRange = (TextView) itemView
+				TextView iRange = (TextView) convertView
 						.findViewById(R.id.textView2);
-
-				TextView iModificator = (TextView) itemView
+				TextView iModificator = (TextView) convertView
 						.findViewById(R.id.textView3);
-
-				MatrixItem curItem = items.get(position);
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
 				iRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 				iModificator.setText(curItem.getModificator());
-
+				Log.e("2", "2");
 			}
-			// TODO check this else-condition, cause now it is just the same!!!!
+			// or reuse
 		} else {
 			// if it is the last row -> create new template
 			if (position == getCount() - 1) {
-				itemView = inflater
-						.inflate(R.layout.itemlayout2_newitem_matrix_view,
-								parent, false);
 
-				Log.e("ad", "Position, getCount: " + getCount());
-				Log.e("ad", "Position: " + position);
-				TextView iName = (TextView) itemView
+				TextView iName = (TextView) convertView
 						.findViewById(R.id.textView4);
 
-				TextView iValue = (TextView) itemView
+				TextView iValue = (TextView) convertView
 						.findViewById(R.id.textView1);
 				MatrixItem curItem = items.get(position);
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
+				Log.e("3", "3");
 
 			} else {
-				Log.e("ad", "position: " + position);
-
-				itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
-						parent, false);
-				TextView iName = (TextView) itemView
+				// itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
+				// parent, false);
+				TextView iName = (TextView) convertView
 						.findViewById(R.id.textView4);
-				TextView iValue = (TextView) itemView
+				TextView iValue = (TextView) convertView
 						.findViewById(R.id.textView1);
 				// combine min and max
-				TextView iRange = (TextView) itemView
+				TextView iRange = (TextView) convertView
 						.findViewById(R.id.textView2);
 
-				TextView iModificator = (TextView) itemView
+				TextView iModificator = (TextView) convertView
 						.findViewById(R.id.textView3);
 
 				MatrixItem curItem = items.get(position);
@@ -122,23 +113,26 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						+ curItem.getRangeMax());
 
 				iModificator.setText(curItem.getModificator());
-
-				// set modificator text color: blue for positive red for
-				// negative
-				// TODO make this check smarter
-				if (curItem.getModificator().charAt(0) == '+')
-					iModificator.setTextColor(getContext().getResources()
-							.getColor(R.color.a_blue));
-				else if (curItem.getModificator().charAt(0) == '-')
-					iModificator.setTextColor(getContext().getResources()
-							.getColor(R.color.a_red));
-				else
-					iModificator.setTextColor(getContext().getResources()
-							.getColor(R.color.a_grey));
-
+				Log.e("4", "4");
+				// // set modificator text color: blue for positive red for
+				// // negative
+				// // TODO make this check smarter
+				// if (!curItem.getModificator().isEmpty()) {
+				//
+				// if (curItem.getModificator().charAt(0) == '+')
+				// iModificator.setTextColor(getContext().getResources()
+				// .getColor(R.color.a_blue));
+				// else if (curItem.getModificator().charAt(0) == '-')
+				// iModificator.setTextColor(getContext().getResources()
+				// .getColor(R.color.a_red));
+				// else
+				// iModificator.setTextColor(getContext().getResources()
+				// .getColor(R.color.a_grey));
+				//
+				// }
 			}
 		}
-		return itemView;
+		return convertView;
 	}
 
 }

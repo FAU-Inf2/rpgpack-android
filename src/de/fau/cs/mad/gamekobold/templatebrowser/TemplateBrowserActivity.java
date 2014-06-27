@@ -12,10 +12,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -42,7 +44,13 @@ public class TemplateBrowserActivity extends ListActivity {
 		setContentView(R.layout.activity_template_browser);
 		Log.e("d", "On create!!!");
 		myActivity = this;
-		templateList = getDataForListView(this);
+		//templateList = getDataForListView(this);
+		if(templateList == null) {
+			templateList = new ArrayList<Template>();
+		}
+		TemplateListLoaderTask loaderTask = new TemplateListLoaderTask();
+		loaderTask.execute();
+		
 //		Template newTemplate;
 //		
 //		// take new Template object if it was sent from
@@ -53,20 +61,19 @@ public class TemplateBrowserActivity extends ListActivity {
 //			
 //			templateList.add(newTemplate);
 //		}
-
+/*
 		// JACKSON add a new entry for editing the last created template
 		templateList.add(new Template("Edit last template...", "", "", "", -1));
 		// set create new template row to the end of the list
 		Template addNewTemplateRow = new Template("Create New Template...", "",
 				"", "", -1);
 		templateList.add(addNewTemplateRow);
-
+*/
 		// have to make it final because of adapter.getCount()-method for
 		// newTemplate-intent
 		final TemplateBrowserArrayAdapter adapter = new TemplateBrowserArrayAdapter(
 				this, templateList);
 		setListAdapter(adapter);
-
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
@@ -93,13 +100,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						Toast.makeText(myActivity, "No template edited", Toast.LENGTH_LONG).show();
 					}
 					else {
-						Intent intent = new Intent(TemplateBrowserActivity.this,
-								TemplateGeneratorActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-						// flag to distinguish between editing and creating 
-						intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
-						intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, templateFileName);
-						startActivity(intent);	
+						startEditingOfTemplate(templateFileName);
 					}
 				}
 				// JACKSON end
@@ -115,16 +116,16 @@ public class TemplateBrowserActivity extends ListActivity {
 			}
 		});
 		
-		// set onItemClickListener. if the user clicks on an item we show a dialog
+		// set onItemClickListener. if the user long clicks on an item we show a dialog
 		// the user then gets the option to delete the template
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 				final Template longClickedTemplate = templateList.get(pos);
 				
-				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.filePath);
+				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.absoluteFilePath);
 				
-				if(longClickedTemplate.filePath != null) {
+				if(longClickedTemplate.absoluteFilePath != null) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
 					builder.setTitle("Delete Template?");
 					builder.setMessage("Click yes to delete the template.");
@@ -136,14 +137,14 @@ public class TemplateBrowserActivity extends ListActivity {
 					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							File file = new File(longClickedTemplate.filePath);
+							File file = new File(longClickedTemplate.absoluteFilePath);
 							if(file != null) {
 								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
-								removeItem(longClickedTemplate);
-								// TODO removing item from list not working
-								/*if(file.delete()) {
+								//removeItem(longClickedTemplate);
+								// TODO disabled while creation of new templates not working
+								if(file.delete()) {
 									removeItem(longClickedTemplate);
-								}*/
+								}
 							}
 						}
 					});
@@ -231,8 +232,10 @@ public class TemplateBrowserActivity extends ListActivity {
 	// TODO replace with real data, now it is just stub for real data from DB or
 	// json file?
 	public static List<Template> getDataForListView(Context context) {
+		// temp list
 		List<Template> templateList = new ArrayList<Template>();
 
+		// add dummy data
 		Template template1 = new Template(
 				"My First Template",
 				"Dungeons and Dragons",
@@ -248,17 +251,12 @@ public class TemplateBrowserActivity extends ListActivity {
 		templateList.add(template1);
 		templateList.add(template2);
 		templateList.add(template3);
+		//
 		/*
 		 * JACKSON START
 		 * We iterate over all files in the template directory and load the data into the list
 		 */
-		File templateDir = null;
-		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			templateDir = Environment.getExternalStorageDirectory();
-		}
-		else {
-			templateDir = context.getDir(de.fau.cs.mad.gamekobold.jackson.Template.FOLDER_NAME, Context.MODE_PRIVATE);
-		}
+		File templateDir = de.fau.cs.mad.gamekobold.jackson.Template.getTemplateDirectory(myActivity);
 		if(templateDir != null) {
 			if(templateDir.isDirectory()) {
 				final File[] fileList = templateDir.listFiles();
@@ -282,7 +280,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						if(temp.getTemplateName().equals("")) {
 							temp.setTemplateName(file.getName());
 						}
-						temp.filePath = file.getAbsolutePath();
+						temp.absoluteFilePath = file.getAbsolutePath();
 						templateList.add(temp);
 					}
 				}
@@ -299,5 +297,143 @@ public class TemplateBrowserActivity extends ListActivity {
 		ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
 		adapter.remove(template);
 		adapter.notifyDataSetChanged();
+	}
+	
+	private void startEditingOfTemplate(Template template) {
+		if(template.absoluteFilePath != null) {
+			int lastSlashPos = template.absoluteFilePath.lastIndexOf("/");
+			String fileName = null;
+			if(lastSlashPos == -1) {
+				fileName = template.absoluteFilePath;
+			}
+			else {
+				fileName = template.absoluteFilePath.substring(lastSlashPos+1);
+			}
+			startEditingOfTemplate(fileName);
+		}
+	}
+	
+	private void startEditingOfTemplate(String fileName) {
+		if(fileName.equals("")){
+			return;
+		}
+		Intent intent = new Intent(TemplateBrowserActivity.this,
+				TemplateGeneratorActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		// flag to distinguish between editing and creating 
+		intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
+		intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, fileName);
+		startActivity(intent);	
+	}
+	
+	private class TemplateListLoaderTask extends AsyncTask<Void, Void, List<Template>> {
+		private ProgressDialog pd;
+		
+		@Override
+		protected void onPreExecute() {
+			pd = new ProgressDialog(myActivity);
+    		pd.setTitle("Loading template list...");
+    		pd.setMessage("Please wait...");
+    		pd.setCancelable(false);
+    		pd.setIndeterminate(true);
+    		pd.show();
+		}
+		
+		@Override
+		protected List<Template> doInBackground(Void... params) {
+			List<Template> templateList = new ArrayList<Template>();
+			Template template1 = new Template(
+					"My First Template",
+					"Dungeons and Dragons",
+					"Anna",
+					"20.05.2014",
+					2,
+					"This is my first try to make my own template! D&D departs from traditional wargaming and assigns each player a specific character to play instead of a military formation. These characters embark upon imaginary adventures within a fantasy setting.");
+			Template template2 = new Template("The Best Template",
+					"Vampire the Masquerade", "Anna", "20.05.2014", 3);
+			Template template3 = new Template("Schwarze Auge Template",
+					"Das Schwarze Auge", "Anna", "21.05.2014", 4);
+
+			templateList.add(template1);
+			templateList.add(template2);
+			templateList.add(template3);
+			/*
+			 * JACKSON START
+			 * We iterate over all files in the template directory and load the data into the list
+			 */
+			File templateDir = null;
+			if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+				templateDir = Environment.getExternalStorageDirectory();
+			}
+			else {
+				templateDir = myActivity.getDir(de.fau.cs.mad.gamekobold.jackson.Template.FOLDER_NAME, Context.MODE_PRIVATE);
+			}
+			if(templateDir != null) {
+				if(templateDir.isDirectory()) {
+					final File[] fileList = templateDir.listFiles();
+					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
+					for(final File file : fileList) {
+						try {
+							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
+						} catch (JsonParseException | JsonMappingException e) {
+							e.printStackTrace();
+						}
+						catch(IOException e) {
+							e.printStackTrace();
+						}
+						if(loadedTemplate != null) {
+							Template temp = new Template(loadedTemplate.templateName,
+									loadedTemplate.gameName,
+									loadedTemplate.author,
+									loadedTemplate.date,
+									loadedTemplate.iconID,
+									loadedTemplate.description);
+							if(temp.getTemplateName().equals("")) {
+								temp.setTemplateName(file.getName());
+							}
+							temp.absoluteFilePath = file.getAbsolutePath();
+							templateList.add(temp);
+						}
+						
+						// TEST PURPOSE ONLY DELETE LATER
+						/*for(int i = 0; i < 5; i++) {
+							try {
+								Thread.sleep(200);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}*/
+						//
+					}
+				}
+			}
+			/*
+			 * JACKSON END
+			 */
+			return templateList;
+		}
+		@Override
+		protected void onPostExecute(List<Template> templateList) {
+			if(templateList != null) {
+				// JACKSON add a new entry for editing the last created template
+				templateList.add(new Template("Edit last template...", "", "", "", -1));
+				// set create new template row to the end of the list
+				templateList.add(new Template("Create New Template...", "", "", "", -1));
+			}
+			((TemplateBrowserActivity)myActivity).setTemplateList(templateList);
+			if(pd != null) {
+				pd.dismiss();
+			}
+		}
+	}
+	
+	public void setTemplateList(List<Template> templateList) {
+		if(templateList != null) {
+			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter)getListAdapter();
+			adapter.clear();
+			adapter.addAll(templateList);
+			adapter.notifyDataSetChanged();
+		}
 	}
 }

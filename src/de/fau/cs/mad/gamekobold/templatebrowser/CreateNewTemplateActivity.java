@@ -153,13 +153,14 @@ public class CreateNewTemplateActivity extends Activity {
 //				startActivity(i);
 
 				
-				
+				// it goes template generator
 				Intent intent = new Intent(CreateNewTemplateActivity.this,
 						TemplateGeneratorActivity.class);
+				
 				// it goes to welcome activity
 //				Intent intent = new Intent(CreateNewTemplateActivity.this,
 //						TemplateGeneratorWelcomeActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				
 				/*
 				 * JACKSON START

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,7 +84,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         final ViewHolder holder = (ViewHolder) view.getTag();
         if(data.type == element_type.folder){
-        	Log.d("folder","viewpos:"+viewPosition+" convertView:"+convertView+" parten:"+parent);
+        	//Log.d("folder","viewpos:"+viewPosition+" convertView:"+convertView+" parten:"+parent);
         	/*if (data.jacksonTable == null) {
         		data.jacksonTable = jacksonTable.createAndAddNewContainerTable();
         	}*/
@@ -296,6 +299,47 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				}
         	});
         }
+        
+      //Matrix element
+        else if(data.type == element_type.matrix) {
+			
+        	holder.row.setOnClickListener(new OnClickListener() {
+        		//hier bei Klick neues Fragment anzeigen (== Matrixansicht)
+				@Override
+				public void onClick(View v) {
+					if(((MatrixFragment) data.childFragment) == null) {
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+						MatrixFragment newFragment = new MatrixFragment();
+						fragmentTransaction.add(R.id.main_view_empty, newFragment);
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+						fragmentTransaction.detach(oldFragment);
+						newFragment.backStackElement = oldFragment;
+						fragmentTransaction.addToBackStack(null);
+						fragmentTransaction.commit();
+						newFragment.fragment_parent = oldFragment;
+						data.childFragment = newFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
+					}
+					//fragment already exists -> show it
+					else{
+						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+						fragmentTransaction.detach(oldFragment);
+						fragmentTransaction.attach(((MatrixFragment) data.childFragment));
+						data.childFragment.backStackElement = oldFragment;
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((MatrixFragment) data.childFragment);
+						fragmentTransaction.addToBackStack(null);
+						fragmentTransaction.commit();
+						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
+					}
+					//((FolderFragment) data.childFragment).elementName = holder.elementName.getText().toString();
+				//	((MatrixFragment) data.childFragment).elementName = holder.elementName.getText().toString();
+
+				}
+        	});
+        }
+        
         /*else{
         	// if a table was attached then remove it because we are no longer a folder nor table
         	if(data.jacksonTable != null) {
@@ -313,7 +357,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         if(convertView != null) {
         	// if so we need to remove the old TextWatcher
         	holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
-        	Log.d("TableNameChangeWatcher", "convert View");
+        	//Log.d("TableNameChangeWatcher", "convert View");
         }
         // set view.elementName according to data
         holder.elementName.setText(data.text.getText());
@@ -321,19 +365,32 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         holder.elementName.addTextChangedListener(data.nameChangeWatcher);
         // save which TextWatcher is currently added. needed for removal
         holder.jacksonTableNameChangeWatcher = data.nameChangeWatcher;
-        Log.d("TableNameChangeWatcher", "set watcher");
-        /*if(holder.jacksonTableNameChangeWatcher != data.jacksonTable.tableNameTextWatcher) {
-    		Log.d("nameWatcher"," != ");
-    		Log.d("nameWatcher", "for:"+data.jacksonTable);
-    		Log.d("nameWatcher", "for:"+holder.elementName);
-    		if(holder.jacksonTableNameChangeWatcher != null) {
-    			holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
-    			Log.d("nameWatcher","removed:"+holder.jacksonTableNameChangeWatcher);
-    		}
-			holder.jacksonTableNameChangeWatcher = data.jacksonTable.tableNameTextWatcher;
-    		holder.elementName.addTextChangedListener(holder.jacksonTableNameChangeWatcher);
-    		Log.d("nameWatcher","added:"+holder.jacksonTableNameChangeWatcher);
-    	}*/
+        // long click listener for removal of items
+        holder.row.setOnLongClickListener(new View.OnLongClickListener() {
+        	public final FolderElementData myDataItem = data;
+			@Override
+			public boolean onLongClick(View v) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+				builder.setTitle("Delete item?");
+				builder.setMessage("Click yes to delete the item.");
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						jacksonTable.removeTable(myDataItem.jacksonTable);
+						remove(myDataItem);
+						notifyDataSetChanged();
+					}
+				});
+				builder.create().show();
+				return true;
+			}
+		});
+       // Log.d("TableNameChangeWatcher", "set watcher");
         /*
          * JACKSON END
          */
@@ -350,8 +407,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         	elementSymbol.setImageResource(R.drawable.collection_icon);
         	break;
         }
-        //holder.elementName.setText(data.text.getText());
-        
         return view;
     }
     
