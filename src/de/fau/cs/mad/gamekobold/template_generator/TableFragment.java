@@ -79,7 +79,8 @@ public class TableFragment extends GeneralFragment {
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);             
+        super.onCreate(savedInstanceState);   
+        Log.d("TableFragment-onCreate", "start");
         setRetainInstance(true);
         LayoutInflater inflater = (LayoutInflater)
 			    TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -186,6 +187,7 @@ public class TableFragment extends GeneralFragment {
 			 });
 			 // create alert dialog
 	      dialogTableView = alertDialogBuilder.create();
+	      Log.d("TableFragment-onCreate", "end");
     }
 	
 	protected void adaptHeaderTable(TableLayout otherTable){

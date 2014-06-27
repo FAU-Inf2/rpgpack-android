@@ -181,7 +181,6 @@ public class Template implements Parcelable{
 	}
 	
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
-		
 		@Override
 		public Template[] newArray(int size) {
 			return new Template[size];
@@ -200,7 +199,6 @@ public class Template implements Parcelable{
 			return ret;
 		}
 	};
-	
 	//
 	// PARCELABLE END
 	//
