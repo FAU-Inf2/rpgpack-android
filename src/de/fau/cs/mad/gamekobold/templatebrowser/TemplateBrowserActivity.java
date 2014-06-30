@@ -141,8 +141,16 @@ public class TemplateBrowserActivity extends ListActivity {
 							if(file != null) {
 								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
 								//removeItem(longClickedTemplate);
-								// TODO disabled while creation of new templates not working
 								if(file.delete()) {
+									// check if we removed the last edited template
+									SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME, MODE_PRIVATE);
+									String lastEditedTemplate = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
+									if(lastEditedTemplate.equals(file.getName())) {
+										// if so we remove it from the saved preference
+										SharedPreferences.Editor editor = pref.edit();
+										editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+										editor.commit();
+									}
 									removeItem(longClickedTemplate);
 								}
 							}
