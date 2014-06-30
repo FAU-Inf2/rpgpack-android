@@ -186,7 +186,7 @@ public class CreateNewTemplateActivity extends Activity {
 				// check to see if a file for this template already exists
 				if(jTemplate.doesTemplateFileExist(myActivity)) {
 					// if yes we show a dialog and ask whether to overwrite the file or not.
-					Log.d("CreateNewTemplateActivity", "File already exists!");
+					//Log.d("CreateNewTemplateActivity", "File already exists!");
 					final AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
 					builder.setTitle("A file for this template already exists!");
 					builder.setMessage("Click yes to overwrite the file.");
@@ -206,7 +206,7 @@ public class CreateNewTemplateActivity extends Activity {
 				}
 				else {
 					// if the file does not exists continue
-					Log.d("CreateNewTemplateActivity", "File does not exist.");
+					//Log.d("CreateNewTemplateActivity", "File does not exist.");
 					intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
 					startActivity(intent);
 				}

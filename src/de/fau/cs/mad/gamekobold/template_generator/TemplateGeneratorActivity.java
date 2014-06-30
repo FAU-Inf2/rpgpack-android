@@ -87,7 +87,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
 				 if(template != null) {
 					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
-					 template.print();
+					// template.print();
 					 myTemplate = template;
 					 myTemplate.fileName = Template.getSanitizeFileNameForTemplate(myTemplate);
 				 }
@@ -121,16 +121,6 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		 //create it because we need its data for slideoutmenu
 		 if(rootFragment == null){
 			 rootFragment = new FolderFragment();
-		 }
-		 //method: use fragment to store everything
-		 if(topFragment == null){
-			 FragmentManager fragmentManager = getFragmentManager();
-			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			 topFragment = new WelcomeFragment();
-			 currentFragment = topFragment;
-			 fragmentTransaction.add(R.id.frame_layout_container, currentFragment);
-			 fragmentTransaction.commit();
-			 getFragmentManager().executePendingTransactions();
 			 /*
 			  * JACKSON START
 			  */
@@ -143,6 +133,16 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 /*
 			  * JACKSON END
 			  */
+		 }
+		 //method: use fragment to store everything
+		 if(topFragment == null){
+			 FragmentManager fragmentManager = getFragmentManager();
+			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			 topFragment = new WelcomeFragment();
+			 currentFragment = topFragment;
+			 fragmentTransaction.add(R.id.frame_layout_container, currentFragment);
+			 fragmentTransaction.commit();
+			 getFragmentManager().executePendingTransactions();
 		 }
 		 //set up slideout-menu
 		 mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
@@ -346,19 +346,20 @@ public class TemplateGeneratorActivity extends FragmentActivity {
      * JACKSON START
      */
     public void inflate() {
-    	((FolderFragment)currentFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
-   	 	((FolderFragment)currentFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
+    	((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+   	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
     }
     
     public static void saveTemplateAsync() {
-    	saveTemplateAsync("testTemplate.json");
+    	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
+    	task.execute();
     }
     
-    public static void saveTemplateAsync(String filename) {
+    /*public static void saveTemplateAsync(String filename) {
     	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
 //    	task.execute(new String[] {filename});
     	task.execute();
-    }
+    }*/
     
     private static class JacksonSaveTemplateTask extends AsyncTask</*String*/ Void, Void, Boolean> {
 		@Override
