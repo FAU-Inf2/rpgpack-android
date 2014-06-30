@@ -166,6 +166,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				newFragment.fragment_parent = oldFragment;
         				data.childFragment = newFragment;
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
         			}
         			//fragment already exisits -> show it
@@ -189,6 +190,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = data.childFragment;
         				fragmentTransaction.addToBackStack(null);
         				fragmentTransaction.commit();
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
         				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
         			}
         			data.childFragment.elementName = holder.elementName.getText().toString();
@@ -270,6 +272,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						newFragment.fragment_parent = oldFragment;
 						data.childFragment = newFragment;
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					//fragment already exisits -> show it
@@ -293,6 +296,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((TableFragment) data.childFragment);
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					((TableFragment) data.childFragment).elementName = holder.elementName.getText().toString();
@@ -319,6 +323,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						newFragment.fragment_parent = oldFragment;
 						data.childFragment = newFragment;
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					//fragment already exists -> show it
@@ -331,6 +336,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((MatrixFragment) data.childFragment);
 						fragmentTransaction.addToBackStack(null);
 						fragmentTransaction.commit();
+        				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
 					}
 					//((FolderFragment) data.childFragment).elementName = holder.elementName.getText().toString();
