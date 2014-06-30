@@ -6,6 +6,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,10 +40,13 @@ public class CreateNewTemplateActivity extends Activity {
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 	
+	private static Activity myActivity = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
+		myActivity = this;
 
 		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButton1);
 
@@ -154,7 +159,7 @@ public class CreateNewTemplateActivity extends Activity {
 
 				
 				// it goes template generator
-				Intent intent = new Intent(CreateNewTemplateActivity.this,
+				final Intent intent = new Intent(CreateNewTemplateActivity.this,
 						TemplateGeneratorActivity.class);
 				
 				// it goes to welcome activity
@@ -168,7 +173,7 @@ public class CreateNewTemplateActivity extends Activity {
 				// flag to distinguish between editing and creating 
 				intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, true);
 				// create template for data transfer
-				de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
+				final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data
 				jTemplate.templateName = tvTemplateName.getText().toString();
 				jTemplate.gameName = tvGameName.getText().toString();
@@ -178,13 +183,36 @@ public class CreateNewTemplateActivity extends Activity {
 				//TODO icon id
 				jTemplate.iconID = 0;
 				jTemplate.description = tvDescription.getText().toString();
-				intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
+				// check to see if a file for this template already exists
+				if(jTemplate.doesTemplateFileExist(myActivity)) {
+					// if yes we show a dialog and ask whether to overwrite the file or not.
+					Log.d("CreateNewTemplateActivity", "File already exists!");
+					final AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
+					builder.setTitle("A file for this template already exists!");
+					builder.setMessage("Click yes to overwrite the file.");
+					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {}
+					});
+					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
+							startActivity(intent);
+						}
+					});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+				else {
+					// if the file does not exists continue
+					Log.d("CreateNewTemplateActivity", "File does not exist.");
+					intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
+					startActivity(intent);
+				}
 				/*
 				 * JACKSON END 
 				 */
-				
-				startActivity(intent);
-				
 			}
 		});
 

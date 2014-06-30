@@ -141,6 +141,20 @@ public class Template implements Parcelable{
 	}
 	
 	/**
+	 * Checks whether the file for this template exists on the file system.
+	 * @param context
+	 * @return true if the file exists, false otherwise
+	 */
+	public boolean doesTemplateFileExist(Context context) {
+		if(fileName == null) {
+			fileName = getSanitizeFileNameForTemplate(this);
+		}
+		File dir = getTemplateDirectory(context);
+		File templateFile = new File(dir, fileName);
+		return templateFile.exists();
+	}
+	
+	/**
 	 * 
 	 * @param context
 	 * @param fileName Template file name
