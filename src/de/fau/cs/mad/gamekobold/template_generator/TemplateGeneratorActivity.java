@@ -30,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +63,6 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 //variables for slideout-menu
 	 protected DrawerLayout mDrawerLayout;
 	 private ActionBarDrawerToggle mDrawerToggle;
-	 private LinearLayout mDrawerView;
 
 
 	 @Override
@@ -145,7 +143,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 getFragmentManager().executePendingTransactions();
 		 }
 		 //set up slideout-menu
-		 mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
+//		 LinearLayout mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
 		 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
 		 transaction.commit(); 

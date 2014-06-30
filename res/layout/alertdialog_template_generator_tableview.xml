@@ -22,11 +22,14 @@
     
     <de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText
         android:id="@+id/edit_spaltenanzahl"
-        android:layout_toLeftOf="@+id/button_add_column"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
+        android:layout_toLeftOf="@+id/button_add_column"
         android:inputType="number"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingTop="25dp"
+        android:singleLine="true"
         android:textSize="18sp" />
     
     <ImageButton

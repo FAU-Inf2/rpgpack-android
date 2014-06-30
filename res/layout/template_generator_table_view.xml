@@ -16,20 +16,20 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/add_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Row" />
 
         <Button
-            android:id="@+id/add_Column"
+            android:id="@+id/add_column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add"
             android:text="Add Column" />
 
         <Button
-            android:id="@+id/remove_Column"
+            android:id="@+id/remove_column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add_Column"

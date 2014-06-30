@@ -1,13 +1,10 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.R;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 public class WelcomeFragment extends GeneralFragment{
 
@@ -30,11 +27,11 @@ public class WelcomeFragment extends GeneralFragment{
 
 	@Override
 	protected void addItemList() {
-		
+		//nothing to add in WelcomeFragment
 	}
 
 	@Override
 	public void showDialog() {
-		
+		//no dialog to show
 	}
 }
