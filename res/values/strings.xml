@@ -75,4 +75,20 @@
     <!-- ItemLayout NewItem Matrix -->
     <string name="text_item_add">+</string>
 
+    <!-- CreateNewTemplate -->
+    <string name="text_create_template">Template erstellen</string>
+    <string name="hint_template_name">Name des Templates&#8230;</string>
+    <string name="text_add_icon">Foto hinzufügen</string>
+    <string name="hint_world_name">Name der Welt&#8230;</string>
+
+    <string-array name="image_picker_items">
+        <item>von Kamera</item>
+        <item>von SD-Karte</item>
+    </string-array>
+
+    <string name="add_icon">Bild hinzufügen</string>
+    <string name="warning_set_name">Dein Template braucht ein Name!</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+
 </resources>
