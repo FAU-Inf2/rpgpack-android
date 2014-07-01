@@ -127,13 +127,18 @@ public class TableFragment extends GeneralFragment {
         dialog = alertDialogBuilder.create();
     }
 	
-	protected void adaptHeaderTable(TableLayout otherTable){
-		int amountRows = otherTable.getChildCount()-1;
+	/**
+	 * adapts the header table to match the caption of the given dialogTable
+	 * @param dialogTable
+	 */
+	protected void adaptHeaderTable(TableLayout dialogTable){
+		int amountRows = dialogTable.getChildCount()-1;
 		for(int i=1; i<amountRows+1; i++){
-			String otherString = ((EditText) ((TableRow) otherTable.getChildAt(i)).getChildAt(1)).getText().toString();
+			String otherString = ((EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1)).getText().toString();
 			EditText textToChange = ((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i-1));
-			textToChange.setText(otherString);
-			setHeaderTableStyle(textToChange);
+			if(!otherString.equals("")){
+				textToChange.setText(otherString);
+			}
 		}
 	}
 	
@@ -425,70 +430,77 @@ public class TableFragment extends GeneralFragment {
 		if(usedTable.getChildAt(indexOfRow) instanceof TableRow){
 			indexOfColumn = ((TableRow) usedTable.getChildAt(indexOfRow)).indexOfChild(textEdited);
 		}
-		int longestWidth = 0;
-		int ownColumnNumber = indexOfColumn;
-		View longestView = null;
+		int largestWidth = 0;
+		//traverse over all columns to get biggest width
+		//first columns of normal table
 		for (int i = 0; i < table.getChildCount(); i++) {
 			View child = table.getChildAt(i);
 			TableRow oneRow = (TableRow) child;
 			if (child instanceof TableRow) {
-				View view = oneRow.getChildAt(ownColumnNumber);
-				int elementSize = 0;
+				View view = oneRow.getChildAt(indexOfColumn);
+				int localWidth = 0;
 				if(view instanceof EditText){
-					//todo
 					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-					elementSize = view.getMeasuredWidth();
-					if(elementSize > longestWidth){
-						longestWidth = elementSize;
-						longestView = view;
+					localWidth = view.getMeasuredWidth();
+					if(localWidth > largestWidth){
+						largestWidth = localWidth;
 					}
 				}
 			}
 		}
+		//than compare with header table also
 		for (int i = 0; i < headerTable.getChildCount(); i++) {
 			View child = headerTable.getChildAt(i);
 			TableRow oneRow = (TableRow) child;
 			if (child instanceof TableRow) {
-				View view = oneRow.getChildAt(ownColumnNumber);
-				int elementSize = 0;
+				View view = oneRow.getChildAt(indexOfColumn);
+				int localWidth = 0;
 				if(view instanceof EditText){
 					//todo
 					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-					elementSize = view.getMeasuredWidth();
-					if(elementSize > longestWidth){
-						longestWidth = elementSize;
-						longestView = view;
+					localWidth = view.getMeasuredWidth();
+					if(localWidth > largestWidth){
+						largestWidth = localWidth;
 					}
 				}
 			}
 		}
-		if(longestView != null){
-			longestView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-			int longestHeight = longestView.getMeasuredHeight();
-			if(longestWidth < width){
-				longestWidth = width;
+		/* Code that measures the height of one row
+		int largestHeight = 0;
+		if (row instanceof TableRow) {
+			for(int i=0; i<((TableRow) row).getChildCount(); i++){
+				View view = ((TableRow) row).getChildAt(i);
+				int localHeight = 0;
+				if(view instanceof EditText){
+					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					localHeight = view.getMeasuredHeight();
+					if(localHeight > largestHeight){
+						largestHeight = localHeight;
+					}
+				}
 			}
-			if(longestHeight < height){
-				longestHeight = height;
-			}
-			adaptAllColumnsToSize(ownColumnNumber, longestWidth, longestHeight);
 		}
+		*/
+		adaptAllColumnsToSize(indexOfColumn, largestWidth);
 	}
 	
 	/**
-	 * adapts all columnsof the table with given columnIndex to the given size
+	 * adapts all columns of the table with given columnIndex to the given width
 	 * @param columnIndex
 	 * @param width
-	 * @param height
 	 */
-	protected void adaptAllColumnsToSize(int columnIndex, int width, int height){
+	protected void adaptAllColumnsToSize(int columnIndex, int width){
 		View singleRow = headerTable.getChildAt(0);
 		if(singleRow instanceof TableRow){
 			View theChildToResize = ((TableRow) singleRow).getChildAt(columnIndex);
 			if(theChildToResize instanceof EditText){
-				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,((EditText) theChildToResize).getHeight()); // Width , height
+//				setHeaderTableStyle((EditText) theChildToResize);
+				//TODO: extract measurement of height to match the hight of the biggest element in the row
+				theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+				int height = theChildToResize.getMeasuredHeight();
+				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
 			    ((EditText) theChildToResize).setLayoutParams(lparams);
-				setHeaderTableStyle((EditText) theChildToResize);
+				Log.d("changed", "layout_params set!");
 //			    textField.invalidate();
 //			    textField.forceLayout();
 			}
@@ -498,9 +510,12 @@ public class TableFragment extends GeneralFragment {
 			if(oneRow instanceof TableRow){
 				View theChildToResize = ((TableRow) oneRow).getChildAt(columnIndex);
 				if(theChildToResize instanceof EditText){
-					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,((EditText) theChildToResize).getHeight()); // Width , height
+					//TODO: extract measurement of height to match the hight of the biggest element in the row
+					theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					int height = theChildToResize.getMeasuredHeight();
+					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width, height); // Width , height
 				    ((EditText) theChildToResize).setLayoutParams(lparams);
-				    setTableStyle((EditText) theChildToResize);
+//				    setTableStyle((EditText) theChildToResize);
 				}
 				
 			}
@@ -563,6 +578,7 @@ public class TableFragment extends GeneralFragment {
 							//TemplateGeneratorActivity.saveTemplateAsync();	
 						}
 					}
+					checkResize(0, 0, oneColumn, row);
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
