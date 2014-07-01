@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MatrixItem {
-	//@JsonProperty("name")
+	//@JsonProperty(value="name")
 	private String itemName;
 	//@JsonProperty("val")
 	private String value;
@@ -36,7 +36,7 @@ public class MatrixItem {
 		this.modificator = modificator;
 	}
 	
-//	@JsonProperty("name")
+	//@JsonProperty("name")
 	public String getItemName() {
 		return itemName;
 	}

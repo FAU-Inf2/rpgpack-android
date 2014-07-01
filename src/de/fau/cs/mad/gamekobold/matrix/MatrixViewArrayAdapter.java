@@ -31,7 +31,26 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 		this.context = context;
 		this.items = items;
 	}
+	
+	// needed for viewConvertion so that the system knows that there are different layouts int the adapter
+	// 0 for normal item. 1 for "new item" item
+	@Override
+	public int getItemViewType(int position) {
+		// if it is the last element
+		if(position == getCount()-1) {
+			// return 1
+			return 1;
+		}
+		// return 0 for every other item
+		return 0;
+	}
 
+	// we got 2 types: normal items and the last one
+	@Override
+	public int getViewTypeCount() {
+	    return 2; // Count of different layouts
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -116,6 +135,11 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
+				/*Log.d("ADAPTER", "pos:"+position);
+				Log.d("ADAPTER", "iRange:"+iRange);
+				Log.d("ADAPTER", "curItem:"+curItem);
+				Log.d("ADAPTER", "min:"+curItem.getRangeMin());
+				Log.d("ADAPTER", "max:"+curItem.getRangeMax());*/
 				iRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 

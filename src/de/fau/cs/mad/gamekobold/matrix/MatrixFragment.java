@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
-import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 
 public class MatrixFragment extends GeneralFragment {
@@ -99,6 +99,12 @@ public class MatrixFragment extends GeneralFragment {
 		// TODO Auto-generated method stub
 		showPopup();
 	}
+	
+	public void addMatrixItem(MatrixItem newItem) {
+		// adapter.getCount >= 1
+		adapter.insert(newItem, adapter.getCount()-1);
+		adapter.notifyDataSetChanged();
+	}
 
 	// TODO replace with real data, now it is just stub for real data from DB or
 	// json file?
@@ -107,7 +113,7 @@ public class MatrixFragment extends GeneralFragment {
 
 		MatrixItem item1 = new MatrixItem("Mut", "34", 0, 100, "+1");
 		MatrixItem item2 = new MatrixItem("Ausdauer", "45", 20, 500, "-2");
-		MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 100, "+3");
+		MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 50, "+3");
 
 		itemsList.add(item1);
 		itemsList.add(item2);
@@ -122,19 +128,23 @@ public class MatrixFragment extends GeneralFragment {
 
 	private void showPopup() {
 		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment
-				.newInstance();
+				.newInstance(this);
 		popupAddNewItemFragment.show(getFragmentManager(),
 				"popupAddNewItemFragment");
 
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
+		private EditText itemName,rangeMin,rangeMax,defaultVal,modificator;
+		public MatrixFragment matrixFragment;
+	
 		// TODO pr�fen
-		public static AddNewItemDialogFragment newInstance() {
+		public static AddNewItemDialogFragment newInstance(MatrixFragment receiver) {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
+			fragment.matrixFragment = receiver;
 			return fragment;
 		}
-
+		
 		@Override
 		public Dialog onCreateDialog(Bundle SaveInstanceState) {
 			// Use the Builder class for convenient Dialog construction
@@ -146,8 +156,13 @@ public class MatrixFragment extends GeneralFragment {
 			// Inflate and set the layout for the dialog
 			// Pass null as the parent view because its going in the dialog
 			// layout
-			builder.setView(inflater
-					.inflate(R.layout.popup2_add_new_item, null));
+			View view = inflater.inflate(R.layout.popup2_add_new_item, null);
+			itemName = (EditText)view.findViewById(R.id.editText1);
+			rangeMin = (EditText)view.findViewById(R.id.editText2);
+			rangeMax = (EditText)view.findViewById(R.id.editText3);
+			defaultVal = (EditText)view.findViewById(R.id.editText4);
+			modificator = (EditText)view.findViewById(R.id.editText5);
+			builder.setView(view);
 
 			// set Dialog characteristics
 			builder.setMessage(getString(R.string.popup_titel));
@@ -157,6 +172,18 @@ public class MatrixFragment extends GeneralFragment {
 						public void onClick(DialogInterface dialog, int id) {
 							// TODO ADD new Item
 							// TODO @Benni JACKSON Add new Item
+							final int min = Integer.parseInt(rangeMin.getEditableText().toString());
+							final int max = Integer.parseInt(rangeMax.getEditableText().toString());
+							final String name = itemName.getEditableText().toString();
+							/*Log.d("NEW ITEM", "Name:"+name);
+							Log.d("NEW ITEM", "min:"+min);
+							Log.d("NEW ITEM", "max:"+max);*/
+							final MatrixItem newItem = new MatrixItem(name,
+															defaultVal.getEditableText().toString(),
+															min,
+															max,
+															modificator.getEditableText().toString());
+							matrixFragment.addMatrixItem(newItem);
 						}
 					});
 
