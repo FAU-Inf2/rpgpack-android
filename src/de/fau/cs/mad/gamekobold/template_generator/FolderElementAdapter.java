@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.support.v4.view.GravityCompat;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,9 +71,10 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		holder.row.setOnClickListener(new OnClickListener() {
     		@Override
     		public void onClick(View v) {
+    			GeneralFragment newFragment;
+    			GeneralFragment oldFragment;
     			if(data.childFragment == null) {
     				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
-    				GeneralFragment newFragment;
     				/*
     				 * JACKSON START
     				 */
@@ -94,42 +96,44 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     				 * JACKSON END
     				 */
     				fragmentTransaction.add(R.id.frame_layout_container, newFragment);
-    				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+    				oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
     				fragmentTransaction.detach(oldFragment);
     				newFragment.backStackElement = oldFragment;
     				fragmentTransaction.addToBackStack(null);
     				fragmentTransaction.commit();
-					Log.d("backstack", "backstack filled!");
-					newFragment.fragment_parent = oldFragment;
-    				data.childFragment = newFragment;
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
     			}
     			//fragment already exisits -> show it
     			else{
+    				newFragment = data.childFragment;
     				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
-    				GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+    				oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
     				fragmentTransaction.detach(oldFragment);
-    				data.childFragment.backStackElement = oldFragment;
+    				newFragment.backStackElement = oldFragment;
     				/*
     				 * JACKSON START
     				 * needed if template is edited, because we can create but we cannot add the fragment during inflation
     				 */
-    				if(!data.childFragment.isAdded()) {
-    					fragmentTransaction.add(R.id.frame_layout_container, data.childFragment);
+    				if(!newFragment.isAdded()) {
+    					fragmentTransaction.add(R.id.frame_layout_container, newFragment);
     					Log.d("jackson", "jackson did add to fragmentTransaction!");
     				}
     				/*
     				 * JACKSON END
     				 */
-    				fragmentTransaction.attach(data.childFragment);
+    				fragmentTransaction.attach(newFragment);
     				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = data.childFragment;
     				fragmentTransaction.addToBackStack(null);
     				fragmentTransaction.commit();
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
     			}
+    			newFragment.fragment_parent = oldFragment;
+				data.childFragment = newFragment;
+    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+				if(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+					//drawer is open -> new fragment will be top fragment
+					((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).topFragment = newFragment;
+				}
+				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
+				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
     			data.childFragment.elementName = holder.elementName.getText().toString();
     		}
     	});
