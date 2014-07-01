@@ -24,6 +24,12 @@
         <item>Matrix</item>
         <item>Ordner</item>
     </string-array>
+    
+    <string-array name="spaltentypen">
+        <item>Textfeld</item>
+        <item>CheckBox</item>
+        <item>PopUp</item>
+    </string-array>
 
     <string name="popup_titel">Item Information</string>
     <string name="add_item">Add Item</string>
