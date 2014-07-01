@@ -156,7 +156,7 @@ public class TableFragment extends GeneralFragment {
 		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		final EditText col1 = new EditText(getActivity());
-		col1.setHint("Headline1");
+		col1.setText("Headline1");
 		setHeaderTableStyle(col1);
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -180,7 +180,7 @@ public class TableFragment extends GeneralFragment {
 		// SECOND COLUMN
 		final EditText col2 = new EditText(getActivity());
 		setHeaderTableStyle(col2);
-		col2.setHint("Headline2");
+		col2.setText("Headline2");
 		col2.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col2, row);
@@ -592,7 +592,7 @@ public class TableFragment extends GeneralFragment {
         
         if(headerTable.indexOfChild(row) != -1){
         	setHeaderTableStyle(oneColumn);
-        	oneColumn.setHint("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+        	oneColumn.setText("Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
         }
         else{
         	setTableStyle(oneColumn);
