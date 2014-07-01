@@ -80,6 +80,7 @@ public class MatrixFragment extends GeneralFragment {
 					// click on item
 					// TODO what's next?
 					Log.e("er", "position: " + position);
+					showPopupForEditing(adapter.getItem(position));
 				}
 
 			}
@@ -133,10 +134,19 @@ public class MatrixFragment extends GeneralFragment {
 				"popupAddNewItemFragment");
 
 	}
+	
+	private void showPopupForEditing(MatrixItem item) {
+		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment
+				.newInstance(this);
+		popupAddNewItemFragment.editItem = item;
+		popupAddNewItemFragment.show(getFragmentManager(),
+				"popupAddNewItemFragment");
+	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
 		private EditText itemName,rangeMin,rangeMax,defaultVal,modificator;
 		public MatrixFragment matrixFragment;
+		public MatrixItem editItem = null;
 	
 		// TODO pr�fen
 		public static AddNewItemDialogFragment newInstance(MatrixFragment receiver) {
@@ -157,33 +167,64 @@ public class MatrixFragment extends GeneralFragment {
 			// Pass null as the parent view because its going in the dialog
 			// layout
 			View view = inflater.inflate(R.layout.popup2_add_new_item, null);
+			// get all EditTexts
 			itemName = (EditText)view.findViewById(R.id.editText1);
 			rangeMin = (EditText)view.findViewById(R.id.editText2);
 			rangeMax = (EditText)view.findViewById(R.id.editText3);
 			defaultVal = (EditText)view.findViewById(R.id.editText4);
 			modificator = (EditText)view.findViewById(R.id.editText5);
+			// check for editItem
+			if(editItem != null) {
+				// insert values from editItem into views
+				itemName.setText(editItem.getItemName());
+				rangeMin.setText(String.valueOf(editItem.getRangeMin()));
+				rangeMax.setText(String.valueOf(editItem.getRangeMax()));
+				defaultVal.setText(editItem.getValue());
+				modificator.setText(editItem.getModificator());
+			}
 			builder.setView(view);
-
+			
 			// set Dialog characteristics
+			// get right button text
+			String positiveButtonText;
+			if(editItem == null) {
+				// add new
+				positiveButtonText = getString(R.string.add_item);
+			}
+			else {
+				//editing
+				positiveButtonText = getString(R.string.save_changes);
+			}
 			builder.setMessage(getString(R.string.popup_titel));
-			builder.setPositiveButton(getString(R.string.add_item),
+			builder.setPositiveButton(positiveButtonText,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// TODO ADD new Item
-							// TODO @Benni JACKSON Add new Item
+							// TODO Check for null values
+							final String name = itemName.getEditableText().toString();
+							final String defValue = defaultVal.getEditableText().toString();
 							final int min = Integer.parseInt(rangeMin.getEditableText().toString());
 							final int max = Integer.parseInt(rangeMax.getEditableText().toString());
-							final String name = itemName.getEditableText().toString();
+							final String mod = modificator.getEditableText().toString();
 							/*Log.d("NEW ITEM", "Name:"+name);
 							Log.d("NEW ITEM", "min:"+min);
 							Log.d("NEW ITEM", "max:"+max);*/
-							final MatrixItem newItem = new MatrixItem(name,
-															defaultVal.getEditableText().toString(),
+							if(editItem == null) {
+								final MatrixItem newItem = new MatrixItem(name,
+															defValue,
 															min,
 															max,
-															modificator.getEditableText().toString());
-							matrixFragment.addMatrixItem(newItem);
+															mod);
+								matrixFragment.addMatrixItem(newItem);
+							}
+							else {
+								editItem.setItemName(name);
+								editItem.setValue(defValue);
+								editItem.setRangeMin(min);
+								editItem.setRangeMax(max);
+								editItem.setModificator(mod);
+								matrixFragment.adapter.notifyDataSetChanged();
+							}
 						}
 					});
 

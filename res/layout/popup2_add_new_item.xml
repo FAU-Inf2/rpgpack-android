@@ -123,6 +123,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="0"
+                    android:inputType="numberSigned"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
@@ -136,6 +137,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="100"
+                    android:inputType="numberSigned"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
@@ -173,6 +175,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="50"
+                    android:inputType="numberSigned"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
@@ -186,6 +189,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="-2"
+                    android:inputType="numberSigned"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
