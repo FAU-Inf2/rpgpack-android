@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,8 +33,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -116,6 +119,7 @@ public class TableFragment extends GeneralFragment {
         .setPositiveButton("Tabelle speichern",new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
         		setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
+        		setTypeContents();
         		adaptHeaderTable(dialogTable);
         	}
         })
@@ -126,6 +130,87 @@ public class TableFragment extends GeneralFragment {
         });
         dialog = alertDialogBuilder.create();
     }
+	
+	protected void setTypeContents(){
+		Log.d("TableFragment", "setTypeContents");
+		for(int i=1; i<dialogTable.getChildCount(); i++){
+			int indexOfTable = i-1;
+			TableRow dialogTableRow = (TableRow) dialogTable.getChildAt(i);
+			for(int k=0; k<table.getChildCount(); k++){
+				boolean isModified = false;
+				View newElement = null;
+				TableRow tableRow = (TableRow) table.getChildAt(k);
+				View elementToAdapt = tableRow.getChildAt(indexOfTable);
+				Spinner spin = (Spinner) dialogTableRow.getChildAt(2);
+				String choice = spin.getSelectedItem().toString();
+				if(choice.equals("Textfeld")){
+					if(!(elementToAdapt instanceof EditText)){
+						isModified = true;
+						tableRow.removeView(elementToAdapt);
+						newElement = new EditText(getActivity());
+						setTableStyle(newElement);
+						tableRow.addView(newElement);
+					}
+				}
+				else if(choice.equals("CheckBox")){
+					if(!(elementToAdapt instanceof CheckBox)){
+						isModified = true;
+//						Log.d("TableFragment", "setTypeContents: remove Elementt");
+						tableRow.removeView(elementToAdapt);
+						newElement = new CheckBox(getActivity());
+						setTableStyle(newElement);
+//						tableRow.addView(newElement);
+						tableRow.addView(newElement, indexOfTable);
+					}
+				}
+				else if(choice.equals("PopUp")){
+					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
+						isModified = true;
+						tableRow.removeView(elementToAdapt);
+						newElement = new TextView(getActivity());
+						((TextView) newElement).setText("...");
+				        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+						final PopupWindow popup = new PopupWindow(popupView, 300, 370, true);
+						popup.setOutsideTouchable(true);
+//						AlertDialog.Builder alertCreater = new AlertDialog.Builder(getActivity());
+//						alertCreater.setTitle("PopUp");
+//						alertCreater.setMessage("Message");
+//						// Set an EditText view to get user input 
+//						final EditText input = new EditText(getActivity());
+//						alertCreater.setView(input);
+//						alertCreater.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//						  // Do something with value!
+//						  }
+//						});
+//
+//						alertCreater.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//						  public void onClick(DialogInterface dialog, int whichButton) {
+//						    // Canceled.
+//						  }
+//						});
+//						final AlertDialog alert = alertCreater.create();
+						newElement.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+//								alert.show();
+								popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+							}
+						});
+//						setTableStyle(newElement);
+						tableRow.addView(newElement, indexOfTable);
+					}
+				}
+				if(isModified){
+					newElement.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+					int width = newElement.getMeasuredWidth();
+					int height = newElement.getMeasuredHeight();
+					checkResize(width, height, newElement, tableRow);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * adapts the header table to match the caption of the given dialogTable
@@ -412,7 +497,7 @@ public class TableFragment extends GeneralFragment {
 	 * @param textEdited
 	 * @param row
 	 */
-	protected void checkResize(int width, int height, EditText textEdited, TableRow row){
+	protected void checkResize(int width, int height, View textEdited, TableRow row){
 		TableLayout usedTable;
 		usedTable = table;
 		int indexOfRow = table.indexOfChild(row);
@@ -425,7 +510,7 @@ public class TableFragment extends GeneralFragment {
 				usedTable = headerTable;
 			}
 		}
-		Log.d("index", "index  == " + indexOfRow);
+//		Log.d("index", "index  == " + indexOfRow);
 		int indexOfColumn = -1;
 		if(usedTable.getChildAt(indexOfRow) instanceof TableRow){
 			indexOfColumn = ((TableRow) usedTable.getChildAt(indexOfRow)).indexOfChild(textEdited);
@@ -500,7 +585,6 @@ public class TableFragment extends GeneralFragment {
 				int height = theChildToResize.getMeasuredHeight();
 				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
 			    ((EditText) theChildToResize).setLayoutParams(lparams);
-				Log.d("changed", "layout_params set!");
 //			    textField.invalidate();
 //			    textField.forceLayout();
 			}
@@ -791,82 +875,83 @@ public class TableFragment extends GeneralFragment {
 	 * @param dialogTable
 	 */
 	protected void adaptDialogTable(TableLayout dialogTable){
-		int firstRowToAdd = dialogTable.getChildCount();
+//		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = ((TableRow) headerTable.getChildAt(0)).getChildCount();
-		//first step: adapt all needed Column-names from headerTable
-		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
-		for(int i=1; i<oldColumnsToAdept; i++){
-			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-			EditText headerText = (EditText) headerRow.getChildAt(i-1);
-			EditText textToSet = (EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1);
-			textToSet.setText(headerText.getText());
-		}
-		//second step: add rows if needed
-		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
-			Log.d("dialog", "add");
-			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
-			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
-			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
-			//use k columns
-			for(int k=0; k<3; k++){
-				View theView = null;
-				if(k==2 && i != -1){
-					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
-					String [] spin_arry = getResources().getStringArray(R.array.choices);
-					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
-					theView = spin;
-					setSpinnerStyle(spin);
-					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
-						@Override
-						public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
-							((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.background));
-						}
-						@Override
-						public void onNothingSelected(AdapterView<?> arg0) {
-							//return
-						}
-					});
-				}
-				else{
-					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
-					setTableStyle((EditText) oneColumn);
-					if(i==-1){
-						if(k==0){
-							oneColumn.setText("Nr.");
-						}
-						else if(k==1){
-							oneColumn.setText("Spaltenname");
-						}
-						else{
-							oneColumn.setText("Spaltentyp");
-						}
-					}
-					//insert the number of the column in the first row
-					else if(k ==0){
-						oneColumn.setText((i+1)+".");
-					}
-					else if(k==1){
-						TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-						EditText headerText = (EditText) headerRow.getChildAt(i);
-						if(headerText == null){
-							oneColumn.setText("");
-						}
-						else{
-							oneColumn.setText(headerText.getText());
-						}
-					}
-					theView = oneColumn;
-				}
-				row.addView(theView);
-			}
-			dialogTable.addView(row);
-		}
-		//last step: remove rows if needed
-		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
-			Log.d("dialog", "remove");
-			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
-		}
+		adaptDialogTable(dialogTable, rowsNeeded);
+//		//first step: adapt all needed Column-names from headerTable
+//		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
+//		for(int i=1; i<oldColumnsToAdept; i++){
+//			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+//			EditText headerText = (EditText) headerRow.getChildAt(i-1);
+//			EditText textToSet = (EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1);
+//			textToSet.setText(headerText.getText());
+//		}
+//		//second step: add rows if needed
+//		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
+//			Log.d("dialog", "add");
+//			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
+//			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
+//			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+//			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+//			//use k columns
+//			for(int k=0; k<3; k++){
+//				View theView = null;
+//				if(k==2 && i != -1){
+//					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
+//					String [] spin_arry = getResources().getStringArray(R.array.spaltentypen);
+//					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
+//					theView = spin;
+//					setSpinnerStyle(spin);
+//					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
+//						@Override
+//						public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+//							((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.background));
+//						}
+//						@Override
+//						public void onNothingSelected(AdapterView<?> arg0) {
+//							//return
+//						}
+//					});
+//				}
+//				else{
+//					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
+//					setTableStyle((EditText) oneColumn);
+//					if(i==-1){
+//						if(k==0){
+//							oneColumn.setText("Nr.");
+//						}
+//						else if(k==1){
+//							oneColumn.setText("Spaltenname");
+//						}
+//						else{
+//							oneColumn.setText("Spaltentyp");
+//						}
+//					}
+//					//insert the number of the column in the first row
+//					else if(k ==0){
+//						oneColumn.setText((i+1)+".");
+//					}
+//					else if(k==1){
+//						TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+//						EditText headerText = (EditText) headerRow.getChildAt(i);
+//						if(headerText == null){
+//							oneColumn.setText("");
+//						}
+//						else{
+//							oneColumn.setText(headerText.getText());
+//						}
+//					}
+//					theView = oneColumn;
+//				}
+//				row.addView(theView);
+//			}
+//			dialogTable.addView(row);
+//		}
+//		//last step: remove rows if needed
+//		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
+//			Log.d("dialog", "remove");
+//			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
+//		}
 	}
 	
 	/**
@@ -902,7 +987,7 @@ public class TableFragment extends GeneralFragment {
 				View theView = null;
 				if(k==2 && i != -1){
 					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
-					String [] spin_arry = getResources().getStringArray(R.array.choices);
+					String [] spin_arry = getResources().getStringArray(R.array.spaltentypen);
 					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
 					theView = spin;
 					setSpinnerStyle(spin);
@@ -910,6 +995,7 @@ public class TableFragment extends GeneralFragment {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
 							((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.background));
+							
 						}
 						@Override
 						public void onNothingSelected(AdapterView<?> arg0) {
