@@ -5,6 +5,7 @@ import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 
 import java.util.ArrayList;
@@ -227,7 +228,7 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment = new FolderFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
-				((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
+				//((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
 				// call recursive
 				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
@@ -267,10 +268,10 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.jacksonTable = subTable;
 				// create fragment
 				// TODO add matrix inflation
-				/*newDataItem.childFragment = new TableFragment();
+				newDataItem.childFragment = new MatrixFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
 				newDataItem.childFragment.fragment_parent = this;
-				((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);*/
+				((MatrixFragment) newDataItem.childFragment).jacksonInflate((MatrixTable)subTable, activity);
 			}
 			dataAdapter.notifyDataSetChanged();
 		}

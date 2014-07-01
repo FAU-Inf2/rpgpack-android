@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.matrix;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,12 +20,23 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
+import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
 	List<MatrixItem> itemsList = getDataForGridView();
 	MatrixViewArrayAdapter adapter;
+	
+	/*
+	 * JACKSON START
+	 */
+	public MatrixTable jacksonTable;
+	public boolean jacksonInflateWithData;
+	/*
+	 * JACKSON END
+	 */
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,7 +121,7 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
-		// TODO prüfen
+		// TODO prï¿½fen
 		public static AddNewItemDialogFragment newInstance() {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 			return fragment;
@@ -170,4 +182,17 @@ public class MatrixFragment extends GeneralFragment {
 
 		}
 	}
+	
+	/*
+	 * JACKSON START
+	 */
+	public void jacksonInflate(MatrixTable myTable, Activity activity) {
+		// set table
+		jacksonTable = myTable;
+		// set flag, so that we are inflating the views with data from jackson model
+		jacksonInflateWithData = true;
+	}
+	/*
+	 * JACKSON END
+	 */
 }

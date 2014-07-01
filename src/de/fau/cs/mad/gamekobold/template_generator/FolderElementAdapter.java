@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
@@ -314,6 +315,13 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 					if(((MatrixFragment) data.childFragment) == null) {
 						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
 						MatrixFragment newFragment = new MatrixFragment();
+						/*
+						 * JACKSON START
+						 */
+						newFragment.jacksonTable = (MatrixTable) data.jacksonTable;
+						/*
+						 * JACKSON END
+						 */
 						fragmentTransaction.add(R.id.main_view_empty, newFragment);
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.detach(oldFragment);
@@ -331,6 +339,16 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
 						GeneralFragment oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
 						fragmentTransaction.detach(oldFragment);
+						/*
+						 * JACKSON START
+						 * needed if template is edited, because we can create but we cannot add the fragment during inflation
+						 */
+						if(!((MatrixFragment) data.childFragment).isAdded()) {
+							fragmentTransaction.add(R.id.main_view_empty, ((MatrixFragment) data.childFragment));
+						}
+						/*
+						 * JACKSON END
+						 */
 						fragmentTransaction.attach(((MatrixFragment) data.childFragment));
 						data.childFragment.backStackElement = oldFragment;
 						((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = ((MatrixFragment) data.childFragment);
