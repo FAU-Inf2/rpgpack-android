@@ -24,7 +24,6 @@
         <item>Matrix</item>
         <item>Ordner</item>
     </string-array>
-    
     <string-array name="spaltentypen">
         <item>Textfeld</item>
         <item>CheckBox</item>
@@ -32,8 +31,6 @@
     </string-array>
 
     <string name="popup_titel">Item Information</string>
-    <string name="add_item">Add Item</string>
-    <string name="cancel">Cancel</string>
     <string name="menu_item_save_template">Save template</string>
     <string name="action_auto_save_on_exit">Auto save on exit</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
@@ -57,6 +54,25 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="save_changes">Save changes</string>
+
+    <!-- MatrixPopUp -->
+    <string name="add_item">Speichern</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="hint_matrix_item_name">Name des Elements&#8230;</string>
+    <string name="hint_description_text">Dein Beschreibungstext&#8230;</string>
+    <string name="hint_default_value_range_from">0</string>
+    <string name="hint_default_value_range_to">100</string>
+    <string name="hint_default_value_modificator">-2</string>
+    <string name="hint_default_value_defvalue">50</string>
+    <string name="text_default_value">Standardwert:</string>
+    <string name="text_range_from">Reichweite von:</string>
+    <string name="text_range_to">Reichweite bis:</string>
+    <string name="text_visible">sichtbar?</string>
+    <string name="text_modificator">Modifikator:</string>
+    <string name="text_description">Beschreibung:</string>
+
+    <!-- ItemLayout NewItem Matrix -->
+    <string name="text_item_add">+</string>
 
 </resources>

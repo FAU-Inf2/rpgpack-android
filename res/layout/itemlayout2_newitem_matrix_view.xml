@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -18,27 +18,26 @@
         android:src="@drawable/shape_circle_grey" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_below="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_below="@+id/imageView"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Medium"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textItemAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
-        android:layout_alignRight="@+id/imageView1"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
         android:layout_marginBottom="19dp"
         android:layout_marginRight="32dp"
-        android:text="+"
+        android:text="@string/text_item_add"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/grey"
         android:textSize="42sp" />
