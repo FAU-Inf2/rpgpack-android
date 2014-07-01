@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -162,33 +164,38 @@ public class TableFragment extends GeneralFragment {
 					}
 				}
 				else if(choice.equals("PopUp")){
-					if(!(elementToAdapt instanceof TextView)){
+					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
 						newElement = new TextView(getActivity());
 						((TextView) newElement).setText("...");
-						AlertDialog.Builder alertCreater = new AlertDialog.Builder(getActivity());
-						alertCreater.setTitle("PopUp");
-						alertCreater.setMessage("Message");
-						// Set an EditText view to get user input 
-						final EditText input = new EditText(getActivity());
-						alertCreater.setView(input);
-						alertCreater.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-						  // Do something with value!
-						  }
-						});
-
-						alertCreater.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-						  public void onClick(DialogInterface dialog, int whichButton) {
-						    // Canceled.
-						  }
-						});
-						final AlertDialog alert = alertCreater.create();
+				        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+						final PopupWindow popup = new PopupWindow(popupView, 300, 370, true);
+						popup.setOutsideTouchable(true);
+//						AlertDialog.Builder alertCreater = new AlertDialog.Builder(getActivity());
+//						alertCreater.setTitle("PopUp");
+//						alertCreater.setMessage("Message");
+//						// Set an EditText view to get user input 
+//						final EditText input = new EditText(getActivity());
+//						alertCreater.setView(input);
+//						alertCreater.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//						  // Do something with value!
+//						  }
+//						});
+//
+//						alertCreater.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//						  public void onClick(DialogInterface dialog, int whichButton) {
+//						    // Canceled.
+//						  }
+//						});
+//						final AlertDialog alert = alertCreater.create();
 						newElement.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								alert.show();
+//								alert.show();
+								popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 							}
 						});
 //						setTableStyle(newElement);
