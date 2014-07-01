@@ -48,7 +48,7 @@ public class FolderElementData{
 				if(!jacksonTable.tableName.equals(s.toString())) {
 					jacksonTable.tableName = s.toString();
 					text.setText(s.toString());
-					TemplateGeneratorActivity.saveTemplateAsync();
+					//TemplateGeneratorActivity.saveTemplateAsync();
 				}
 			}
 		};

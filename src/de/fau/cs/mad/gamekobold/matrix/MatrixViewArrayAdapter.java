@@ -9,11 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 
 public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 
+	/*
+	 * JACKSON START
+	 */
+	public MatrixTable jacksonTable;
+	/*
+	 * JACKSON END
+	 */
 	Context context;
 
 	// the list of objects we want to display

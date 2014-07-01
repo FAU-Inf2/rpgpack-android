@@ -26,7 +26,7 @@ import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
-	List<MatrixItem> itemsList = getDataForGridView();
+	List<MatrixItem> itemsList = null;
 	MatrixViewArrayAdapter adapter;
 	
 	/*
@@ -46,7 +46,16 @@ public class MatrixFragment extends GeneralFragment {
 				container, false);
 
 		gridView = (GridView) rootView.findViewById(R.id.gridView1);
-		adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
+		// check needed for jackson data loading
+		if(itemsList == null) {
+			itemsList = getDataForGridView();
+			jacksonTable.entries = itemsList;
+		}
+		if(adapter == null) {
+			adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
+			adapter.jacksonTable = jacksonTable;
+		}
+		
 		gridView.setAdapter(adapter);
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -83,7 +92,6 @@ public class MatrixFragment extends GeneralFragment {
 	@Override
 	protected void addItemList() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -108,7 +116,7 @@ public class MatrixFragment extends GeneralFragment {
 		// set create new item to the end
 		MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
 		itemsList.add(addNewMatrixItem);
-
+		
 		return itemsList;
 	}
 
@@ -148,7 +156,7 @@ public class MatrixFragment extends GeneralFragment {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							// TODO ADD new Item
-
+							// TODO @Benni JACKSON Add new Item
 						}
 					});
 
@@ -177,9 +185,7 @@ public class MatrixFragment extends GeneralFragment {
 					positiveButton.invalidate();
 				}
 			});
-
 			return dialog;
-
 		}
 	}
 	
@@ -188,9 +194,19 @@ public class MatrixFragment extends GeneralFragment {
 	 */
 	public void jacksonInflate(MatrixTable myTable, Activity activity) {
 		// set table
-		jacksonTable = myTable;
+		setJacksonTable(myTable);
 		// set flag, so that we are inflating the views with data from jackson model
-		jacksonInflateWithData = true;
+		//jacksonInflateWithData = true;
+		itemsList = jacksonTable.entries;
+		// add the "new item" entry
+		itemsList.add(new MatrixItem("Neues Element", "+", null));
+	}
+	
+	public void setJacksonTable(MatrixTable myTable) {
+		jacksonTable = myTable;
+		if(adapter != null) {
+			adapter.jacksonTable = myTable;			
+		}
 	}
 	/*
 	 * JACKSON END

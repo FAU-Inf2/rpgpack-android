@@ -9,12 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Row /*extends AbstractRow*/{	
 	public ArrayList<AbstractColumnEntry> entries;
-	//public AbstractColumnEntry[] entries;
-	
-	/*@JsonCreator
-	public Row(@JsonProperty("entries") AbstractColumnEntry[] entries){
-		this.entries = entries;
-	}*/
 	
 	@JsonCreator
 	public Row(@JsonProperty("entries") ArrayList<AbstractColumnEntry> entries){
@@ -24,9 +18,6 @@ public class Row /*extends AbstractRow*/{
 	public Row() {
 		entries = new ArrayList<AbstractColumnEntry>();
 	}
-	/*public Row(int numberOfColumns) {
-		entries = new ArrayList<AbstractColumnEntry>();
-	}*/
 	
 	public void print() {
 		StringBuilder builder = new StringBuilder();
@@ -39,8 +30,7 @@ public class Row /*extends AbstractRow*/{
 		Log.d("ROW-print",builder.toString());
 	}
 	
-	
-	 public void addColumn(ColumnHeader header) {
+	public void addColumn(ColumnHeader header) {
 	 	if(header.isInt()) {
 	 		entries.add(new IntegerClass(0));
 	 	}
@@ -53,6 +43,5 @@ public class Row /*extends AbstractRow*/{
 	 	if(!entries.isEmpty()) {
 	 		entries.remove(entries.size()-1);
 	 	}
-	 }
-	 
+	 } 
 }
