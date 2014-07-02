@@ -53,7 +53,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	
 	 protected FolderElementAdapter dataAdapter;
 	 protected ArrayList<FolderElementData> allData;
-	 GeneralFragment currentFragment;
+	 protected GeneralFragment currentFragment;
 	 //the one where you cant go up further
 	 GeneralFragment topFragment;
 	 //the one above which is only visible in the slideout-menu
