@@ -94,6 +94,7 @@
     <!-- FolderElementAdapter -->
     <string name="question_delete">Element löschen?</string>
     <string name="long_click_dialog_message">Click yes to delete the item</string>
+
     <!-- TableFragment -->
     <string name="save_table">Tabelle speichern</string>
     <string name="go_back">Zurück</string>
@@ -106,5 +107,10 @@
     <string name="column_name">Spaltenname</string>
     <string name="column_type">Spaltentyp</string>
     <string name="dot">.</string>
+
+    <!-- TemplateGenerator -->
+    <string name="loading_template">Template wird geladen&#8230;</string>
+    <string name="wait">Warten Sie bitte einen Moment&#8230;</string>
+    <string name="loading_template_failure">Template konnte nicht geladen werden!</string>
 
 </resources>
