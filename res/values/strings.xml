@@ -113,4 +113,9 @@
     <string name="wait">Warten Sie bitte einen Moment&#8230;</string>
     <string name="loading_template_failure">Template konnte nicht geladen werden!</string>
 
+    <!-- WarningLeaveDialog -->
+    <string name="question_exit">Wollen Sie den Template-Generator wirklich verlassen?</string>
+    <string name="yes_and_trash">Ja und verwerfen</string>
+    <string name="yes_and_save">"Ja und speichern"</string>
+
 </resources>
