@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
@@ -85,6 +88,33 @@ public class MatrixFragment extends GeneralFragment {
 
 			}
 		});
+		
+		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+					final int position, long id) {
+				Log.d("LONG CLICK", "pos:"+position);
+				if(position == adapter.getCount()-1) {
+					return true;
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle("Delete Item?");
+				builder.setMessage("Click yes to delete the item.");
+				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						removeMatrixItem(position);		
+					}
+				});
+				builder.create().show();
+				return true;
+			}
+		});
 
 		return rootView;
 
@@ -104,6 +134,14 @@ public class MatrixFragment extends GeneralFragment {
 	public void addMatrixItem(MatrixItem newItem) {
 		// adapter.getCount >= 1
 		adapter.insert(newItem, adapter.getCount() - 1);
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void removeMatrixItem(int position) {
+		if(position < 0 || position == adapter.getCount()-1) {
+			return;
+		}
+		adapter.remove(adapter.getItem(position));
 		adapter.notifyDataSetChanged();
 	}
 
