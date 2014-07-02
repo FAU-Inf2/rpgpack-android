@@ -3,22 +3,58 @@
 android:id="@+id/popup_element"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@color/background_dark"
+android:background="@drawable/cell_shape_white_borders"
 android:orientation="vertical">
 
-     <TextView
+     <!-- 
+     <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="sectionHeader" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:id">@id/popup_headline"</item>
+        <item name="android:drawableBottom">@drawable/section_header</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/emphasis</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>
+-->
+
+          <TextView
 android:id="@+id/popup_headline"
 android:background="@drawable/cell_shape_green_bottom"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:layout_marginTop="5sp"
+android:paddingTop="6dp"
+android:paddingBottom="6dp"
+android:gravity="center"
+android:layout_marginTop="1dp"
+android:layout_marginRight="1dp"
+android:layout_marginLeft="1dp"
+android:textSize="@dimen/text_xl"
 android:hint="Headline..." />
+     
+     <!-- 
+     <TextView
+android:id="@+id/popup_headline"
+android:drawableBottom="@drawable/cell_shape_green"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center"
+android:paddingBottom="10dp"
+android:paddingTop="10dp"
+android:textSize="@dimen/text_xl"
+android:hint="Headline..." />
+-->
      
 <EditText
 android:id="@+id/popup_editText"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:layout_marginTop="5sp"
+android:gravity="center"
+android:background="#00000000"
 android:hint="Test..." />
 
 </LinearLayout>
