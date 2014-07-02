@@ -53,7 +53,7 @@ public class MatrixFragment extends GeneralFragment {
 		}
 		if(adapter == null) {
 			adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
-			adapter.jacksonTable = jacksonTable;
+		//	adapter.jacksonTable = jacksonTable;
 		}
 		
 		gridView.setAdapter(adapter);
@@ -272,9 +272,9 @@ public class MatrixFragment extends GeneralFragment {
 	
 	public void setJacksonTable(MatrixTable myTable) {
 		jacksonTable = myTable;
-		if(adapter != null) {
+	/*	if(adapter != null) {
 			adapter.jacksonTable = myTable;			
-		}
+		}*/
 	}
 	/*
 	 * JACKSON END
