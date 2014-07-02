@@ -179,14 +179,14 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 			@Override
 			public boolean onLongClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-				builder.setTitle("Delete item?");
-				builder.setMessage("Click yes to delete the item.");
-				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				builder.setTitle(R.string.question_delete);
+				builder.setMessage(R.string.long_click_dialog_message);
+				builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					}
 				});
-				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						jacksonTable.removeTable(myDataItem.jacksonTable);

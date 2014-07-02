@@ -91,4 +91,8 @@
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
 
+    <!-- FolderElementAdapter -->
+    <string name="question_delete">Element löschen?</string>
+    <string name="long_click_dialog_message">Click yes to delete the item</string>
+
 </resources>
