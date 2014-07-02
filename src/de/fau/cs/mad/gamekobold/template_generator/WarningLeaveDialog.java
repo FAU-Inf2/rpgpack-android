@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.MainActivity;
+import de.fau.cs.mad.gamekobold.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,7 +13,7 @@ public class WarningLeaveDialog extends DialogFragment{
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-		alertDialogBuilder.setMessage("Wollen Sie den Template-Generator wirklich verlassen?")
+		alertDialogBuilder.setMessage(getString(R.string.question_exit))
 		.setCancelable(true);
 //		.setPositiveButton("Ja",new DialogInterface.OnClickListener() {
 //			public void onClick(DialogInterface dialog,int id) {
@@ -25,7 +26,7 @@ public class WarningLeaveDialog extends DialogFragment{
 //			}
 //		});
 		AlertDialog alertDialog = alertDialogBuilder.create();
-		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ja & verwerfen", new DialogInterface.OnClickListener() {
+		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.yes_and_trash), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				//TODO: hier sollte verworfen werden
 				// JACKSON START
@@ -33,11 +34,11 @@ public class WarningLeaveDialog extends DialogFragment{
 				// JACKSON END
 				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
 			} });
-		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Nein", new DialogInterface.OnClickListener() {
+		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}}); 
-		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ja & speichern", new DialogInterface.OnClickListener() {
+		alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes_and_save), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				/*
 				 * JACKSON START

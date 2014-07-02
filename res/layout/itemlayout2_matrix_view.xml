@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -18,49 +18,45 @@
         android:src="@drawable/shape_circle_green" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textModificator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignRight="@+id/textRangeFromTo"
+        android:layout_below="@+id/textRangeFromTo"
         android:gravity="center"
-        android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textRangeFromTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_below="@+id/textValue"
         android:gravity="center"
-        android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_below="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_below="@+id/imageView"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Medium"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_alignTop="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignTop="@+id/imageView"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="Large"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

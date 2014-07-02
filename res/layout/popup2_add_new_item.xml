@@ -36,17 +36,17 @@
                 <Space android:layout_row="11" />
 
                 <EditText
-                    android:id="@+id/editText1"
+                    android:id="@+id/itemName"
                     android:layout_width="265dp"
                     android:layout_column="0"
                     android:layout_columnSpan="3"
                     android:layout_gravity="top"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="10px"
-                    android:layout_marginTop="10px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_row="0"
                     android:ems="10"
-                    android:hint="Items Name..."
+                    android:hint="@string/hint_matrix_item_name"
                     android:maxLength="24"
                     android:textSize="16sp" >
 
@@ -54,17 +54,19 @@
                 </EditText>
 
                 <EditText
-                    android:id="@+id/editText6"
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:layout_columnSpan="3"
                     android:layout_gravity="fill_horizontal|fill_vertical"
-                    android:layout_marginTop="10px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_row="11"
                     android:ems="10"
                     android:gravity="top|left"
-                    android:hint="Dein Beschreibungstext..."
+                    android:hint="@string/hint_description_text"
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:scrollbars="vertical"
@@ -72,169 +74,168 @@
                 </EditText>
 
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/switchRangeFrom"
                     android:layout_column="2"
                     android:layout_gravity="left|center_vertical"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="25px"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_row="5" />
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/textViewVisible"
                     android:layout_width="98dp"
                     android:layout_column="2"
                     android:layout_gravity="left|top"
-                    android:layout_marginLeft="2px"
-                    android:layout_marginRight="20px"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="5"
-                    android:text="sichtbar?"
+                    android:text="@string/text_visible"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textViewRangeTo"
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="10px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="6"
-                    android:text="Range To:"
+                    android:text="@string/text_range_to"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textViewModificator"
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="10px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="8"
-                    android:text="Modifikator:"
+                    android:text="@string/text_modificator"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/rangeFrom"
                     android:layout_width="69dp"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginRight="10px"
+                    android:layout_marginRight="10dp"
                     android:layout_row="5"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="0"
-                    android:inputType="numberSigned"
+                    android:hint="@string/hint_default_value_range_from"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/rangeTo"
                     android:layout_width="69dp"
                     android:layout_column="1"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginRight="10px"
+                    android:layout_marginRight="10dp"
                     android:layout_row="6"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="100"
-                    android:inputType="numberSigned"
+                    android:hint="@string/hint_default_value_range_to"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
                 <Switch
-                    android:id="@+id/Switch01"
+                    android:id="@+id/switchRangeTo"
                     android:layout_column="2"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="6" />
 
                 <Switch
-                    android:id="@+id/Switch02"
+                    android:id="@+id/switchDefaultValue"
                     android:layout_column="2"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="7" />
 
                 <Switch
-                    android:id="@+id/Switch03"
+                    android:id="@+id/switchModificator"
                     android:layout_column="2"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginRight="20px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="8" />
 
                 <EditText
-                    android:id="@+id/editText4"
+                    android:id="@+id/defaultValue"
                     android:layout_width="69dp"
                     android:layout_column="1"
                     android:layout_gravity="center_horizontal|top"
-                    android:layout_marginRight="10px"
+                    android:layout_marginRight="10dp"
                     android:layout_row="7"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="50"
-                    android:inputType="numberSigned"
+                    android:hint="@string/hint_default_value_defvalue"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/editText5"
+                    android:id="@+id/modificator"
                     android:layout_width="69dp"
                     android:layout_column="1"
                     android:layout_gravity="center_horizontal|top"
-                    android:layout_marginRight="10px"
+                    android:layout_marginRight="10dp"
                     android:layout_row="8"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="-2"
-                    android:inputType="numberSigned"
+                    android:hint="@string/hint_default_value_modificator"
                     android:maxLength="5"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/textViewDefaultValue"
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginTop="5px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_row="7"
-                    android:text="Default Value:"
+                    android:text="@string/text_default_value"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textViewRangeFrom"
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="10px"
-                    android:layout_marginTop="10px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_row="5"
-                    android:text="Range From:"
+                    android:text="@string/text_range_from"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textViewDescription"
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginTop="22px"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="22dp"
                     android:layout_row="10"
-                    android:text="Beschreibung:"
+                    android:text="@string/text_description"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </GridLayout>
             <!-- -add your views here -->
         </LinearLayout>
 
         <!--
-              <ImageView
+             x-Button
+            <ImageView
             android:id="@+id/imageView_close"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="top|right"
             android:clickable="true"
             android:src="@drawable/close_button_dred" />
+
         -->
     </FrameLayout>
 

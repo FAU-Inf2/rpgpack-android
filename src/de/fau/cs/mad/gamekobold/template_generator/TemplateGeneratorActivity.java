@@ -423,8 +423,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     			return;
     		}
     		pd = new ProgressDialog(myActivity);
-    		pd.setTitle("Loading Template...");
-    		pd.setMessage("Please wait...");
+    		pd.setTitle(getString(R.string.loading_template));
+    		pd.setMessage(getString(R.string.wait));
     		pd.setCancelable(false);
     		pd.setIndeterminate(true);
     		pd.show();
@@ -461,7 +461,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			}
 			// no result
 			if(result == null) {
-				Toast.makeText(generatorActivity, "Failed to load template", Toast.LENGTH_LONG).show();
+				Toast.makeText(generatorActivity, getString(R.string.loading_template_failure), Toast.LENGTH_LONG).show();
 				if(pd != null){
 					pd.dismiss();
 				}

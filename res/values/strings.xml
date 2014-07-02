@@ -24,7 +24,6 @@
         <item>Matrix</item>
         <item>Ordner</item>
     </string-array>
-    
     <string-array name="spaltentypen">
         <item>Textfeld</item>
         <item>CheckBox</item>
@@ -32,8 +31,6 @@
     </string-array>
 
     <string name="popup_titel">Item Information</string>
-    <string name="add_item">Add Item</string>
-    <string name="cancel">Cancel</string>
     <string name="menu_item_save_template">Save template</string>
     <string name="action_auto_save_on_exit">Auto save on exit</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
@@ -57,6 +54,68 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="save_changes">Save changes</string>
+
+    <!-- MatrixPopUp -->
+    <string name="add_item">Speichern</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="hint_matrix_item_name">Name des Elements&#8230;</string>
+    <string name="hint_description_text">Dein Beschreibungstext&#8230;</string>
+    <string name="hint_default_value_range_from">0</string>
+    <string name="hint_default_value_range_to">100</string>
+    <string name="hint_default_value_modificator">-2</string>
+    <string name="hint_default_value_defvalue">50</string>
+    <string name="text_default_value">Standardwert:</string>
+    <string name="text_range_from">Reichweite von:</string>
+    <string name="text_range_to">Reichweite bis:</string>
+    <string name="text_visible">sichtbar?</string>
+    <string name="text_modificator">Modifikator:</string>
+    <string name="text_description">Beschreibung:</string>
+
+    <!-- ItemLayout NewItem Matrix -->
+    <string name="text_item_add">+</string>
+
+    <!-- CreateNewTemplate -->
+    <string name="text_create_template">Template erstellen</string>
+    <string name="hint_template_name">Name des Templates&#8230;</string>
+    <string name="text_add_icon">Foto hinzufügen</string>
+    <string name="hint_world_name">Name der Welt&#8230;</string>
+
+    <string-array name="image_picker_items">
+        <item>von Kamera</item>
+        <item>von SD-Karte</item>
+    </string-array>
+
+    <string name="add_icon">Bild hinzufügen</string>
+    <string name="warning_set_name">Dein Template braucht ein Name!</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+
+    <!-- FolderElementAdapter -->
+    <string name="question_delete">Element löschen?</string>
+    <string name="long_click_dialog_message">Click yes to delete the item</string>
+
+    <!-- TableFragment -->
+    <string name="save_table">Tabelle speichern</string>
+    <string name="go_back">Zurück</string>
+    <string name="new_element">...</string>
+    <string name="headline">Überschrift</string>
+    <string name="headline1">Überschrift1</string>
+    <string name="headline2">Überschrift2</string>
+    <string name="blank"> - </string>
+    <string name="number">Nr.</string>
+    <string name="column_name">Spaltenname</string>
+    <string name="column_type">Spaltentyp</string>
+    <string name="dot">.</string>
+
+    <!-- TemplateGenerator -->
+    <string name="loading_template">Template wird geladen&#8230;</string>
+    <string name="wait">Warten Sie bitte einen Moment&#8230;</string>
+    <string name="loading_template_failure">Template konnte nicht geladen werden!</string>
+
+    <!-- WarningLeaveDialog -->
+    <string name="question_exit">Wollen Sie den Template-Generator wirklich verlassen?</string>
+    <string name="yes_and_trash">Ja und verwerfen</string>
+    <string name="yes_and_save">"Ja und speichern"</string>
 
 </resources>

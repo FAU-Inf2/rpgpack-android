@@ -28,12 +28,13 @@ public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
 	List<MatrixItem> itemsList = null;
 	MatrixViewArrayAdapter adapter;
-	
+
 	/*
 	 * JACKSON START
 	 */
 	public MatrixTable jacksonTable;
 	public boolean jacksonInflateWithData;
+
 	/*
 	 * JACKSON END
 	 */
@@ -45,17 +46,17 @@ public class MatrixFragment extends GeneralFragment {
 		View rootView = inflater.inflate(R.layout.fragment_matrix_view,
 				container, false);
 
-		gridView = (GridView) rootView.findViewById(R.id.gridView1);
+		gridView = (GridView) rootView.findViewById(R.id.gridView);
 		// check needed for jackson data loading
-		if(itemsList == null) {
+		if (itemsList == null) {
 			itemsList = getDataForGridView();
 			jacksonTable.entries = itemsList;
 		}
-		if(adapter == null) {
+		if (adapter == null) {
 			adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
 		//	adapter.jacksonTable = jacksonTable;
 		}
-		
+
 		gridView.setAdapter(adapter);
 
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -65,7 +66,7 @@ public class MatrixFragment extends GeneralFragment {
 
 				Toast.makeText(
 						getActivity(),
-						((TextView) view.findViewById(R.id.textView4))
+						((TextView) view.findViewById(R.id.textItemTitle))
 								.getText(), Toast.LENGTH_SHORT).show();
 
 				// is it last item?
@@ -78,7 +79,6 @@ public class MatrixFragment extends GeneralFragment {
 
 				} else {
 					// click on item
-					// TODO what's next?
 					Log.e("er", "position: " + position);
 					showPopupForEditing(adapter.getItem(position));
 				}
@@ -100,10 +100,10 @@ public class MatrixFragment extends GeneralFragment {
 		// TODO Auto-generated method stub
 		showPopup();
 	}
-	
+
 	public void addMatrixItem(MatrixItem newItem) {
 		// adapter.getCount >= 1
-		adapter.insert(newItem, adapter.getCount()-1);
+		adapter.insert(newItem, adapter.getCount() - 1);
 		adapter.notifyDataSetChanged();
 	}
 
@@ -123,7 +123,7 @@ public class MatrixFragment extends GeneralFragment {
 		// set create new item to the end
 		MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
 		itemsList.add(addNewMatrixItem);
-		
+
 		return itemsList;
 	}
 
@@ -134,7 +134,7 @@ public class MatrixFragment extends GeneralFragment {
 				"popupAddNewItemFragment");
 
 	}
-	
+
 	private void showPopupForEditing(MatrixItem item) {
 		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment
 				.newInstance(this);
@@ -144,17 +144,18 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
-		private EditText itemName,rangeMin,rangeMax,defaultVal,modificator;
+		private EditText itemName, rangeMin, rangeMax, defaultVal, modificator;
 		public MatrixFragment matrixFragment;
 		public MatrixItem editItem = null;
-	
+
 		// TODO pr�fen
-		public static AddNewItemDialogFragment newInstance(MatrixFragment receiver) {
+		public static AddNewItemDialogFragment newInstance(
+				MatrixFragment receiver) {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 			fragment.matrixFragment = receiver;
 			return fragment;
 		}
-		
+
 		@Override
 		public Dialog onCreateDialog(Bundle SaveInstanceState) {
 			// Use the Builder class for convenient Dialog construction
@@ -168,13 +169,13 @@ public class MatrixFragment extends GeneralFragment {
 			// layout
 			View view = inflater.inflate(R.layout.popup2_add_new_item, null);
 			// get all EditTexts
-			itemName = (EditText)view.findViewById(R.id.editText1);
-			rangeMin = (EditText)view.findViewById(R.id.editText2);
-			rangeMax = (EditText)view.findViewById(R.id.editText3);
-			defaultVal = (EditText)view.findViewById(R.id.editText4);
-			modificator = (EditText)view.findViewById(R.id.editText5);
+			itemName = (EditText) view.findViewById(R.id.itemName);
+			rangeMin = (EditText) view.findViewById(R.id.rangeFrom);
+			rangeMax = (EditText) view.findViewById(R.id.rangeTo);
+			defaultVal = (EditText) view.findViewById(R.id.defaultValue);
+			modificator = (EditText) view.findViewById(R.id.modificator);
 			// check for editItem
-			if(editItem != null) {
+			if (editItem != null) {
 				// insert values from editItem into views
 				itemName.setText(editItem.getItemName());
 				rangeMin.setText(String.valueOf(editItem.getRangeMin()));
@@ -183,16 +184,15 @@ public class MatrixFragment extends GeneralFragment {
 				modificator.setText(editItem.getModificator());
 			}
 			builder.setView(view);
-			
+
 			// set Dialog characteristics
 			// get right button text
 			String positiveButtonText;
-			if(editItem == null) {
+			if (editItem == null) {
 				// add new
 				positiveButtonText = getString(R.string.add_item);
-			}
-			else {
-				//editing
+			} else {
+				// editing
 				positiveButtonText = getString(R.string.save_changes);
 			}
 			builder.setMessage(getString(R.string.popup_titel));
@@ -201,23 +201,26 @@ public class MatrixFragment extends GeneralFragment {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							// TODO Check for null values
-							final String name = itemName.getEditableText().toString();
-							final String defValue = defaultVal.getEditableText().toString();
-							final int min = Integer.parseInt(rangeMin.getEditableText().toString());
-							final int max = Integer.parseInt(rangeMax.getEditableText().toString());
-							final String mod = modificator.getEditableText().toString();
-							/*Log.d("NEW ITEM", "Name:"+name);
-							Log.d("NEW ITEM", "min:"+min);
-							Log.d("NEW ITEM", "max:"+max);*/
-							if(editItem == null) {
+							final String name = itemName.getEditableText()
+									.toString();
+							final String defValue = defaultVal
+									.getEditableText().toString();
+							final int min = Integer.parseInt(rangeMin
+									.getEditableText().toString());
+							final int max = Integer.parseInt(rangeMax
+									.getEditableText().toString());
+							final String mod = modificator.getEditableText()
+									.toString();
+							/*
+							 * Log.d("NEW ITEM", "Name:"+name);
+							 * Log.d("NEW ITEM", "min:"+min); Log.d("NEW ITEM",
+							 * "max:"+max);
+							 */
+							if (editItem == null) {
 								final MatrixItem newItem = new MatrixItem(name,
-															defValue,
-															min,
-															max,
-															mod);
+										defValue, min, max, mod);
 								matrixFragment.addMatrixItem(newItem);
-							}
-							else {
+							} else {
 								editItem.setItemName(name);
 								editItem.setValue(defValue);
 								editItem.setRangeMin(min);
@@ -228,7 +231,7 @@ public class MatrixFragment extends GeneralFragment {
 						}
 					});
 
-			builder.setNegativeButton("Cancel",
+			builder.setNegativeButton(getString(R.string.cancel),
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
@@ -256,15 +259,16 @@ public class MatrixFragment extends GeneralFragment {
 			return dialog;
 		}
 	}
-	
+
 	/*
 	 * JACKSON START
 	 */
 	public void jacksonInflate(MatrixTable myTable, Activity activity) {
 		// set table
 		setJacksonTable(myTable);
-		// set flag, so that we are inflating the views with data from jackson model
-		//jacksonInflateWithData = true;
+		// set flag, so that we are inflating the views with data from jackson
+		// model
+		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
 		// add the "new item" entry
 		itemsList.add(new MatrixItem("Neues Element", "+", null));

@@ -69,9 +69,9 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				MatrixItem curItem = items.get(position);
 
 				TextView iName = (TextView) convertView
-						.findViewById(R.id.textView4);
+						.findViewById(R.id.textItemTitle);
 				TextView iValue = (TextView) convertView
-						.findViewById(R.id.textView1);
+						.findViewById(R.id.textItemAdd);
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
@@ -83,15 +83,16 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						R.layout.itemlayout2_matrix_view, parent, false);
 				MatrixItem curItem = items.get(position);
 				TextView iName = (TextView) convertView
-						.findViewById(R.id.textView4);
+						.findViewById(R.id.textItemTitle);
 				TextView iValue = (TextView) convertView
-						.findViewById(R.id.textView1);
+						.findViewById(R.id.textValue);
 
 				// combine min and max
 				TextView iRange = (TextView) convertView
-						.findViewById(R.id.textView2);
+						.findViewById(R.id.textRangeFromTo);
+
 				TextView iModificator = (TextView) convertView
-						.findViewById(R.id.textView3);
+						.findViewById(R.id.textModificator);
 
 				iName.setText(curItem.getItemName());
 				iValue.setText(curItem.getValue());
@@ -106,10 +107,10 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 			if (position == getCount() - 1) {
 
 				TextView iName = (TextView) convertView
-						.findViewById(R.id.textView4);
+						.findViewById(R.id.textItemTitle);
 
 				TextView iValue = (TextView) convertView
-						.findViewById(R.id.textView1);
+						.findViewById(R.id.textItemAdd);
 				MatrixItem curItem = items.get(position);
 
 				iName.setText(curItem.getItemName());
@@ -120,15 +121,15 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				// itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
 				// parent, false);
 				TextView iName = (TextView) convertView
-						.findViewById(R.id.textView4);
+						.findViewById(R.id.textItemTitle);
 				TextView iValue = (TextView) convertView
-						.findViewById(R.id.textView1);
+						.findViewById(R.id.textValue);
 				// combine min and max
 				TextView iRange = (TextView) convertView
-						.findViewById(R.id.textView2);
+						.findViewById(R.id.textRangeFromTo);
 
 				TextView iModificator = (TextView) convertView
-						.findViewById(R.id.textView3);
+						.findViewById(R.id.textModificator);
 
 				MatrixItem curItem = items.get(position);
 

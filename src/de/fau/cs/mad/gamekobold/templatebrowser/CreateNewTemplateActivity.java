@@ -39,27 +39,29 @@ public class CreateNewTemplateActivity extends Activity {
 
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
-	
+
 	private static Activity myActivity = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
 		myActivity = this;
 
-		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButton1);
+		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 
-		final TextView tvTemplateName = (TextView) findViewById(R.id.editText1);
-		final TextView tvGameName = (TextView) findViewById(R.id.editText2);
-		final TextView tvDescription = (TextView) findViewById(R.id.editText3);
-		Button createTemplateButton = (Button) findViewById(R.id.button2);
-		final String[] items = new String[] { "von Kamera", "von SD-Karte" };
+		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);
+		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
+		final TextView tvDescription = (TextView) findViewById(R.id.description);
+		Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
+
+		// final String[] items = new String[] { "von Kamera", "von SD-Karte" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.select_dialog_item, items);
+				android.R.layout.select_dialog_item, getResources()
+						.getStringArray(R.array.image_picker_items));
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle("Bild hinzuf�gen");
+		builder.setTitle(getResources().getString(R.string.add_icon));
 		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				if (item == 0) {
@@ -115,10 +117,11 @@ public class CreateNewTemplateActivity extends Activity {
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(tvTemplateName.getEditableText().toString().equals("")) {
-					Toast.makeText(getApplicationContext(),
-							"Please set a name for your template!", Toast.LENGTH_SHORT)
-							.show();
+				if (tvTemplateName.getEditableText().toString().equals("")) {
+					Toast.makeText(
+							getApplicationContext(),
+							getResources().getString(R.string.warning_set_name),
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
 				// add new template to list on template browser-view
@@ -126,92 +129,113 @@ public class CreateNewTemplateActivity extends Activity {
 						"Dein Template wird erstellt!", Toast.LENGTH_SHORT)
 						.show();
 
-//				String currentDate = new SimpleDateFormat("dd.MM.yyyy")
-//						.format(new Date());
-//				
-//				// TODO Have to store Tempalte-data!
-//				// TODO What is the template author's name?
-//				// now it is just stub: "Registered Author"
-//				// TODO 0 stands for default icon id
-//				Template newTemplate = new Template(tvTempalteName.getText()
-//						.toString(), tvGameName.getText().toString(),
-//						"Registered Author", currentDate, 0, tvDescription
-//								.getText().toString());
-//	
-//				Intent i = new Intent(CreateNewTemplateActivity.this,
-//						TemplateBrowserActivity.class);
-//
-//				// he currently running instance of activity B in the above
-//				// example will either receive the new intent you are starting
-//				// here in its onNewIntent() method, or be itself finished and
-//				// restarted with the new intent. If it has declared its launch
-//				// mode to be "multiple" (the default) and you have not set
-//				// FLAG_ACTIVITY_SINGLE_TOP in the same intent, then it will be
-//				// finished and re-created; for all other launch modes or if
-//				// FLAG_ACTIVITY_SINGLE_TOP is set then this Intent will be
-//				// delivered to the current instance's onNewIntent().
-//				i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//
-//				// TODO we have to save newTempalte!! or it will be lost!
-//				// (detailsView->Browser... got lost)
-//				i.putExtra("newtemplate", newTemplate);
-//				startActivity(i);
+				// String currentDate = new SimpleDateFormat("dd.MM.yyyy")
+				// .format(new Date());
+				//
+				// // TODO Have to store Tempalte-data!
+				// // TODO What is the template author's name?
+				// // now it is just stub: "Registered Author"
+				// // TODO 0 stands for default icon id
+				// Template newTemplate = new Template(tvTempalteName.getText()
+				// .toString(), tvGameName.getText().toString(),
+				// "Registered Author", currentDate, 0, tvDescription
+				// .getText().toString());
+				//
+				// Intent i = new Intent(CreateNewTemplateActivity.this,
+				// TemplateBrowserActivity.class);
+				//
+				// // he currently running instance of activity B in the above
+				// // example will either receive the new intent you are
+				// starting
+				// // here in its onNewIntent() method, or be itself finished
+				// and
+				// // restarted with the new intent. If it has declared its
+				// launch
+				// // mode to be "multiple" (the default) and you have not set
+				// // FLAG_ACTIVITY_SINGLE_TOP in the same intent, then it will
+				// be
+				// // finished and re-created; for all other launch modes or if
+				// // FLAG_ACTIVITY_SINGLE_TOP is set then this Intent will be
+				// // delivered to the current instance's onNewIntent().
+				// i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				//
+				// // TODO we have to save newTempalte!! or it will be lost!
+				// // (detailsView->Browser... got lost)
+				// i.putExtra("newtemplate", newTemplate);
+				// startActivity(i);
 
-				
 				// it goes template generator
-				final Intent intent = new Intent(CreateNewTemplateActivity.this,
+				final Intent intent = new Intent(
+						CreateNewTemplateActivity.this,
 						TemplateGeneratorActivity.class);
-				
+
 				// it goes to welcome activity
-//				Intent intent = new Intent(CreateNewTemplateActivity.this,
-//						TemplateGeneratorWelcomeActivity.class);
-//				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				
+				// Intent intent = new Intent(CreateNewTemplateActivity.this,
+				// TemplateGeneratorWelcomeActivity.class);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
 				/*
 				 * JACKSON START
 				 */
-				// flag to distinguish between editing and creating 
-				intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, true);
+				// flag to distinguish between editing and creating
+				intent.putExtra(
+						TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+						true);
 				// create template for data transfer
 				final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data
 				jTemplate.templateName = tvTemplateName.getText().toString();
 				jTemplate.gameName = tvGameName.getText().toString();
-				//TODO author
+				// TODO author
 				jTemplate.author = "Registered Author";
-				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
-				//TODO icon id
+				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
+						.format(new Date());
+				// TODO icon id
 				jTemplate.iconID = 0;
 				jTemplate.description = tvDescription.getText().toString();
 				// check to see if a file for this template already exists
-				if(jTemplate.doesTemplateFileExist(myActivity)) {
-					// if yes we show a dialog and ask whether to overwrite the file or not.
-					//Log.d("CreateNewTemplateActivity", "File already exists!");
-					final AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
+				if (jTemplate.doesTemplateFileExist(myActivity)) {
+					// if yes we show a dialog and ask whether to overwrite the
+					// file or not.
+					// Log.d("CreateNewTemplateActivity",
+					// "File already exists!");
+					final AlertDialog.Builder builder = new AlertDialog.Builder(
+							myActivity);
 					builder.setTitle("A file for this template already exists!");
 					builder.setMessage("Click yes to overwrite the file.");
-					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {}
-					});
-					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
-							startActivity(intent);
-						}
-					});
+					builder.setNegativeButton(
+							getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
+					builder.setPositiveButton(
+							getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									intent.putExtra(
+											de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
+											jTemplate);
+									startActivity(intent);
+								}
+							});
 					AlertDialog dialog = builder.create();
 					dialog.show();
-				}
-				else {
+				} else {
 					// if the file does not exists continue
-					//Log.d("CreateNewTemplateActivity", "File does not exist.");
-					intent.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jTemplate);
+					// Log.d("CreateNewTemplateActivity",
+					// "File does not exist.");
+					intent.putExtra(
+							de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
+							jTemplate);
 					startActivity(intent);
 				}
 				/*
-				 * JACKSON END 
+				 * JACKSON END
 				 */
 			}
 		});
@@ -259,14 +283,13 @@ public class CreateNewTemplateActivity extends Activity {
 
 		}
 
-		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButton1);
+		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 		addImageButton.setImageBitmap(bitmap);
-		//TODO store image path for later use
-		//TemplateIcons.getInstance().addTemplateIcon(path); 
-		
+		// TODO store image path for later use
+		// TemplateIcons.getInstance().addTemplateIcon(path);
+
 	}
 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -303,7 +326,7 @@ public class CreateNewTemplateActivity extends Activity {
 			return rootView;
 		}
 	}
-	
+
 	public String getRealPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
 		Cursor cursor = getContentResolver().query(contentUri, proj, null,

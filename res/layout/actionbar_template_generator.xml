@@ -13,6 +13,6 @@ android:orientation="vertical" >
     android:layout_height="wrap_content"
     android:gravity="center"
     android:paddingLeft="10dip"
-    android:textSize="20dip"
+    android:textSize="20sp"
     android:textStyle="bold" />
 </LinearLayout>
