@@ -24,6 +24,25 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 		this.objects = objects;
 	}
 
+	// needed for viewConvertion so that the system knows that there are different layouts in the adapter
+	// 0 for template. 1 for "new template" and "edit last template" items
+	@Override
+	public int getItemViewType(int position) {
+		// if "edit" or "create"
+		if(position >= getCount() - 2) {
+			// return 1
+			return 1;
+		}
+		// return 0 for every other item
+		return 0;
+	}
+
+	// we got 2 types: normal items and the last two ones
+	@Override
+	public int getViewTypeCount() {
+	    return 2; // Count of different layouts
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -90,7 +109,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 		} else {
 			// check for last 2 lines -> edit last template, create new template.
 			// they use an other layout
-			if(position >= getCount()-2) {
+			if(position >= getCount() - 2) {
 				rowView = inflater.inflate( R.layout.rowlayout_newtemplate_template_browser,
 						parent, false);
 				TextView tName = (TextView) rowView

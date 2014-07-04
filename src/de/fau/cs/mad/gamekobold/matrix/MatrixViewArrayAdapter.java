@@ -31,7 +31,7 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 		this.items = items;
 	}
 	
-	// needed for viewConvertion so that the system knows that there are different layouts int the adapter
+	// needed for viewConvertion so that the system knows that there are different layouts in the adapter
 	// 0 for normal item. 1 for "new item" item
 	@Override
 	public int getItemViewType(int position) {

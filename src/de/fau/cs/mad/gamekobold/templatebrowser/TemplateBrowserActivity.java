@@ -402,17 +402,6 @@ public class TemplateBrowserActivity extends ListActivity {
 							temp.absoluteFilePath = file.getAbsolutePath();
 							templateList.add(temp);
 						}
-						
-						// TEST PURPOSE ONLY DELETE LATER
-						/*for(int i = 0; i < 5; i++) {
-							try {
-								Thread.sleep(200);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}*/
-						//
 					}
 				}
 			}
