@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -68,6 +69,7 @@ public class FolderFragment extends GeneralFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
         LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
+        final EditText nameInput = (EditText) dialogViewCreateElement.findViewById(R.id.enter_name_of_element);
         alertDialogBuilder.setView(dialogViewCreateElement);
         alertDialogBuilder.setCancelable(true);
         ImageButton createTable = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_table);
@@ -77,24 +79,27 @@ public class FolderFragment extends GeneralFragment {
         //	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.table, "");
+				addItemList(element_type.table, nameInput.getText().toString());
 				dialogCreateElement.cancel();
+				nameInput.setText("");
 			}
 		});
         createCollection.setOnClickListener(new View.OnClickListener() {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.matrix, "");
+				addItemList(element_type.matrix, nameInput.getText().toString());
 				dialogCreateElement.cancel();
+				nameInput.setText("");
 			}
 		});
         createFolder.setOnClickListener(new View.OnClickListener() {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.folder, "");
+				addItemList(element_type.folder, nameInput.getText().toString());
 				dialogCreateElement.cancel();
+				nameInput.setText("");
 			}
 		});
         dialogCreateElement = alertDialogBuilder.create();
@@ -145,6 +150,7 @@ public class FolderFragment extends GeneralFragment {
 	
 	public void addItemList(element_type selected, String name) {
 		FolderElementData newDataItem = new FolderElementData((TemplateGeneratorActivity)getActivity(), selected);
+		newDataItem.text.setText(name);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		/*
 		 * JACKSON START
