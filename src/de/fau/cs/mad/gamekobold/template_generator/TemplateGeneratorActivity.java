@@ -24,12 +24,15 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,6 +148,13 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		 //set up slideout-menu
 //		 LinearLayout mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
 		 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//		 LinearLayout slideoutLayout = (LinearLayout) findViewById(R.id.navigation_drawer);
+//		 DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+//		 float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//		 int slideoutWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.8), getResources().getDisplayMetrics()));
+//		 DrawerLayout.LayoutParams layoutParams= new 
+//				 DrawerLayout.LayoutParams(slideoutWidth, LinearLayout.LayoutParams.MATCH_PARENT);
+//		 slideoutLayout.setLayoutParams(layoutParams);
 		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
 		 transaction.commit(); 
 		 mDrawerLayout = (DrawerLayout) findViewById(R.id.main_view_empty);
