@@ -412,12 +412,14 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 		@Override
 		protected void onPostExecute(List<Template> templateList) {
-			if(templateList != null) {
-				// JACKSON add a new entry for editing the last created template
-				templateList.add(new Template("Edit last template...", "", "", "", -1));
-				// set create new template row to the end of the list
-				templateList.add(new Template("Create New Template...", "", "", "", -1));
+			// should not happen but who knows
+			if(templateList == null) {
+				templateList = new ArrayList<Template>();
 			}
+			// JACKSON add a new entry for editing the last created template
+			templateList.add(new Template("Edit last template...", "", "", "", -1));
+			// set create new template row to the end of the list
+			templateList.add(new Template("Create New Template...", "", "", "", -1));
 			((TemplateBrowserActivity)myActivity).setTemplateList(templateList);
 			if(pd != null) {
 				pd.dismiss();
