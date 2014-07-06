@@ -13,13 +13,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +33,7 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
 
-	List<Template> templateList = null;
+	private List<Template> templateList = null;
 	private static Activity myActivity = null;
 
 	@Override
@@ -50,25 +48,6 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 		TemplateListLoaderTask loaderTask = new TemplateListLoaderTask();
 		loaderTask.execute();
-		
-//		Template newTemplate;
-//		
-//		// take new Template object if it was sent from
-//		// CreateNewTemplate-Activity
-//		if (getIntent().hasExtra("newtemplate") == true) {
-//			newTemplate = (Template) getIntent().getExtras().getSerializable(
-//					"newtemplate");
-//			
-//			templateList.add(newTemplate);
-//		}
-/*
-		// JACKSON add a new entry for editing the last created template
-		templateList.add(new Template("Edit last template...", "", "", "", -1));
-		// set create new template row to the end of the list
-		Template addNewTemplateRow = new Template("Create New Template...", "",
-				"", "", -1);
-		templateList.add(addNewTemplateRow);
-*/
 		// have to make it final because of adapter.getCount()-method for
 		// newTemplate-intent
 		final TemplateBrowserArrayAdapter adapter = new TemplateBrowserArrayAdapter(
@@ -111,6 +90,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					Log.e("er", "position: " + position);
 					
 					i.putExtra("position", position);
+					i.putExtra("template", templateList.get(position));
 					startActivity(i);
 				}
 			}
@@ -202,7 +182,6 @@ public class TemplateBrowserActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_browser, menu);
 		return true;
@@ -235,69 +214,6 @@ public class TemplateBrowserActivity extends ListActivity {
 					R.layout.fragment_template_browser, container, false);
 			return rootView;
 		}
-	}
-
-	// TODO replace with real data, now it is just stub for real data from DB or
-	// json file?
-	public static List<Template> getDataForListView(Context context) {
-		// temp list
-		List<Template> templateList = new ArrayList<Template>();
-
-		// add dummy data
-		Template template1 = new Template(
-				"My First Template",
-				"Dungeons and Dragons",
-				"Anna",
-				"20.05.2014",
-				2,
-				"This is my first try to make my own template! D&D departs from traditional wargaming and assigns each player a specific character to play instead of a military formation. These characters embark upon imaginary adventures within a fantasy setting.");
-		Template template2 = new Template("The Best Template",
-				"Vampire the Masquerade", "Anna", "20.05.2014", 3);
-		Template template3 = new Template("Schwarze Auge Template",
-				"Das Schwarze Auge", "Anna", "21.05.2014", 4);
-
-		templateList.add(template1);
-		templateList.add(template2);
-		templateList.add(template3);
-		//
-		/*
-		 * JACKSON START
-		 * We iterate over all files in the template directory and load the data into the list
-		 */
-		File templateDir = de.fau.cs.mad.gamekobold.jackson.Template.getTemplateDirectory(myActivity);
-		if(templateDir != null) {
-			if(templateDir.isDirectory()) {
-				final File[] fileList = templateDir.listFiles();
-				de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
-				for(final File file : fileList) {
-					try {
-						loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
-					} catch (JsonParseException | JsonMappingException e) {
-						e.printStackTrace();
-					}
-					catch(IOException e) {
-						e.printStackTrace();
-					}
-					if(loadedTemplate != null) {
-						Template temp = new Template(loadedTemplate.templateName,
-								loadedTemplate.gameName,
-								loadedTemplate.author,
-								loadedTemplate.date,
-								loadedTemplate.iconID,
-								loadedTemplate.description);
-						if(temp.getTemplateName().equals("")) {
-							temp.setTemplateName(file.getName());
-						}
-						temp.absoluteFilePath = file.getAbsolutePath();
-						templateList.add(temp);
-					}
-				}
-			}
-		}
-		/*
-		 * JACKSON END
-		 */
-		return templateList;
 	}
 	
 	private void removeItem(Template template) {
@@ -340,15 +256,23 @@ public class TemplateBrowserActivity extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(myActivity);
-    		pd.setTitle("Loading template list...");
-    		pd.setMessage("Please wait...");
-    		pd.setCancelable(false);
-    		pd.setIndeterminate(true);
-    		pd.show();
+			pd.setTitle("Loading template list...");
+			pd.setMessage("Please wait...");
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			pd.show();
 		}
 		
 		@Override
 		protected List<Template> doInBackground(Void... params) {
+		/*	for(int i = 0 ; i < 15; i++) {
+				try {
+					Thread.sleep(150);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}*/
 			List<Template> templateList = new ArrayList<Template>();
 			Template template1 = new Template(
 					"My First Template",
@@ -369,14 +293,9 @@ public class TemplateBrowserActivity extends ListActivity {
 			 * JACKSON START
 			 * We iterate over all files in the template directory and load the data into the list
 			 */
-			File templateDir = null;
-			if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-				templateDir = Environment.getExternalStorageDirectory();
-			}
-			else {
-				templateDir = myActivity.getDir(de.fau.cs.mad.gamekobold.jackson.Template.FOLDER_NAME, Context.MODE_PRIVATE);
-			}
+			File templateDir = de.fau.cs.mad.gamekobold.jackson.Template.getTemplateDirectory(myActivity);
 			if(templateDir != null) {
+				Log.d("TemplateBrowser", "templateDir:"+templateDir.getAbsolutePath());
 				if(templateDir.isDirectory()) {
 					final File[] fileList = templateDir.listFiles();
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;

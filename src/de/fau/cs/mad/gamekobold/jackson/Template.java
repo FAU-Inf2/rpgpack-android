@@ -132,7 +132,11 @@ public class Template implements Parcelable{
 	public static File getTemplateDirectory(Context context) {
 		File templateDir;
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			templateDir = Environment.getExternalStorageDirectory();
+			File externalStorage = Environment.getExternalStorageDirectory();
+			templateDir = new File(externalStorage.getAbsolutePath() + File.separatorChar + FOLDER_NAME);
+			if(!templateDir.exists()) {
+				templateDir.mkdir();
+			}
 		}
 		else {
 			templateDir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
