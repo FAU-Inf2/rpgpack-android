@@ -6,6 +6,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,8 +37,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -57,6 +61,10 @@ public class TableFragment extends GeneralFragment {
 	/*
 	 * JACKSON END
 	 */
+	
+	enum content_type{
+		editText, checkbox, popup;
+	}
 	
 	View mainView;
 	TableLayout table;
@@ -159,8 +167,25 @@ public class TableFragment extends GeneralFragment {
 						isModified = true;
 //						Log.d("TableFragment", "setTypeContents: remove Elementt");
 						tableRow.removeView(elementToAdapt);
-						newElement = new CheckBox(getActivity());
+						newElement = new LinearLayout(getActivity());
+						CheckBox cb = new CheckBox(getActivity());
+						((LinearLayout) newElement).addView(cb);
+						((LinearLayout) newElement).setGravity(Gravity.CENTER);
+//						newElement = new CheckBox(getActivity());
+//						setTableStyle(newElement);
+//						final CheckBox cb = (CheckBox) newElement;
+//						cb.setGravity(Gravity.CENTER);
+//						cb.setPadding(cb.getPaddingLeft(), cb.getPaddingTop()-1, cb.getPaddingRight(), cb.getPaddingBottom());
 						setTableStyle(newElement);
+						cb.setButtonDrawable(R.drawable.custom_checkbox);
+
+//						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams();
+//						params.setMargins(0, 0, 10, 0);
+//						cb.setLayoutParams(params);
+//						cb.setPadding(cb.getPaddingLeft() + (int)(10.0f * scale + 0.5f),
+//								cb.getPaddingTop(),
+//								cb.getPaddingRight(),
+//								cb.getPaddingBottom());
 //						tableRow.addView(newElement);
 						tableRow.addView(newElement, indexOfTable);
 					}
@@ -236,7 +261,7 @@ public class TableFragment extends GeneralFragment {
 					newElement.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 					int width = newElement.getMeasuredWidth();
 					int height = newElement.getMeasuredHeight();
-//					checkResize(width, height, newElement, tableRow);
+					checkResize(width, height, newElement, tableRow);
 				}
 			}
 		}
@@ -272,6 +297,7 @@ public class TableFragment extends GeneralFragment {
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		final EditText col1 = new EditText(getActivity());
 		col1.setText(getResources().getString(R.string.headline1));
+		col1.setGravity(Gravity.CENTER);
 		setHeaderTableStyle(col1);
 		col1.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -296,6 +322,7 @@ public class TableFragment extends GeneralFragment {
 		final EditText col2 = new EditText(getActivity());
 		setHeaderTableStyle(col2);
 		col2.setText(getResources().getString(R.string.headline2));
+		col2.setGravity(Gravity.CENTER);
 		col2.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable s) {
 				checkResize(0, 0, col2, row);
@@ -613,11 +640,10 @@ public class TableFragment extends GeneralFragment {
 //				setHeaderTableStyle((EditText) theChildToResize);
 				//TODO: extract measurement of height to match the hight of the biggest element in the row
 				theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-				int height = theChildToResize.getMeasuredHeight();
-				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
+//				int height = theChildToResize.getMeasuredHeight();
+//				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
+				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,getNeededHeight(0, ((TableRow) singleRow))); // Width , height
 			    theChildToResize.setLayoutParams(lparams);
-//			    textField.invalidate();
-//			    textField.forceLayout();
 			}
 		}
 		for(int i=0; i<table.getChildCount(); i++){
@@ -627,10 +653,9 @@ public class TableFragment extends GeneralFragment {
 				if(theChildToResize != null){
 					//TODO: extract measurement of height to match the hight of the biggest element in the row
 					theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-					int height = theChildToResize.getMeasuredHeight();
-					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width, height); // Width , height
+//					int height = theChildToResize.getMeasuredHeight();
+					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width, getNeededHeight(i, ((TableRow) oneRow))); // Width , height
 				    theChildToResize.setLayoutParams(lparams);
-//				    setTableStyle((EditText) theChildToResize);
 				}
 				
 			}
@@ -655,15 +680,12 @@ public class TableFragment extends GeneralFragment {
 		}
 	}
 	
-	/**
-	 * adds one column to the given row 
-	 * @param row
-	 */
-	protected void addColumnToRow(final TableRow row){
-		final EditText oneColumn = new EditText(getActivity());
-		oneColumn.addTextChangedListener(new TextWatcher(){
+	private EditText initEditText(final TableRow row){
+		final EditText newElement = new EditText(getActivity());
+		newElement.setGravity(Gravity.CENTER);
+		newElement.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
-				checkResize(0, 0, oneColumn, row);
+				checkResize(0, 0, newElement, row);
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -680,7 +702,7 @@ public class TableFragment extends GeneralFragment {
 			jacksonTable.setColumnTitle(((TableRow)headerTable.getChildAt(0)).getChildCount(),
 							"Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
 			}*/
-			oneColumn.addTextChangedListener(new TextWatcher() {
+			newElement.addTextChangedListener(new TextWatcher() {
 				// column index for this header cell  !index! no + 1 needed
 				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
 				// callback
@@ -693,7 +715,7 @@ public class TableFragment extends GeneralFragment {
 							//TemplateGeneratorActivity.saveTemplateAsync();	
 						}
 					}
-					checkResize(0, 0, oneColumn, row);
+					checkResize(0, 0, newElement, row);
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
@@ -704,29 +726,66 @@ public class TableFragment extends GeneralFragment {
 		/*
 		 * JACKSON END
 		 */
-		row.addView(oneColumn);
-		int columnIndex = row.indexOfChild(oneColumn);
+		return newElement;
+	}
+	
+	/**
+	 * adds one column to the given row 
+	 * @param row
+	 */
+	protected void addColumnToRow(final TableRow row){
+		int columnIndex = row.getChildCount();
         int rowIndex = table.indexOfChild(row);
         if(rowIndex == -1){
         	rowIndex = headerTable.indexOfChild(row);
         	if(rowIndex == -1)         Log.d("critical", "cant find row!");
         }
+        View newElement = null;
+        content_type newElementType;
+        //get the needed content_type by choosing it to be the first rows type
+        View firstRowView = null;
+        TableRow firstRow = (TableRow) table.getChildAt(0);
+        if(firstRow != null){
+        	firstRowView = firstRow.getChildAt(columnIndex);
+        }
+        if(firstRowView instanceof EditText){
+        	newElementType = content_type.editText;
+        	newElement = initEditText(row);
+        }
+        else if(firstRowView instanceof LinearLayout){
+        	if(((LinearLayout) firstRowView).getChildAt(1) instanceof CheckBox){
+        		newElementType = content_type.checkbox;
+        		newElement = initEditText(row);
+        	}
+        	else{
+    			Log.d("TABLE_FRAGMENT", "CRITICAL!!!!!!!!!!! views: " + ((LinearLayout) firstRowView).getChildCount());
+        	}
+        }
+        else if(firstRowView instanceof TextView){
+        	newElementType = content_type.popup;
+        	newElement = initEditText(row);
+        }
+        else{
+        	//firstRowView should be null now -> its a new column
+        	newElement = initEditText(row);
+        }
+		row.addView(newElement);
 		int width = getNeededWidth(columnIndex);
 		int height = getNeededHeight(rowIndex, row);
 //		int oldWidth = oneColumn.getMeasuredWidth();
 //		int oldHeight = oneColumn.getMeasuredWidth();
 		final LayoutParams lparams = new LayoutParams(width, height);
-	    oneColumn.setLayoutParams(lparams);
+	    newElement.setLayoutParams(lparams);
         if (headerTable.indexOfChild(row) != -1) {
-			setHeaderTableStyle(oneColumn);
-			oneColumn
+			setHeaderTableStyle((EditText) newElement);
+			((EditText) newElement)
 					.setText(getResources().getString(R.string.headline)
 							+ " "
 							+ (((TableRow) headerTable.getChildAt(0))
 									.getChildCount() + 1));
 		} else {
-			setTableStyle(oneColumn);
-			oneColumn.setText(getResources().getString(R.string.blank));
+			setTableStyle(newElement);
+			((EditText) newElement).setText(getResources().getString(R.string.blank));
 		}
 
         
@@ -819,7 +878,6 @@ public class TableFragment extends GeneralFragment {
 	
 	@SuppressWarnings("deprecation")
 	protected void setTableStyle(View view){
-		
 		String uri = "@drawable/cell_shape";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
@@ -833,6 +891,33 @@ public class TableFragment extends GeneralFragment {
 			TextView text = (TextView) view;
 			text.setTextColor(getResources().getColor(R.color.background));
 			text.setSingleLine();
+//			text.setGravity(Gravity.CENTER);
+		}
+		else if(view instanceof CheckBox){
+//			int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+//			Drawable res = getResources().getDrawable(imageResource);
+//			((CheckBox) view).setButtonDrawable(R.drawable.cell_shape);
+			final CheckBox cb = (CheckBox) view;
+
+//			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() 
+//			{
+//			     @Override
+//			     public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) 
+//			     {
+//			         // TODO Auto-generated method stub
+//			         if (buttonView.isChecked()) 
+//			         {
+//			             //cb.setBackgroundColor(Color.BLUE);
+//			        	 int color = getResources().getColor(R.color.own_grey);
+//			             cb.setBackgroundColor(color);
+//			         }
+//			         else
+//			         {
+//			             // Not Checked
+//			             // Set Your Default Color. 
+//			         }
+//			     }
+//			}); 
 		}
 	}
 	

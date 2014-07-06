@@ -8,7 +8,7 @@
     <string name="load_game">Spiel laden</string>
     <string name="manage_charackter">Charakter verwalten</string>
     <string name="template_generator">Templates verwalten</string>
-    <string name="settings">Einstellugnen</string>
+    <string name="settings">Einstellungen</string>
     <string name="alljoyn">Alljoyn</string>
     <string name="title_activity_alljoyn_test">AlljoynTest</string>
     <string name="btn_call_service">Call Service</string>
