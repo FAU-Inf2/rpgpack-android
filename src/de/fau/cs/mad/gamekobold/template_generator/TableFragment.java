@@ -17,8 +17,10 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTabHost;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -77,6 +79,8 @@ public class TableFragment extends GeneralFragment {
 	SessionMonitorEditText dialogRowCounter = null;
 	//menu shown when long clicking a row
 	protected TableRow contextMenuRow;
+	private FragmentTabHost mTabHost;
+
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,104 +161,38 @@ public class TableFragment extends GeneralFragment {
 					if(!(elementToAdapt instanceof EditText)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = new EditText(getActivity());
-						setTableStyle(newElement);
-						tableRow.addView(newElement);
+						newElement = initEditText(tableRow);
+						tableRow.addView(newElement, indexOfTable);
 					}
 				}
 				else if(choice.equals("CheckBox")){
-					if(!(elementToAdapt instanceof CheckBox)){
+					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
-//						Log.d("TableFragment", "setTypeContents: remove Elementt");
 						tableRow.removeView(elementToAdapt);
-						newElement = new LinearLayout(getActivity());
-						CheckBox cb = new CheckBox(getActivity());
-						((LinearLayout) newElement).addView(cb);
-						((LinearLayout) newElement).setGravity(Gravity.CENTER);
-//						newElement = new CheckBox(getActivity());
-//						setTableStyle(newElement);
-//						final CheckBox cb = (CheckBox) newElement;
-//						cb.setGravity(Gravity.CENTER);
-//						cb.setPadding(cb.getPaddingLeft(), cb.getPaddingTop()-1, cb.getPaddingRight(), cb.getPaddingBottom());
-						setTableStyle(newElement);
-						cb.setButtonDrawable(R.drawable.custom_checkbox);
-
-//						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams();
-//						params.setMargins(0, 0, 10, 0);
-//						cb.setLayoutParams(params);
-//						cb.setPadding(cb.getPaddingLeft() + (int)(10.0f * scale + 0.5f),
-//								cb.getPaddingTop(),
-//								cb.getPaddingRight(),
-//								cb.getPaddingBottom());
-//						tableRow.addView(newElement);
+						newElement = initCheckBox(tableRow);
 						tableRow.addView(newElement, indexOfTable);
+						Log.d("TABLE_FRAGMENT", "FFFFFFFFF");
+					}
+					else if(!(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox)){
+						isModified = true;
+						tableRow.removeView(elementToAdapt);
+						newElement = initCheckBox(tableRow);
+						tableRow.addView(newElement, indexOfTable);
+						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
 					}
 				}
 				else if(choice.equals("PopUp")){
 					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = new TextView(getActivity());
-						final TextView txt = (TextView) newElement;
-						txt.addTextChangedListener(new TextWatcher(){
-							public void afterTextChanged(Editable s) {
-								checkResize(0, 0, txt, tableRow);
-							}
-							public void beforeTextChanged(CharSequence s, int start, int count, int after){
-							}
-							public void onTextChanged(CharSequence s, int start, int before, int count){
-							}
-						});
+						newElement = initPopup(tableRow);
 						tableRow.addView(newElement, indexOfTable);
-						int columnIndex = tableRow.indexOfChild(txt);
-				        int rowIndex = table.indexOfChild(txt);
-				        if(rowIndex == -1){
-				        	rowIndex = headerTable.indexOfChild(txt);
-				        	if(rowIndex == -1)         Log.d("critical", "cant find row!");
-				        }
-						int width = getNeededWidth(columnIndex);
-						int height = getNeededHeight(rowIndex, tableRow);
-//						int oldWidth = oneColumn.getMeasuredWidth();
-//						int oldHeight = oneColumn.getMeasuredWidth();
-						final LayoutParams lparams = new LayoutParams(width, height);
-					    txt.setLayoutParams(lparams);
-//			        	setTableStyle(txt);
-						txt.setText(getResources().getString(R.string.new_element));
-				        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
-				        TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
-				        popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
-				        int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_height), getResources().getDisplayMetrics()));
-				        int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_width), getResources().getDisplayMetrics()));
-						final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
-						popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
-						popup.setOutsideTouchable(true);
-//						AlertDialog.Builder alertCreater = new AlertDialog.Builder(getActivity());
-//						alertCreater.setTitle("PopUp");
-//						alertCreater.setMessage("Message");
-//						// Set an EditText view to get user input 
-//						final EditText input = new EditText(getActivity());
-//						alertCreater.setView(input);
-//						alertCreater.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//						public void onClick(DialogInterface dialog, int whichButton) {
-//						  // Do something with value!
-//						  }
-//						});
-//
-//						alertCreater.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//						  public void onClick(DialogInterface dialog, int whichButton) {
-//						    // Canceled.
-//						  }
-//						});
-//						final AlertDialog alert = alertCreater.create();
-						newElement.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-//								alert.show();
-								popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-							}
-						});
-//						setTableStyle(newElement);
+					}
+					else if(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox){
+						isModified = true;
+						tableRow.removeView(elementToAdapt);
+						newElement = initPopup(tableRow);
+						tableRow.addView(newElement, indexOfTable);
 					}
 				}
 				if(isModified){
@@ -262,6 +200,10 @@ public class TableFragment extends GeneralFragment {
 					int width = newElement.getMeasuredWidth();
 					int height = newElement.getMeasuredHeight();
 					checkResize(width, height, newElement, tableRow);
+//					int width = getNeededWidth(i);
+//					int height = getNeededHeight(0, tableRow);
+//					final LayoutParams lparams = new LayoutParams(width, height);
+//				    newElement.setLayoutParams(lparams);
 				}
 			}
 		}
@@ -378,6 +320,23 @@ public class TableFragment extends GeneralFragment {
 			}
 		});
 		setAddButtonStyle(addRowBelow);
+		//tabhost
+//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
+//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
+//
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+		
 		/*
 		 * JACKSON START
 		 */
@@ -416,7 +375,6 @@ public class TableFragment extends GeneralFragment {
 				int height = getNeededHeight(0, headerRow);
 				final LayoutParams lparams = new LayoutParams(width, height);
 			    view.setLayoutParams(lparams);
-				view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
 			jacksonInflateWithData = false;
@@ -726,6 +684,120 @@ public class TableFragment extends GeneralFragment {
 		/*
 		 * JACKSON END
 		 */
+		((EditText) newElement).setText(getResources().getString(R.string.blank));
+//		((EditText) newElement).clearFocus();
+		setTableStyle(newElement);
+		return newElement;
+	}
+	
+	private LinearLayout initPopup(final TableRow row){
+		final LinearLayout ll = new LinearLayout(getActivity());
+		final TextView newElement = new TextView(getActivity());
+		/*
+		 * JACKSON START
+		 */
+		// only add to header cells
+		if(row == headerTable.getChildAt(0)) {
+			// guard. only set column title to default if we are not currently inflating with data
+			/*if(!jacksonInflateWithData) {
+			jacksonTable.setColumnTitle(((TableRow)headerTable.getChildAt(0)).getChildCount(),
+							"Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
+			}*/
+			newElement.addTextChangedListener(new TextWatcher() {
+				// column index for this header cell  !index! no + 1 needed
+				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
+				// callback
+				public void afterTextChanged(Editable s) {
+					// guard. only set column title if we are not currently inflating with data
+					if(!jacksonInflateWithData) {
+						// only save if the title changed
+						if(jacksonTable.setColumnTitle(columnIndex, s.toString())) {
+							Log.d("TABLE_FRAGMENT", "column title changed");
+							//TemplateGeneratorActivity.saveTemplateAsync();	
+						}
+					}
+				}
+				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+				}
+				public void onTextChanged(CharSequence s, int start, int before, int count){
+				}
+			});
+		}
+		/*
+		 * JACKSON END
+		 */
+		final TextView txt = (TextView) newElement;
+		txt.addTextChangedListener(new TextWatcher(){
+			public void afterTextChanged(Editable s) {
+				checkResize(0, 0, txt, row);
+			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			}
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+			}
+		});
+        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+        final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
+        popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//        int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_height), getResources().getDisplayMetrics()));
+//        int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_width), getResources().getDisplayMetrics()));
+		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.8), getResources().getDisplayMetrics()));
+		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.9), getResources().getDisplayMetrics()));
+
+//        mainView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//		int mainWidth = mainView.getMeasuredWidth();
+//		int mainHeight = mainView.getMeasuredHeight();
+        final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
+		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
+		popup.setOutsideTouchable(true);
+		ll.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				View headlineView = ((TableRow) headerTable.getChildAt(0)).getChildAt(getColumnIndex(ll));
+				String headline = ((EditText) headlineView).getText().toString();
+				popupHeadline.setText(headline);
+				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+			}
+		});
+		txt.setText(getResources().getString(R.string.new_element));
+		txt.setTextColor(getResources().getColor(R.color.background));
+		txt.setSingleLine();
+		ll.addView(txt);
+		ll.setGravity(Gravity.CENTER);
+		setTableStyle(ll);
+		return ll;
+	}
+	
+	private int getColumnIndex(View view){
+		int columnIndex = -1;
+		TableRow oneRow = (TableRow) headerTable.getChildAt(0);
+		for(int i=0; i<oneRow.getChildCount(); i++){
+			if(view.equals(oneRow.getChildAt(i))){
+				columnIndex = i;
+			}
+		}
+		for(int k=0; k<table.getChildCount(); k++){
+			oneRow = (TableRow) table.getChildAt(k);
+			for(int i=0; i<oneRow.getChildCount(); i++){
+				if(view.equals(oneRow.getChildAt(i))){
+					columnIndex = i;
+				}
+			}
+		}
+		return columnIndex;
+	}
+	
+	private LinearLayout initCheckBox(final TableRow row){
+		LinearLayout newElement = new LinearLayout(getActivity());
+		CheckBox cb = new CheckBox(getActivity());
+		((LinearLayout) newElement).addView(cb);
+		((LinearLayout) newElement).setGravity(Gravity.CENTER);
+		cb.setButtonDrawable(R.drawable.custom_checkbox);
+		setTableStyle(newElement);
 		return newElement;
 	}
 	
@@ -741,7 +813,6 @@ public class TableFragment extends GeneralFragment {
         	if(rowIndex == -1)         Log.d("critical", "cant find row!");
         }
         View newElement = null;
-        content_type newElementType;
         //get the needed content_type by choosing it to be the first rows type
         View firstRowView = null;
         TableRow firstRow = (TableRow) table.getChildAt(0);
@@ -749,21 +820,15 @@ public class TableFragment extends GeneralFragment {
         	firstRowView = firstRow.getChildAt(columnIndex);
         }
         if(firstRowView instanceof EditText){
-        	newElementType = content_type.editText;
         	newElement = initEditText(row);
         }
         else if(firstRowView instanceof LinearLayout){
-        	if(((LinearLayout) firstRowView).getChildAt(1) instanceof CheckBox){
-        		newElementType = content_type.checkbox;
-        		newElement = initEditText(row);
+        	if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
+        		newElement = initCheckBox(row);
         	}
-        	else{
-    			Log.d("TABLE_FRAGMENT", "CRITICAL!!!!!!!!!!! views: " + ((LinearLayout) firstRowView).getChildCount());
-        	}
-        }
-        else if(firstRowView instanceof TextView){
-        	newElementType = content_type.popup;
-        	newElement = initEditText(row);
+        	else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
+            	newElement = initPopup(row);
+            }
         }
         else{
         	//firstRowView should be null now -> its a new column
@@ -780,12 +845,11 @@ public class TableFragment extends GeneralFragment {
 			setHeaderTableStyle((EditText) newElement);
 			((EditText) newElement)
 					.setText(getResources().getString(R.string.headline)
-							+ " "
+							+ "  "
 							+ (((TableRow) headerTable.getChildAt(0))
-									.getChildCount() + 1));
+									.getChildCount()));
 		} else {
-			setTableStyle(newElement);
-			((EditText) newElement).setText(getResources().getString(R.string.blank));
+//			setTableStyle(newElement);
 		}
 
         
@@ -888,36 +952,11 @@ public class TableFragment extends GeneralFragment {
 			view.setBackgroundDrawable(res);
 		}
 		if(view instanceof TextView){
+			Log.d("setTableStyle", "now changed!");
 			TextView text = (TextView) view;
 			text.setTextColor(getResources().getColor(R.color.background));
 			text.setSingleLine();
 //			text.setGravity(Gravity.CENTER);
-		}
-		else if(view instanceof CheckBox){
-//			int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-//			Drawable res = getResources().getDrawable(imageResource);
-//			((CheckBox) view).setButtonDrawable(R.drawable.cell_shape);
-			final CheckBox cb = (CheckBox) view;
-
-//			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() 
-//			{
-//			     @Override
-//			     public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) 
-//			     {
-//			         // TODO Auto-generated method stub
-//			         if (buttonView.isChecked()) 
-//			         {
-//			             //cb.setBackgroundColor(Color.BLUE);
-//			        	 int color = getResources().getColor(R.color.own_grey);
-//			             cb.setBackgroundColor(color);
-//			         }
-//			         else
-//			         {
-//			             // Not Checked
-//			             // Set Your Default Color. 
-//			         }
-//			     }
-//			}); 
 		}
 	}
 	

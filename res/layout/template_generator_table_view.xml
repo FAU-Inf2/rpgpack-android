@@ -10,6 +10,13 @@
     android:paddingRight="0dp"
     tools:context=".TemplateGeneratorActivity" >
 
+    <!--  
+    <android.support.v4.app.FragmentTabHost 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    -->
     <RelativeLayout
         android:id="@+id/three_buttons"
         android:layout_width="match_parent"
@@ -94,5 +101,13 @@
             android:paddingTop="8dp"
             android:text="Press to Add new Row" />
     </LinearLayout>
-
+    <!-- 
+    <FrameLayout
+            android:id="@+id/tabFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    
+    </android.support.v4.app.FragmentTabHost>
+	-->
 </RelativeLayout>
