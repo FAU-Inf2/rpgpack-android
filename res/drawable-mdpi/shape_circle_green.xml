@@ -7,10 +7,12 @@
 
     <solid android:color="@android:color/transparent" />
 
-<size android:width="85dp"
-     android:height="85dp"/>
+    <size
+        android:height="55dp"
+        android:width="55dp" />
 
-<stroke android:width="2dp"
-    android:color="#00AF64"/>
+    <stroke
+        android:width="2dp"
+        android:color="@color/background_green" />
 
 </shape>

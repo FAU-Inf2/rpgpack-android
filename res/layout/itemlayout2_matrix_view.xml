@@ -12,7 +12,7 @@
         android:layout_marginTop="14dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        android:maxWidth="200dip"
+        android:maxWidth="50dip"
         android:scaleType="fitXY"
         android:padding="2dp"
         android:src="@drawable/shape_circle_green" />

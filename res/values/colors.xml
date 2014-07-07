@@ -19,5 +19,6 @@
     <color name="a_grey">#808080</color>
     <color name="list_background">#27364f</color>
     <color name="list_divider">#808080</color>
+    <color name="light_grey">#CCCCCC</color>
 
 </resources>
