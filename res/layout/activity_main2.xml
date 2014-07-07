@@ -1,0 +1,110 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:background="@color/background_dark"
+    android:columnCount="2" >
+
+    <Button
+        android:id="@+id/btn_settings"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="0"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/alljoyn"
+        android:onClick="alljoyn"
+        android:paddingBottom="10dip"
+        android:paddingTop="25dip"
+        android:text="@string/alljoyn"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_manage_charackter"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="0"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="20dp"
+
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/character"
+        android:onClick="manageCharackter"
+        android:paddingBottom="10dip"
+        android:paddingTop="25dip"
+        android:text="@string/manage_charackter"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_start_game"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/play"
+        android:onClick="startGame"
+        android:paddingBottom="10dip"
+        android:paddingTop="25dip"
+        android:text="@string/start_game"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_load_game"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="1"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/load"
+        android:onClick="loadGame"
+        android:paddingBottom="10dip"
+        android:paddingTop="25dip"
+        android:text="@string/load_game"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_tmplate_generator"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="1"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="20dp"
+
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/template"
+        android:onClick="templateGenerator"
+        android:paddingBottom="10dip"
+        android:paddingTop="25dip"
+        android:text="@string/template_generator"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="1"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_row="0"
+        android:background="@drawable/shape_main_roundcorner_button"
+        android:drawableTop="@drawable/settings"
+        android:onClick="startGame"
+        android:paddingBottom="3dip"
+        android:paddingTop="25dip"
+        android:text="@string/settings"
+        android:textColor="@color/white" />
+
+</GridLayout>

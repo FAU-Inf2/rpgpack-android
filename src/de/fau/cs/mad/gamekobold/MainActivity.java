@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main2);
 	}
 
 }
