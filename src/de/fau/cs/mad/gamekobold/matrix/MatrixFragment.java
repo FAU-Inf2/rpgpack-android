@@ -290,7 +290,7 @@ public class MatrixFragment extends GeneralFragment {
 
 					// set OK button color here
 					positiveButton.setBackgroundColor(getActivity()
-							.getResources().getColor(R.color.a_green));
+							.getResources().getColor(R.color.bright_green));
 					positiveButton.invalidate();
 				}
 			});

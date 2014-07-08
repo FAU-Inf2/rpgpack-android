@@ -3,106 +3,87 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity"
     tools:ignore="MergeRootFrame" >
 
-    <GridLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="2" >
-
-        <Space />
-
-        <Space />
-
-        <Space />
-
-        <Space />
-
-        <Space android:layout_row="2" />
-
-        <Space />
-
-        <Space />
-
-        <Space />
-        <Space />
-
-        <Space />
-
-        <Space />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal|top"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/icon1"
             android:layout_width="104dp"
             android:layout_height="130dp"
-            android:layout_column="0"
             android:layout_gravity="left|fill_vertical"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:layout_rowSpan="4"
+            android:layout_margin="8dp"
+            android:background="@drawable/shape_templatedetails_roundcorner_iconbutton"
+            android:padding="6dp"
             android:src="@drawable/addphoto" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/bright_green"
+            android:text="@string/edit_template"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="292dp"
-            android:layout_height="250dp"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|top"
-            android:layout_margin="5dp"
-            android:layout_row="5"
+            android:layout_width="match_parent"
+            android:layout_height="263dp"
+            android:layout_above="@+id/button2"
+            android:layout_alignLeft="@+id/icon1"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/icon1"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignLeft="@+id/textView2"
+            android:text="Back" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal|center_vertical"
+            android:layout_below="@+id/textView1"
             android:layout_margin="5dp"
-            android:layout_row="1"
+            android:layout_toRightOf="@+id/icon1"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignTop="@+id/icon1"
+            android:layout_marginTop="15dp"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal|top"
-            android:layout_margin="5dp"
-            android:layout_row="3"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_below="@+id/textView4"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_column="0"
-            android:layout_gravity="left|center_vertical"
-            android:layout_row="5"
-            android:text="Back" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_column="1"
-            android:layout_gravity="left|center_vertical"
-            android:layout_row="5"
-            android:text="Edit" />
-
-    </GridLayout>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 </FrameLayout>

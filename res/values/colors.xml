@@ -15,6 +15,7 @@
     <color name="light_blue">#556a7e</color>
     <color name="a_red">#a60000</color>
     <color name="a_green">#00af64</color>
+     <color name="bright_green">#00af64</color>
     <color name="a_blue">#0000ff</color>
     <color name="a_grey">#808080</color>
     <color name="list_background">#27364f</color>
