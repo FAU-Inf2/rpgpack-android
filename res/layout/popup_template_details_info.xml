@@ -12,7 +12,8 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:lines="15"
-        android:maxLines="40" >
+        android:maxLines="40"
+        android:textColor="@color/white" >
 
         <requestFocus />
     </EditText>

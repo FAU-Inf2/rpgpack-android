@@ -32,7 +32,8 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
-
+	
+	public static final String DELETED_TEMPLATE = "DELETED_TEMPLATE";
 	private List<Template> templateList = null;
 	private static Activity myActivity = null;
 
@@ -148,8 +149,6 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 	}
 
-	// TODO reload data. we could be comming back from the generator. otherwise the new template
-	// won't show
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -180,6 +179,29 @@ public class TemplateBrowserActivity extends ListActivity {
 		Log.e("d", "On stop!!!");
 	}
 
+	// the TemplateDetailsActivity sends an intent if the template has been deleted.
+	// we set "templateListChanged" so that the template list will be re loaded on onResume.
+	@Override
+	protected void onNewIntent(Intent newIntent) {
+		//templateListChanged = newIntent.getBooleanExtra(TEMPLATE_LIST_CHANGED, false);
+		Template deletedTemplate = (Template)newIntent.getSerializableExtra(DELETED_TEMPLATE);
+		if(deletedTemplate != null) {
+			if(deletedTemplate.absoluteFilePath != null) {
+				for(final Template template : templateList) {
+					if (template.absoluteFilePath != null) {
+						if(template.absoluteFilePath.equals(deletedTemplate.absoluteFilePath)) {
+							@SuppressWarnings("unchecked")
+							ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
+							adapter.remove(template);
+							adapter.notifyDataSetChanged();
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

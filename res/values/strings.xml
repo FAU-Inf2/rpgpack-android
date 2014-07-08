@@ -121,6 +121,8 @@
      <!-- ActivityTemplateDetails -->
     <string name="edit_template">Template bearbeiten</string>
     <string name="popup_template_details_info_titel">Template Beschreibung</string>
+    <string name="action_delete_template">Delete template</string>
+    <string name="no_description_found">No description found</string>
     
     
 </resources>

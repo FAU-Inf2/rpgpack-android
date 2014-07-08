@@ -1,12 +1,16 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +35,11 @@ public class TemplateDetailsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_details);
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 
+		
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 
 		ImageView ivIcon = (ImageView) findViewById(R.id.icon1);
@@ -67,6 +75,7 @@ public class TemplateDetailsActivity extends Activity {
 				if (curTemplate.absoluteFilePath == null) {
 					editButton.setEnabled(false);
 				}
+				setTitle(curTemplate.getTemplateName());
 			}
 		}
 
@@ -129,7 +138,7 @@ public class TemplateDetailsActivity extends Activity {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_details, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -141,12 +150,59 @@ public class TemplateDetailsActivity extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		else if(id == android.R.id.home) {
+			onBackPressed();
+			return true;
+		}
+		else if(id == R.id.action_delete_template) {
+			final AlertDialog.Builder dialogBuilder = new Builder(this);
+			dialogBuilder.setTitle("Delete Template?");
+			dialogBuilder.setMessage("Click yes to delete the template.");
+			dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(curTemplate.absoluteFilePath != null) {
+						if(!curTemplate.absoluteFilePath.isEmpty()) {
+							File file = new File(curTemplate.absoluteFilePath);
+							if(file != null) {
+								if(file.delete()) {
+									// check if we removed the last edited template
+									SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME, MODE_PRIVATE);
+									String lastEditedTemplate = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
+									if(lastEditedTemplate.equals(file.getName())) {
+										// if so we remove it from the saved preference
+										SharedPreferences.Editor editor = pref.edit();
+										editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+										editor.commit();
+									}
+								}
+							}
+						}
+					}
+				//	onBackPressed();
+					Intent sendIntent = new Intent(TemplateDetailsActivity.this, TemplateBrowserActivity.class);
+					sendIntent.setAction(Intent.ACTION_SEND);
+					sendIntent.putExtra(TemplateBrowserActivity.DELETED_TEMPLATE, curTemplate);
+					//sendIntent.setType("text/plain");
+					startActivity(sendIntent);
+					finish();
+					//Log.d("reachable", "is this beeing called?!"); // yes
+				}
+			});
+			dialogBuilder.create().show();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void showPopup() {
 		TemplateInfoDialogFragment popupTemplateInfoFragment = TemplateInfoDialogFragment
-				.newInstance(this);
+				.newInstance(this, curTemplate);
 		popupTemplateInfoFragment.show(getFragmentManager(),
 				"popupTemplateInfoFragment");
 
@@ -155,11 +211,14 @@ public class TemplateDetailsActivity extends Activity {
 	public static class TemplateInfoDialogFragment extends DialogFragment {
 		private EditText templateInfo;
 		public TemplateDetailsActivity templateDetailsActivity;
+		private Template myTemplate;
 
 		public static TemplateInfoDialogFragment newInstance(
-				TemplateDetailsActivity templateDetailsActivity) {
+				TemplateDetailsActivity templateDetailsActivity,
+				Template template) {
 			TemplateInfoDialogFragment fragment = new TemplateInfoDialogFragment();
 			fragment.templateDetailsActivity = templateDetailsActivity;
+			fragment.myTemplate = template;
 			return fragment;
 		}
 
@@ -179,6 +238,13 @@ public class TemplateDetailsActivity extends Activity {
 			// get all EditTexts
 			templateInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
+			if(!myTemplate.getDescription().isEmpty()) {
+				templateInfo.setText(myTemplate.getDescription());	
+			}
+			else {
+				templateInfo.setText(getActivity().getString(R.string.no_description_found));
+			}
+			
 			builder.setView(view);
 
 			// set Dialog characteristics
