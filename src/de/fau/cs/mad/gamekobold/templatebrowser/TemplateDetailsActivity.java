@@ -1,7 +1,11 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +15,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
+import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment.AddNewItemDialogFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -33,34 +41,43 @@ public class TemplateDetailsActivity extends Activity {
 		TextView tvDescription = (TextView) findViewById(R.id.textView2);
 		Button backButton = (Button) findViewById(R.id.button1);
 		Button editButton = (Button) findViewById(R.id.button2);
+		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
 		curTemplate = null;
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
-		if(extras != null) {
-			final Template template = (Template) extras.getSerializable("template");
-			if(template != null) {
+		if (extras != null) {
+			final Template template = (Template) extras
+					.getSerializable("template");
+			if (template != null) {
 				curTemplate = template;
 				tvTempalteName.setText(curTemplate.getTemplateName());
 				tvGameName.setText(curTemplate.getGameName());
 				tvInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 
-				ivIcon.setImageResource(Integer.valueOf(templateIcons.getTempalteIcon(curTemplate
-						.getIconID())));
+				ivIcon.setImageResource(Integer.valueOf(templateIcons
+						.getTempalteIcon(curTemplate.getIconID())));
 
-				if(curTemplate.getDescription().equals("")) {
+				if (curTemplate.getDescription().equals("")) {
 					tvDescription.setText("No description found!");
+				} else {
+					tvDescription.setText(curTemplate.getDescription());
 				}
-				else {
-					tvDescription.setText(curTemplate.getDescription());	
-				}
-				if(curTemplate.absoluteFilePath == null) {
+				if (curTemplate.absoluteFilePath == null) {
 					editButton.setEnabled(false);
 				}
 			}
 		}
-		
+
+		infoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// show popup with TemplateInfo
+				showPopup();
+			}
+		});
+
 		backButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,23 +90,29 @@ public class TemplateDetailsActivity extends Activity {
 		editButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(curTemplate != null) {
-					if(curTemplate.absoluteFilePath != null) {
-						int lastSlashPos = curTemplate.absoluteFilePath.lastIndexOf("/");
+				if (curTemplate != null) {
+					if (curTemplate.absoluteFilePath != null) {
+						int lastSlashPos = curTemplate.absoluteFilePath
+								.lastIndexOf("/");
 						String fileName = null;
-						if(lastSlashPos == -1) {
+						if (lastSlashPos == -1) {
 							fileName = curTemplate.absoluteFilePath;
+						} else {
+							fileName = curTemplate.absoluteFilePath
+									.substring(lastSlashPos + 1);
 						}
-						else {
-							fileName = curTemplate.absoluteFilePath.substring(lastSlashPos+1);
-						}
-						Intent intent = new Intent(TemplateDetailsActivity.this,
+						Intent intent = new Intent(
+								TemplateDetailsActivity.this,
 								TemplateGeneratorActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// 	flag to distinguish between editing and creating 
-						intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
-						intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, fileName);
-						startActivity(intent);	
+						// flag to distinguish between editing and creating
+						intent.putExtra(
+								TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+								false);
+						intent.putExtra(
+								TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME,
+								fileName);
+						startActivity(intent);
 					}
 				}
 			}
@@ -119,6 +142,88 @@ public class TemplateDetailsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showPopup() {
+		TemplateInfoDialogFragment popupTemplateInfoFragment = TemplateInfoDialogFragment
+				.newInstance(this);
+		popupTemplateInfoFragment.show(getFragmentManager(),
+				"popupTemplateInfoFragment");
+
+	}
+
+	public static class TemplateInfoDialogFragment extends DialogFragment {
+		private EditText templateInfo;
+		public TemplateDetailsActivity templateDetailsActivity;
+
+		public static TemplateInfoDialogFragment newInstance(
+				TemplateDetailsActivity templateDetailsActivity) {
+			TemplateInfoDialogFragment fragment = new TemplateInfoDialogFragment();
+			fragment.templateDetailsActivity = templateDetailsActivity;
+			return fragment;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle SaveInstanceState) {
+			// Use the Builder class for convenient Dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+			// Get the layout inflater
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+
+			// Inflate and set the layout for the dialog
+			// Pass null as the parent view because its going in the dialog
+			// layout
+			View view = inflater.inflate(R.layout.popup_template_details_info,
+					null);
+			// get all EditTexts
+			templateInfo = (EditText) view
+					.findViewById(R.id.editTextAdditionalInformation);
+			builder.setView(view);
+
+			// set Dialog characteristics
+			// get right button text
+			String positiveButtonText;
+
+			positiveButtonText = getString(R.string.save_changes);
+
+			builder.setMessage(getString(R.string.popup_template_details_info_titel));
+			builder.setPositiveButton(positiveButtonText,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							//TODO
+						}
+					});
+
+			builder.setNegativeButton(getString(R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+							TemplateInfoDialogFragment.this.getDialog()
+									.cancel();
+						}
+					});
+
+			// Create the AlertDialog object and return it
+			final AlertDialog dialog = builder.create();
+
+			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+				@Override
+				public void onShow(final DialogInterface dialog) {
+
+					Button positiveButton = ((AlertDialog) dialog)
+							.getButton(DialogInterface.BUTTON_POSITIVE);
+
+					// set OK button color here
+					positiveButton.setBackgroundColor(getActivity()
+							.getResources().getColor(R.color.bright_green));
+					positiveButton.invalidate();
+				}
+			});
+			return dialog;
+		}
 	}
 
 	/**

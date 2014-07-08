@@ -84,6 +84,15 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/buttonInfo"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView3"
+            android:background="@drawable/info2_white"
+            android:scaleType="fitXY" />
     </RelativeLayout>
 
 </FrameLayout>

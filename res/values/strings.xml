@@ -120,5 +120,7 @@
 
      <!-- ActivityTemplateDetails -->
     <string name="edit_template">Template bearbeiten</string>
+    <string name="popup_template_details_info_titel">Template Beschreibung</string>
+    
     
 </resources>
