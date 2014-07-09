@@ -9,6 +9,8 @@ public abstract class GeneralFragment extends Fragment {
 	protected GeneralFragment fragment_parent = null;
 	protected ArrayList<TableFragment> tables; //tables that are below this fragment
 	protected GeneralFragment backStackElement = null;
+	protected boolean isATopFragment = false;
+
 
 	String elementName;
 	

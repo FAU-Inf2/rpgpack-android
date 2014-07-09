@@ -51,6 +51,7 @@ public class FolderFragment extends GeneralFragment {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		Log.d("FolderFragment","onCreate called");
         // nullcheck needed for jackson inflation. creates allData before onCreate is called
         if(allData == null) {
         	allData = new ArrayList<FolderElementData>();

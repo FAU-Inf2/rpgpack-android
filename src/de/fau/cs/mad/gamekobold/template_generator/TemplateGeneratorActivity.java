@@ -122,6 +122,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		 //create it because we need its data for slideoutmenu
 		 if(rootFragment == null){
 			 rootFragment = new FolderFragment();
+			 rootFragment.isATopFragment = true;
 			 /*
 			  * JACKSON START
 			  */
@@ -134,29 +135,22 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 /*
 			  * JACKSON END
 			  */
+			 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
+			 transaction.commit(); 
 		 }
 		 //method: use fragment to store everything
 		 if(topFragment == null){
 			 FragmentManager fragmentManager = getFragmentManager();
 			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 			 topFragment = new WelcomeFragment();
+			 topFragment.isATopFragment = true;
+			 topFragment.elementName = "Welcome";
 			 currentFragment = topFragment;
 			 fragmentTransaction.add(R.id.frame_layout_container, currentFragment);
 			 fragmentTransaction.commit();
 			 getFragmentManager().executePendingTransactions();
 		 }
-		 //set up slideout-menu
-//		 LinearLayout mDrawerView = (LinearLayout) findViewById(R.id.navigation_drawer);
-		 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//		 LinearLayout slideoutLayout = (LinearLayout) findViewById(R.id.navigation_drawer);
-//		 DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-//		 float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-//		 int slideoutWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.8), getResources().getDisplayMetrics()));
-//		 DrawerLayout.LayoutParams layoutParams= new 
-//				 DrawerLayout.LayoutParams(slideoutWidth, LinearLayout.LayoutParams.MATCH_PARENT);
-//		 slideoutLayout.setLayoutParams(layoutParams);
-		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
-		 transaction.commit(); 
 		 mDrawerLayout = (DrawerLayout) findViewById(R.id.main_view_empty);
 		 mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 				 mDrawerLayout, /* DrawerLayout object */
@@ -213,7 +207,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	ActionBar actionBar = getActionBar(); 
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getMenuInflater().inflate(R.menu.template_generator, menu);
-		if(currentFragment != topFragment){
+		if(!currentFragment.isATopFragment){
 			actionBar.setCustomView(R.layout.actionbar_template_generator_back_button);
 			ImageButton backButton = (ImageButton) findViewById(R.id.button_back);
 			backButton.setOnClickListener(new View.OnClickListener() {
@@ -299,14 +293,19 @@ public class TemplateGeneratorActivity extends FragmentActivity {
         	Toast.makeText(this, "es existiert kein Ordner darueber", Toast.LENGTH_LONG).show();
     	}
     	else{
-    		Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
-    		FragmentTransaction fa = getFragmentManager().beginTransaction();
-    		fa.detach(currentFragment);
-    		currentFragment.fragment_parent.backStackElement = currentFragment;
-    		fa.attach(currentFragment.fragment_parent);
-    		currentFragment = currentFragment.fragment_parent;
-    		fa.addToBackStack(null);
-    		fa.commit();
+    		if(currentFragment != topFragment){
+    			Toast.makeText(this, "hiding fragment!", Toast.LENGTH_LONG).show();
+    			FragmentTransaction fa = getFragmentManager().beginTransaction();
+    			fa.detach(currentFragment);
+    			currentFragment.fragment_parent.backStackElement = currentFragment;
+    			fa.attach(currentFragment.fragment_parent);
+    			currentFragment = currentFragment.fragment_parent;
+    			fa.addToBackStack(null);
+    			fa.commit();
+    		}
+    		else{
+    			Toast.makeText(this, "we are already at top level!", Toast.LENGTH_LONG).show();
+    		}
     	}
     	invalidateOptionsMenu();
     }
@@ -317,9 +316,14 @@ public class TemplateGeneratorActivity extends FragmentActivity {
         if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
             currentFragment = currentFragment.backStackElement;
+            if(currentFragment.isATopFragment){
+            	topFragment = currentFragment;
+            }
         } else {
         	DialogFragment dialog = WarningLeaveDialog.newInstance();
-			Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
+        	if(currentFragment instanceof FolderFragment){
+        		Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
+        	}
         	dialog.show(fm, "");
         }
         invalidateOptionsMenu();

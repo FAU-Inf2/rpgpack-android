@@ -73,8 +73,9 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     		public void onClick(View v) {
     			GeneralFragment newFragment;
     			GeneralFragment oldFragment;
+				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+				//attach fragment (old one if it already exists)
     			if(data.childFragment == null) {
-    				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
     				/*
     				 * JACKSON START
     				 */
@@ -96,19 +97,10 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     				 * JACKSON END
     				 */
     				fragmentTransaction.add(R.id.frame_layout_container, newFragment);
-    				oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-    				fragmentTransaction.detach(oldFragment);
-    				newFragment.backStackElement = oldFragment;
-    				fragmentTransaction.addToBackStack(null);
-    				fragmentTransaction.commit();
     			}
     			//fragment already exisits -> show it
     			else{
     				newFragment = data.childFragment;
-    				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
-    				oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
-    				fragmentTransaction.detach(oldFragment);
-    				newFragment.backStackElement = oldFragment;
     				/*
     				 * JACKSON START
     				 * needed if template is edited, because we can create but we cannot add the fragment during inflation
@@ -121,20 +113,26 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     				 * JACKSON END
     				 */
     				fragmentTransaction.attach(newFragment);
-    				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = data.childFragment;
-    				fragmentTransaction.addToBackStack(null);
-    				fragmentTransaction.commit();
     			}
-    			newFragment.fragment_parent = oldFragment;
+    			//detach old and set backstack-element (for back button)
+    			oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+				fragmentTransaction.detach(oldFragment);
+				newFragment.backStackElement = oldFragment;
+				newFragment.fragment_parent = oldFragment;
+				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.commit();
 				data.childFragment = newFragment;
     			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+    			//set old Fragment to be the parent IF NOT from slideout menu
 				if(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 					//drawer is open -> new fragment will be top fragment
 					((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).topFragment = newFragment;
+					newFragment.isATopFragment = true;
+	    			newFragment.fragment_parent = oldFragment;
+					((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 				}
-				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
 				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
-    			data.childFragment.elementName = holder.elementName.getText().toString();
+    			newFragment.elementName = holder.elementName.getText().toString();
     		}
     	});
     }
