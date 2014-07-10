@@ -140,9 +140,18 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 transaction.commit(); 
 		 }
 		 //method: use fragment to store everything
-		 if(topFragment == null){
-			 FragmentManager fragmentManager = getFragmentManager();
-			 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//		 if(topFragment == null){
+//			 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//			 topFragment = new WelcomeFragment();
+//			 topFragment.isATopFragment = true;
+//			 topFragment.elementName = "Welcome";
+//			 currentFragment = topFragment;
+//			 fragmentTransaction.add(R.id.frame_layout_container, currentFragment);
+//			 fragmentTransaction.commit();
+//			 getFragmentManager().executePendingTransactions();
+//		 }
+		 if(savedInstanceState == null){
+			 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 			 topFragment = new WelcomeFragment();
 			 topFragment.isATopFragment = true;
 			 topFragment.elementName = "Welcome";
@@ -151,6 +160,18 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 fragmentTransaction.commit();
 			 getFragmentManager().executePendingTransactions();
 		 }
+		 
+		 /*
+		  * JACKSON START
+		  */
+		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
+		 // onCreate finishes
+		 if(countDownLatch != null) {
+			countDownLatch.countDown();
+		 }
+		 /*
+		  * JACKSON END
+		  */
 		 mDrawerLayout = (DrawerLayout) findViewById(R.id.main_view_empty);
 		 mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 				 mDrawerLayout, /* DrawerLayout object */
@@ -169,24 +190,14 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
-		 /*
-		  * JACKSON START
-		  */
-		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
-		 // onCreate finishes
-		 if(countDownLatch != null) {
-			countDownLatch.countDown();
-		 }
-		 /*
-		  * JACKSON END
-		  */
+		super.onResume();
 	 }
-
-
+	 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 //    	getFragmentManager().putFragment(outState, "currentFragment", currentFragment);
-        super.onSaveInstanceState(outState);
+        outState.putBoolean("activityExistedBefore", true);
+    	super.onSaveInstanceState(outState);
     }
     
     

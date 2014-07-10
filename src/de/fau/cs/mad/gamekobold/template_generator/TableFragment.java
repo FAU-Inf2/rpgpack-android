@@ -33,7 +33,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -291,6 +293,7 @@ public class TableFragment extends GeneralFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 		mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
         createTableHeader();
         table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
@@ -740,6 +743,15 @@ public class TableFragment extends GeneralFragment {
         final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
+        EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
+        inputPopup.setOnFocusChangeListener(new OnFocusChangeListener() {          
+
+            public void onFocusChange(View v, boolean hasFocus) {
+            	//TODO: show or hide italic/bold etc. menu now
+//                if(!hasFocus)
+                   //do job here owhen Edittext lose focus 
+            }
+        });
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;

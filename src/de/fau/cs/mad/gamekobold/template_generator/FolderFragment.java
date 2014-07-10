@@ -71,6 +71,7 @@ public class FolderFragment extends GeneralFragment {
         LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
         dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
         final EditText nameInput = (EditText) dialogViewCreateElement.findViewById(R.id.enter_name_of_element);
+        nameInput.setSingleLine();
         alertDialogBuilder.setView(dialogViewCreateElement);
         alertDialogBuilder.setCancelable(true);
         ImageButton createTable = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_table);
@@ -108,6 +109,7 @@ public class FolderFragment extends GeneralFragment {
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
+		super.onCreateView(inflater, container, savedInstanceState);
 		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
 		mainView = view;
 		TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);

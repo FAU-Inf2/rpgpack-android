@@ -122,7 +122,8 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				fragmentTransaction.addToBackStack(null);
 				fragmentTransaction.commit();
 				data.childFragment = newFragment;
-    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+				//next line now done in GeneralFragment.onAttach
+//    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
     			//set old Fragment to be the parent IF NOT from slideout menu
 				if(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 					//drawer is open -> new fragment will be top fragment

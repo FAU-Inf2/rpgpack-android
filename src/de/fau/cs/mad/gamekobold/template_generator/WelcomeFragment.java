@@ -20,8 +20,8 @@ public class WelcomeFragment extends GeneralFragment{
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
+		super.onCreateView(inflater, container, savedInstanceState);
 		View view = (CustomDrawerLayout) inflater.inflate(R.layout.activity_template_generator_welcome, null);
-        
         return view;
     }
 
