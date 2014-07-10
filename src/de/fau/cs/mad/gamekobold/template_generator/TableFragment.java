@@ -6,7 +6,6 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
-import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,7 +16,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -35,14 +33,11 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -81,7 +76,8 @@ public class TableFragment extends GeneralFragment {
 	SessionMonitorEditText dialogRowCounter = null;
 	//menu shown when long clicking a row
 	protected TableRow contextMenuRow;
-	private FragmentTabHost mTabHost;
+	protected PopupWindow popupStyles = null;
+	protected View stylesView;
 
 	
 	@Override
@@ -145,6 +141,19 @@ public class TableFragment extends GeneralFragment {
         	}
         });
         dialog = alertDialogBuilder.create();
+        
+        
+        //TODO: adapt
+        stylesView = inflater.inflate(R.layout.table_view_styles, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+//        Button italic = (Button) stylesView.findViewById(R.id.italic_button);
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.1), getResources().getDisplayMetrics()));
+		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth), getResources().getDisplayMetrics()));
+        popupStyles = new PopupWindow(stylesView, popupWidth, popupHeight, true);
+        popupStyles.setOutsideTouchable(false);
+//        popupStyles.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
     }
 	
 	protected void setTypeContents(){
@@ -559,7 +568,6 @@ public class TableFragment extends GeneralFragment {
 			if (child instanceof TableRow) {
 				View view = oneRow.getChildAt(indexOfColumn);
 				int localWidth = 0;
-				//TODO: adapt
 				if(view != null){
 					view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 					localWidth = view.getMeasuredWidth();
@@ -599,10 +607,7 @@ public class TableFragment extends GeneralFragment {
 			View theChildToResize = ((TableRow) singleRow).getChildAt(columnIndex);
 			if(theChildToResize != null){
 //				setHeaderTableStyle((EditText) theChildToResize);
-				//TODO: extract measurement of height to match the hight of the biggest element in the row
 				theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//				int height = theChildToResize.getMeasuredHeight();
-//				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,height); // Width , height
 				final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width,getNeededHeight(0, ((TableRow) singleRow))); // Width , height
 			    theChildToResize.setLayoutParams(lparams);
 			}
@@ -612,9 +617,7 @@ public class TableFragment extends GeneralFragment {
 			if(oneRow instanceof TableRow){
 				View theChildToResize = ((TableRow) oneRow).getChildAt(columnIndex);
 				if(theChildToResize != null){
-					//TODO: extract measurement of height to match the hight of the biggest element in the row
 					theChildToResize.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//					int height = theChildToResize.getMeasuredHeight();
 					final TableRow.LayoutParams lparams = new TableRow.LayoutParams(width, getNeededHeight(i, ((TableRow) oneRow))); // Width , height
 				    theChildToResize.setLayoutParams(lparams);
 				}
@@ -748,8 +751,32 @@ public class TableFragment extends GeneralFragment {
 
             public void onFocusChange(View v, boolean hasFocus) {
             	//TODO: show or hide italic/bold etc. menu now
-//                if(!hasFocus)
-                   //do job here owhen Edittext lose focus 
+                if(hasFocus){
+                	Log.d("TableFragment", "popup has FOCUS!");
+//                	RelativeLayout rl = new RelativeLayout(getActivity());
+//                	Button italic = new Button(getActivity());
+//                	italic.setText("i");
+////                	rl.addView(italic);
+////                	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+////                		    RelativeLayout.LayoutParams.WRAP_CONTENT, 
+////                		    RelativeLayout.LayoutParams.WRAP_CONTENT);
+////                	params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+////                	rl.setLayoutParams(params);
+//                	View viewToAddTo = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+//
+//
+//                	((ViewGroup) viewToAddTo).addView(italic);
+//                	italic.bringToFront();
+//                	popupView.invalidate();
+//                	italic.invalidate();
+                	if(!popupStyles.isShowing()){
+//                		popupStyles.showAtLocation(stylesView, Gravity.BOTTOM, 0, 0);
+                	}
+
+                }
+                else{
+                	Log.d("TableFragment", "popup has NO focus!");
+                }
             }
         });
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
@@ -765,7 +792,7 @@ public class TableFragment extends GeneralFragment {
 //		int mainHeight = mainView.getMeasuredHeight();
         final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
 		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
-		popup.setOutsideTouchable(true);
+		popup.setOutsideTouchable(false);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
