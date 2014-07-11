@@ -12,14 +12,10 @@
         android:layout_alignLeft="@+id/imageView"
         android:layout_alignRight="@+id/imageView"
         android:layout_alignTop="@+id/imageView"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="3dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="fitXY"
-        android:src="@drawable/person_without_plus" />
+        android:src="@drawable/person_icon" />
 
     <TextView
         android:id="@+id/textView1"
@@ -28,8 +24,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="TextView"
-        android:textColor="@color/white" />
+        android:text="@string/create_new_character"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -38,6 +35,7 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
+        android:layout_marginTop="2dp"
         android:adjustViewBounds="true"
         android:gravity="center"
         android:maxWidth="50dip"
