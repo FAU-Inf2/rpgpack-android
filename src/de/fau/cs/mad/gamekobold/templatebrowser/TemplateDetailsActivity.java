@@ -1,6 +1,8 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,17 +22,20 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
+import de.fau.cs.mad.gamekobold.matrix.MatrixViewArrayAdapter;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment.AddNewItemDialogFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
 	private Template curTemplate;
-
+	private CharacterGridArrayAdapter adapter;
+	private GridView gridView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +43,14 @@ public class TemplateDetailsActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-
+//testing
+		List<String> characters = new ArrayList<String>();
+		characters.add("Hodor");
+		characters.add("Thorodin");
+		adapter = new CharacterGridArrayAdapter(this, characters);
+		
+		gridView = (GridView) findViewById(R.id.gridView1);
+		gridView.setAdapter(adapter);
 		
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 
@@ -46,7 +58,7 @@ public class TemplateDetailsActivity extends Activity {
 		TextView tvTempalteName = (TextView) findViewById(R.id.textView1);
 		TextView tvGameName = (TextView) findViewById(R.id.textView4);
 		TextView tvInfo = (TextView) findViewById(R.id.textView3);
-		TextView tvDescription = (TextView) findViewById(R.id.textView2);
+	//	TextView tvDescription = (TextView) findViewById(R.id.textView2);
 		Button backButton = (Button) findViewById(R.id.button1);
 		Button editButton = (Button) findViewById(R.id.button2);
 		Button infoButton = (Button) findViewById(R.id.buttonInfo);
@@ -67,11 +79,11 @@ public class TemplateDetailsActivity extends Activity {
 				ivIcon.setImageResource(Integer.valueOf(templateIcons
 						.getTempalteIcon(curTemplate.getIconID())));
 
-				if (curTemplate.getDescription().equals("")) {
+			/*	if (curTemplate.getDescription().equals("")) {
 					tvDescription.setText("No description found!");
 				} else {
 					tvDescription.setText(curTemplate.getDescription());
-				}
+				}*/
 				if (curTemplate.absoluteFilePath == null) {
 					editButton.setEnabled(false);
 				}

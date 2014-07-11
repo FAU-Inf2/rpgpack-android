@@ -180,7 +180,6 @@ public class TemplateBrowserActivity extends ListActivity {
 	}
 
 	// the TemplateDetailsActivity sends an intent if the template has been deleted.
-	// we set "templateListChanged" so that the template list will be re loaded on onResume.
 	@Override
 	protected void onNewIntent(Intent newIntent) {
 		//templateListChanged = newIntent.getBooleanExtra(TEMPLATE_LIST_CHANGED, false);

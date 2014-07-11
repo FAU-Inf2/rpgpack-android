@@ -28,29 +28,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/button1"
             android:background="@color/bright_green"
             android:text="@string/edit_template"
             android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="263dp"
-            android:layout_above="@+id/button2"
-            android:layout_alignLeft="@+id/icon1"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/icon1"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_alignLeft="@+id/textView2"
-            android:text="Back" />
 
         <TextView
             android:id="@+id/textView4"
@@ -93,6 +74,26 @@
             android:layout_below="@+id/textView3"
             android:background="@drawable/info2_white"
             android:scaleType="fitXY" />
+
+        <GridView
+            android:id="@+id/gridView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button1"
+            android:layout_below="@+id/icon1"
+            android:layout_centerHorizontal="true"
+            android:numColumns="3" >
+
+        </GridView>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Back" />
+
     </RelativeLayout>
 
 </FrameLayout>

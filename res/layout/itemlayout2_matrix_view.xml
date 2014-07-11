@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -21,7 +21,7 @@
         android:id="@+id/textModificator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignLeft="@+id/character_icon_circle"
         android:layout_alignRight="@+id/textRangeFromTo"
         android:layout_below="@+id/textRangeFromTo"
         android:gravity="center"
@@ -31,8 +31,8 @@
         android:id="@+id/textRangeFromTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
         android:layout_below="@+id/textValue"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -41,9 +41,9 @@
         android:id="@+id/textItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_below="@+id/imageView"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_below="@+id/character_icon_circle"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -52,9 +52,9 @@
         android:id="@+id/textValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignTop="@+id/imageView"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_alignTop="@+id/character_icon_circle"
         android:layout_marginTop="14dp"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
