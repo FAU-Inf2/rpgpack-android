@@ -14,22 +14,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
-import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
-import de.fau.cs.mad.gamekobold.matrix.MatrixViewArrayAdapter;
-import de.fau.cs.mad.gamekobold.matrix.MatrixFragment.AddNewItemDialogFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -51,6 +49,17 @@ public class TemplateDetailsActivity extends Activity {
 		
 		gridView = (GridView) findViewById(R.id.gridView1);
 		gridView.setAdapter(adapter);
+		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				Log.d("TemplateDetailsActivity", "character grid click:"+position);
+				if(position != adapter.getCount()-1) {
+					Intent i = new Intent(TemplateDetailsActivity.this,
+							CharacterDetailsActivity.class);
+					startActivity(i);
+				}
+			}
+		});
 		
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 

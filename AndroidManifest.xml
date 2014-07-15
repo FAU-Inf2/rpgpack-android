@@ -71,6 +71,7 @@
             android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
             android:label="@string/title_activity_template_generator_welcome" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
