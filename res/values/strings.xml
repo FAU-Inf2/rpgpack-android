@@ -124,6 +124,9 @@
     <string name="action_delete_template">Delete template</string>
     <string name="no_description_found">No description found</string>
     <string name="create_new_character">Create Character</string>
+    <string name="lvl_label">Lvl:</string>
+    <string name="change_color_label">Change color</string>
+    <string name="hint_your_description">Your description.</string>
     
     
 </resources>

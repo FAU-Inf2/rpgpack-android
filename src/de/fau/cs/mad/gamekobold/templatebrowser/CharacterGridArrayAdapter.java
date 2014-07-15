@@ -38,7 +38,7 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<String>{
 		// The view ids have to be the same for both layouts!
 		ImageView imageView = (ImageView)view.findViewById(R.id.imageView);
 		if(imageView != null) {
-			Drawable drawable =imageView.getDrawable(); 
+			Drawable drawable = imageView.getDrawable(); 
 			drawable.setColorFilter(color, Mode.SRC_ATOP);
 		}
 	}
