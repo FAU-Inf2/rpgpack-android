@@ -1,17 +1,22 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
+import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class CharacterDetailsActivity extends Activity{
+public class CharacterDetailsActivity extends Activity implements ColorPickerDialogInterface{
+	private RelativeLayout relLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,11 +24,20 @@ public class CharacterDetailsActivity extends Activity{
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		final RelativeLayout relLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
+		relLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
 		final TextView characterName = (TextView)findViewById(R.id.textView1);
 		final TextView levelLabel = (TextView)findViewById(R.id.textView3);
+		
+		colorChangeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				final ColorPickerDialog dialog = new ColorPickerDialog();
+				dialog.show(getFragmentManager(), "ColorPickerDialog");
+			}
+		});
 		
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
@@ -48,5 +62,15 @@ public class CharacterDetailsActivity extends Activity{
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onColorPicked(int color) {
+		Log.d("CharacterDetails", "picked color:"+color);
+		setCharacterColor(color);
+	}
+	
+	private void setCharacterColor(int color) {
+		relLayout.setBackgroundColor(color);
 	}
 }
