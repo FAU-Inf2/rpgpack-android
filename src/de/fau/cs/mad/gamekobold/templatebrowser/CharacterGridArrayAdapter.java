@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
@@ -14,16 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CharacterGridArrayAdapter extends ArrayAdapter<String>{
+public class CharacterGridArrayAdapter extends ArrayAdapter<CharacterSheet>{
 	Context context;
 
 	// the list of objects we want to display
-	private List<String> items;
+	private List<CharacterSheet> items;
 	
-	public CharacterGridArrayAdapter(Context context, List<String> items) {
+	public CharacterGridArrayAdapter(Context context, List<CharacterSheet> items) {
 		super(context, R.layout.itemlayout_character_icon, items);
 		if (items != null) {
-			items.add(context.getString(R.string.create_new_character));
+			items.add(new CharacterSheet("Create Character"));
 		}
 		this.context = context;
 		this.items = items;
@@ -57,13 +58,14 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<String>{
 			else {
 				itemView = inflater.inflate(R.layout.itemlayout_character_icon, parent, false);
 				// the following code sets the color for the circle shape
-				setColorForView(Color.YELLOW, itemView);
+				final CharacterSheet sheet = getItem(position);
+				setColorForView(sheet.color, itemView);
 			}
 		} else {
 			itemView = convertView;
 		}
 		TextView name = (TextView)itemView.findViewById(R.id.textView1);
-		name.setText(items.get(position));
+		name.setText(items.get(position).name);
 		return itemView;
 	}
 	

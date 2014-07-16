@@ -129,7 +129,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 // So we set the jackson table
 			 // if we are editing a template, the async task will set the table and start inflation
 			 if(creationMode) {
-				 ((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
+				 ((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
 			 }
 			 /*
 			  * JACKSON END
@@ -368,8 +368,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
      * JACKSON START
      */
     public void inflate() {
-    	((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.rootTable);
-   	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.rootTable, this);
+    	((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
+   	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.getRootTable(), this);
     }
     
     public static void saveTemplateAsync() {

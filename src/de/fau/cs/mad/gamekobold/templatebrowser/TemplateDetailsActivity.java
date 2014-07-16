@@ -1,8 +1,13 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +18,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +35,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.R.color;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -45,7 +53,7 @@ public class TemplateDetailsActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		myActivity = this;
 		
-		List<String> characters = new ArrayList<String>();
+		List<CharacterSheet> characters = new ArrayList<CharacterSheet>();
 		adapter = new CharacterGridArrayAdapter(this, characters);
 		
 		gridView = (GridView) findViewById(R.id.gridView1);
@@ -57,6 +65,7 @@ public class TemplateDetailsActivity extends Activity {
 				if(position != adapter.getCount()-1) {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CharacterDetailsActivity.class);
+					i.putExtra("CharacterSheet", adapter.getItem(position));
 					startActivity(i);
 				}
 			}
@@ -228,7 +237,7 @@ public class TemplateDetailsActivity extends Activity {
 
 	}
 	
-	private class CharacterListLoaderTask extends AsyncTask<Template, Void, List<String>> {
+	private class CharacterListLoaderTask extends AsyncTask<Template, Void, List<CharacterSheet>> {
 		private ProgressDialog pd;
 		
 		@Override
@@ -242,12 +251,19 @@ public class TemplateDetailsActivity extends Activity {
 		}
 		
 		@Override
-		protected List<String> doInBackground(Template... params) {
-			List<String> characterList = new ArrayList<String>();
+		protected List<CharacterSheet> doInBackground(Template... params) {
+			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 			// testing data
-			characterList.add("Hodor");
-			characterList.add("Thorodin");
-			characterList.add("Finn");
+			
+			CharacterSheet sheet = new CharacterSheet("Hodor");
+			sheet.color = Color.MAGENTA;
+			characterList.add(sheet);
+			sheet = new CharacterSheet("Thorodin");
+			sheet.color = Color.CYAN;
+			characterList.add(sheet);
+			sheet = new CharacterSheet("Finn");
+			sheet.color = Color.RED;
+			characterList.add(sheet);
 			//
 			File dir = de.fau.cs.mad.gamekobold.jackson.Template.getDirectoryForCharacters(myActivity, params[0]);
 			Log.d("TemplateDetails", "character Folder:"+dir.getAbsolutePath());
@@ -256,7 +272,13 @@ public class TemplateDetailsActivity extends Activity {
 					final File[] characters = dir.listFiles();
 					for(final File character : characters) {
 						if(character.isFile()) {
-							characterList.add(character.getName());
+							try {
+								sheet = CharacterSheet.loadForCharacterList(character);
+								sheet.color = Color.YELLOW;
+								characterList.add(sheet);
+							} catch (Throwable e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -264,13 +286,13 @@ public class TemplateDetailsActivity extends Activity {
 			return characterList;
 		}
 		@Override
-		protected void onPostExecute(List<String> characterList) {
+		protected void onPostExecute(List<CharacterSheet> characterList) {
 			// should not happen but who knows
 			if(characterList == null) {
-				characterList = new ArrayList<String>();
+				characterList = new ArrayList<CharacterSheet>();
 			}
 			// entry for creating a new character
-			characterList.add("Create Character");
+			characterList.add(new CharacterSheet("Create Character"));
 			((TemplateDetailsActivity)myActivity).setCharacterList(characterList);
 			if(pd != null) {
 				pd.dismiss();
@@ -278,7 +300,7 @@ public class TemplateDetailsActivity extends Activity {
 		}
 	}
 	
-	public void setCharacterList(List<String> characterList) {
+	public void setCharacterList(List<CharacterSheet> characterList) {
 		if(characterList != null) {
 			adapter.clear();
 			adapter.addAll(characterList);

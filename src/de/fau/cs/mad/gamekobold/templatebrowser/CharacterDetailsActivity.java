@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 public class CharacterDetailsActivity extends Activity implements ColorPickerDialogInterface{
 	private RelativeLayout relLayout;
+	private CharacterSheet sheet;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,14 +42,16 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		});
 		
 		final Intent intent = getIntent();
-		final Bundle extras = intent.getExtras();
-		// remove next line later when we got a character
-		setTitle("Character name");
+		final Bundle extras = intent.getExtras();		
 		if (extras != null) {
-			// get character here
-			// set to character color
-			//relLayout.setBackgroundColor(Color.CYAN);
-			setTitle("Character name");
+			sheet = (CharacterSheet)extras.getParcelable("CharacterSheet");
+			// remove next line later when we got a character
+			if(sheet != null) {
+				setTitle(sheet.name);
+				characterName.setText(sheet.name);
+				// set to character color
+				relLayout.setBackgroundColor(sheet.color);
+			}
 		}
 	}
 	
@@ -72,5 +76,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
+		if(sheet != null) {
+			sheet.color = color;
+		}
 	}
 }
