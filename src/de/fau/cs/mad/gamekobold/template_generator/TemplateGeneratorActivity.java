@@ -90,7 +90,6 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
 					// template.print();
 					 myTemplate = template;
-					 myTemplate.fileName = Template.getSanitizeFileNameForTemplate(myTemplate);
 				 }
 				 else {
 					 //TODO show error?!

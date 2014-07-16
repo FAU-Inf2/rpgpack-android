@@ -89,4 +89,21 @@ public class Template implements Serializable{
 		this.description = description;
 	}
 	
+	public String getFileName() {
+		if(absoluteFilePath == null) {
+			return "";
+		}
+		if(absoluteFilePath.isEmpty()) {
+			return "";
+		}
+		int lastSlashPos = absoluteFilePath.lastIndexOf("/");
+		String fileName = null;
+		if(lastSlashPos == -1) {
+			fileName = absoluteFilePath;
+		}
+		else {
+			fileName = absoluteFilePath.substring(lastSlashPos+1);
+		}
+		return fileName;
+	}
 }

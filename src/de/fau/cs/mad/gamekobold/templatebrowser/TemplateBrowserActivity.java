@@ -245,15 +245,8 @@ public class TemplateBrowserActivity extends ListActivity {
 	}
 	
 	private void startEditingOfTemplate(Template template) {
-		if(template.absoluteFilePath != null) {
-			int lastSlashPos = template.absoluteFilePath.lastIndexOf("/");
-			String fileName = null;
-			if(lastSlashPos == -1) {
-				fileName = template.absoluteFilePath;
-			}
-			else {
-				fileName = template.absoluteFilePath.substring(lastSlashPos+1);
-			}
+		String fileName = template.getFileName();
+		if(!fileName.isEmpty()) {
 			startEditingOfTemplate(fileName);
 		}
 	}

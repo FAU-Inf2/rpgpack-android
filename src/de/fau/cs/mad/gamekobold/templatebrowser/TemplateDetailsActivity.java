@@ -3,16 +3,17 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,17 +35,17 @@ public class TemplateDetailsActivity extends Activity {
 	private Template curTemplate;
 	private CharacterGridArrayAdapter adapter;
 	private GridView gridView;
+	private static Activity myActivity;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_details);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		myActivity = this;
 		
-//testing
 		List<String> characters = new ArrayList<String>();
-		characters.add("Hodor");
-		characters.add("Thorodin");
 		adapter = new CharacterGridArrayAdapter(this, characters);
 		
 		gridView = (GridView) findViewById(R.id.gridView1);
@@ -88,15 +89,13 @@ public class TemplateDetailsActivity extends Activity {
 				ivIcon.setImageResource(Integer.valueOf(templateIcons
 						.getTempalteIcon(curTemplate.getIconID())));
 
-			/*	if (curTemplate.getDescription().equals("")) {
-					tvDescription.setText("No description found!");
-				} else {
-					tvDescription.setText(curTemplate.getDescription());
-				}*/
 				if (curTemplate.absoluteFilePath == null) {
 					editButton.setEnabled(false);
 				}
 				setTitle(curTemplate.getTemplateName());
+				// load all characters for this template
+				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
+				loadingTask.execute(new Template[] {curTemplate});
 			}
 		}
 
@@ -116,7 +115,7 @@ public class TemplateDetailsActivity extends Activity {
 				startActivity(i);
 			}
 		});
-		// vllt in den TemplateBrowser irgendwie integrieren
+		
 		editButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -227,6 +226,64 @@ public class TemplateDetailsActivity extends Activity {
 		popupTemplateInfoFragment.show(getFragmentManager(),
 				"popupTemplateInfoFragment");
 
+	}
+	
+	private class CharacterListLoaderTask extends AsyncTask<Template, Void, List<String>> {
+		private ProgressDialog pd;
+		
+		@Override
+		protected void onPreExecute() {
+			pd = new ProgressDialog(myActivity);
+			pd.setTitle("Loading character list...");
+			pd.setMessage("Please wait...");
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			pd.show();
+		}
+		
+		@Override
+		protected List<String> doInBackground(Template... params) {
+			List<String> characterList = new ArrayList<String>();
+			// testing data
+			characterList.add("Hodor");
+			characterList.add("Thorodin");
+			characterList.add("Finn");
+			//
+			File dir = de.fau.cs.mad.gamekobold.jackson.Template.getDirectoryForCharacters(myActivity, params[0]);
+			Log.d("TemplateDetails", "character Folder:"+dir.getAbsolutePath());
+			if(dir != null) {
+				if(dir.isDirectory()) {
+					final File[] characters = dir.listFiles();
+					for(final File character : characters) {
+						if(character.isFile()) {
+							characterList.add(character.getName());
+						}
+					}
+				}
+			}
+			return characterList;
+		}
+		@Override
+		protected void onPostExecute(List<String> characterList) {
+			// should not happen but who knows
+			if(characterList == null) {
+				characterList = new ArrayList<String>();
+			}
+			// entry for creating a new character
+			characterList.add("Create Character");
+			((TemplateDetailsActivity)myActivity).setCharacterList(characterList);
+			if(pd != null) {
+				pd.dismiss();
+			}
+		}
+	}
+	
+	public void setCharacterList(List<String> characterList) {
+		if(characterList != null) {
+			adapter.clear();
+			adapter.addAll(characterList);
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	public static class TemplateInfoDialogFragment extends DialogFragment {

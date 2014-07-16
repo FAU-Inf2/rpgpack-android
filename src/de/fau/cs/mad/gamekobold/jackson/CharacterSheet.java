@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CharacterSheet {
 	@JsonIgnore
-	private static final String FOLDER_NAME = "Characters";
+	public static final String FOLDER_NAME = "Characters";
 	
 	/* METADATA */
 	public String name;
