@@ -44,7 +44,7 @@ public class TemplateDetailsActivity extends Activity {
 	private CharacterGridArrayAdapter adapter;
 	private GridView gridView;
 	private static Activity myActivity;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,17 +52,19 @@ public class TemplateDetailsActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		myActivity = this;
-		
+
 		List<CharacterSheet> characters = new ArrayList<CharacterSheet>();
 		adapter = new CharacterGridArrayAdapter(this, characters);
-		
+
 		gridView = (GridView) findViewById(R.id.gridView1);
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-				Log.d("TemplateDetailsActivity", "character grid click:"+position);
-				if(position != adapter.getCount()-1) {
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				Log.d("TemplateDetailsActivity", "character grid click:"
+						+ position);
+				if (position != adapter.getCount() - 1) {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CharacterDetailsActivity.class);
 					i.putExtra("CharacterSheet", adapter.getItem(position));
@@ -70,14 +72,14 @@ public class TemplateDetailsActivity extends Activity {
 				}
 			}
 		});
-		
+
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 
 		ImageView ivIcon = (ImageView) findViewById(R.id.icon1);
 		TextView tvTempalteName = (TextView) findViewById(R.id.textView1);
 		TextView tvGameName = (TextView) findViewById(R.id.textView4);
 		TextView tvInfo = (TextView) findViewById(R.id.textView3);
-	//	TextView tvDescription = (TextView) findViewById(R.id.textView2);
+		// TextView tvDescription = (TextView) findViewById(R.id.textView2);
 		Button backButton = (Button) findViewById(R.id.button1);
 		Button editButton = (Button) findViewById(R.id.button2);
 		Button infoButton = (Button) findViewById(R.id.buttonInfo);
@@ -104,7 +106,7 @@ public class TemplateDetailsActivity extends Activity {
 				setTitle(curTemplate.getTemplateName());
 				// load all characters for this template
 				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
-				loadingTask.execute(new Template[] {curTemplate});
+				loadingTask.execute(new Template[] { curTemplate });
 			}
 		}
 
@@ -124,7 +126,7 @@ public class TemplateDetailsActivity extends Activity {
 				startActivity(i);
 			}
 		});
-		
+
 		editButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -178,51 +180,70 @@ public class TemplateDetailsActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		}
-		else if(id == android.R.id.home) {
+		} else if (id == android.R.id.home) {
 			onBackPressed();
 			return true;
-		}
-		else if(id == R.id.action_delete_template) {
+		} else if (id == R.id.action_delete_template) {
 			final AlertDialog.Builder dialogBuilder = new Builder(this);
-			dialogBuilder.setTitle("Delete Template?");
-			dialogBuilder.setMessage("Click yes to delete the template.");
-			dialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			dialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if(curTemplate.absoluteFilePath != null) {
-						if(!curTemplate.absoluteFilePath.isEmpty()) {
-							File file = new File(curTemplate.absoluteFilePath);
-							if(file != null) {
-								if(file.delete()) {
-									// check if we removed the last edited template
-									SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME, MODE_PRIVATE);
-									String lastEditedTemplate = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
-									if(lastEditedTemplate.equals(file.getName())) {
-										// if so we remove it from the saved preference
-										SharedPreferences.Editor editor = pref.edit();
-										editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
-										editor.commit();
+			dialogBuilder.setTitle(getResources().getString(
+					R.string.msg_want_to_delete));
+			dialogBuilder.setMessage(getResources().getString(
+					R.string.msg_yes_to_delete));
+			dialogBuilder.setNegativeButton(
+					getResources().getString(R.string.no),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					});
+			dialogBuilder.setPositiveButton(
+					getResources().getString(R.string.yes),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (curTemplate.absoluteFilePath != null) {
+								if (!curTemplate.absoluteFilePath.isEmpty()) {
+									File file = new File(
+											curTemplate.absoluteFilePath);
+									if (file != null) {
+										if (file.delete()) {
+											// check if we removed the last
+											// edited template
+											SharedPreferences pref = getSharedPreferences(
+													TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+													MODE_PRIVATE);
+											String lastEditedTemplate = pref
+													.getString(
+															TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+															"");
+											if (lastEditedTemplate.equals(file
+													.getName())) {
+												// if so we remove it from the
+												// saved preference
+												SharedPreferences.Editor editor = pref
+														.edit();
+												editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+												editor.commit();
+											}
+										}
 									}
 								}
 							}
+							// onBackPressed();
+							Intent sendIntent = new Intent(
+									TemplateDetailsActivity.this,
+									TemplateBrowserActivity.class);
+							sendIntent.setAction(Intent.ACTION_SEND);
+							sendIntent.putExtra(
+									TemplateBrowserActivity.DELETED_TEMPLATE,
+									curTemplate);
+							// sendIntent.setType("text/plain");
+							startActivity(sendIntent);
+							finish();
+							// Log.d("reachable", "is this beeing called?!"); //
+							// yes
 						}
-					}
-				//	onBackPressed();
-					Intent sendIntent = new Intent(TemplateDetailsActivity.this, TemplateBrowserActivity.class);
-					sendIntent.setAction(Intent.ACTION_SEND);
-					sendIntent.putExtra(TemplateBrowserActivity.DELETED_TEMPLATE, curTemplate);
-					//sendIntent.setType("text/plain");
-					startActivity(sendIntent);
-					finish();
-					//Log.d("reachable", "is this beeing called?!"); // yes
-				}
-			});
+					});
 			dialogBuilder.create().show();
 			return true;
 		}
@@ -236,10 +257,11 @@ public class TemplateDetailsActivity extends Activity {
 				"popupTemplateInfoFragment");
 
 	}
-	
-	private class CharacterListLoaderTask extends AsyncTask<Template, Void, List<CharacterSheet>> {
+
+	private class CharacterListLoaderTask extends
+			AsyncTask<Template, Void, List<CharacterSheet>> {
 		private ProgressDialog pd;
-		
+
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(myActivity);
@@ -249,12 +271,12 @@ public class TemplateDetailsActivity extends Activity {
 			pd.setIndeterminate(true);
 			pd.show();
 		}
-		
+
 		@Override
 		protected List<CharacterSheet> doInBackground(Template... params) {
 			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 			// testing data
-			
+
 			CharacterSheet sheet = new CharacterSheet("Hodor");
 			sheet.color = Color.MAGENTA;
 			characterList.add(sheet);
@@ -265,15 +287,18 @@ public class TemplateDetailsActivity extends Activity {
 			sheet.color = Color.RED;
 			characterList.add(sheet);
 			//
-			File dir = de.fau.cs.mad.gamekobold.jackson.Template.getDirectoryForCharacters(myActivity, params[0]);
-			Log.d("TemplateDetails", "character Folder:"+dir.getAbsolutePath());
-			if(dir != null) {
-				if(dir.isDirectory()) {
+			File dir = de.fau.cs.mad.gamekobold.jackson.Template
+					.getDirectoryForCharacters(myActivity, params[0]);
+			Log.d("TemplateDetails",
+					"character Folder:" + dir.getAbsolutePath());
+			if (dir != null) {
+				if (dir.isDirectory()) {
 					final File[] characters = dir.listFiles();
-					for(final File character : characters) {
-						if(character.isFile()) {
+					for (final File character : characters) {
+						if (character.isFile()) {
 							try {
-								sheet = CharacterSheet.loadForCharacterList(character);
+								sheet = CharacterSheet
+										.loadForCharacterList(character);
 								sheet.color = Color.YELLOW;
 								characterList.add(sheet);
 							} catch (Throwable e) {
@@ -285,23 +310,25 @@ public class TemplateDetailsActivity extends Activity {
 			}
 			return characterList;
 		}
+
 		@Override
 		protected void onPostExecute(List<CharacterSheet> characterList) {
 			// should not happen but who knows
-			if(characterList == null) {
+			if (characterList == null) {
 				characterList = new ArrayList<CharacterSheet>();
 			}
 			// entry for creating a new character
 			characterList.add(new CharacterSheet("Create Character"));
-			((TemplateDetailsActivity)myActivity).setCharacterList(characterList);
-			if(pd != null) {
+			((TemplateDetailsActivity) myActivity)
+					.setCharacterList(characterList);
+			if (pd != null) {
 				pd.dismiss();
 			}
 		}
 	}
-	
+
 	public void setCharacterList(List<CharacterSheet> characterList) {
-		if(characterList != null) {
+		if (characterList != null) {
 			adapter.clear();
 			adapter.addAll(characterList);
 			adapter.notifyDataSetChanged();
@@ -338,13 +365,13 @@ public class TemplateDetailsActivity extends Activity {
 			// get all EditTexts
 			templateInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
-			if(!myTemplate.getDescription().isEmpty()) {
-				templateInfo.setText(myTemplate.getDescription());	
+			if (!myTemplate.getDescription().isEmpty()) {
+				templateInfo.setText(myTemplate.getDescription());
+			} else {
+				templateInfo.setText(getActivity().getString(
+						R.string.no_description_found));
 			}
-			else {
-				templateInfo.setText(getActivity().getString(R.string.no_description_found));
-			}
-			
+
 			builder.setView(view);
 
 			// set Dialog characteristics
@@ -358,7 +385,7 @@ public class TemplateDetailsActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							//TODO
+							// TODO
 						}
 					});
 

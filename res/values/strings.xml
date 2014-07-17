@@ -118,7 +118,7 @@
     <string name="yes_and_trash">Ja und verwerfen</string>
     <string name="yes_and_save">"Ja und speichern"</string>
 
-    <!-- ActivityTemplateDetails -->
+    <!-- TemplateDetailsActivity -->
     <string name="edit_template">Template bearbeiten</string>
     <string name="popup_template_details_info_titel">Template Beschreibung</string>
     <string name="action_delete_template">Template löschen</string>
@@ -128,6 +128,9 @@
     <string name="change_color_label">Farbe ändern</string>
     <string name="hint_your_description">Deine Beschreibung</string>
     <string name="back">Zurück</string>
+     <string name="msg_want_to_delete">Willst Du dieses Template wirklich löschen?</string>
+    <string name="msg_yes_to_delete">Klicke auf JA um dieses Template zu löschen.</string>
+    
 
     <!-- AlertDialog_template_generator_add_new_element -->
     <string name="text_element_name">Name des Elements:</string>
