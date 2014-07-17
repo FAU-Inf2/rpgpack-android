@@ -8,84 +8,84 @@
     <RelativeLayout
         android:id="@+id/auswahl"
         android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-        
-    <TextView
-        android:id="@+id/spaltenanzahl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="25dp"
-        android:text="Spaltenanzahl"
-        android:textSize="18sp" />
-    
-    <de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText
-        android:id="@+id/edit_spaltenanzahl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/button_add_column"
-        android:inputType="number"
-        android:lines="1"
-        android:maxLines="1"
-        android:paddingTop="25dp"
-        android:singleLine="true"
-        android:textSize="18sp" />
-    
-    <ImageButton
-        android:id="@+id/button_add_column"
-        android:layout_alignParentRight="true"
-        android:layout_width="50dp"
-    android:layout_height="30dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/big_add_icon" />
-    
-    <ImageButton
-        android:id="@+id/button_remove_column"
-        android:layout_toRightOf="@+id/edit_spaltenanzahl"
-        android:layout_below="@+id/button_add_column"
-        android:layout_width="50dp"
-    android:layout_height="30dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/big_remove_icon" />
-    
-    <!-- 
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/spaltenanzahl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingTop="25dp"
+            android:text="@string/text_columns_number"
+            android:textSize="18sp" />
+
+        <de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText
+            android:id="@+id/edit_spaltenanzahl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_add_column"
+            android:inputType="number"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingTop="25dp"
+            android:singleLine="true"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/button_add_column"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/big_add_icon" />
+
+        <ImageButton
+            android:id="@+id/button_remove_column"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/button_add_column"
+            android:layout_toRightOf="@+id/edit_spaltenanzahl"
+            android:scaleType="centerInside"
+            android:src="@drawable/big_remove_icon" />
+
+        <!--
     <com.quietlycoding.android.picker.NumberPicker
 	    xmlns:picker="http://schemas.android.com/apk/res-auto"
         android:id="@+id/num_picker_step"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
-    -->
-    
-    <!-- 
+        -->
+
+
+        <!--
     <NumberPicker
         android:id="@+id/numberPicker1"
         android:layout_toRightOf="@+id/spaltenanzahl"
         android:paddingBottom="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-     -->
-     
-     
+        -->
+
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_below="@+id/auswahl"
-    android:layout_height="wrap_content">
-    <ScrollView
-        android:id="@+id/table_scroll"
-        
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/auswahl" >
 
-        <TableLayout
-            android:id="@+id/tableView_alert_table"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        </TableLayout>
-    </ScrollView>
-     </LinearLayout>
+        <ScrollView
+            android:id="@+id/table_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TableLayout
+                android:id="@+id/tableView_alert_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </TableLayout>
+        </ScrollView>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >
-
         </ListView>
 
         <LinearLayout
@@ -35,18 +34,16 @@
                 android:orientation="vertical"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:text="Press to Add new Folder" />
-
+                android:text="@string/text_press_to_add_new_folder" />
         </LinearLayout>
-        
+
         <TextView
-                        android:id="@+id/info"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Create Your Folders here"
-                        android:textColor="@color/light_blue" />
-        
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/text_create_your_folders_here"
+            android:textColor="@color/light_blue" />
     </LinearLayout>
 
 </LinearLayout>
