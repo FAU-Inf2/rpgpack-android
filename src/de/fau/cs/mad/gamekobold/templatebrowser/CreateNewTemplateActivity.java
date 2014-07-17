@@ -33,10 +33,11 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity.TemplateInfoDialogFragment;
 
 public class CreateNewTemplateActivity extends Activity {
 	private Uri imageUri;
-
+	private Template newTemplate;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
@@ -54,6 +55,7 @@ public class CreateNewTemplateActivity extends Activity {
 		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
 		final TextView tvDescription = (TextView) findViewById(R.id.description);
 		Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
+		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
 		// final String[] items = new String[] { "von Kamera", "von SD-Karte" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -114,6 +116,16 @@ public class CreateNewTemplateActivity extends Activity {
 			}
 		});
 
+
+		infoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// show popup with TemplateInfo
+				showPopup();
+			}
+		});
+
+		
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -310,6 +322,11 @@ public class CreateNewTemplateActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void showPopup() {
+	 // TODO show Popup
+
+	}
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
