@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/clickdummy_background"
+    android:background="@color/background_dark"
     android:gravity="center" >
 
     <TextView
@@ -12,7 +12,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/padding_below_big"
         android:paddingTop="@dimen/padding_below_big"
-        android:text="Name des Elements:"
+        android:text="@string/text_element_name"
         android:textSize="@dimen/text_xl" />
 
     <EditText
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/choose_create"
         android:gravity="center"
-        android:hint="Name"
+        android:hint="@string/hint_text_element_name"
         android:paddingBottom="@dimen/padding_below_xxl"
         android:paddingTop="@dimen/padding_below_big" />
 
@@ -33,7 +33,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/padding_below_big"
         android:paddingTop="@dimen/padding_below_big"
-        android:text="Typ des Elements:"
+        android:text="@string/text_element_type"
         android:textSize="@dimen/text_xl" />
 
     <RelativeLayout
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/padding_xxl"
-            android:text="Tabelle" />
+            android:text="@string/text_tabelle" />
 
         <TextView
             android:id="@+id/name_collection"
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/name_table"
             android:gravity="center"
-            android:text="Matrix" />
+            android:text="@string/text_matrix" />
 
         <TextView
             android:id="@+id/name_folder"
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/name_collection"
             android:paddingLeft="@dimen/padding_xxl"
-            android:text="Ordner" />
+            android:text="@string/text_ordner" />
     </RelativeLayout>
 
 </RelativeLayout>

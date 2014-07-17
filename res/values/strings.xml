@@ -118,7 +118,7 @@
     <string name="yes_and_trash">Ja und verwerfen</string>
     <string name="yes_and_save">"Ja und speichern"</string>
 
-     <!-- ActivityTemplateDetails -->
+    <!-- ActivityTemplateDetails -->
     <string name="edit_template">Template bearbeiten</string>
     <string name="popup_template_details_info_titel">Template Beschreibung</string>
     <string name="action_delete_template">Delete template</string>
@@ -127,6 +127,13 @@
     <string name="lvl_label">Lvl:</string>
     <string name="change_color_label">Change color</string>
     <string name="hint_your_description">Your description.</string>
-    
-    
+
+    <!-- AlertDialog_template_generator_add_new_element -->
+    <string name="text_element_name">Name des Elements:</string>
+    <string name="hint_text_element_name">Template Beschreibung</string>
+    <string name="text_element_type">Typ des Elements:</string>
+    <string name="text_tabelle">Tabelle</string>
+    <string name="text_matrix">Matrix</string>
+    <string name="text_ordner">Ordner</string>
+
 </resources>
