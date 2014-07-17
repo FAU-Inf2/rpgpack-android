@@ -119,9 +119,13 @@ public class TemplateBrowserActivity extends ListActivity {
 						if (longClickedTemplate.absoluteFilePath != null) {
 							AlertDialog.Builder builder = new AlertDialog.Builder(
 									myActivity);
-							builder.setTitle("Delete Template?");
-							builder.setMessage("Click yes to delete the template.");
-							builder.setNegativeButton("No",
+							builder.setTitle(getResources().getString(
+									R.string.msg_want_to_delete));
+							builder.setMessage(getResources().getString(
+									R.string.msg_yes_to_delete));
+							builder.setNegativeButton(
+									getResources().getString(R.string.no),
+
 									new DialogInterface.OnClickListener() {
 										@Override
 										public void onClick(
@@ -129,7 +133,8 @@ public class TemplateBrowserActivity extends ListActivity {
 												int which) {
 										}
 									});
-							builder.setPositiveButton("Yes",
+							builder.setPositiveButton(
+									getResources().getString(R.string.yes),
 									new DialogInterface.OnClickListener() {
 										@Override
 										public void onClick(
@@ -389,11 +394,11 @@ public class TemplateBrowserActivity extends ListActivity {
 				templateList = new ArrayList<Template>();
 			}
 			// JACKSON add a new entry for editing the last created template
-			templateList.add(new Template(getResources().getString(R.string.row_edit_last_template), "", "", "",
-					-1));
+			templateList.add(new Template(getResources().getString(
+					R.string.row_edit_last_template), "", "", "", -1));
 			// set create new template row to the end of the list
-			templateList.add(new Template(getResources().getString(R.string.row_create_new_template), "", "", "",
-					-1));
+			templateList.add(new Template(getResources().getString(
+					R.string.row_create_new_template), "", "", "", -1));
 			((TemplateBrowserActivity) myActivity)
 					.setTemplateList(templateList);
 			if (pd != null) {

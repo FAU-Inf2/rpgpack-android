@@ -54,11 +54,13 @@ public class MatrixFragment extends GeneralFragment {
 		// check needed for jackson data loading
 		if (itemsList == null) {
 			itemsList = getDataForGridView();
+			
+			
 			jacksonTable.entries = itemsList;
 		}
 		if (adapter == null) {
 			adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
-		//	adapter.jacksonTable = jacksonTable;
+			// adapter.jacksonTable = jacksonTable;
 		}
 
 		gridView.setAdapter(adapter);
@@ -89,29 +91,38 @@ public class MatrixFragment extends GeneralFragment {
 
 			}
 		});
-		
+
 		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView, View view,
-					final int position, long id) {
-				Log.d("LONG CLICK", "pos:"+position);
-				if(position == adapter.getCount()-1) {
+			public boolean onItemLongClick(AdapterView<?> adapterView,
+					View view, final int position, long id) {
+				Log.d("LONG CLICK", "pos:" + position);
+				if (position == adapter.getCount() - 1) {
 					return true;
 				}
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle("Delete Item?");
-				builder.setMessage("Click yes to delete the item.");
-				builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-				builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						removeMatrixItem(position);		
-					}
-				});
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setTitle(getResources().getString(
+						R.string.msg_delete_item));
+				builder.setMessage(getResources().getString(
+						R.string.msg_yes_to_item_delete));
+				builder.setNegativeButton(
+						getResources().getString(R.string.no),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+							}
+						});
+				builder.setPositiveButton(getResources()
+						.getString(R.string.yes),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								removeMatrixItem(position);
+							}
+						});
 				builder.create().show();
 				return true;
 			}
@@ -137,9 +148,9 @@ public class MatrixFragment extends GeneralFragment {
 		adapter.insert(newItem, adapter.getCount() - 1);
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	public void removeMatrixItem(int position) {
-		if(position < 0 || position == adapter.getCount()-1) {
+		if (position < 0 || position == adapter.getCount() - 1) {
 			return;
 		}
 		adapter.remove(adapter.getItem(position));
@@ -159,9 +170,10 @@ public class MatrixFragment extends GeneralFragment {
 		itemsList.add(item2);
 		itemsList.add(item3);
 
-		// set create new item to the end
-		MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
-		itemsList.add(addNewMatrixItem);
+		 // set create new item to the end
+		 MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+",
+		 null);
+		 itemsList.add(addNewMatrixItem);
 
 		return itemsList;
 	}
@@ -310,14 +322,15 @@ public class MatrixFragment extends GeneralFragment {
 		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
 		// add the "new item" entry
-		itemsList.add(new MatrixItem("Neues Element", "+", null));
+		itemsList.add(new MatrixItem(getResources().getString(
+				R.string.text_new_element), "+", null));
 	}
-	
+
 	public void setJacksonTable(MatrixTable myTable) {
 		jacksonTable = myTable;
-	/*	if(adapter != null) {
-			adapter.jacksonTable = myTable;			
-		}*/
+		/*
+		 * if(adapter != null) { adapter.jacksonTable = myTable; }
+		 */
 	}
 	/*
 	 * JACKSON END

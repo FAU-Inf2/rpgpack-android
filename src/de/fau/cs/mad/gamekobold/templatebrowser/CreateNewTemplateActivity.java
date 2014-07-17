@@ -116,7 +116,6 @@ public class CreateNewTemplateActivity extends Activity {
 			}
 		});
 
-
 		infoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -125,7 +124,6 @@ public class CreateNewTemplateActivity extends Activity {
 			}
 		});
 
-		
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -213,8 +211,10 @@ public class CreateNewTemplateActivity extends Activity {
 					// "File already exists!");
 					final AlertDialog.Builder builder = new AlertDialog.Builder(
 							myActivity);
-					builder.setTitle("A file for this template already exists!");
-					builder.setMessage("Click yes to overwrite the file.");
+					builder.setTitle(getResources().getString(
+							R.string.msg_file_already_exists));
+					builder.setMessage(getResources().getString(
+							R.string.msg_yes_to_overwrite));
 					builder.setNegativeButton(
 							getResources().getString(R.string.no),
 							new DialogInterface.OnClickListener() {
@@ -323,10 +323,10 @@ public class CreateNewTemplateActivity extends Activity {
 	}
 
 	private void showPopup() {
-	 // TODO show Popup
+		// TODO show Popup
 
 	}
-	
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */

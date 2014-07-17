@@ -87,13 +87,15 @@
     </string-array>
 
     <string name="add_icon">Bild hinzufügen</string>
-    <string name="warning_set_name">Dein Template braucht ein Name!</string>
+    <string name="warning_set_name">Dein Template braucht einen Namen!</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
+    <string name="msg_file_already_exists">Für deises Tempalte existiert bereits eine Datei!</string>
+    <string name="msg_yes_to_overwrite">Klicke auf JA um diese Datei zu Überschreiben.</string>
 
     <!-- FolderElementAdapter -->
     <string name="question_delete">Element löschen?</string>
-    <string name="long_click_dialog_message">Click yes to delete the item</string>
+    <string name="long_click_dialog_message">Klicke auf JA um dieses Element zu löschen</string>
 
     <!-- TableFragment -->
     <string name="save_table">Tabelle speichern</string>
@@ -107,6 +109,11 @@
     <string name="column_name">Spaltenname</string>
     <string name="column_type">Spaltentyp</string>
     <string name="dot">.</string>
+
+    <!-- MatrixFragment -->
+    <string name="msg_delete_item">Element löschen?</string>
+    <string name="msg_yes_to_item_delete">Klicke auf JA um dieses Element zu löschen</string>
+    <string name="text_new_element">Neues Element</string>
 
     <!-- TemplateGenerator -->
     <string name="loading_template">Template wird geladen&#8230;</string>
@@ -128,17 +135,16 @@
     <string name="change_color_label">Farbe ändern</string>
     <string name="hint_your_description">Deine Beschreibung</string>
     <string name="back">Zurück</string>
-     <string name="msg_want_to_delete">Willst Du dieses Template wirklich löschen?</string>
+    <string name="msg_want_to_delete">Willst Du dieses Template wirklich löschen?</string>
     <string name="msg_yes_to_delete">Klicke auf JA um dieses Template zu löschen.</string>
-    
 
-    <!-- AlertDialog_template_generator_add_new_element -->
+    <!-- alertdialog_template_generator_add_new_element -->
     <string name="text_element_name">Name des Elements:</string>
-    <string name="hint_text_element_name">Template Beschreibung</string>
     <string name="text_element_type">Typ des Elements:</string>
     <string name="text_tabelle">Tabelle</string>
     <string name="text_matrix">Matrix</string>
     <string name="text_ordner">Ordner</string>
+    <string name="hint_text_element_name">Name</string>
 
     <!-- activity_template_generator -->
     <string name="text_press_to_add_new_folder">Neues Element hinzufügen</string>
