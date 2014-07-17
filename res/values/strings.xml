@@ -148,4 +148,10 @@
     <string name="hint_headline">Dein Überschrift&#8230;</string>
     <string name="hint_your_notes">Deine Notizen&#8230;</string>
 
+    <!-- TemplateBrowserActivity -->
+    <string name="msg_loading_template_list">Templateliste wird geladen&#8230;</string>
+    <string name="msg_please_wait">Einen Augenblick bitte&#8230;</string>
+    <string name="row_edit_last_template">Letztes Template bearbeiten&#8230;</string>
+    <string name="row_create_new_template">Neues Template erstellen&#8230;</string>
+
 </resources>

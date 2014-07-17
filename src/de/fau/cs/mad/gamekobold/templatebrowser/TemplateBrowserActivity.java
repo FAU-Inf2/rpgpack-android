@@ -32,7 +32,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
-	
+
 	public static final String DELETED_TEMPLATE = "DELETED_TEMPLATE";
 	private List<Template> templateList = null;
 	private static Activity myActivity = null;
@@ -43,8 +43,8 @@ public class TemplateBrowserActivity extends ListActivity {
 		setContentView(R.layout.activity_template_browser);
 		Log.e("d", "On create!!!");
 		myActivity = this;
-		//templateList = getDataForListView(this);
-		if(templateList == null) {
+		// templateList = getDataForListView(this);
+		if (templateList == null) {
 			templateList = new ArrayList<Template>();
 		}
 		TemplateListLoaderTask loaderTask = new TemplateListLoaderTask();
@@ -58,28 +58,33 @@ public class TemplateBrowserActivity extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				
-				//is it last row?
+
+				// is it last row?
 				if (position == adapter.getCount() - 1) {
-					
+
 					Log.e("er", "Position, getCount: " + adapter.getCount());
-					
+
 					Intent i = new Intent(TemplateBrowserActivity.this,
 							CreateNewTemplateActivity.class);
 					startActivity(i);
 
 				}
 				// JACKSON start : for editing last created template
-				else if(position == adapter.getCount() -2) {
+				else if (position == adapter.getCount() - 2) {
 					// get shared preferences
-					SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
+					SharedPreferences pref = getSharedPreferences(
+							TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+							Activity.MODE_PRIVATE);
 					// get last edited template file name
-					String templateFileName = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
+					String templateFileName = pref
+							.getString(
+									TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+									"");
 					// check for existence
-					if(templateFileName.equals("")) {
-						Toast.makeText(myActivity, "No template edited", Toast.LENGTH_LONG).show();
-					}
-					else {
+					if (templateFileName.equals("")) {
+						Toast.makeText(myActivity, "No template edited",
+								Toast.LENGTH_LONG).show();
+					} else {
 						startEditingOfTemplate(templateFileName);
 					}
 				}
@@ -87,61 +92,87 @@ public class TemplateBrowserActivity extends ListActivity {
 				else {
 					Intent i = new Intent(TemplateBrowserActivity.this,
 							TemplateDetailsActivity.class);
-					
+
 					Log.e("er", "position: " + position);
-					
+
 					i.putExtra("position", position);
 					i.putExtra("template", templateList.get(position));
 					startActivity(i);
 				}
 			}
 		});
-		
-		// set onItemClickListener. if the user long clicks on an item we show a dialog
+
+		// set onItemClickListener. if the user long clicks on an item we show a
+		// dialog
 		// the user then gets the option to delete the template
-		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-				final Template longClickedTemplate = templateList.get(pos);
-				
-				Log.d("TemplateBrowser","longClickOn:"+longClickedTemplate.absoluteFilePath);
-				
-				if(longClickedTemplate.absoluteFilePath != null) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(myActivity);
-					builder.setTitle("Delete Template?");
-					builder.setMessage("Click yes to delete the template.");
-					builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
+		getListView().setOnItemLongClickListener(
+				new AdapterView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> arg0,
+							View arg1, int pos, long id) {
+						final Template longClickedTemplate = templateList
+								.get(pos);
+
+						Log.d("TemplateBrowser", "longClickOn:"
+								+ longClickedTemplate.absoluteFilePath);
+
+						if (longClickedTemplate.absoluteFilePath != null) {
+							AlertDialog.Builder builder = new AlertDialog.Builder(
+									myActivity);
+							builder.setTitle("Delete Template?");
+							builder.setMessage("Click yes to delete the template.");
+							builder.setNegativeButton("No",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+										}
+									});
+							builder.setPositiveButton("Yes",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											File file = new File(
+													longClickedTemplate.absoluteFilePath);
+											if (file != null) {
+												Log.d("TempalteBrowser",
+														"delete template:"
+																+ longClickedTemplate);
+												// removeItem(longClickedTemplate);
+												if (file.delete()) {
+													// check if we removed the
+													// last edited template
+													SharedPreferences pref = getSharedPreferences(
+															TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+															MODE_PRIVATE);
+													String lastEditedTemplate = pref
+															.getString(
+																	TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+																	"");
+													if (lastEditedTemplate
+															.equals(file
+																	.getName())) {
+														// if so we remove it
+														// from the saved
+														// preference
+														SharedPreferences.Editor editor = pref
+																.edit();
+														editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+														editor.commit();
+													}
+													removeItem(longClickedTemplate);
+												}
+											}
+										}
+									});
+							builder.create().show();
 						}
-					});
-					builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							File file = new File(longClickedTemplate.absoluteFilePath);
-							if(file != null) {
-								Log.d("TempalteBrowser", "delete template:"+longClickedTemplate);
-								//removeItem(longClickedTemplate);
-								if(file.delete()) {
-									// check if we removed the last edited template
-									SharedPreferences pref = getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME, MODE_PRIVATE);
-									String lastEditedTemplate = pref.getString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, "");
-									if(lastEditedTemplate.equals(file.getName())) {
-										// if so we remove it from the saved preference
-										SharedPreferences.Editor editor = pref.edit();
-										editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
-										editor.commit();
-									}
-									removeItem(longClickedTemplate);
-								}
-							}
-						}
-					});
-					builder.create().show();
-				}
-				return true;
-			}
-		});
+						return true;
+					}
+				});
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -179,18 +210,22 @@ public class TemplateBrowserActivity extends ListActivity {
 		Log.e("d", "On stop!!!");
 	}
 
-	// the TemplateDetailsActivity sends an intent if the template has been deleted.
+	// the TemplateDetailsActivity sends an intent if the template has been
+	// deleted.
 	@Override
 	protected void onNewIntent(Intent newIntent) {
-		//templateListChanged = newIntent.getBooleanExtra(TEMPLATE_LIST_CHANGED, false);
-		Template deletedTemplate = (Template)newIntent.getSerializableExtra(DELETED_TEMPLATE);
-		if(deletedTemplate != null) {
-			if(deletedTemplate.absoluteFilePath != null) {
-				for(final Template template : templateList) {
+		// templateListChanged =
+		// newIntent.getBooleanExtra(TEMPLATE_LIST_CHANGED, false);
+		Template deletedTemplate = (Template) newIntent
+				.getSerializableExtra(DELETED_TEMPLATE);
+		if (deletedTemplate != null) {
+			if (deletedTemplate.absoluteFilePath != null) {
+				for (final Template template : templateList) {
 					if (template.absoluteFilePath != null) {
-						if(template.absoluteFilePath.equals(deletedTemplate.absoluteFilePath)) {
+						if (template.absoluteFilePath
+								.equals(deletedTemplate.absoluteFilePath)) {
 							@SuppressWarnings("unchecked")
-							ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
+							ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
 							adapter.remove(template);
 							adapter.notifyDataSetChanged();
 							break;
@@ -200,7 +235,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -236,57 +271,58 @@ public class TemplateBrowserActivity extends ListActivity {
 			return rootView;
 		}
 	}
-	
+
 	private void removeItem(Template template) {
 		@SuppressWarnings("unchecked")
-		ArrayAdapter<Template> adapter = (ArrayAdapter<Template>)getListAdapter();
+		ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
 		adapter.remove(template);
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	private void startEditingOfTemplate(Template template) {
 		String fileName = template.getFileName();
-		if(!fileName.isEmpty()) {
+		if (!fileName.isEmpty()) {
 			startEditingOfTemplate(fileName);
 		}
 	}
-	
+
 	private void startEditingOfTemplate(String fileName) {
-		if(fileName.equals("")){
+		if (fileName.equals("")) {
 			return;
 		}
 		Intent intent = new Intent(TemplateBrowserActivity.this,
 				TemplateGeneratorActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		// flag to distinguish between editing and creating 
-		intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE, false);
-		intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME, fileName);
-		startActivity(intent);	
+		// flag to distinguish between editing and creating
+		intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+				false);
+		intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME,
+				fileName);
+		startActivity(intent);
 	}
-	
-	private class TemplateListLoaderTask extends AsyncTask<Void, Void, List<Template>> {
+
+	private class TemplateListLoaderTask extends
+			AsyncTask<Void, Void, List<Template>> {
 		private ProgressDialog pd;
-		
+
 		@Override
 		protected void onPreExecute() {
 			pd = new ProgressDialog(myActivity);
-			pd.setTitle("Loading template list...");
-			pd.setMessage("Please wait...");
+			pd.setTitle(getResources().getString(
+					R.string.msg_loading_template_list));
+			pd.setMessage(getResources().getString(R.string.msg_please_wait));
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
 			pd.show();
 		}
-		
+
 		@Override
 		protected List<Template> doInBackground(Void... params) {
-		/*	for(int i = 0 ; i < 15; i++) {
-				try {
-					Thread.sleep(150);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}*/
+			/*
+			 * for(int i = 0 ; i < 15; i++) { try { Thread.sleep(150); } catch
+			 * (InterruptedException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); } }
+			 */
 			List<Template> templateList = new ArrayList<Template>();
 			Template template1 = new Template(
 					"My First Template",
@@ -304,32 +340,34 @@ public class TemplateBrowserActivity extends ListActivity {
 			templateList.add(template2);
 			templateList.add(template3);
 			/*
-			 * JACKSON START
-			 * We iterate over all files in the template directory and load the data into the list
+			 * JACKSON START We iterate over all files in the template directory
+			 * and load the data into the list
 			 */
-			File templateDir = de.fau.cs.mad.gamekobold.jackson.Template.getTemplateDirectory(myActivity);
-			if(templateDir != null) {
-				Log.d("TemplateBrowser", "templateDir:"+templateDir.getAbsolutePath());
-				if(templateDir.isDirectory()) {
+			File templateDir = de.fau.cs.mad.gamekobold.jackson.Template
+					.getTemplateDirectory(myActivity);
+			if (templateDir != null) {
+				Log.d("TemplateBrowser",
+						"templateDir:" + templateDir.getAbsolutePath());
+				if (templateDir.isDirectory()) {
 					final File[] fileList = templateDir.listFiles();
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
-					for(final File file : fileList) {
+					for (final File file : fileList) {
 						try {
-							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFileForTemplateBrowser(file);
+							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
+									.loadFromJSONFileForTemplateBrowser(file);
 						} catch (JsonParseException | JsonMappingException e) {
 							e.printStackTrace();
-						}
-						catch(IOException e) {
+						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						if(loadedTemplate != null) {
-							Template temp = new Template(loadedTemplate.templateName,
+						if (loadedTemplate != null) {
+							Template temp = new Template(
+									loadedTemplate.templateName,
 									loadedTemplate.gameName,
-									loadedTemplate.author,
-									loadedTemplate.date,
+									loadedTemplate.author, loadedTemplate.date,
 									loadedTemplate.iconID,
 									loadedTemplate.description);
-							if(temp.getTemplateName().equals("")) {
+							if (temp.getTemplateName().equals("")) {
 								temp.setTemplateName(file.getName());
 							}
 							temp.absoluteFilePath = file.getAbsolutePath();
@@ -343,26 +381,30 @@ public class TemplateBrowserActivity extends ListActivity {
 			 */
 			return templateList;
 		}
+
 		@Override
 		protected void onPostExecute(List<Template> templateList) {
 			// should not happen but who knows
-			if(templateList == null) {
+			if (templateList == null) {
 				templateList = new ArrayList<Template>();
 			}
 			// JACKSON add a new entry for editing the last created template
-			templateList.add(new Template("Edit last template...", "", "", "", -1));
+			templateList.add(new Template(getResources().getString(R.string.row_edit_last_template), "", "", "",
+					-1));
 			// set create new template row to the end of the list
-			templateList.add(new Template("Create New Template...", "", "", "", -1));
-			((TemplateBrowserActivity)myActivity).setTemplateList(templateList);
-			if(pd != null) {
+			templateList.add(new Template(getResources().getString(R.string.row_create_new_template), "", "", "",
+					-1));
+			((TemplateBrowserActivity) myActivity)
+					.setTemplateList(templateList);
+			if (pd != null) {
 				pd.dismiss();
 			}
 		}
 	}
-	
+
 	public void setTemplateList(List<Template> templateList) {
-		if(templateList != null) {
-			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter)getListAdapter();
+		if (templateList != null) {
+			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
 			adapter.clear();
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();
