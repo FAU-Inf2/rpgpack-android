@@ -10,13 +10,14 @@
     android:paddingRight="0dp"
     tools:context=".TemplateGeneratorActivity" >
 
-    <!--  
+    <!--
     <android.support.v4.app.FragmentTabHost 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     -->
+
     <RelativeLayout
         android:id="@+id/three_buttons"
         android:layout_width="match_parent"
@@ -26,21 +27,21 @@
             android:id="@+id/add_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Row" />
+            android:text="@string/text_add_row" />
 
         <Button
             android:id="@+id/add_column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add_row"
-            android:text="Add Column" />
+            android:text="@string/text_add_column" />
 
         <Button
             android:id="@+id/remove_column"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/add_column"
-            android:text="Remove Column" />
+            android:text="@string/text_remove_column" />
     </RelativeLayout>
 
     <LinearLayout
@@ -99,9 +100,9 @@
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:text="Press to Add new Row" />
+            android:text="@string/text_press_to_add_new_row" />
     </LinearLayout>
-    <!-- 
+    <!--
     <FrameLayout
             android:id="@+id/tabFrameLayout"
             android:layout_width="match_parent"
@@ -109,5 +110,6 @@
             android:layout_weight="1" />
     
     </android.support.v4.app.FragmentTabHost>
-	-->
+    -->
+
 </RelativeLayout>
