@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/popup_element"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,56 +7,71 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <!--
-     <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="sectionHeader" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:id">@id/popup_headline"</item>
-        <item name="android:drawableBottom">@drawable/section_header</item>
-        <item name="android:drawablePadding">4dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/emphasis</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-</resources>
-    -->
-
-    <TextView
-        android:id="@+id/popup_headline"
+    <LinearLayout
+        android:id="@+id/bottom_control_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/cell_shape_green_bottom"
-        android:gravity="center"
-        android:hint="@string/hint_headline"
-        android:paddingBottom="6dp"
-        android:paddingTop="6dp"
-        android:textSize="@dimen/text_xl" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
 
-    <!--
-     <TextView
-android:id="@+id/popup_headline"
-android:drawableBottom="@drawable/cell_shape_green"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:gravity="center"
-android:paddingBottom="10dp"
-android:paddingTop="10dp"
-android:textSize="@dimen/text_xl"
-android:hint="Headline..." />
-    -->
+        <ToggleButton
+            android:id="@+id/toggle_italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="Not_Italic"
+            android:textOn="Italic!" />
 
-    <EditText
-        android:id="@+id/popup_editText"
-        android:layout_width="wrap_content"
+        <ToggleButton
+            android:id="@+id/toggle_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="Not_Bold"
+            android:textOn="Bold!" />
+
+        <ToggleButton
+            android:id="@+id/toggle_underline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="Not_Underlined"
+            android:textOn="Underlined!" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
-        android:background="#00000000"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"
-        android:hint="@string/hint_your_notes" />
+        android:layout_above="@id/bottom_control_bar"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/popup_headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/cell_shape_green_bottom"
+            android:gravity="center"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:textSize="@dimen/text_xl" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/popup_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:layout_marginTop="5sp"
+                android:background="#00000000"
+                android:ellipsize="start"
+                android:gravity="center_horizontal"
+                android:hint="@string/hint_your_notes" />
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

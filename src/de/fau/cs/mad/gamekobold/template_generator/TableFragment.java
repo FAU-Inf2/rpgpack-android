@@ -12,7 +12,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -33,11 +35,13 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -49,6 +53,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 @SuppressLint("NewApi")
 public class TableFragment extends GeneralFragment {
@@ -744,9 +749,10 @@ public class TableFragment extends GeneralFragment {
 		});
         LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+//        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
-        EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
+        final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
         inputPopup.setOnFocusChangeListener(new OnFocusChangeListener() {          
 
             public void onFocusChange(View v, boolean hasFocus) {
@@ -779,6 +785,64 @@ public class TableFragment extends GeneralFragment {
                 }
             }
         });
+        final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
+        final ToggleButton toggleItalic = (ToggleButton) popupView.findViewById(R.id.toggle_italic);
+        toggleBold.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                	if(toggleItalic.isChecked()){
+//                		inputPopup.setTextAppearance(getActivity(), R.style.italic_bold);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+                	}
+                	else{
+//                		inputPopup.setTextAppearance(getActivity(), R.style.bold);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                	}
+                } else {
+                	if(toggleItalic.isChecked()){
+//                		inputPopup.setTextAppearance(getActivity(), R.style.italic);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+                	}
+                	else{
+//                		inputPopup.setTextAppearance(getActivity(), R.style.normal_text);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                	}
+                }
+            }
+        });
+        toggleItalic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                	if(toggleBold.isChecked()){
+//                		inputPopup.setTextAppearance(getActivity(), R.style.italic_bold);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+                	}
+                	else{
+//                		inputPopup.setTextAppearance(getActivity(), R.style.italic);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+                	}
+                } else {
+                	if(toggleBold.isChecked()){
+//                		inputPopup.setTextAppearance(getActivity(), R.style.bold);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                	}
+                	else{
+//                		inputPopup.setTextAppearance(getActivity(), R.style.normal_text);
+                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                	}
+                }
+            }
+        });
+        ToggleButton toggleUnderlined = (ToggleButton) popupView.findViewById(R.id.toggle_underline);
+        toggleUnderlined.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                	inputPopup.setPaintFlags(inputPopup.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+                } else {
+                	inputPopup.setPaintFlags(inputPopup.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));                }
+            }
+        });
+        
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -790,9 +854,12 @@ public class TableFragment extends GeneralFragment {
 //        mainView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 //		int mainWidth = mainView.getMeasuredWidth();
 //		int mainHeight = mainView.getMeasuredHeight();
-        final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
+//        final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
+        final PopupWindow popup = new PopupWindow(popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
 		popup.setOutsideTouchable(false);
+        popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

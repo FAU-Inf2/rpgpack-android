@@ -20,5 +20,25 @@
      <style name="myStyleStep" parent="android:style/Widget.EditText">             
         <item name="android:textColor">#FF0000</item>  
     </style> 
+    
+     <style name="italic" parent="@android:style/TextAppearance.Medium"> 
+        <item name="android:textSize">20sp</item> 
+        <item name="android:textColor">@color/white</item> 
+        <item name="android:textStyle">italic</item>
+    </style>
+     <style name="bold" parent="@android:style/TextAppearance.Medium"> 
+        <item name="android:textSize">20sp</item> 
+        <item name="android:textColor">@color/white</item> 
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="italic_bold" parent="@android:style/TextAppearance.Medium"> 
+        <item name="android:textSize">20sp</item> 
+        <item name="android:textColor">@color/white</item> 
+        <item name="android:textStyle">italic|bold</item>
+    </style>
+    <style name="normal_text" parent="@android:style/TextAppearance.Medium"> 
+        <item name="android:textSize">20sp</item> 
+        <item name="android:textColor">@color/white</item> 
+    </style>
 
 </resources>
