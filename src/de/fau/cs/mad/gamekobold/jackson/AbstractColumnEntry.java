@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 //for polymorphism
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@type")
-@JsonSubTypes({ @Type(value = IntegerClass.class, name = "integerclass"), @Type(value = StringClass.class, name = "stringclass") })
+@JsonSubTypes({ @Type(value = IntegerClass.class, name = "integerclass"),
+				@Type(value = StringClass.class, name = "stringclass"),
+				@Type(value = CheckBoxClass.class, name ="checkboxclass")})
 
 //for getType()
 @JsonIgnoreProperties({"type"})
@@ -25,7 +27,8 @@ public abstract class AbstractColumnEntry {
 	public abstract String getType();
 	
 	@JsonIgnore
-	public abstract String getValueAsString();
+	@Override
+	public abstract String toString();
 	
 	/*
 	@JsonIgnore

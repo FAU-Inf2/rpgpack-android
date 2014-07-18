@@ -7,10 +7,7 @@ import android.util.Log;
 public class Table extends AbstractTable{
 	public List<Row> rows;
 	public int numberOfColumns;
-	//public String[] columnNames;
-	//public String[] columnTypes;
 	public ArrayList<ColumnHeader> columnHeaders;
-	//public ColumnHeader[] columnHeaders;
 	public boolean writeOnly;
 	
 	public Table() {
@@ -26,20 +23,6 @@ public class Table extends AbstractTable{
 		columnHeaders = headers;
 		writeOnly = false;
 	}
-	
-	/*public Table(String name, ColumnHeader[] headers){
-		tableName = name;
-		numberOfColumns = headers.length;
-		columnHeaders = headers;
-		writeOnly = false;
-	}*/
-	
-	/*public Table(int numberOfCol, String[] types, String[] names) {
-		numberOfColumns = numberOfCol;
-		columnNames = names;
-		columnTypes = types;
-		hiddenColumns = new boolean[numberOfColumns];
-	}*/
 	
 	public void print() {
 		StringBuilder builder = new StringBuilder();
@@ -63,18 +46,23 @@ public class Table extends AbstractTable{
 		}
 	}
 	
+	/**
+	 * Creates a new row and adds it to the table.
+	 * @return The newly created row.
+	 */
 	public Row createAndAddNewRow() {
 		if(rows == null) {
 			rows = new ArrayList<Row>();
 		}
-		//TODO numberOfColumns == columnHeaders.size()
-		//Row ret = new Row(numberOfColumns);
 		Row ret = new Row();
 		rows.add(ret);
 		return ret;
 	}
 	
-	
+	/**
+	 * Appends a new column to the table and every row.
+	 * @param header The ColumnHeader with the information for the new Column.
+	 */
 	 public void addColumn(ColumnHeader header) {
 		columnHeaders.add(header);
 	 	if(rows != null) {
@@ -84,8 +72,10 @@ public class Table extends AbstractTable{
 		}
 		numberOfColumns++;
 	 }
-	 
-	 // TODO choose column id
+
+	 /**
+	  * Removes the last Column from every row and the table.
+	  */
 	 public void removeColumn() {
 	 	if(!columnHeaders.isEmpty()) {
 	 		columnHeaders.remove(columnHeaders.size()-1);
@@ -100,10 +90,10 @@ public class Table extends AbstractTable{
 	 }
 	 
 	 /**
-	  * 
-	  * @param index index of column
-	  * @param title new title
-	  * @return true if title changed, false otherwise
+	  * Sets the title for the given column at the given index.
+	  * @param index Index of column.
+	  * @param title New title.
+	  * @return True if title changed, false otherwise.
 	  */
 	 public boolean setColumnTitle(int index, String title) {
 		if(index >= numberOfColumns) {
@@ -118,19 +108,5 @@ public class Table extends AbstractTable{
 		 	return true;
 		}
 	 	return false;
-	 }	
-	 
-	/*public Table createAndAddNewTable() {
-		return createAndAddNewTable(0, null, null);
-	}
-	
-	public Table createAndAddNewTable(int numberOfColumns, String[] columnTypes, String[] nameOfColums) {
-		if(rows == null) {
-			rows = new ArrayList<AbstractRow>();
-		}
-		TableRow ret = new TableRow();
-		ret.table = new Table(numberOfColumns, columnTypes, nameOfColums);
-		rows.add(ret);
-		return ret.table;		
-	}*/
+	 }
 }

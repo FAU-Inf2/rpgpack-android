@@ -21,11 +21,8 @@ public class StringClass extends AbstractColumnEntry {
 		return mainText;
 	}
 	
+	@Override
 	public String getType() {
-		return "string";
-	}
-	
-	public String getValueAsString() {
-		return mainText;
+		return TYPE_STRING;
 	}
 }

@@ -25,11 +25,8 @@ public class IntegerClass extends AbstractColumnEntry{
 		return String.valueOf(value);
 	}
 
+	@Override
 	public String getType() {
-		return "integer";
-	}
-	
-	public String getValueAsString() {
-		return String.valueOf(value);
+		return TYPE_STRING;
 	}
 }

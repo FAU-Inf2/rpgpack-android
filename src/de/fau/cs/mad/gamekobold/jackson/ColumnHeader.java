@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ColumnHeader {
-	//TODO evtl final?
 	public String name,type;
 	public boolean hidden;
 	
@@ -33,5 +32,9 @@ public class ColumnHeader {
 	@JsonIgnore
 	public boolean isString() {
 		return StringClass.TYPE_STRING.equals(type);
+	}
+	@JsonIgnore
+	public boolean isCheckBox() {
+		return CheckBoxClass.TYPE_STRING.equals(type);
 	}
 }
