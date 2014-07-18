@@ -14,10 +14,21 @@ public class IntegerClass extends AbstractColumnEntry{
 	public int modificator;
 	public String subValue;
 	
+	public IntegerClass() {
+		value = 0;
+		rangeFrom = 0;
+		rangeTo = 0;
+		modificator = 0;
+		subValue = "";
+	}
+	
 	@JsonCreator
 	public IntegerClass(@JsonProperty("value") int value) {
 		this.value = value;
-	//	this.type = TYPE_STRING;
+		rangeFrom = 0;
+		rangeTo = 0;
+		modificator = 0;
+		subValue = "";
 	}
 	
 	@Override

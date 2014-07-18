@@ -7,18 +7,18 @@ import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Row /*extends AbstractRow*/{	
+public class Row {	
 	public ArrayList<AbstractColumnEntry> entries;
-	
+
 	@JsonCreator
 	public Row(@JsonProperty("entries") ArrayList<AbstractColumnEntry> entries){
 		this.entries = entries;
 	}
-	
+
 	public Row() {
 		entries = new ArrayList<AbstractColumnEntry>();
 	}
-	
+
 	public void print() {
 		StringBuilder builder = new StringBuilder();
 		for(int i = 0; i < entries.size(); i++) {
@@ -29,16 +29,26 @@ public class Row /*extends AbstractRow*/{
 		}
 		Log.d("ROW-print",builder.toString());
 	}
-	
+
+	/**
+	 * Adds a new column to this row. This should only be called from the Table class.
+	 * @param header The column information
+	 */
 	public void addColumn(ColumnHeader header) {
 	 	if(header.isInt()) {
-	 		entries.add(new IntegerClass(0));
+	 		entries.add(new IntegerClass());
 	 	}
 	 	else if(header.isString()) {
-	 		entries.add(new StringClass(""));
+	 		entries.add(new StringClass());
+	 	}
+	 	else if(header.isCheckBox()) {
+	 		entries.add(new CheckBoxClass());
 	 	}
 	 }
-	 
+
+	/**
+	 * Removes the last column from this row. This should only be called from the Table class.
+	 */
 	 public void removeColumn() {
 	 	if(!entries.isEmpty()) {
 	 		entries.remove(entries.size()-1);

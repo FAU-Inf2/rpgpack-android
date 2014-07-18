@@ -28,7 +28,6 @@ public class Table extends AbstractTable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Table Name:"+tableName+"\n");
 		for(int i = 0; i < numberOfColumns; i++) {
-		//	builder.append(columnNames[i]+"("+columnTypes[i]+")");
 			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
 			if(columnHeaders.get(i).hidden) {
 				builder.append("[hidden]");

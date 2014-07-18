@@ -10,6 +10,11 @@ import android.util.Log;
 public class ContainerTable extends AbstractTable{
 	public List<AbstractTable> subTables;
 	
+	
+	/**
+	 * Creates a new empty ContainerTable and adds it to this ContainerTable.
+	 * @return The new created ContainerTable.
+	 */
 	public ContainerTable createAndAddNewContainerTable() {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
@@ -18,7 +23,12 @@ public class ContainerTable extends AbstractTable{
 		subTables.add(table);
 		return table;
 	}
-		
+	
+	
+	/**
+	 * Creates a new empty Table and adds it to this ContainerTable.
+	 * @return The new created Table.
+	 */
 	public Table createAndAddNewTable() {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
@@ -28,6 +38,11 @@ public class ContainerTable extends AbstractTable{
 		return table;
 	}
 	
+	
+	/**
+	 * Creates a new Table with the given informations and adds it to this ContainerTable.
+	 * @return The new created Table.
+	 */
 	public Table createAndAddNewTable(String name, ColumnHeader[] headers) {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
@@ -37,6 +52,10 @@ public class ContainerTable extends AbstractTable{
 		return table;
 	}
 	
+	/**
+	 * Creates a new empty MatrixTable and adds it to this ContainerTable.
+	 * @return The new created MatrixTable.
+	 */
 	public MatrixTable createAndAddNewMatrixTable() {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();
@@ -45,23 +64,13 @@ public class ContainerTable extends AbstractTable{
 		subTables.add(table);
 		return table;		
 	}
-	
-	// not nec needed
-	/*public ContainerTable replaceAndCreateNewContainerTable(AbstractTable table) {
-		if(removeTable(table)) {
-			return createAndAddNewContainerTable();
-		}
-		return null;
-	}
-	
-	public Table replaceAndCreateNewTable(AbstractTable table) {
-		if(removeTable(table)) {
-			return createAndAddNewTable();
-		}
-		return null;
-	}*/
-		
+			
 	// needs to be null pointer safe!
+	/**
+	 * Removes the given table from this ContainerTable.
+	 * @param table The table to remove
+	 * @return True if the table has been removed, false if table is null or had not been removed.
+	 */
 	public boolean removeTable(AbstractTable table) {
 		if(table == null) {
 			return false;
@@ -72,6 +81,11 @@ public class ContainerTable extends AbstractTable{
 		return false;
 	}
 	
+	/**
+	 * Adds the given table to this ContainerTable
+	 * @param table The table to add
+	 * @return False if the table has already been added, true otherwise.
+	 */
 	public boolean addTable(AbstractTable table) {
 		if(subTables == null) {
 			subTables = new ArrayList<AbstractTable>();

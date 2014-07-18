@@ -10,10 +10,13 @@ public class StringClass extends AbstractColumnEntry {
 	
 	public String mainText;
 	
+	public StringClass() {
+		mainText = "";
+	}
+	
 	@JsonCreator
 	public StringClass(@JsonProperty("mainText") String text) {
 		this.mainText = text;
-	//	this.type = TYPE_STRING;
 	}
 	
 	@Override
