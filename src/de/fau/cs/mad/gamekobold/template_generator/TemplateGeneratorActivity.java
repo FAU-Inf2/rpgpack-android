@@ -1,13 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar;
@@ -16,6 +10,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -49,7 +44,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 public static boolean skipNextOnPauseSave = false;
 	 public static boolean forceSaveOnNextOnPause = false;
 	 //needed for saving
-	 public static Activity myActivity = null;
+	 public static TemplateGeneratorActivity myActivity = null;
+	 private CountDownLatch countDownLatch;
 	 /*
 	  * JACKSON END
 	  */
@@ -78,7 +74,6 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		  */
 		 myActivity = this;
 		 boolean creationMode = true;
-		 CountDownLatch countDownLatch = null;
 		 Log.d("Saved instance state", ""+savedInstanceState);
 		 if(savedInstanceState == null) {
 			 Intent intent = getIntent();
@@ -101,12 +96,8 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
 				 // create new async task
 				 jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
-				 // set field
-				 task.generatorActivity = this;
-				 // create the CountDownLatch and set its counter to 1
-				 countDownLatch = new CountDownLatch(1);
-				 // set countDownLatch
-				 task.countDownLatch = countDownLatch;
+				 // do the setup
+				 countDownLatch = task.doSetup(this);
 				 // start
 				 task.execute(templateFileName);
 			 }
@@ -159,18 +150,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 fragmentTransaction.commit();
 			 getFragmentManager().executePendingTransactions();
 		 }
-		 
-		 /*
-		  * JACKSON START
-		  */
-		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
-		 // onCreate finishes
-		 if(countDownLatch != null) {
-			countDownLatch.countDown();
-		 }
-		 /*
-		  * JACKSON END
-		  */
+
 		 mDrawerLayout = (DrawerLayout) findViewById(R.id.main_view_empty);
 		 mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 				 mDrawerLayout, /* DrawerLayout object */
@@ -189,8 +169,25 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
-		super.onResume();
+		 // mistakenly called?
+		 //super.onResume();
 	 }
+	 
+	@Override
+	protected void onStart() {
+		 //
+		 // JACKSON START
+		 //
+		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
+		 // onCreate finishes
+		 if(countDownLatch != null) {
+			countDownLatch.countDown();
+		 }
+		 //
+		 // JACKSON END
+		 //
+		 super.onStart();
+	}
 	 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -394,13 +391,10 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				if( (myActivity != null) && (myTemplate != null) ) {
 					myTemplate.saveToJSON(myActivity);
 				}
-			} catch (JsonGenerationException | JsonMappingException e) {
+			} catch (Throwable e) {
 				e.printStackTrace();
 				return Boolean.FALSE;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return Boolean.FALSE;
-			}	
+			}
 			return Boolean.TRUE;
 		}
     	
@@ -433,17 +427,23 @@ public class TemplateGeneratorActivity extends FragmentActivity {
      * Class for loading a template asynchronously. Shows a ProgressDialog, waits for the activity to finish creation
      * and then inflates it with the loaded data. The ProgessDialog is automatically closed when the whole loading
      * process has finished.
-     * ! You have to manually set the fields "generator" and "countDownLatch"!
+     * !You have to call "onSetup" and save the returned CountDownLatch!
      */
     private class jacksonLoadTemplateAsync extends AsyncTask<String, Void, Template> {
     	private ProgressDialog pd;
+    	// context used for async loading
+    	private Context appContext;
+    	private CountDownLatch countDownLatch;
     	
-    	public TemplateGeneratorActivity generatorActivity;
-    	public CountDownLatch countDownLatch;
+    	public CountDownLatch doSetup(Activity activity) {
+    		appContext = activity.getApplicationContext();
+    		countDownLatch = new CountDownLatch(1);
+    		return countDownLatch;
+    	}
     	
     	@Override
     	protected void onPreExecute() {
-    		if(generatorActivity == null || countDownLatch == null) {
+    		if(appContext == null || countDownLatch == null) {
     			return;
     		}
     		pd = new ProgressDialog(myActivity);
@@ -456,18 +456,14 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	
 		@Override
 		protected Template doInBackground(String... params) {
-    		if(generatorActivity == null || countDownLatch == null) {
+    		if(appContext == null || countDownLatch == null) {
     			return null;
     		}
 			final String FILE_NAME = params[0];
 			Template template = null;
 			try {
-				template = Template.loadFromJSONFile(generatorActivity, FILE_NAME);
-			} catch (JsonParseException | JsonMappingException e) {
-				//e.printStackTrace();
-				return null;
-			}
-			catch (IOException e) {
+				template = Template.loadFromJSONFile(appContext, FILE_NAME);
+			} catch (Throwable e) {
 				//e.printStackTrace();
 				return null;
 			}
@@ -477,7 +473,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 		@Override
 		protected void onPostExecute(Template result) {
 			// wrong set up
-			if(generatorActivity == null || countDownLatch == null) {
+			if(appContext == null || countDownLatch == null) {
 				if(pd != null){
 					pd.dismiss();
 				}
@@ -485,7 +481,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			}
 			// no result
 			if(result == null) {
-				Toast.makeText(generatorActivity, getString(R.string.loading_template_failure), Toast.LENGTH_LONG).show();
+				Toast.makeText(myActivity, getString(R.string.loading_template_failure), Toast.LENGTH_LONG).show();
 				if(pd != null){
 					pd.dismiss();
 				}
@@ -500,10 +496,11 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 				}
 				return;
 			}
-			generatorActivity.inflate();
+			myActivity.inflate();
 			if(pd != null){
 				pd.dismiss();
 			}
+			myActivity.countDownLatch = null;
 		}
     }
     /*

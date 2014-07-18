@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +25,6 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
-import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
@@ -314,7 +313,7 @@ public class MatrixFragment extends GeneralFragment {
 	/*
 	 * JACKSON START
 	 */
-	public void jacksonInflate(MatrixTable myTable, Activity activity) {
+	public void jacksonInflate(MatrixTable myTable, Context appContext) {
 		// set table
 		setJacksonTable(myTable);
 		// set flag, so that we are inflating the views with data from jackson
@@ -322,15 +321,12 @@ public class MatrixFragment extends GeneralFragment {
 		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
 		// add the "new item" entry
-		itemsList.add(new MatrixItem(getResources().getString(
+		itemsList.add(new MatrixItem(appContext.getResources().getString(
 				R.string.text_new_element), "+", null));
 	}
 
 	public void setJacksonTable(MatrixTable myTable) {
 		jacksonTable = myTable;
-		/*
-		 * if(adapter != null) { adapter.jacksonTable = myTable; }
-		 */
 	}
 	/*
 	 * JACKSON END
