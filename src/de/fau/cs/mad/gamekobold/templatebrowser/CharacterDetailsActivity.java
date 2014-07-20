@@ -5,15 +5,11 @@ import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -28,7 +24,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		setContentView(R.layout.fragment_character_details);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		relLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
@@ -36,11 +32,9 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		final TextView levelLabel = (TextView)findViewById(R.id.textView3);
 		
 		colorChangeButton.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				final ColorPickerDialog dialog = new ColorPickerDialog();
-				dialog.setTargetButton(colorChangeButton);
+				final ColorPickerDialog dialog = ColorPickerDialog.newInstance(colorChangeButton);
 				dialog.show(getFragmentManager(), "ColorPickerDialog");
 			}
 		});
@@ -58,7 +52,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -77,7 +71,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		Log.d("CharacterDetails", "picked color:"+color);
 		setCharacterColor(color);
 	}
-	
+
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
 		if(sheet != null) {

@@ -143,11 +143,12 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 		}
 		super.onStart();
 	}
-	
-	public void setTargetButton(Button targetButton) {
-		this.targetButton = targetButton;
+
+	public static ColorPickerDialog newInstance(Button targetButton) {
+		ColorPickerDialog newInstance = new ColorPickerDialog();
+		newInstance.targetButton = targetButton;
+		return newInstance;
 	}
-	
 	// Implementing Fisher–Yates shuffle
 	// From http://stackoverflow.com/a/1520212
 	private static void shuffleArray(int[] ar)
@@ -162,6 +163,5 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    	ar[i] = a;
 	    }
 	}
-	
-	
+
 }
