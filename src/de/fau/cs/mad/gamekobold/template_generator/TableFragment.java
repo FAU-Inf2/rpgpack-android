@@ -158,7 +158,115 @@ public class TableFragment extends GeneralFragment {
         popupStyles = new PopupWindow(stylesView, popupWidth, popupHeight, true);
         popupStyles.setOutsideTouchable(false);
 //        popupStyles.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
+        mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
+        createTableHeader();
+        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
+        //set the 3 buttons
+		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
+		buttonAdd.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addItemList();
+			}
+		});
+		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
+		addColumnButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addColumn();
+			}
+		});
+		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
+		removeColumnButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				removeColumn();
+			}
+		});
+		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
+		addRowBelow.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addItemList();
+			}
+		});
+		setAddButtonStyle(addRowBelow);
+		addItemList();
     }
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		
+		//tabhost
+//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
+//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
+//
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+		
+		/*
+		 * JACKSON START
+		 */
+		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
+		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+		// check if we have inflated the table with some data
+		// BUT also check if we got any saved columns (they are only created if user goes into table!)
+		// so if there are no saved columns or we didn't load any data we add the default columns 
+		if(jacksonTableColumnNumber > 0) {
+			// set flag, so we don't add new columns to the jackson table while loading
+			jacksonInflateWithData = true;
+			// create the right amount of columns
+			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
+			Log.d("jackson table inflating","amountCol:"+amountColumns);
+			while(amountColumns < jacksonTableColumnNumber) {
+				Log.d("jackson table inflating","addColumn()");
+				addColumn();
+			}
+			while(amountColumns > jacksonTableColumnNumber) {
+				Log.d("jackson table inflating","removeColumn()");
+				removeColumn();
+			}
+			// set titles
+			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
+			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
+			for(int i = 0; i < amountColumns; i++) {
+				View view = headerRow.getChildAt(i);
+				Log.d("TableFragment-onCreateView", "view:"+view);
+				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
+				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
+				setHeaderTableStyle((EditText)view);
+				// check size
+				checkResize(0, 0, (EditText)view, headerRow);
+		        int width = getNeededWidth(i);
+				int height = getNeededHeight(0, headerRow);
+				final LayoutParams lparams = new LayoutParams(width, height);
+			    view.setLayoutParams(lparams);
+			}
+			Log.d("TABLE_FRAGMENT", "loaded table header data");
+			jacksonInflateWithData = false;
+		}
+		else {
+			// add the 2 default columns
+			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			jacksonInflateWithData = false;
+			// save template
+			Log.d("TableFragment", "added default columns");
+			//TemplateGeneratorActivity.saveTemplateAsync();
+		}
+		/*
+		 * JACKSON END
+		 */
+		return mainView;
+	}
 	
 	protected void setTypeContents(){
 		Log.d("TableFragment", "setTypeContents");
@@ -302,113 +410,6 @@ public class TableFragment extends GeneralFragment {
 		// TODO research if more and more rows are added when rotating a device!
 		headerTable.addView(row);
 		return headerTable;
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
-		mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
-        createTableHeader();
-        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
-        //set the 3 buttons
-		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
-		buttonAdd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
-		addColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addColumn();
-			}
-		});
-		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
-		removeColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				removeColumn();
-			}
-		});
-		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
-		addRowBelow.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		setAddButtonStyle(addRowBelow);
-		//tabhost
-//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
-//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
-//
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-		
-		/*
-		 * JACKSON START
-		 */
-		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
-		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
-		// check if we have inflated the table with some data
-		// BUT also check if we got any saved columns (they are only created if user goes into table!)
-		// so if there are no saved columns or we didn't load any data we add the default columns 
-		if(jacksonTableColumnNumber > 0) {
-			// set flag, so we don't add new columns to the jackson table while loading
-			jacksonInflateWithData = true;
-			// create the right amount of columns
-			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
-			Log.d("jackson table inflating","amountCol:"+amountColumns);
-			while(amountColumns < jacksonTableColumnNumber) {
-				Log.d("jackson table inflating","addColumn()");
-				addColumn();
-			}
-			while(amountColumns > jacksonTableColumnNumber) {
-				Log.d("jackson table inflating","removeColumn()");
-				removeColumn();
-			}
-			// set titles
-			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
-			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
-			for(int i = 0; i < amountColumns; i++) {
-				View view = headerRow.getChildAt(i);
-				Log.d("TableFragment-onCreateView", "view:"+view);
-				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
-				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
-				setHeaderTableStyle((EditText)view);
-				// check size
-				checkResize(0, 0, (EditText)view, headerRow);
-		        int width = getNeededWidth(i);
-				int height = getNeededHeight(0, headerRow);
-				final LayoutParams lparams = new LayoutParams(width, height);
-			    view.setLayoutParams(lparams);
-			}
-			Log.d("TABLE_FRAGMENT", "loaded table header data");
-			jacksonInflateWithData = false;
-		}
-		else {
-			// add the 2 default columns
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			jacksonInflateWithData = false;
-			// save template
-			Log.d("TableFragment", "added default columns");
-			//TemplateGeneratorActivity.saveTemplateAsync();
-		}
-		/*
-		 * JACKSON END
-		 */
-		addItemList();
-		return mainView;
 	}
 	
 	
