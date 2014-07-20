@@ -8,15 +8,20 @@ import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
 	private ColorPickerDialogInterface receiver = null;
 	private ImageButton[] buttons;
 	private int[] colors;
+	private Button targetButton = null;
 	
 	@Override
 	public void onAttach(Activity receiver) {
@@ -77,6 +82,7 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    // disable background dimming
 	    final AlertDialog dialog = builder.create();
 	    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+	    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    return dialog;
 	}
 	
@@ -93,5 +99,36 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void onStart() {
+		if(targetButton != null) {
+			int[] coordinates = new int[2];
+			targetButton.getLocationOnScreen(coordinates);
+			Log.d("Colorpicker", "targetX:"+coordinates[0]);
+			Log.d("Colorpicker", "targetY:"+coordinates[1]);
+			final int height = targetButton.getHeight();
+			final Dialog dlg = getDialog();
+			Log.d("Colorpicker", "dlg:"+dlg);
+			final Window window = dlg.getWindow();
+			Log.d("Colorpicker", "window:"+window);
+			final WindowManager.LayoutParams dialogLayout = window.getAttributes();
+			Log.d("Colorpicker", "popupX:"+dialogLayout.x);
+			Log.d("Colorpicker", "popupY:"+dialogLayout.y);
+			Log.d("Colorpicker", "popupWidth:"+dialogLayout.width);
+			Log.d("Colorpicker", "popupHeight:"+dialogLayout.height);
+			dialogLayout.gravity = Gravity.TOP | Gravity.LEFT;
+			//dialogLayout.gravity = Gravity.TOP;
+			dialogLayout.x = coordinates[0]+targetButton.getWidth()-dialogLayout.width;
+			dialogLayout.y = coordinates[1];
+			Log.d("Colorpicker", "popupX:"+dialogLayout.x);
+			Log.d("Colorpicker", "popupY:"+dialogLayout.y);
+		}
+		super.onStart();
+	}
+	
+	public void setTargetButton(Button targetButton) {
+		this.targetButton = targetButton;
 	}
 }

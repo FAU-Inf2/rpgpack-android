@@ -5,12 +5,15 @@ import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -37,6 +40,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			@Override
 			public void onClick(View v) {
 				final ColorPickerDialog dialog = new ColorPickerDialog();
+				dialog.setTargetButton(colorChangeButton);
 				dialog.show(getFragmentManager(), "ColorPickerDialog");
 			}
 		});
