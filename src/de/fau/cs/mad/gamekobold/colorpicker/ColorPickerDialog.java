@@ -1,7 +1,6 @@
 package de.fau.cs.mad.gamekobold.colorpicker;
 
 import java.util.Random;
-
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,9 +19,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
+	// our color list
+	private static int[] colors = null;
+	// receiver for picked color
 	private ColorPickerDialogInterface receiver = null;
+	//
 	private ImageButton[] buttons;
-	private int[] colors;
+	// where to put this color picker
 	private Button targetButton = null;
 	
 	@Override
@@ -36,27 +39,36 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
             throw new ClassCastException(receiver.toString() + " must implement NoticeDialogListener");
 		}
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		 // check if colors already loaded
+	    if(colors == null) {
+		    final Resources res = getResources();
+		    // create color list
+		    colors = new int[12];
+		    colors[0] = res.getColor(R.color.light_yellow);
+		    colors[1] = res.getColor(R.color.orange);
+		    colors[2] = res.getColor(R.color.light_red);
+		    colors[3] = res.getColor(R.color.light_red2);
+		    colors[4] = res.getColor(R.color.light_purple);
+		    colors[5] = res.getColor(R.color.dark_purple);
+		    colors[6] = res.getColor(R.color.stone);
+		    colors[7] = res.getColor(R.color.dark_stone);
+		    colors[8] = res.getColor(R.color.light_green);
+		    colors[9] = res.getColor(R.color.dark_green);
+		    colors[10] = res.getColor(R.color.peter_river);
+		    colors[11] = res.getColor(R.color.belize_hole);	
+	    }
+	}
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    // Get the layout inflater
 	    final LayoutInflater inflater = getActivity().getLayoutInflater();
 	    View view = inflater.inflate(R.layout.color_picker_layout, null);
-	    final Resources res = getResources();
-	    // create color list
-	    colors = new int[12];
-	    colors[0] = res.getColor(R.color.light_yellow);
-	    colors[1] = res.getColor(R.color.orange);
-	    colors[2] = res.getColor(R.color.light_red);
-	    colors[3] = res.getColor(R.color.light_red2);
-	    colors[4] = res.getColor(R.color.light_purple);
-	    colors[5] = res.getColor(R.color.dark_purple);
-	    colors[6] = res.getColor(R.color.stone);
-	    colors[7] = res.getColor(R.color.dark_stone);
-	    colors[8] = res.getColor(R.color.light_green);
-	    colors[9] = res.getColor(R.color.dark_green);
-	    colors[10] = res.getColor(R.color.peter_river);
-	    colors[11] = res.getColor(R.color.belize_hole);
 	    // shuffle colors
 	    shuffleArray(colors);
 	    //create button list
@@ -149,5 +161,7 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    	ar[index] = ar[i];
 	    	ar[i] = a;
 	    }
-	 }
+	}
+	
+	
 }
