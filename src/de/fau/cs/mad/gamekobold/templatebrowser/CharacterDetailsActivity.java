@@ -30,7 +30,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
 		final TextView characterName = (TextView)findViewById(R.id.textView1);
 		final TextView levelLabel = (TextView)findViewById(R.id.textView3);
-		
+
 		colorChangeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -38,7 +38,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				dialog.show(getFragmentManager(), "ColorPickerDialog");
 			}
 		});
-		
+
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();		
 		if (extras != null) {
@@ -47,6 +47,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			if(sheet != null) {
 				setTitle(sheet.name);
 				characterName.setText(sheet.name);
+				levelLabel.setText(String.valueOf(sheet.level));
+				description.setTag(sheet.description);
 				// set to character color
 				relLayout.setBackgroundColor(sheet.color);
 			}

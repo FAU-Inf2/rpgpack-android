@@ -27,6 +27,10 @@ public class CharacterSheet implements Parcelable{
 	
 	/* METADATA */
 	public String name;
+	@JsonIgnore
+	public int level;
+	@JsonIgnore
+	public String description;
 	
 	@JsonIgnore
 	public int color = Color.parseColor("#2980b9");
@@ -36,16 +40,22 @@ public class CharacterSheet implements Parcelable{
 	
 	public CharacterSheet() {
 		name = "";
+		level = 3;
+		description = "";
 	}
 	
 	public CharacterSheet(String name) {
-		this.name = name;
+		this.name = name;		
+		level = 3;
+		description = "";
 	}
 	
 	@JsonCreator
 	public CharacterSheet(@JsonProperty("rootTable") ContainerTable table) {
 		name = "";
 		rootTable = table;
+		level = 3;
+		description = "";
 	}
 	
 	public ContainerTable getRootTable() {
