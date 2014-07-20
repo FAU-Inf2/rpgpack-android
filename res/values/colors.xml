@@ -21,5 +21,17 @@
     <color name="list_background">#27364f</color>
     <color name="list_divider">#808080</color>
     <color name="light_grey">#CCCCCC</color>
+    <color name="light_yellow">#f1c40f</color>
+    <color name="orange">#e67e22</color>
+    <color name="light_red">#e74c3c</color>
+    <color name="light_red2">#c0392b</color>
+    <color name="light_purple">#9b59b6</color>
+    <color name="dark_purple">#8e44ad</color>
+    <color name="stone">#95a5a6</color>
+    <color name="dark_stone">#7f8c8d</color>
+    <color name="light_green">#27ae60</color>
+    <color name="dark_green">#16a085</color>
+    <color name="peter_river">#3498db</color>
+    <color name="belize_hole">#2980b9</color>
 
 </resources>

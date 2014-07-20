@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,21 +40,22 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    // Get the layout inflater
 	    final LayoutInflater inflater = getActivity().getLayoutInflater();
 	    View view = inflater.inflate(R.layout.color_picker_layout, null);
+	    final Resources res = getResources();
 	    // create color list
 	    colors = new int[12];
-	    colors[0] = Color.BLACK;
-	    colors[1] = Color.WHITE;
-	    colors[2] = Color.GRAY;
-	    colors[3] = Color.GREEN;
-	    colors[4] = Color.BLUE;
-	    colors[5] = Color.BLACK;
-	    colors[6] = Color.YELLOW;
-	    colors[7] = Color.MAGENTA;
-	    colors[8] = Color.CYAN;
-	    colors[9] = Color.BLACK;
-	    colors[10] = Color.BLACK;
-	    colors[11] = Color.BLACK;
-	    
+	    colors[0] = res.getColor(R.color.light_yellow);
+	    colors[1] = res.getColor(R.color.orange);
+	    colors[2] = res.getColor(R.color.light_red);
+	    colors[3] = res.getColor(R.color.light_red2);
+	    colors[4] = res.getColor(R.color.light_purple);
+	    colors[5] = res.getColor(R.color.dark_purple);
+	    colors[6] = res.getColor(R.color.stone);
+	    colors[7] = res.getColor(R.color.dark_stone);
+	    colors[8] = res.getColor(R.color.light_green);
+	    colors[9] = res.getColor(R.color.dark_green);
+	    colors[10] = res.getColor(R.color.peter_river);
+	    colors[11] = res.getColor(R.color.belize_hole);
+
 	    //create button list
 	    buttons = new ImageButton[12];
 	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);

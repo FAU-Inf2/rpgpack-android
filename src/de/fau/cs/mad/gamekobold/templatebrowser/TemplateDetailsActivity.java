@@ -278,13 +278,13 @@ public class TemplateDetailsActivity extends Activity {
 			// testing data
 
 			CharacterSheet sheet = new CharacterSheet("Hodor");
-			sheet.color = Color.MAGENTA;
+			sheet.color = Color.parseColor("#9b59b6");
 			characterList.add(sheet);
 			sheet = new CharacterSheet("Thorodin");
-			sheet.color = Color.CYAN;
+			sheet.color = Color.parseColor("#e74c3c");
 			characterList.add(sheet);
 			sheet = new CharacterSheet("Finn");
-			sheet.color = Color.RED;
+			sheet.color = Color.parseColor("#2980b9");
 			characterList.add(sheet);
 			//
 			File dir = de.fau.cs.mad.gamekobold.jackson.Template
@@ -299,7 +299,6 @@ public class TemplateDetailsActivity extends Activity {
 							try {
 								sheet = CharacterSheet
 										.loadForCharacterList(character);
-								sheet.color = Color.YELLOW;
 								characterList.add(sheet);
 							} catch (Throwable e) {
 								e.printStackTrace();

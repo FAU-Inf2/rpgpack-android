@@ -29,7 +29,7 @@ public class CharacterSheet implements Parcelable{
 	public String name;
 	
 	@JsonIgnore
-	public int color = Color.CYAN;
+	public int color = Color.parseColor("#2980b9");
 	
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
