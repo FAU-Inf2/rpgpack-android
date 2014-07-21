@@ -8,6 +8,8 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
+import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,6 +41,7 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -708,6 +711,33 @@ public class TableFragment extends GeneralFragment {
 	
     int styleStart = 0;
     int cursorLoc = 0;
+    
+    private ArrayList<String> getAllElementsToRef(FolderFragment fragmentToSearch){
+    	ArrayList<String> results = new ArrayList<String>();
+		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
+        for(FolderElementData currentDatum  : fragmentToSearch.dataAdapter.getAll()){
+        	GeneralFragment currentFragment = currentDatum.childFragment;
+        	if(currentFragment instanceof FolderFragment){
+    			Log.d("popupReferences", "folderfragment found, descending now");
+        		ArrayList<String> toAdd = getAllElementsToRef((FolderFragment) currentFragment);
+        		results.addAll(toAdd);
+        	}
+        	else if(currentFragment instanceof TableFragment){
+    			Log.d("popupReferences", "tableview found");
+        	}
+        	else if(currentFragment instanceof MatrixFragment){
+    			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
+        		for(MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList){
+        			String oneName = oneItem.getItemName();
+        			results.add(oneName);
+        		}
+        	}
+        	else{
+    			Log.d("popupReferences", "unhandled element found!!!");
+        	}
+        }
+        return results;
+    }
 	
     private LinearLayout initPopup(final TableRow row){
 		Log.d("TABLE_FRAGMENT", "init_popup");
@@ -768,6 +798,8 @@ public class TableFragment extends GeneralFragment {
         popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
         final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
         
+        
+        
         final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
         toggleBold.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
@@ -818,6 +850,7 @@ public class TableFragment extends GeneralFragment {
         		styleStart = selectionStart;
         	}
         });
+        
         
         inputPopup.addTextChangedListener(new TextWatcher() { 
         	public void afterTextChanged(Editable s) { 
@@ -967,7 +1000,7 @@ public class TableFragment extends GeneralFragment {
 //        int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_height), getResources().getDisplayMetrics()));
 //        int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_width), getResources().getDisplayMetrics()));
 //		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.8), getResources().getDisplayMetrics()));
-		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.9), getResources().getDisplayMetrics()));
+		final int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.9), getResources().getDisplayMetrics()));
 
 //        mainView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 //		int mainWidth = mainView.getMeasuredWidth();
@@ -980,6 +1013,74 @@ public class TableFragment extends GeneralFragment {
         popupList.add(popup);
         final int popupIndex = popupList.indexOf(popup);
         Log.d("popupList", "popupIndex == " + popupIndex);
+        
+        
+
+        final Button addRefButton = (Button) popupView.findViewById(R.id.add_ref);
+        addRefButton.setOnClickListener(new Button.OnClickListener() {
+        	public void onClick(View v) {
+//        		Animation slide_up = AnimationUtils.loadAnimation(TemplateGeneratorActivity.theActiveActivity, R.animator.slide_up);
+                LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupReferencesView = inflater.inflate(R.layout.table_view_references, null);
+                LinearLayout reference_list = (LinearLayout) popupReferencesView.findViewById(R.id.reference_list);
+                final PopupWindow popupReferences = new PopupWindow(popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                popupReferences.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
+                popupReferences.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                ArrayList<String> allRefs = getAllElementsToRef(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).rootFragment);
+                for(String aReference : allRefs){
+                	TextView oneLine = new TextView(TemplateGeneratorActivity.theActiveActivity);
+                	oneLine.setText(aReference);
+                	oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
+                	           getResources().getDimension(R.dimen.text_large));
+                	oneLine.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							String lastCharOfPopup = inputPopup.getText().toString();
+							if(lastCharOfPopup.length() > 0){
+								lastCharOfPopup = lastCharOfPopup.substring(lastCharOfPopup.length() - 1);
+								if(!lastCharOfPopup.equals("\n") && !lastCharOfPopup.equals(" ")){
+									inputPopup.append(" ");
+								}
+							}
+							inputPopup.append("@" + ((TextView) v).getText()+ " ");
+							popupReferences.dismiss();
+						}
+					});
+                	//XXX:maybe reference-item needs other style?!
+                	setTableStyle(oneLine);
+//                	setAddButtonStyle(oneLine);
+//                	oneLine.setBackground(R.drawable.cell_shape_white_borders);
+                	reference_list.addView(oneLine);
+                }
+//                reference_view.startAnimation(slide_up);
+    			popupReferences.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+        	}
+        });
+        //following does not work yet
+//        inputPopup.setOnFocusChangeListener(new OnFocusChangeListener() {
+//			
+//			@Override
+//			public void onFocusChange(View v, boolean hasFocus) {
+//				InputMethodManager inputMgr = (InputMethodManager)TemplateGeneratorActivity.theActiveActivity.
+//						getSystemService(Context.INPUT_METHOD_SERVICE);
+//				if(hasFocus){
+//					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
+////					inputMgr.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+////							InputMethodManager.SHOW_IMPLICIT);
+//					
+////					TemplateGeneratorActivity.theActiveActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//			        Log.d("focus_change", "SHOW software-keyboard");
+//				}
+//				else{
+//					inputMgr.hideSoftInputFromWindow(inputPopup.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+////					inputMgr.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+////							InputMethodManager.HIDE_IMPLICIT_ONLY);
+////					TemplateGeneratorActivity.theActiveActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+////			        Log.d("focus_change", "HIDE software-keyboard");
+//				}
+//			}
+//		});
+        
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -989,6 +1090,15 @@ public class TableFragment extends GeneralFragment {
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 				popup.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+				InputMethodManager inputMgr = (InputMethodManager)TemplateGeneratorActivity.theActiveActivity.
+						getSystemService(Context.INPUT_METHOD_SERVICE);
+					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
+			}
+		});
+		popupView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				inputPopup.requestFocus();
 			}
 		});
 		txt.setText(getResources().getString(R.string.new_element));

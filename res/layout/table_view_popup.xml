@@ -18,22 +18,35 @@
             android:id="@+id/toggle_italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="Not_Italic"
+            android:layout_weight="1"
+            android:textOff="Italic"
             android:textOn="Italic!" />
 
         <ToggleButton
             android:id="@+id/toggle_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="Not_Bold"
+                        android:layout_weight="1"
+            android:textOff="Bold"
             android:textOn="Bold!" />
 
         <ToggleButton
             android:id="@+id/toggle_underline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="Not_Underlined"
+                        android:layout_weight="1"
+            
+            android:textOff="Underlined"
             android:textOn="Underlined!" />
+        
+        <Button
+            android:id="@+id/add_ref"
+            android:layout_width="wrap_content"
+                        android:layout_weight="1"
+            android:textSize="@dimen/text_normal"
+            android:layout_height="wrap_content"
+            android:text="Add_Ref" />
+        
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +82,7 @@
                 android:layout_marginTop="5sp"
                 android:background="#00000000"
                 android:ellipsize="start"
-                android:gravity="center_horizontal"
+				android:gravity="center_horizontal"
                 android:hint="@string/hint_your_notes" />
         </ScrollView>
     </LinearLayout>

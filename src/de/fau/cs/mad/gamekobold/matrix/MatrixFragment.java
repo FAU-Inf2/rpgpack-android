@@ -28,7 +28,7 @@ import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
-	List<MatrixItem> itemsList = null;
+	public List<MatrixItem> itemsList = null;
 	MatrixViewArrayAdapter adapter;
 
 	/*
