@@ -320,20 +320,27 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     @Override
     public void onBackPressed(){
     	FragmentManager fm = getFragmentManager();
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-            currentFragment = currentFragment.backStackElement;
-            if(currentFragment.isATopFragment){
-            	topFragment = currentFragment;
-            }
-        } else {
-        	DialogFragment dialog = WarningLeaveDialog.newInstance();
-        	if(currentFragment instanceof FolderFragment){
-        		Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
-        	}
-        	dialog.show(fm, "");
-        }
-        invalidateOptionsMenu();
+    	//handling before -> stepping back to last viewed page
+//        if (fm.getBackStackEntryCount() > 0) {
+//            fm.popBackStack();
+//            currentFragment = currentFragment.backStackElement;
+//            if(currentFragment.isATopFragment){
+//            	topFragment = currentFragment;
+//            }
+//        } else {
+//        	DialogFragment dialog = WarningLeaveDialog.newInstance();
+//        	if(currentFragment instanceof FolderFragment){
+//        		Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
+//        	}
+//        	dialog.show(fm, "");
+//        }
+//        invalidateOptionsMenu();
+    	//handling now: just leave activity
+    	DialogFragment dialog = WarningLeaveDialog.newInstance();
+    	if(currentFragment instanceof FolderFragment){
+    		Log.d("MainTemplateGenerator", "elemente: " + ((FolderFragment) currentFragment).allData.size());
+    	}
+    	dialog.show(fm, "");
     }
     
     protected void superBackPressed(){

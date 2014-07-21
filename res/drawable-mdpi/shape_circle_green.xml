@@ -8,8 +8,8 @@
     <solid android:color="@android:color/transparent" />
 
     <size
-        android:height="55dp"
-        android:width="55dp" />
+        android:height="85dp"
+        android:width="85dp" />
 
     <stroke
         android:width="2dp"

@@ -2,6 +2,8 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 
+import java.util.ArrayList;
+
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -12,14 +14,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Selection;
+import android.text.Spannable;
 import android.text.TextWatcher;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -33,7 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -41,7 +44,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -83,6 +85,9 @@ public class TableFragment extends GeneralFragment {
 	protected TableRow contextMenuRow;
 	protected PopupWindow popupStyles = null;
 	protected View stylesView;
+	protected ArrayList<View> popupViewList = new ArrayList<>();
+	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
+
 
 	
 	@Override
@@ -148,7 +153,6 @@ public class TableFragment extends GeneralFragment {
         dialog = alertDialogBuilder.create();
         
         
-        //TODO: adapt
         stylesView = inflater.inflate(R.layout.table_view_styles, (ViewGroup) getActivity().findViewById(R.id.popup_element));
 //        Button italic = (Button) stylesView.findViewById(R.id.italic_button);
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
@@ -159,7 +163,115 @@ public class TableFragment extends GeneralFragment {
         popupStyles = new PopupWindow(stylesView, popupWidth, popupHeight, true);
         popupStyles.setOutsideTouchable(false);
 //        popupStyles.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
+        mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
+        createTableHeader();
+        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
+        //set the 3 buttons
+		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
+		buttonAdd.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addItemList();
+			}
+		});
+		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
+		addColumnButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addColumn();
+			}
+		});
+		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
+		removeColumnButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				removeColumn();
+			}
+		});
+		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
+		addRowBelow.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addItemList();
+			}
+		});
+		setAddButtonStyle(addRowBelow);
+		addItemList();
     }
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		
+		//tabhost
+//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
+//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
+//
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+//        mTabHost.addTab(
+//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
+//                        getResources().getDrawable(android.R.drawable.star_on)),
+//                FragmentTab.class, null);
+		
+		/*
+		 * JACKSON START
+		 */
+		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
+		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+		// check if we have inflated the table with some data
+		// BUT also check if we got any saved columns (they are only created if user goes into table!)
+		// so if there are no saved columns or we didn't load any data we add the default columns 
+		if(jacksonTableColumnNumber > 0) {
+			// set flag, so we don't add new columns to the jackson table while loading
+			jacksonInflateWithData = true;
+			// create the right amount of columns
+			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
+			Log.d("jackson table inflating","amountCol:"+amountColumns);
+			while(amountColumns < jacksonTableColumnNumber) {
+				Log.d("jackson table inflating","addColumn()");
+				addColumn();
+			}
+			while(amountColumns > jacksonTableColumnNumber) {
+				Log.d("jackson table inflating","removeColumn()");
+				removeColumn();
+			}
+			// set titles
+			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
+			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
+			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
+			for(int i = 0; i < amountColumns; i++) {
+				View view = headerRow.getChildAt(i);
+				Log.d("TableFragment-onCreateView", "view:"+view);
+				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
+				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
+				setHeaderTableStyle((EditText)view);
+				// check size
+				checkResize(0, 0, (EditText)view, headerRow);
+		        int width = getNeededWidth(i);
+				int height = getNeededHeight(0, headerRow);
+				final LayoutParams lparams = new LayoutParams(width, height);
+			    view.setLayoutParams(lparams);
+			}
+			Log.d("TABLE_FRAGMENT", "loaded table header data");
+			jacksonInflateWithData = false;
+		}
+		else {
+			// add the 2 default columns
+			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			jacksonInflateWithData = false;
+			// save template
+			Log.d("TableFragment", "added default columns");
+			//TemplateGeneratorActivity.saveTemplateAsync();
+		}
+		/*
+		 * JACKSON END
+		 */
+		return mainView;
+	}
 	
 	protected void setTypeContents(){
 		Log.d("TableFragment", "setTypeContents");
@@ -303,113 +415,6 @@ public class TableFragment extends GeneralFragment {
 		// TODO research if more and more rows are added when rotating a device!
 		headerTable.addView(row);
 		return headerTable;
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
-		mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
-        createTableHeader();
-        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
-        //set the 3 buttons
-		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
-		buttonAdd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
-		addColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addColumn();
-			}
-		});
-		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
-		removeColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				removeColumn();
-			}
-		});
-		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
-		addRowBelow.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		setAddButtonStyle(addRowBelow);
-		//tabhost
-//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
-//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
-//
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-		
-		/*
-		 * JACKSON START
-		 */
-		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
-		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
-		// check if we have inflated the table with some data
-		// BUT also check if we got any saved columns (they are only created if user goes into table!)
-		// so if there are no saved columns or we didn't load any data we add the default columns 
-		if(jacksonTableColumnNumber > 0) {
-			// set flag, so we don't add new columns to the jackson table while loading
-			jacksonInflateWithData = true;
-			// create the right amount of columns
-			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
-			Log.d("jackson table inflating","amountCol:"+amountColumns);
-			while(amountColumns < jacksonTableColumnNumber) {
-				Log.d("jackson table inflating","addColumn()");
-				addColumn();
-			}
-			while(amountColumns > jacksonTableColumnNumber) {
-				Log.d("jackson table inflating","removeColumn()");
-				removeColumn();
-			}
-			// set titles
-			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
-			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
-			for(int i = 0; i < amountColumns; i++) {
-				View view = headerRow.getChildAt(i);
-				Log.d("TableFragment-onCreateView", "view:"+view);
-				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
-				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
-				setHeaderTableStyle((EditText)view);
-				// check size
-				checkResize(0, 0, (EditText)view, headerRow);
-		        int width = getNeededWidth(i);
-				int height = getNeededHeight(0, headerRow);
-				final LayoutParams lparams = new LayoutParams(width, height);
-			    view.setLayoutParams(lparams);
-			}
-			Log.d("TABLE_FRAGMENT", "loaded table header data");
-			jacksonInflateWithData = false;
-		}
-		else {
-			// add the 2 default columns
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			jacksonInflateWithData = false;
-			// save template
-			Log.d("TableFragment", "added default columns");
-			//TemplateGeneratorActivity.saveTemplateAsync();
-		}
-		/*
-		 * JACKSON END
-		 */
-		addItemList();
-		return mainView;
 	}
 	
 	
@@ -701,7 +706,12 @@ public class TableFragment extends GeneralFragment {
 		return newElement;
 	}
 	
-	private LinearLayout initPopup(final TableRow row){
+    int styleStart = 0;
+    int cursorLoc = 0;
+	
+    private LinearLayout initPopup(final TableRow row){
+		Log.d("TABLE_FRAGMENT", "init_popup");
+
 		final LinearLayout ll = new LinearLayout(getActivity());
 		final TextView newElement = new TextView(getActivity());
 		/*
@@ -748,107 +758,215 @@ public class TableFragment extends GeneralFragment {
 			}
 		});
         LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+        final View popupView = inflater.inflate(R.layout.table_view_popup, null);
+        popupViewList.add(popupView);
+        final int popupViewIndex = popupViewList.indexOf(popupView);
+        Log.d("popupList", "popupViewIndex == " + popupViewIndex);
+
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
         final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
-        inputPopup.setOnFocusChangeListener(new OnFocusChangeListener() {          
-
-            public void onFocusChange(View v, boolean hasFocus) {
-            	//TODO: show or hide italic/bold etc. menu now
-                if(hasFocus){
-                	Log.d("TableFragment", "popup has FOCUS!");
-//                	RelativeLayout rl = new RelativeLayout(getActivity());
-//                	Button italic = new Button(getActivity());
-//                	italic.setText("i");
-////                	rl.addView(italic);
-////                	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-////                		    RelativeLayout.LayoutParams.WRAP_CONTENT, 
-////                		    RelativeLayout.LayoutParams.WRAP_CONTENT);
-////                	params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-////                	rl.setLayoutParams(params);
-//                	View viewToAddTo = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-//
-//
-//                	((ViewGroup) viewToAddTo).addView(italic);
-//                	italic.bringToFront();
-//                	popupView.invalidate();
-//                	italic.invalidate();
-                	if(!popupStyles.isShowing()){
-//                		popupStyles.showAtLocation(stylesView, Gravity.BOTTOM, 0, 0);
-                	}
-
-                }
-                else{
-                	Log.d("TableFragment", "popup has NO focus!");
-                }
-            }
-        });
+        
         final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
+        toggleBold.setOnClickListener(new Button.OnClickListener() {
+        	public void onClick(View v) {
+        		int selectionStart = inputPopup.getSelectionStart();
+        		styleStart = selectionStart;
+        		// following code might be needed if they fix this bug: 
+        		// http://code.google.com/p/android/issues/detail?id=62508
+        		//but atm text marking in popupwindow doesnt work so we don't need to deal with 
+        		//selectionEnd != selectionStart
+        		/*
+                int selectionEnd = inputPopup.getSelectionEnd();
+                if (selectionStart > selectionEnd){
+                    int temp = selectionEnd;
+                    selectionEnd = selectionStart;
+                    selectionStart = temp;
+                }
+                if (selectionEnd > selectionStart)
+                {
+                    Spannable str = inputPopup.getText();
+                    StyleSpan[] ss = str.getSpans(selectionStart, selectionEnd, StyleSpan.class);
+
+                    boolean exists = false;
+                    for (int i = 0; i < ss.length; i++) {
+                        if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+                            str.removeSpan(ss[i]);
+                            exists = true;
+                        }
+                    }
+                    if (!exists){
+                        str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    toggleBold.setChecked(false);
+                }
+        		 */
+        	}
+        });
         final ToggleButton toggleItalic = (ToggleButton) popupView.findViewById(R.id.toggle_italic);
-        toggleBold.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                	if(toggleItalic.isChecked()){
-//                		inputPopup.setTextAppearance(getActivity(), R.style.italic_bold);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
-                	}
-                	else{
-//                		inputPopup.setTextAppearance(getActivity(), R.style.bold);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                	}
-                } else {
-                	if(toggleItalic.isChecked()){
-//                		inputPopup.setTextAppearance(getActivity(), R.style.italic);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
-                	}
-                	else{
-//                		inputPopup.setTextAppearance(getActivity(), R.style.normal_text);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                	}
-                }
-            }
+        toggleItalic.setOnClickListener(new Button.OnClickListener() {
+        	public void onClick(View v) {
+        		int selectionStart = inputPopup.getSelectionStart();
+        		styleStart = selectionStart;
+        	}
         });
-        toggleItalic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                	if(toggleBold.isChecked()){
-//                		inputPopup.setTextAppearance(getActivity(), R.style.italic_bold);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
-                	}
-                	else{
-//                		inputPopup.setTextAppearance(getActivity(), R.style.italic);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
-                	}
-                } else {
-                	if(toggleBold.isChecked()){
-//                		inputPopup.setTextAppearance(getActivity(), R.style.bold);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-                	}
-                	else{
-//                		inputPopup.setTextAppearance(getActivity(), R.style.normal_text);
-                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-                	}
-                }
-            }
-        });
-        ToggleButton toggleUnderlined = (ToggleButton) popupView.findViewById(R.id.toggle_underline);
-        toggleUnderlined.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                	inputPopup.setPaintFlags(inputPopup.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
-                } else {
-                	inputPopup.setPaintFlags(inputPopup.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));                }
-            }
+        final ToggleButton toggleUnderlined = (ToggleButton) popupView.findViewById(R.id.toggle_underline);
+        toggleUnderlined.setOnClickListener(new Button.OnClickListener() {
+        	public void onClick(View v) {
+        		int selectionStart = inputPopup.getSelectionStart();
+        		styleStart = selectionStart;
+        	}
         });
         
+        inputPopup.addTextChangedListener(new TextWatcher() { 
+        	public void afterTextChanged(Editable s) { 
+        		int position = Selection.getSelectionStart(inputPopup.getText());
+        		if (position < 0){
+        			position = 0;
+        		}
+        		Log.d("textstyle", "styleStart == " + styleStart + ", position == " + position);
+        		if (position > 0){
+        			if (styleStart > position || position > (cursorLoc + 1)){
+        				//user changed cursor location, reset
+        				styleStart = position - 1;
+        			}
+        			cursorLoc = position;
+
+        			if (toggleBold.isChecked()){  
+            			if (toggleItalic.isChecked()){
+                			if (toggleUnderlined.isChecked()){
+                				//bold, italic, underlined
+                				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                                for (int i = 0; i < ss.length; i++) {
+                                        s.removeSpan(ss[i]);
+                                }
+                                StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                                for (int i = 0; i < ss1.length; i++) {
+                                    s.removeSpan(ss1[i]);
+                                }
+                                s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                				s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                			}
+                			else{
+                				//bold, italic
+                				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                                for (int i = 0; i < ss.length; i++) {
+                                        s.removeSpan(ss[i]);
+                                }
+                                StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                                for (int i = 0; i < ss1.length; i++) {
+                                    s.removeSpan(ss1[i]);
+                                }
+                				s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                			}
+            			}
+            			else if (toggleUnderlined.isChecked()){
+            				//bold, underlined
+            				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                            for (int i = 0; i < ss.length; i++) {
+                                    s.removeSpan(ss[i]);
+                            }
+                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                            for (int i = 0; i < ss1.length; i++) {
+                                s.removeSpan(ss1[i]);
+                            }
+                            s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            			}
+            			else{
+            				//bold
+            				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                            for (int i = 0; i < ss.length; i++) {
+                                    s.removeSpan(ss[i]);
+                            }
+                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                            for (int i = 0; i < ss1.length; i++) {
+                                s.removeSpan(ss1[i]);
+                            }
+                            s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            			}
+        			}
+        			else if (toggleItalic.isChecked()){
+        				if (toggleUnderlined.isChecked()){
+            				//italic, underlined
+        					UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                            for (int i = 0; i < ss.length; i++) {
+                                    s.removeSpan(ss[i]);
+                            }
+                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                            for (int i = 0; i < ss1.length; i++) {
+                                s.removeSpan(ss1[i]);
+                            }
+                            s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            				s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        				}
+        				else{
+        					//italic
+        					UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                            for (int i = 0; i < ss.length; i++) {
+                                    s.removeSpan(ss[i]);
+                            }
+                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                            for (int i = 0; i < ss1.length; i++) {
+                                s.removeSpan(ss1[i]);
+                            }
+            				s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        				}
+        			}
+        			else if (toggleUnderlined.isChecked()){
+        				//underline
+        				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                        for (int i = 0; i < ss.length; i++) {
+                                s.removeSpan(ss[i]);
+                        }
+                        StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
+                        for (int i = 0; i < ss1.length; i++) {
+                            s.removeSpan(ss1[i]);
+                        }
+                        s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        			}
+        		}
+        	}
+        	public void beforeTextChanged(CharSequence s, int start, int count, int after) { 
+        		//unused
+        	} 
+        	public void onTextChanged(CharSequence s, int start, int before, int count) { 
+        		//unused
+        	} 
+        });
+        
+        
+        //before
+//        toggleBold.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                	if(toggleItalic.isChecked()){
+////                		inputPopup.setTextAppearance(getActivity(), R.style.italic_bold);
+//                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+//                	}
+//                	else{
+//                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+//                	}
+//                } else {
+//                	if(toggleItalic.isChecked()){
+////                		inputPopup.setTextAppearance(getActivity(), R.style.italic);
+//                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+//                	}
+//                	else{
+////                		inputPopup.setTextAppearance(getActivity(), R.style.normal_text);
+//                		inputPopup.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+//                	}
+//                }
+//            }
+//        });
+        
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+//        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 //        int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_height), getResources().getDisplayMetrics()));
 //        int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.popup_width), getResources().getDisplayMetrics()));
-		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.8), getResources().getDisplayMetrics()));
+//		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.8), getResources().getDisplayMetrics()));
 		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth*0.9), getResources().getDisplayMetrics()));
 
 //        mainView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -857,16 +975,20 @@ public class TableFragment extends GeneralFragment {
 //        final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
         final PopupWindow popup = new PopupWindow(popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
-		popup.setOutsideTouchable(false);
+//		popup.setOutsideTouchable(false);
         popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
+        popupList.add(popup);
+        final int popupIndex = popupList.indexOf(popup);
+        Log.d("popupList", "popupIndex == " + popupIndex);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				View headlineView = ((TableRow) headerTable.getChildAt(0)).getChildAt(getColumnIndex(ll));
 				String headline = ((EditText) headlineView).getText().toString();
 				popupHeadline.setText(headline);
-				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+				//old version... but we need to take the content as parent, not popupView
+//				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+				popup.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
 			}
 		});
 		txt.setText(getResources().getString(R.string.new_element));
