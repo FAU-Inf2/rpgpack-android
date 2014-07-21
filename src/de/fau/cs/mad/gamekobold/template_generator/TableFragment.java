@@ -2,6 +2,8 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 
+import java.util.ArrayList;
+
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -83,6 +85,9 @@ public class TableFragment extends GeneralFragment {
 	protected TableRow contextMenuRow;
 	protected PopupWindow popupStyles = null;
 	protected View stylesView;
+	protected ArrayList<View> popupViewList = new ArrayList<>();
+	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
+
 
 	
 	@Override
@@ -704,7 +709,9 @@ public class TableFragment extends GeneralFragment {
     int styleStart = 0;
     int cursorLoc = 0;
 	
-	private LinearLayout initPopup(final TableRow row){
+    private LinearLayout initPopup(final TableRow row){
+		Log.d("TABLE_FRAGMENT", "init_popup");
+
 		final LinearLayout ll = new LinearLayout(getActivity());
 		final TextView newElement = new TextView(getActivity());
 		/*
@@ -751,7 +758,11 @@ public class TableFragment extends GeneralFragment {
 			}
 		});
         LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View popupView = inflater.inflate(R.layout.table_view_popup, (ViewGroup) getActivity().findViewById(R.id.popup_element));
+        final View popupView = inflater.inflate(R.layout.table_view_popup, null);
+        popupViewList.add(popupView);
+        final int popupViewIndex = popupViewList.indexOf(popupView);
+        Log.d("popupList", "popupViewIndex == " + popupViewIndex);
+
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
@@ -966,14 +977,18 @@ public class TableFragment extends GeneralFragment {
 		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
 //		popup.setOutsideTouchable(false);
         popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
+        popupList.add(popup);
+        final int popupIndex = popupList.indexOf(popup);
+        Log.d("popupList", "popupIndex == " + popupIndex);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				View headlineView = ((TableRow) headerTable.getChildAt(0)).getChildAt(getColumnIndex(ll));
 				String headline = ((EditText) headlineView).getText().toString();
 				popupHeadline.setText(headline);
-				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+				//old version... but we need to take the content as parent, not popupView
+//				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+				popup.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
 			}
 		});
 		txt.setText(getResources().getString(R.string.new_element));
