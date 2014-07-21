@@ -67,7 +67,9 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+//	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+//	    final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+		final Dialog dialog = new Dialog(getActivity());
 	    // Get the layout inflater
 	    final LayoutInflater inflater = getActivity().getLayoutInflater();
 	    // Inflate and set the layout for the dialog
@@ -97,48 +99,19 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    }		
 
 //	    builder.setView(view);
-	    final AlertDialog dialog = builder.create();
-	    dialog.setView(view, 0, 0, 0, 0);
-////	    final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-////	    params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-////	    params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-////	    params.gravity = Gravity.CENTER;
-	    dialog.setCanceledOnTouchOutside(true);
+//	    final AlertDialog dialog = builder.create();
+
+//	    dialog.setView(view, 0, 0, 0, 0);
 	    // disable background dimming
 	    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//	    
+
+	    dialog.setContentView(view);
+	    dialog.setCanceledOnTouchOutside(true);
+	    positionDialog(dialog);
 	    return dialog;
 	}
-	
-//	@Override
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//		final View view = inflater.inflate(R.layout.color_picker_layout, container, false);
-//	    // shuffle colors
-//	    shuffleArray(colors);
-//	    //create button list
-//	    buttons = new ImageButton[12];
-//	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);
-//	    buttons[1] = (ImageButton)view.findViewById(R.id.imageButton2);
-//	    buttons[2] = (ImageButton)view.findViewById(R.id.imageButton3);
-//	    buttons[3] = (ImageButton)view.findViewById(R.id.imageButton4);
-//	    buttons[4] = (ImageButton)view.findViewById(R.id.imageButton5);
-//	    buttons[5] = (ImageButton)view.findViewById(R.id.imageButton6);
-//	    buttons[6] = (ImageButton)view.findViewById(R.id.imageButton7);
-//	    buttons[7] = (ImageButton)view.findViewById(R.id.imageButton8);
-//	    buttons[8] = (ImageButton)view.findViewById(R.id.imageButton9);
-//	    buttons[9] = (ImageButton)view.findViewById(R.id.imageButton10);
-//	    buttons[10] = (ImageButton)view.findViewById(R.id.imageButton11);
-//	    buttons[11] = (ImageButton)view.findViewById(R.id.imageButton12);
-//	    // set listener and color for all buttons
-//	    for(int i = 0 ; i < buttons.length; i++) {
-//	    	final ImageButton button = buttons[i];
-//	    	button.setOnClickListener(this);
-//	    	button.setColorFilter(colors[i], Mode.SRC_ATOP);
-//	    }		
-//		return view;
-//	}
 	
 	@Override
 	public void onClick(View v) {
@@ -154,37 +127,25 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 			}
 		}
 	}
-	
-	@Override
-	public void onStart() {
-		if(targetButton != null) {
-			int[] coordinates = new int[2];
-			targetButton.getLocationOnScreen(coordinates);
-			Log.d("Colorpicker", "targetX:"+coordinates[0]);
-			Log.d("Colorpicker", "targetY:"+coordinates[1]);
-			final int height = targetButton.getHeight();
-			final Dialog dlg = getDialog();
-			Log.d("Colorpicker", "dlg:"+dlg);
-			final Window window = dlg.getWindow();
-			Log.d("Colorpicker", "window:"+window);
-			final WindowManager.LayoutParams dialogLayout = window.getAttributes();
-			Log.d("Colorpicker", "popupX:"+dialogLayout.x);
-			Log.d("Colorpicker", "popupY:"+dialogLayout.y);
-			Log.d("Colorpicker", "popupWidth:"+dialogLayout.width);
-			Log.d("Colorpicker", "popupHeight:"+dialogLayout.height);
-			dialogLayout.gravity = Gravity.TOP | Gravity.LEFT;
-			//dialogLayout.gravity = Gravity.TOP;
-			dialogLayout.x = coordinates[0]+targetButton.getWidth()-dialogLayout.width;
-			dialogLayout.y = coordinates[1]+targetButton.getHeight();
-			Log.d("Colorpicker", "popupX:"+dialogLayout.x);
-			Log.d("Colorpicker", "popupY:"+dialogLayout.y);
+
+	private void positionDialog(Dialog dialog) {
+		if(targetButton == null) {
+			return;
 		}
-		super.onStart();
+		int[] targetLoc = new int[2];
+		targetButton.getLocationInWindow(targetLoc);
+	    final Window window = dialog.getWindow();
+	    final WindowManager.LayoutParams wmlp = window.getAttributes();
+		wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+		wmlp.y = targetLoc[0] - (int)(targetButton.getMeasuredHeight()*1.3);
+		wmlp.x = targetLoc[1] - (targetButton.getMeasuredWidth()/2);
+	    window.setAttributes(wmlp);
 	}
 
 	public static ColorPickerDialog newInstance(Button targetButton) {
 		ColorPickerDialog newInstance = new ColorPickerDialog();
 		newInstance.targetButton = targetButton;
+		newInstance.setCancelable(true);
 		return newInstance;
 	}
 	// Implementing Fisher–Yates shuffle
@@ -201,5 +162,4 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    	ar[i] = a;
 	    }
 	}
-
 }
