@@ -122,8 +122,8 @@
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Do you really want to leave Template-Generator?</string>
-    <string name="yes_and_trash">Yes and trash</string>
-    <string name="yes_and_save">"Yes and save"</string>
+    <string name="yes_and_trash">Yes and Trash</string>
+    <string name="yes_and_save">"Yes and Save"</string>
 
     <!-- TemplateDetailsActivity -->
     <string name="edit_template">Edit Template</string>
