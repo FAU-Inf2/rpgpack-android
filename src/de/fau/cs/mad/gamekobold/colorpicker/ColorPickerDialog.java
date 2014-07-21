@@ -8,11 +8,13 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,13 +64,15 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 		    colors[11] = res.getColor(R.color.belize_hole);	
 	    }
 	}
-	
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
 	    // Get the layout inflater
 	    final LayoutInflater inflater = getActivity().getLayoutInflater();
-	    View view = inflater.inflate(R.layout.color_picker_layout, null);
+	    // Inflate and set the layout for the dialog
+	    // Pass null as the parent view because its going in the dialog layout
+	    final View view = inflater.inflate(R.layout.color_picker_layout, null);
 	    // shuffle colors
 	    shuffleArray(colors);
 	    //create button list
@@ -90,17 +94,51 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    	final ImageButton button = buttons[i];
 	    	button.setOnClickListener(this);
 	    	button.setColorFilter(colors[i], Mode.SRC_ATOP);
-	    }
-	   
-	    // Inflate and set the layout for the dialog
-	    // Pass null as the parent view because its going in the dialog layout
-	    builder.setView(view);
-	    // disable background dimming
+	    }		
+
+//	    builder.setView(view);
 	    final AlertDialog dialog = builder.create();
+	    dialog.setView(view, 0, 0, 0, 0);
+////	    final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+////	    params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+////	    params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+////	    params.gravity = Gravity.CENTER;
+	    dialog.setCanceledOnTouchOutside(true);
+	    // disable background dimming
 	    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//	    
 	    return dialog;
 	}
+	
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//		final View view = inflater.inflate(R.layout.color_picker_layout, container, false);
+//	    // shuffle colors
+//	    shuffleArray(colors);
+//	    //create button list
+//	    buttons = new ImageButton[12];
+//	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);
+//	    buttons[1] = (ImageButton)view.findViewById(R.id.imageButton2);
+//	    buttons[2] = (ImageButton)view.findViewById(R.id.imageButton3);
+//	    buttons[3] = (ImageButton)view.findViewById(R.id.imageButton4);
+//	    buttons[4] = (ImageButton)view.findViewById(R.id.imageButton5);
+//	    buttons[5] = (ImageButton)view.findViewById(R.id.imageButton6);
+//	    buttons[6] = (ImageButton)view.findViewById(R.id.imageButton7);
+//	    buttons[7] = (ImageButton)view.findViewById(R.id.imageButton8);
+//	    buttons[8] = (ImageButton)view.findViewById(R.id.imageButton9);
+//	    buttons[9] = (ImageButton)view.findViewById(R.id.imageButton10);
+//	    buttons[10] = (ImageButton)view.findViewById(R.id.imageButton11);
+//	    buttons[11] = (ImageButton)view.findViewById(R.id.imageButton12);
+//	    // set listener and color for all buttons
+//	    for(int i = 0 ; i < buttons.length; i++) {
+//	    	final ImageButton button = buttons[i];
+//	    	button.setOnClickListener(this);
+//	    	button.setColorFilter(colors[i], Mode.SRC_ATOP);
+//	    }		
+//		return view;
+//	}
 	
 	@Override
 	public void onClick(View v) {
@@ -137,7 +175,7 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 			dialogLayout.gravity = Gravity.TOP | Gravity.LEFT;
 			//dialogLayout.gravity = Gravity.TOP;
 			dialogLayout.x = coordinates[0]+targetButton.getWidth()-dialogLayout.width;
-			dialogLayout.y = coordinates[1];
+			dialogLayout.y = coordinates[1]+targetButton.getHeight();
 			Log.d("Colorpicker", "popupX:"+dialogLayout.x);
 			Log.d("Colorpicker", "popupY:"+dialogLayout.y);
 		}

@@ -8,6 +8,8 @@ import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -109,6 +111,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		colorChangeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// Create and show the dialog.
 				final ColorPickerDialog dialog = ColorPickerDialog.newInstance(colorChangeButton);
 				dialog.show(getFragmentManager(), "ColorPickerDialog");
 			}
