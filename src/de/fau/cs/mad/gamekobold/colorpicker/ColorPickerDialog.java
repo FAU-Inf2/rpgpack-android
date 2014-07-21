@@ -1,12 +1,14 @@
 package de.fau.cs.mad.gamekobold.colorpicker;
 
 import java.util.Random;
+
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.res.Resources;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class ColorPickerDialog extends DialogFragment implements View.OnClickListener{
 	// our color list
@@ -75,6 +78,8 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    // Inflate and set the layout for the dialog
 	    // Pass null as the parent view because its going in the dialog layout
 	    final View view = inflater.inflate(R.layout.color_picker_layout, null);
+	    ImageView triangle = (ImageView)view.findViewById(R.id.imageView1);
+	    triangle.setColorFilter(getActivity().getResources().getColor(R.color.background_light), Mode.SRC_ATOP);
 	    // shuffle colors
 	    shuffleArray(colors);
 	    //create button list
