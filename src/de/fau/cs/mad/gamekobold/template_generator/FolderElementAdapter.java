@@ -61,6 +61,12 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	public FolderElementData getItem(int position) {
 	    return allData.get(position);
 	}
+	
+	public FolderElementData[] getAll(){
+		FolderElementData[] toReturn = new FolderElementData[allData.size()];
+		allData.toArray(toReturn);
+		return toReturn;
+	}
 
 	@Override
 	public boolean hasStableIds(){

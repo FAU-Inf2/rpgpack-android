@@ -56,7 +56,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 //the one where you cant go up further
 	 GeneralFragment topFragment;
 	 //the one above which is only visible in the slideout-menu
-	 FolderFragment rootFragment;
+	 protected FolderFragment rootFragment;
 	 protected static Activity theActiveActivity;
 	 
 	 //variables for slideout-menu

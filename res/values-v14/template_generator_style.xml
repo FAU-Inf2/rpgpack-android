@@ -5,8 +5,7 @@
 
         <!-- API 14 theme customizations can go here. -->
         <item name="android:textColor">@color/white</item>
-        <item name="android:buttonStyle">@style/template_generator_button_style</item>
-        <item name="android:editTextStyle">@style/template_generator_edittext_style</item>
+        <item name=	"android:editTextStyle">@style/template_generator_edittext_style</item>
         <item name="android:actionBarStyle">@style/template_generator_actionbar</item>
     </style>
 
