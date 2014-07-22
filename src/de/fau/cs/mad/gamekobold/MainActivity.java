@@ -9,9 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
+	
+	Toast leaveToast = null;
+	
 	/* Functions */
 	private void notImplemented() {
 
@@ -41,7 +44,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void manageCharackter(View view) {
-		//Charakter Kurz-Übersicht
+		//Charakter Kurz-ï¿½bersicht
 		Intent intent = new Intent(MainActivity.this,
 				MatrixViewActivity.class);
 		startActivity(intent);
@@ -70,7 +73,17 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
+		leaveToast = Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main2);
 	}
-
+	
+	public void onBackPressed(){
+		if (!leaveToast.getView().isShown())
+		{
+			leaveToast.show();
+		}
+		else{
+			super.onBackPressed();
+		}
+	}
 }
