@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
 		leaveToast = Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT);
-		setContentView(R.layout.activity_main2);
+		setContentView(R.layout.activity_main4);
 	}
 	
 	public void onBackPressed(){
