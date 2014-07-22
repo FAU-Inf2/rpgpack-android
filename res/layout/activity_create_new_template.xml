@@ -6,105 +6,83 @@
     tools:context="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity"
     tools:ignore="MergeRootFrame" >
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background"
-        android:columnCount="14" >
-
-        <ImageButton
-            android:id="@+id/imageButtonTemplateIcon"
-            android:layout_width="78dp"
-            android:layout_height="88dp"
-            android:layout_column="0"
-            android:layout_gravity="left|top"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_row="0"
-            android:layout_rowSpan="4"
-            android:adjustViewBounds="true"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/addphoto_grey" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/background" >
 
         <EditText
             android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="199dp"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/createTemplate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textAddIcon"
             android:layout_gravity="fill_horizontal|top"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_row="7"
             android:ems="10"
             android:gravity="top|left"
             android:hint="@string/hint_description_text"
             android:inputType="textMultiLine"
             android:lines="8"
-            android:maxLines="10"
+            android:maxLines="20"
+            android:layout_marginTop="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:minLines="4"
             android:scrollbars="vertical"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp" >
 
-        <Space />
+            <requestFocus
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <Space />
-
-        <Space />
-
-        <Space android:layout_column="3" />
+        </EditText>
 
         <Button
             android:id="@+id/createTemplate"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|top"
-            android:layout_row="17"
-            android:layout_rowSpan="7"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:background="@color/bright_green"
             android:text="@string/text_create_template"
             android:textColor="@color/white" />
 
+        <ImageButton
+            android:id="@+id/imageButtonTemplateIcon"
+            android:layout_width="78dp"
+            android:layout_height="88dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="5dip"
+            android:layout_marginLeft="5dip"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/addphoto_grey" />
+
         <EditText
             android:id="@+id/templateName"
             android:layout_width="wrap_content"
-            android:layout_height="53dp"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal|top"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_row="2"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/worldName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:ems="10"
+            android:layout_marginTop="9dip"
             android:hint="@string/hint_template_name"
             android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/textAddIcon"
-            android:layout_column="0"
-            android:layout_gravity="center"
-            android:layout_row="6"
-            android:text="@string/text_add_icon"
-            android:textColor="@color/white"
-            android:textSize="9sp" />
-
         <EditText
             android:id="@+id/worldName"
-            android:layout_width="wrap_content"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_gravity="fill_horizontal|fill_vertical"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_row="3"
-            android:layout_rowSpan="4"
+            android:layout_marginTop="5dip"
+            android:layout_below="@+id/templateName"
+            android:layout_toLeftOf="@+id/buttonInfo"
+            android:layout_toRightOf="@+id/imageButtonTemplateIcon"
             android:ems="10"
             android:hint="@string/hint_world_name"
             android:textColor="@color/white"
@@ -114,12 +92,26 @@
             android:id="@+id/buttonInfo"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_column="1"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="8dp"
-            android:layout_row="3"
+            android:layout_marginRight="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_alignBaseline="@+id/worldName"
+            android:layout_alignBottom="@+id/worldName"
+            android:layout_alignParentRight="true"
             android:background="@drawable/info2_white"
             android:scaleType="fitXY" />
-    </GridLayout>
+
+        <TextView
+            android:id="@+id/textAddIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:layout_marginLeft="10dip"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageButtonTemplateIcon"
+            android:text="@string/text_add_icon"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+    </RelativeLayout>
 
 </FrameLayout>

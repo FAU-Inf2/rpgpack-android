@@ -6,6 +6,8 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -48,6 +50,7 @@ public class CreateNewTemplateActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
 		myActivity = this;
+		newTemplate = null;
 
 		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 
@@ -323,8 +326,84 @@ public class CreateNewTemplateActivity extends Activity {
 	}
 
 	private void showPopup() {
-		// TODO show Popup
+		TemplateInfoDialogFragment popupTemplateInfoFragment = TemplateInfoDialogFragment
+				.newInstance(this, newTemplate);
+		popupTemplateInfoFragment.show(getFragmentManager(),
+				"popupTemplateInfoFragment");
+	}
 
+	public static class TemplateInfoDialogFragment extends DialogFragment {
+		public CreateNewTemplateActivity createNewTemplateActivity;
+		private Template myTemplate;
+
+		public static TemplateInfoDialogFragment newInstance(
+				CreateNewTemplateActivity createNewTemplateActivity,
+				Template template) {
+			TemplateInfoDialogFragment fragment = new TemplateInfoDialogFragment();
+			fragment.createNewTemplateActivity = createNewTemplateActivity;
+			fragment.myTemplate = template;
+			return fragment;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle SaveInstanceState) {
+			// Use the Builder class for convenient Dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+			// Get the layout inflater
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+
+			// Inflate and set the layout for the dialog
+			// Pass null as the parent view because its going in the dialog
+			// layout
+			View view = inflater.inflate(R.layout.popup_template_details_info,
+					null);
+
+			builder.setView(view);
+
+			// set Dialog characteristics
+			// get right button text
+			String positiveButtonText;
+
+			positiveButtonText = getString(R.string.save_changes);
+
+			builder.setMessage(getString(R.string.popup_template_details_info_titel));
+			builder.setPositiveButton(positiveButtonText,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// TODO save info text for a new template!
+						}
+					});
+
+			builder.setNegativeButton(getString(R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+							TemplateInfoDialogFragment.this.getDialog()
+									.cancel();
+						}
+					});
+
+			// Create the AlertDialog object and return it
+			final AlertDialog dialog = builder.create();
+
+			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+				@Override
+				public void onShow(final DialogInterface dialog) {
+
+					Button positiveButton = ((AlertDialog) dialog)
+							.getButton(DialogInterface.BUTTON_POSITIVE);
+
+					// set OK button color here
+					positiveButton.setBackgroundColor(getActivity()
+							.getResources().getColor(R.color.bright_green));
+					positiveButton.invalidate();
+				}
+			});
+			return dialog;
+		}
 	}
 
 	/**
