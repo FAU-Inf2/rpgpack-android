@@ -1,14 +1,11 @@
 package de.fau.cs.mad.gamekobold.colorpicker;
 
 import java.util.Random;
-
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.res.Resources;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,9 +13,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +25,7 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	private static int[] colors = null;
 	// receiver for picked color
 	private ColorPickerDialogInterface receiver = null;
-	//
+	// ImageButtons for displaying the colors
 	private ImageButton[] buttons;
 	// where to put this color picker
 	private Button targetButton = null;
@@ -70,7 +67,6 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-//	    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
 //	    final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
 		final Dialog dialog = new Dialog(getActivity());
 	    // Get the layout inflater
@@ -82,7 +78,7 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    triangle.setColorFilter(getActivity().getResources().getColor(R.color.background_light), Mode.SRC_ATOP);
 	    // shuffle colors
 	    shuffleArray(colors);
-	    //create button list
+	    // create button list
 	    buttons = new ImageButton[12];
 	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);
 	    buttons[1] = (ImageButton)view.findViewById(R.id.imageButton2);
@@ -101,20 +97,22 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    	final ImageButton button = buttons[i];
 	    	button.setOnClickListener(this);
 	    	button.setColorFilter(colors[i], Mode.SRC_ATOP);
-	    }		
-
-//	    builder.setView(view);
-//	    final AlertDialog dialog = builder.create();
-
+	    }
 //	    dialog.setView(view, 0, 0, 0, 0);
 	    // disable background dimming
 	    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+	    // disable title bar
 	    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    // set background color to be transparent
 	    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
+	    // set content view
 	    dialog.setContentView(view);
+	    // set cancelable
+	    dialog.setCancelable(true);
+	    // cancel dialog when touch outside
 	    dialog.setCanceledOnTouchOutside(true);
-	    positionDialog(dialog);
+	    // position dialog under the target button
+	    positionDialog(dialog, view);
 	    return dialog;
 	}
 	
@@ -132,25 +130,32 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 			}
 		}
 	}
-
-	private void positionDialog(Dialog dialog) {
+	
+	/**
+	 * Positions the dialog under the target button
+	 * @param dialog The dialog
+	 * @param view View which the dialog displays
+	 */
+	private void positionDialog(Dialog dialog, View view) {
 		if(targetButton == null) {
 			return;
 		}
+		view.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		//Log.d("ColorPicker", "view W:"+view.getMeasuredWidth());
+		//Log.d("ColorPicker", "view H:"+view.getMeasuredHeight());
 		int[] targetLoc = new int[2];
 		targetButton.getLocationInWindow(targetLoc);
 	    final Window window = dialog.getWindow();
 	    final WindowManager.LayoutParams wmlp = window.getAttributes();
 		wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-		wmlp.y = targetLoc[0] - (int)(targetButton.getMeasuredHeight()*1.3);
-		wmlp.x = targetLoc[1] - (targetButton.getMeasuredWidth()/2);
+		wmlp.y = targetLoc[1];
+		wmlp.x = targetLoc[0] - (int)(view.getMeasuredWidth()*0.66);
 	    window.setAttributes(wmlp);
 	}
 
 	public static ColorPickerDialog newInstance(Button targetButton) {
 		ColorPickerDialog newInstance = new ColorPickerDialog();
 		newInstance.targetButton = targetButton;
-		newInstance.setCancelable(true);
 		return newInstance;
 	}
 	// Implementing Fisher–Yates shuffle
