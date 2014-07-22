@@ -162,11 +162,16 @@
     <string name="msg_please_wait">Einen Augenblick bitte&#8230;</string>
     <string name="row_edit_last_template">Letztes Template bearbeiten&#8230;</string>
     <string name="row_create_new_template">Neues Template erstellen&#8230;</string>
-    
-     <!-- template_generator_table_view -->
+
+    <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>
     <string name="text_add_column"> + Spalte</string>
     <string name="text_remove_column"> - Spalte</string>
     <string name="text_press_to_add_new_row">Neue Zeile hinzufügen</string>
+   
+    <!-- popup_template_details_info -->
+    <string name="hint_set_your_description_text">Hier hast Du Platz für deine Notizen&#8230;</string>
 
+     <string name="title_activity_new_game">NewGameActivity</string>
+    
 </resources>

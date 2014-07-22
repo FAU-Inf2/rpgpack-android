@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/iconView"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/addphoto_grey" />
+
+    <TextView
+        android:id="@+id/textViewNewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_alignBottom="@+id/iconView"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/iconView"
+        android:gravity="center"
+        android:text="create"
+        android:textColor="@color/grey"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/bracket_grey1_small"
+        android:textColor="@color/black" />
+
+</RelativeLayout>

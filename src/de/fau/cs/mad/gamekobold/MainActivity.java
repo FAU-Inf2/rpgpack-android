@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import android.app.Activity;
@@ -12,9 +13,9 @@ import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
+
 	Toast leaveToast = null;
-	
+
 	/* Functions */
 	private void notImplemented() {
 
@@ -40,15 +41,16 @@ public class MainActivity extends Activity {
 	}
 
 	public void startGame(View view) {
-		this.notImplemented();
+		// Spiel erstellen
+		Intent intent = new Intent(MainActivity.this, GameBrowserActivity.class);
+		startActivity(intent);
 	}
 
 	public void manageCharackter(View view) {
-		//Charakter Kurz-�bersicht
-		Intent intent = new Intent(MainActivity.this,
-				MatrixViewActivity.class);
+		// Charakter Kurz-�bersicht
+		Intent intent = new Intent(MainActivity.this, MatrixViewActivity.class);
 		startActivity(intent);
-		
+
 	}
 
 	public void templateGenerator(View view) {
@@ -73,16 +75,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
-		leaveToast = Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT);
+		leaveToast = Toast.makeText(this, "Press back again to leave",
+				Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main4);
 	}
-	
-	public void onBackPressed(){
-		if (!leaveToast.getView().isShown())
-		{
+
+	public void onBackPressed() {
+		if (!leaveToast.getView().isShown()) {
 			leaveToast.show();
-		}
-		else{
+		} else {
 			super.onBackPressed();
 		}
 	}

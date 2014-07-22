@@ -10,9 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:ems="10"
+         android:gravity="top" 
         android:inputType="textMultiLine"
         android:lines="15"
         android:maxLines="40"
+        android:hint="@string/hint_set_your_description_text"
         android:textColor="@color/white" >
 
         <requestFocus />

@@ -42,8 +42,8 @@
         <activity
             android:name="de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity"
             android:label="Root"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/template_generator_style" >
+            android:theme="@style/template_generator_style"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,13 +65,18 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
         </activity>
-         <activity android:name="de.fau.cs.mad.gamekobold.matrix.TemplateGeneratorWelcomeActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.TemplateGeneratorWelcomeActivity" >
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
             android:label="@string/title_activity_template_generator_welcome" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity"></activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity" >
+        </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity"
+            android:label="@string/title_activity_new_game" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
