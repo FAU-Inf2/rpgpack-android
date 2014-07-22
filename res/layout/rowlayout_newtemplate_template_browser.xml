@@ -5,25 +5,27 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="44px"
-        android:layout_height="44px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="4px"
-        android:layout_marginLeft="8px"
-        android:layout_marginRight="8px"
-        android:layout_marginTop="4px"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:maxWidth="50dip"
+        android:scaleType="fitXY"
         android:src="@drawable/addphoto_grey" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="44px"
-        android:layout_alignBottom="@+id/imageView1"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/imageView1"
-        android:gravity="center"
         android:textColor="@color/grey"
         android:textSize="18sp" />
 
