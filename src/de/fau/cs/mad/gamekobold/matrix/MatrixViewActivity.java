@@ -144,7 +144,7 @@ public class MatrixViewActivity extends Activity {
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
-		// TODO prüfen
+		// TODO check
 		public static AddNewItemDialogFragment newInstance() {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 			return fragment;
