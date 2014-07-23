@@ -44,11 +44,6 @@
             android:label="Root"
             android:theme="@style/template_generator_style"
             android:windowSoftInputMode="adjustResize" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity"

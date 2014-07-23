@@ -12,40 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+		android:weightSum="4"
         android:orientation="horizontal" >
 
         <ToggleButton
             android:id="@+id/toggle_italic"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textOff="Italic"
-            android:textOn="Italic!" />
+            android:textOff="I"
+            android:textOn="Italic!"
+            android:textStyle="italic" />
 
         <ToggleButton
             android:id="@+id/toggle_bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                        android:layout_weight="1"
-            android:textOff="Bold"
-            android:textOn="Bold!" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textOff="B"
+            android:textOn="Bold!"
+            android:textStyle="bold" />
 
         <ToggleButton
             android:id="@+id/toggle_underline"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                        android:layout_weight="1"
-            
-            android:textOff="Underlined"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textOff="U"
             android:textOn="Underlined!" />
         
         <Button
             android:id="@+id/add_ref"
             android:layout_width="wrap_content"
-                        android:layout_weight="1"
-            android:textSize="@dimen/text_normal"
-            android:layout_height="wrap_content"
-            android:text="Add_Ref" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add_Ref"
+            android:textSize="@dimen/text_normal" />
         
     </LinearLayout>
 

@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -53,6 +54,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -845,6 +847,7 @@ public class TableFragment extends GeneralFragment {
         	}
         });
         final ToggleButton toggleUnderlined = (ToggleButton) popupView.findViewById(R.id.toggle_underline);
+        toggleUnderlined.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         toggleUnderlined.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
         		int selectionStart = inputPopup.getSelectionStart();
@@ -961,6 +964,14 @@ public class TableFragment extends GeneralFragment {
                 final PopupWindow popupReferences = new PopupWindow(popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                 popupReferences.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
                 popupReferences.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//                popupReferences.setOnDismissListener(new OnDismissListener() {
+//					@Override
+//					public void onDismiss() {
+//				        Log.d("inputPopup", "now selection set");
+//	                    inputPopup.setSelection(inputPopup.getText().length());
+//	                    inputPopup.requestFocus();
+//					}
+//				});
                 ArrayList<String> allRefs = getAllElementsToRef(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).rootFragment);
                 for(String aReference : allRefs){
                 	TextView oneLine = new TextView(TemplateGeneratorActivity.theActiveActivity);

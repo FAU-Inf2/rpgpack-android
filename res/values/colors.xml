@@ -33,5 +33,7 @@
     <color name="dark_green">#16a085</color>
     <color name="peter_river">#3498db</color>
     <color name="belize_hole">#2980b9</color>
+    <color name="button_grey">#525d6b</color>
+    
 
 </resources>
