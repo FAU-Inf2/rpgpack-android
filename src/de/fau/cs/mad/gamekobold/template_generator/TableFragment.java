@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -415,7 +417,6 @@ public class TableFragment extends GeneralFragment {
 			}
 		});
 		row.addView(col2);
-		// TODO research if more and more rows are added when rotating a device!
 		headerTable.addView(row);
 		return headerTable;
 	}
@@ -858,114 +859,48 @@ public class TableFragment extends GeneralFragment {
         		if (position < 0){
         			position = 0;
         		}
-        		Log.d("textstyle", "styleStart == " + styleStart + ", position == " + position);
         		if (position > 0){
         			if (styleStart > position || position > (cursorLoc + 1)){
         				//user changed cursor location, reset
         				styleStart = position - 1;
         			}
         			cursorLoc = position;
-
-        			if (toggleBold.isChecked()){  
-            			if (toggleItalic.isChecked()){
-                			if (toggleUnderlined.isChecked()){
-                				//bold, italic, underlined
-                				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                                for (int i = 0; i < ss.length; i++) {
-                                        s.removeSpan(ss[i]);
-                                }
-                                StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                                for (int i = 0; i < ss1.length; i++) {
-                                    s.removeSpan(ss1[i]);
-                                }
-                                s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                				s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                			}
-                			else{
-                				//bold, italic
-                				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                                for (int i = 0; i < ss.length; i++) {
-                                        s.removeSpan(ss[i]);
-                                }
-                                StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                                for (int i = 0; i < ss1.length; i++) {
-                                    s.removeSpan(ss1[i]);
-                                }
-                				s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                			}
-            			}
-            			else if (toggleUnderlined.isChecked()){
-            				//bold, underlined
-            				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                            for (int i = 0; i < ss.length; i++) {
-                                    s.removeSpan(ss[i]);
+//            		Log.d("textstyle", "styleStart == " + styleStart + ", position == " + position);
+        			if (toggleBold.isChecked()){
+                        StyleSpan[] ss = s.getSpans(styleStart, position, StyleSpan.class);
+                        for (int i = 0; i < ss.length; i++) {
+                            if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+                                s.removeSpan(ss[i]);
                             }
-                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                            for (int i = 0; i < ss1.length; i++) {
-                                s.removeSpan(ss1[i]);
+                        }
+                        s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    if (toggleItalic.isChecked()){
+                        StyleSpan[] ss = s.getSpans(styleStart, position, StyleSpan.class);
+                        for (int i = 0; i < ss.length; i++) {
+                            if (ss[i].getStyle() == android.graphics.Typeface.ITALIC){
+                                s.removeSpan(ss[i]);
                             }
-                            s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            			}
-            			else{
-            				//bold
-            				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                            for (int i = 0; i < ss.length; i++) {
-                                    s.removeSpan(ss[i]);
-                            }
-                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                            for (int i = 0; i < ss1.length; i++) {
-                                s.removeSpan(ss1[i]);
-                            }
-                            s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            			}
-        			}
-        			else if (toggleItalic.isChecked()){
-        				if (toggleUnderlined.isChecked()){
-            				//italic, underlined
-        					UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                            for (int i = 0; i < ss.length; i++) {
-                                    s.removeSpan(ss[i]);
-                            }
-                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                            for (int i = 0; i < ss1.length; i++) {
-                                s.removeSpan(ss1[i]);
-                            }
-                            s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            				s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        				}
-        				else{
-        					//italic
-        					UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                            for (int i = 0; i < ss.length; i++) {
-                                    s.removeSpan(ss[i]);
-                            }
-                            StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                            for (int i = 0; i < ss1.length; i++) {
-                                s.removeSpan(ss1[i]);
-                            }
-            				s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        				}
-        			}
-        			else if (toggleUnderlined.isChecked()){
-        				//underline
-        				UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
+                        }
+                        s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    if (toggleUnderlined.isChecked()){
+                    	UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
                         for (int i = 0; i < ss.length; i++) {
                                 s.removeSpan(ss[i]);
                         }
-                        StyleSpan[] ss1 = s.getSpans(styleStart, position, StyleSpan.class);
-                        for (int i = 0; i < ss1.length; i++) {
-                            s.removeSpan(ss1[i]);
-                        }
                         s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        			}
+                    }
+                    inputPopup.setText(s);
+                    inputPopup.setSelection(position);
         		}
+        			
         	}
         	public void beforeTextChanged(CharSequence s, int start, int count, int after) { 
         		//unused
         	} 
         	public void onTextChanged(CharSequence s, int start, int before, int count) { 
-        		//unused
+        		
         	} 
         });
         
