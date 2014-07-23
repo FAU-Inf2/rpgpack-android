@@ -52,7 +52,7 @@
         android:textColor="@color/light_grey" />
 
     <ImageView
-        android:id="@+id/counter"
+        android:id="@+id/bracket_grey1_small_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
