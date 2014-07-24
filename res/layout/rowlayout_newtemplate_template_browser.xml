@@ -11,11 +11,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-                                android:paddingBottom="8dp"
-                
         android:adjustViewBounds="true"
         android:gravity="center"
         android:maxWidth="50dip"
+        android:paddingBottom="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/addphoto_grey" />
 
@@ -28,5 +27,15 @@
         android:layout_toRightOf="@+id/imageView1"
         android:textColor="@color/grey"
         android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/bracket_grey1_small"
+        android:textColor="@color/black" />
 
 </RelativeLayout>

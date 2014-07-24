@@ -27,12 +27,20 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="45dp"
-                android:layout_marginTop="140dp"
+                android:layout_marginTop="120dp"
                 android:gravity="center"
                 android:text="@string/template_generator_welcom"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="150dp"
+                android:layout_height="260dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/coachmark" />
         </RelativeLayout>
     </FrameLayout>
     <!-- The navigation drawer -->
