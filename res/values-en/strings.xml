@@ -172,5 +172,9 @@
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Your template notice&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
+    
+     <!-- game -->
+    <string name="save_game">Save Game</string>
+    <string name="game_browser_title">Your Games</string>
 
 </resources>

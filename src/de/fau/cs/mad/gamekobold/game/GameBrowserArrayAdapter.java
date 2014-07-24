@@ -56,12 +56,8 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				rowView = inflater.inflate(
 						R.layout.rowlayout_newgame_game_browser, parent, false);
 
-				Log.e("er", "Position, getCount: " + getCount());
-
 				TextView gName = (TextView) rowView
 						.findViewById(R.id.textViewNewGame);
-				//Game curGame = objects.get(position);
-				//curGame.getAppGameName()
 				gName.setText("Create New Game...");
 
 			} else {
@@ -82,7 +78,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 				Game curGame = objects.get(position);
 
-				gName.setText(curGame.getAppGameName());
+				gName.setText(curGame.getGameName());
 				// TODO change it later to
 				// curGame.getTemplate().getTemplateName()
 				gTemplate.setText(curGame.getDescription());
@@ -102,7 +98,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				TextView gName = (TextView) rowView
 						.findViewById(R.id.textViewNewGame);
 				Game curGame = objects.get(position);
-				gName.setText(curGame.getAppGameName());
+				gName.setText(curGame.getGameName());
 			} else {
 				rowView = inflater.inflate(R.layout.rowlayout_game_browser,
 						parent, false);
@@ -119,7 +115,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 				Game curGame = objects.get(position);
 
-				gName.setText(curGame.getAppGameName());
+				gName.setText(curGame.getGameName());
 				gTemplate.setText(curGame.getTemplate().getTemplateName());
 				gDate.setText(curGame.getDate());
 

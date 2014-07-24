@@ -5,7 +5,7 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class Game {
-	private String appGameName;
+	private String gameName;
 	private String author;
 	private String date;
 	private List<String> tagList;
@@ -13,10 +13,10 @@ public class Game {
 	private Template template;
 	private List<Charakter> charakterList;
 
-	public Game(String appGameName, String author, String date,
+	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
 			List<Charakter> charakterList) {
-		this.appGameName = appGameName;
+		this.gameName = gameName;
 		this.author = author;
 		this.date = date;
 		this.tagList = tagList;
@@ -25,19 +25,19 @@ public class Game {
 		this.charakterList = charakterList;
 	}
 
-	public Game(String appGameName, String templateName, String date) {
-		this.appGameName = appGameName;
+	public Game(String gameName, String templateName, String date) {
+		this.gameName = gameName;
 		// TODO change it to template later
 		this.description = templateName;
 		this.date = date;
 	}
 
-	public String getAppGameName() {
-		return appGameName;
+	public String getGameName() {
+		return gameName;
 	}
 
-	public void setAppGameName(String appGameName) {
-		this.appGameName = appGameName;
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 
 	public String getAuthor() {

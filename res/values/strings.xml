@@ -168,10 +168,20 @@
     <string name="text_add_column"> + Spalte</string>
     <string name="text_remove_column"> - Spalte</string>
     <string name="text_press_to_add_new_row">Neue Zeile hinzufügen</string>
-   
+
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Hier hast Du Platz für deine Notizen&#8230;</string>
+    <string name="title_activity_new_game">NewGameActivity</string>
 
-     <string name="title_activity_new_game">NewGameActivity</string>
-    
+    <!-- game -->
+    <string name="save">Speichern</string>
+    <string name="save_game">Spiel speichern</string>
+    <string name="game_browser_title">Deine Spiele</string>
+
+    <!-- fragment_create_new_game -->
+    <string name="hint_game_name">Spielname...</string>
+    <string name="hint_1">Hint1...</string>
+    <string name="hint_2">Hint2...</string>
+    <string name="hint_3">Hint3...</string>
+
 </resources>

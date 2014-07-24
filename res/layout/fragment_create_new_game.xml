@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+
+    <ImageView
+        android:id="@+id/icon1"
+        android:layout_width="104dp"
+        android:layout_height="110dp"
+        android:layout_gravity="left|fill_vertical"
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_templatedetails_roundcorner_iconbutton"
+        android:padding="6dp"
+        android:src="@drawable/addphoto" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/button1"
+        android:layout_toRightOf="@+id/Button01"
+        android:background="@color/bright_green"
+        android:text="@string/save_game"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/buttonInfoPopup"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView4"
+        android:layout_margin="5dp"
+        android:background="@drawable/info2_white"
+        android:scaleType="fitXY" />
+
+    <EditText
+        android:id="@+id/gameName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/icon1"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/icon1"
+        android:hint="@string/hint_game_name"
+        android:lines="1"
+        android:maxLines="1"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="20sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/textView4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gameName"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/icon1"
+        android:ems="10"
+        android:hint="@string/hint_1"
+        android:lines="1"
+    android:maxLines="1"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
+
+    <EditText
+        android:id="@+id/textView3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonInfoPopup"
+        android:layout_alignBottom="@+id/buttonInfoPopup"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_toLeftOf="@+id/buttonInfoPopup"
+        android:ems="10"
+        android:lines="1"
+    android:maxLines="1"
+        android:hint="@string/hint_1"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" >
+    </EditText>
+
+    <Button
+        android:id="@+id/Button01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/icon1"
+        android:background="@color/grey"
+        android:text="@string/back"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

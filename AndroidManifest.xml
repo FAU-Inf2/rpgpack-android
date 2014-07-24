@@ -72,6 +72,16 @@
             android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity"
             android:label="@string/title_activity_new_game" >
         </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.game.GameDetailsActivity"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity1" >
+        </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
