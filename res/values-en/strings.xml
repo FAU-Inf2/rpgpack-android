@@ -174,7 +174,13 @@
     <string name="title_activity_new_game">NewGameActivity</string>
     
      <!-- game -->
+     <string name="save">Save</string>
     <string name="save_game">Save Game</string>
     <string name="game_browser_title">Your Games</string>
 
+     <!-- fragment_create_new_game -->
+    <string name="hint_game_name">Game name...</string>
+    <string name="hint_1">Hint1...</string>
+    <string name="hint_2">Hint2...</string>
+    <string name="hint_3">Hint3...</string>
 </resources>
