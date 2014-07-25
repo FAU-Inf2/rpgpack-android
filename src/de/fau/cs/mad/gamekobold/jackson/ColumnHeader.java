@@ -26,8 +26,8 @@ public class ColumnHeader {
 	}
 	
 	@JsonIgnore
-	public boolean isInt() {
-		return IntegerClass.TYPE_STRING.equals(type);
+	public boolean isPopup() {
+		return PopupClass.TYPE_STRING.equals(type);
 	}
 	@JsonIgnore
 	public boolean isString() {

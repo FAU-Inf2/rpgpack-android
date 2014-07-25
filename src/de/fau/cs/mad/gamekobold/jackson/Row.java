@@ -7,7 +7,7 @@ import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Row {	
+public class Row {
 	public ArrayList<AbstractColumnEntry> entries;
 
 	@JsonCreator
@@ -35,14 +35,14 @@ public class Row {
 	 * @param header The column information
 	 */
 	public void addColumn(ColumnHeader header) {
-	 	if(header.isInt()) {
-	 		entries.add(new IntegerClass());
-	 	}
-	 	else if(header.isString()) {
+	 	if(header.isString()) {
 	 		entries.add(new StringClass());
 	 	}
 	 	else if(header.isCheckBox()) {
 	 		entries.add(new CheckBoxClass());
+	 	}
+	 	else if(header.isPopup()) {
+	 		entries.add(new PopupClass());
 	 	}
 	 }
 
@@ -53,5 +53,21 @@ public class Row {
 	 	if(!entries.isEmpty()) {
 	 		entries.remove(entries.size()-1);
 	 	}
-	 } 
+	 }
+	 
+	 /**
+	  * Adds a column with string content
+	  * @param value The string to be used
+	  */
+	 public void addStringColumn(String value) {
+		 entries.add(new StringClass(value));
+	 }
+	 
+	 /**
+	  * Adds a column with checkbox content
+	  * @param value The value to be used
+	  */
+	 public void addCheckBoxColumn(boolean value) {
+		 entries.add(new CheckBoxClass(value));
+	 }
 }

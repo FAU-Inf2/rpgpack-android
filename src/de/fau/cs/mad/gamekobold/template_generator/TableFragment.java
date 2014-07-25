@@ -481,7 +481,7 @@ public class TableFragment extends GeneralFragment {
 	        //
 	        // JACKSON
 	        //
-	        jacksonTable.createAndAddNewRow();
+	        jacksonTable.addNewRow();
 	        //
 	        //JACKSON END
 	        //

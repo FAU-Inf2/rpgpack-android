@@ -52,12 +52,19 @@ public class Table extends AbstractTable{
 	 * Creates a new row and adds it to the table.
 	 * @return The newly created row.
 	 */
-	public Row createAndAddNewRow() {
+	public Row addNewRow() {
 		if(rows == null) {
 			rows = new ArrayList<Row>();
 		}
-		// TODO add values
 		Row ret = new Row();
+		for(final ColumnHeader header : columnHeaders) {
+			if(header.isCheckBox()) {
+				ret.addCheckBoxColumn(false);
+			}
+			else {
+				ret.addStringColumn("");
+			}
+		}
 		rows.add(ret);
 		return ret;
 	}

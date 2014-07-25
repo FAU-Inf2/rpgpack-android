@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 //for polymorphism
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@type")
-@JsonSubTypes({ @Type(value = IntegerClass.class, name = "integerclass"),
-				@Type(value = StringClass.class, name = "stringclass"),
-				@Type(value = CheckBoxClass.class, name ="checkboxclass")})
+@JsonSubTypes({ @Type(value = StringClass.class, name = "string"),
+				@Type(value = CheckBoxClass.class, name ="chkbox"),
+				@Type(value = PopupClass.class, name = "popup")})
 
 //for getType()
 @JsonIgnoreProperties({"type"})
