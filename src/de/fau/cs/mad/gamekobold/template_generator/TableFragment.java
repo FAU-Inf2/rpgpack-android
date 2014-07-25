@@ -267,8 +267,10 @@ public class TableFragment extends GeneralFragment {
 		}
 		else {
 			// add the 2 default columns
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
-			jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline1),
+					StringClass.TYPE_STRING));
+			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
+					StringClass.TYPE_STRING));
 			jacksonInflateWithData = false;
 			// save template
 			Log.d("TableFragment", "added default columns");
