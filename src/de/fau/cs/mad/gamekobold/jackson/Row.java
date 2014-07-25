@@ -11,7 +11,7 @@ public class Row {
 	public ArrayList<AbstractColumnEntry> entries;
 
 	@JsonCreator
-	public Row(@JsonProperty("entries") ArrayList<AbstractColumnEntry> entries){
+	public Row(@JsonProperty("entries") ArrayList<AbstractColumnEntry> entries) {
 		this.entries = entries;
 	}
 
@@ -54,20 +54,28 @@ public class Row {
 	 		entries.remove(entries.size()-1);
 	 	}
 	 }
-	 
-	 /**
-	  * Adds a column with string content
-	  * @param value The string to be used
-	  */
-	 public void addStringColumn(String value) {
-		 entries.add(new StringClass(value));
-	 }
-	 
-	 /**
-	  * Adds a column with checkbox content
-	  * @param value The value to be used
-	  */
-	 public void addCheckBoxColumn(boolean value) {
-		 entries.add(new CheckBoxClass(value));
-	 }
+
+//	 /**
+//	  * Adds a column with string content.
+//	  * @param value The string to be used.
+//	  */
+//	 public void addStringColumn(String value) {
+//		 entries.add(new StringClass(value));
+//	 }
+//	 
+//	 /**
+//	  * Adds a column with checkbox content.
+//	  * @param value The value to be used.
+//	  */
+//	 public void addCheckBoxColumn(boolean value) {
+//		 entries.add(new CheckBoxClass(value));
+//	 }
+//	 
+//	 /**
+//	  * Adds a column with popup content.
+//	  * @param content The content for the popup.
+//	  */
+//	 public void addPopupColumn(String content) {
+//		 entries.add(new PopupClass(content));
+//	 }
 }

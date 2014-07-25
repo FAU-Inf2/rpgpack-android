@@ -47,7 +47,7 @@ public class Table extends AbstractTable{
 			rows.get(i).print();
 		}
 	}
-	
+
 	/**
 	 * Creates a new row and adds it to the table.
 	 * @return The newly created row.
@@ -57,18 +57,14 @@ public class Table extends AbstractTable{
 			rows = new ArrayList<Row>();
 		}
 		Row ret = new Row();
+		// add cells
 		for(final ColumnHeader header : columnHeaders) {
-			if(header.isCheckBox()) {
-				ret.addCheckBoxColumn(false);
-			}
-			else {
-				ret.addStringColumn("");
-			}
+			ret.addColumn(header);
 		}
 		rows.add(ret);
 		return ret;
 	}
-	
+
 	/**
 	 * Removes the last row.
 	 */
@@ -77,7 +73,7 @@ public class Table extends AbstractTable{
 			rows.remove(rows.size()-1);
 		}		
 	}
-	
+
 	/**
 	 * Removes the row at given index.
 	 * @param index Index for the row.
