@@ -2,6 +2,9 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import android.util.Log;
 
 public class Table extends AbstractTable{
@@ -53,9 +56,32 @@ public class Table extends AbstractTable{
 		if(rows == null) {
 			rows = new ArrayList<Row>();
 		}
+		// TODO add values
 		Row ret = new Row();
 		rows.add(ret);
 		return ret;
+	}
+	
+	/**
+	 * Removes the last row.
+	 */
+	public void removeRow() {
+		if(rows != null) {
+			rows.remove(rows.size()-1);
+		}		
+	}
+	
+	/**
+	 * Removes the row at given index.
+	 * @param index Index for the row.
+	 */
+	public void removeRow(int index) {
+		Log.d("TABLE", "removeRow:"+index);
+		if(rows != null) {
+			if(index >= 0 && index < rows.size()) {
+				rows.remove(index);	
+			}
+		}		
 	}
 	
 	/**
@@ -107,5 +133,13 @@ public class Table extends AbstractTable{
 		 	return true;
 		}
 	 	return false;
+	 }
+	 
+	 @JsonIgnore
+	 public int getRowCount() {
+		 if(rows == null) {
+			 return 0;
+		 }
+		 return rows.size();
 	 }
 }

@@ -451,6 +451,9 @@ public class TableFragment extends GeneralFragment {
 	 * @param row
 	 */
 	protected void removeRow(TableRow row) {
+		// JACKSON
+		jacksonTable.removeRow(table.indexOfChild(row));
+		// JACKSON END
         table.removeView(row);
 	}
 
@@ -475,6 +478,13 @@ public class TableFragment extends GeneralFragment {
 	        for(int i=0; i<((TableRow) headerTable.getChildAt(0)).getChildCount(); i++){
 	        	setHeaderTableStyle((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i));
 	        }
+	        //
+	        // JACKSON
+	        //
+	        jacksonTable.createAndAddNewRow();
+	        //
+	        //JACKSON END
+	        //
 	}
 
 	/**
