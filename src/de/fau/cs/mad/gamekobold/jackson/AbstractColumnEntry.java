@@ -16,11 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 //for getType()
 @JsonIgnoreProperties({"type"})
 
-public abstract class AbstractColumnEntry {	
-	public String name;
-	public String shortCut;
-	public String description;
-	public boolean importantValue;
+public abstract class AbstractColumnEntry {
+	
+//	public String name;
+//	public String shortCut;
+//	public String description;
+//	public boolean importantValue;
 	
 	@JsonIgnore
 	public abstract String getType();

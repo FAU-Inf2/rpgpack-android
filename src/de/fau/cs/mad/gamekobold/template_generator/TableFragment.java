@@ -263,7 +263,6 @@ public class TableFragment extends GeneralFragment {
 			    view.setLayoutParams(lparams);
 			}
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
-			jacksonInflateWithData = false;
 		}
 		else {
 			// add the 2 default columns
@@ -271,11 +270,24 @@ public class TableFragment extends GeneralFragment {
 					StringClass.TYPE_STRING));
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
 					StringClass.TYPE_STRING));
-			jacksonInflateWithData = false;
 			// save template
 			Log.d("TableFragment", "added default columns");
 			//TemplateGeneratorActivity.saveTemplateAsync();
 		}
+		// check for saved rows
+		if(jacksonTable.getRowCount() > 0) {
+			// adjust row count
+			int jacksonRowNum = jacksonTable.getRowCount();
+			while(table.getChildCount() < jacksonRowNum) {
+				addItemList();
+				Log.d("TableFragment", "added row");
+			}
+			while(table.getChildCount() > jacksonRowNum) {
+				removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
+				Log.d("TableFragment", "removed row");
+			}
+		}
+		jacksonInflateWithData = false;
 		/*
 		 * JACKSON END
 		 */
@@ -385,8 +397,7 @@ public class TableFragment extends GeneralFragment {
 				 *  JACKSON START
 				 */
 				jacksonTable.setColumnTitle(0, s.toString());
-				Log.d("TABLE_FRAGMENT", "column title changed");
-				//TemplateGeneratorActivity.saveTemplateAsync();
+				//Log.d("TABLE_FRAGMENT", "column title changed");
 				/*
 				 *  JACKSON END
 				 */
@@ -409,8 +420,7 @@ public class TableFragment extends GeneralFragment {
 				 *  JACKSON START
 				 */
 				jacksonTable.setColumnTitle(1, s.toString());
-				Log.d("TABLE_FRAGMENT", "column title changed");
-				//TemplateGeneratorActivity.saveTemplateAsync();
+				//Log.d("TABLE_FRAGMENT", "column title changed");
 				/*
 				 *  JACKSON END
 				 */
@@ -452,7 +462,9 @@ public class TableFragment extends GeneralFragment {
 	 */
 	protected void removeRow(TableRow row) {
 		// JACKSON
-		jacksonTable.removeRow(table.indexOfChild(row));
+		if(!jacksonInflateWithData) {
+			jacksonTable.removeRow(table.indexOfChild(row));
+		}
 		// JACKSON END
         table.removeView(row);
 	}
@@ -481,7 +493,9 @@ public class TableFragment extends GeneralFragment {
 	        //
 	        // JACKSON
 	        //
-	        jacksonTable.addNewRow();
+	        if(!jacksonInflateWithData) {
+	        	jacksonTable.addNewRow();
+	        }
 	        //
 	        //JACKSON END
 	        //
