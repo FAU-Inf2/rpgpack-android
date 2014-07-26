@@ -99,6 +99,14 @@ public class Table extends AbstractTable{
 			}
 		}
 		numberOfColumns++;
+		Log.d("JACKSON_TABLE", "added column");
+	 }
+	 
+	 /**
+	  * Appends a new column to the table and every row with the default type.
+	  */
+	 public void addColumn() {
+		addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 	 }
 
 	 /**
@@ -114,6 +122,7 @@ public class Table extends AbstractTable{
 	 			}
 	 		}
 	 		numberOfColumns--;
+			Log.d("JACKSON_TABLE", "removed column");
 	 	}
 	 }
 	 
@@ -145,4 +154,40 @@ public class Table extends AbstractTable{
 		 }
 		 return rows.size();
 	 }
+	 
+	 public AbstractColumnEntry getEntry(int columnIndex, int rowIndex) {
+		 if(columnIndex < 0 || columnIndex >= numberOfColumns) {
+			 return null;
+		 }
+		 if(rowIndex < 0 || rowIndex >= getRowCount()) {
+			 return null;
+		 }
+		 return rows.get(rowIndex).entries.get(columnIndex);
+	 }
+//	 /**
+//	  * Changes the type of the column identified by index.
+//	  * All old values of the rows will be deleted and replaced with default values.
+//	  * @param index
+//	  * @param newType
+//	  */
+//	 public void changeColumnType(int index, ColumnHeader newType) {
+//		 if(index < 0 || index >= numberOfColumns || newType == null) {
+//			 return;
+//		 }
+//		 columnHeaders.set(index, newType);
+//		 AbstractColumnEntry newEntry;
+//		 if(newType.isCheckBox()) {
+//			 newEntry = new CheckBoxClass();
+//		 }
+//		 else if(newType.isPopup()) {
+//			 newEntry = new PopupClass();
+//		 }
+//		 else {
+//			 newEntry = new StringClass();
+//		 }
+//		 for(final Row row : rows) {
+//			 
+//			 row.entries.set(index, newEntry);
+//		 }
+//	 }
 }

@@ -78,4 +78,10 @@ public class Row {
 //	 public void addPopupColumn(String content) {
 //		 entries.add(new PopupClass(content));
 //	 }
+	 public void setColumnValue(int index, AbstractColumnEntry newEntry) {
+		 if(index < 0 || index >= entries.size() || newEntry == null) {
+			 return;
+		 }
+		 entries.set(index, newEntry);
+	 }
 }

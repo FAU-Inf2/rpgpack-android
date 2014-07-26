@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 //for getType()
 @JsonIgnoreProperties({"type"})
 
-public abstract class AbstractColumnEntry {
+public abstract class AbstractColumnEntry implements IEditableContent {
 	
 //	public String name;
 //	public String shortCut;

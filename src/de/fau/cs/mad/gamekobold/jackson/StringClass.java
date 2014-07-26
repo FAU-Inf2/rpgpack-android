@@ -28,4 +28,9 @@ public class StringClass extends AbstractColumnEntry {
 	public String getType() {
 		return TYPE_STRING;
 	}
+
+	@Override
+	public void setContent(String content) {
+		mainText = content;
+	}
 }
