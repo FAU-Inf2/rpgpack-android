@@ -4,33 +4,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class StringClass extends AbstractColumnEntry {
+public class PopupClass extends AbstractColumnEntry{
 	@JsonIgnore
-	public static final String TYPE_STRING = "string";
+	public static final String TYPE_STRING = "popup";
 	
-	public String mainText;
+	String content;
 	
-	public StringClass() {
-		mainText = "";
+	public PopupClass() {
+		content = "";
 	}
 	
 	@JsonCreator
-	public StringClass(@JsonProperty("mainText") String text) {
-		this.mainText = text;
+	public PopupClass(@JsonProperty("content") String content) {
+		this.content = content;
 	}
-	
-	@Override
-	public String toString() {
-		return mainText;
-	}
-	
+
 	@Override
 	public String getType() {
 		return TYPE_STRING;
 	}
 
 	@Override
+	public String toString() {
+		return content;
+	}
+
+	@Override
 	public void setContent(String content) {
-		mainText = content;
+		this.content = content;
 	}
 }

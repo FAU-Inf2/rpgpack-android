@@ -1,10 +1,11 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
+import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ColumnHeader {
+public class ColumnHeader implements IEditableContent{
 	public String name,type;
 	public boolean hidden;
 	
@@ -26,8 +27,8 @@ public class ColumnHeader {
 	}
 	
 	@JsonIgnore
-	public boolean isInt() {
-		return IntegerClass.TYPE_STRING.equals(type);
+	public boolean isPopup() {
+		return PopupClass.TYPE_STRING.equals(type);
 	}
 	@JsonIgnore
 	public boolean isString() {
@@ -36,5 +37,11 @@ public class ColumnHeader {
 	@JsonIgnore
 	public boolean isCheckBox() {
 		return CheckBoxClass.TYPE_STRING.equals(type);
+	}
+
+	@Override
+	public void setContent(String newContent) {
+		name = newContent;
+		Log.d("ColumnHeader", "Changed name to:"+newContent);
 	}
 }

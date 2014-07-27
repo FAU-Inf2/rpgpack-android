@@ -2,6 +2,9 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import android.util.Log;
 
 public class Table extends AbstractTable{
@@ -44,18 +47,44 @@ public class Table extends AbstractTable{
 			rows.get(i).print();
 		}
 	}
-	
+
 	/**
 	 * Creates a new row and adds it to the table.
 	 * @return The newly created row.
 	 */
-	public Row createAndAddNewRow() {
+	public Row addNewRow() {
 		if(rows == null) {
 			rows = new ArrayList<Row>();
 		}
 		Row ret = new Row();
+		// add cells
+		for(final ColumnHeader header : columnHeaders) {
+			ret.addColumn(header);
+		}
 		rows.add(ret);
 		return ret;
+	}
+
+	/**
+	 * Removes the last row.
+	 */
+	public void removeRow() {
+		if(rows != null) {
+			rows.remove(rows.size()-1);
+		}		
+	}
+
+	/**
+	 * Removes the row at given index.
+	 * @param index Index for the row.
+	 */
+	public void removeRow(int index) {
+		Log.d("TABLE", "removeRow:"+index);
+		if(rows != null) {
+			if(index >= 0 && index < rows.size()) {
+				rows.remove(index);	
+			}
+		}		
 	}
 	
 	/**
@@ -70,6 +99,14 @@ public class Table extends AbstractTable{
 			}
 		}
 		numberOfColumns++;
+		Log.d("JACKSON_TABLE", "added column");
+	 }
+	 
+	 /**
+	  * Appends a new column to the table and every row with the default type.
+	  */
+	 public void addColumn() {
+		addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 	 }
 
 	 /**
@@ -85,6 +122,7 @@ public class Table extends AbstractTable{
 	 			}
 	 		}
 	 		numberOfColumns--;
+			Log.d("JACKSON_TABLE", "removed column");
 	 	}
 	 }
 	 
@@ -108,4 +146,48 @@ public class Table extends AbstractTable{
 		}
 	 	return false;
 	 }
+	 
+	 @JsonIgnore
+	 public int getRowCount() {
+		 if(rows == null) {
+			 return 0;
+		 }
+		 return rows.size();
+	 }
+	 
+	 public AbstractColumnEntry getEntry(int columnIndex, int rowIndex) {
+		 if(columnIndex < 0 || columnIndex >= numberOfColumns) {
+			 return null;
+		 }
+		 if(rowIndex < 0 || rowIndex >= getRowCount()) {
+			 return null;
+		 }
+		 return rows.get(rowIndex).entries.get(columnIndex);
+	 }
+//	 /**
+//	  * Changes the type of the column identified by index.
+//	  * All old values of the rows will be deleted and replaced with default values.
+//	  * @param index
+//	  * @param newType
+//	  */
+//	 public void changeColumnType(int index, ColumnHeader newType) {
+//		 if(index < 0 || index >= numberOfColumns || newType == null) {
+//			 return;
+//		 }
+//		 columnHeaders.set(index, newType);
+//		 AbstractColumnEntry newEntry;
+//		 if(newType.isCheckBox()) {
+//			 newEntry = new CheckBoxClass();
+//		 }
+//		 else if(newType.isPopup()) {
+//			 newEntry = new PopupClass();
+//		 }
+//		 else {
+//			 newEntry = new StringClass();
+//		 }
+//		 for(final Row row : rows) {
+//			 
+//			 row.entries.set(index, newEntry);
+//		 }
+//	 }
 }
