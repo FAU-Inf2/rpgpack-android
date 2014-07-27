@@ -168,19 +168,31 @@
     <string name="text_add_column"> + column</string>
     <string name="text_remove_column"> - column</string>
     <string name="text_press_to_add_new_row">Press to add new row</string>
-    
+
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Your template notice&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
-    
-     <!-- game -->
-     <string name="save">Save</string>
+
+    <!-- game -->
+    <string name="save">Save</string>
     <string name="save_game">Save Game</string>
     <string name="game_browser_title">Your Games</string>
 
-     <!-- fragment_create_new_game -->
+    <!-- fragment_create_new_game -->
     <string name="hint_game_name">Game name...</string>
     <string name="hint_1">Hint1...</string>
     <string name="hint_2">Hint2...</string>
     <string name="hint_3">Hint3...</string>
+
+    <!-- fragment_game_details -->
+    <string name="text_change_game">Adjust Game </string>
+    <string name="text_remove_character_from_game">Do you like to delete this character from the game?</string>
+    <string name="text_click_to_remove_character_from_game">Click Yes to delete this character.</string>
+
+    <!-- fragment_games_list -->
+    <string name="template_store">Template Store</string>
+
+    <!-- play_character_fragment -->
+    <string name="played_character_title">Current character for play</string>
+
 </resources>

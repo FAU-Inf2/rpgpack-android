@@ -72,18 +72,18 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 						.findViewById(R.id.textViewTemplateName);
 				TextView gDate = (TextView) rowView
 						.findViewById(R.id.textViewDate);
-
 				ImageView imageView = (ImageView) rowView
 						.findViewById(R.id.iconView);
+				TextView gCounter = (TextView) rowView
+						.findViewById(R.id.counter);
 
 				Game curGame = objects.get(position);
 
 				gName.setText(curGame.getGameName());
-				// TODO change it later to
-				// curGame.getTemplate().getTemplateName()
-				gTemplate.setText(curGame.getDescription());
+				gTemplate.setText(curGame.getTemplate().getTemplateName());
 				gDate.setText(curGame.getDate());
-
+				gCounter.setText(String.valueOf(curGame.getCharakterList()
+						.size()));
 				// // change the icon for different games
 				// GameIcons gameIcons = GameIcons.getInstance();
 				// imageView.setImageResource(Integer.valueOf(gameIcons

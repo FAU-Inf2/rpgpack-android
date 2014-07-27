@@ -30,8 +30,10 @@ public class GameBrowserActivity extends ListActivity {
 
 		myActivity = this;
 
-		gameList = getDataForListView();
-
+	//	gameList = getDataForListView();
+		
+		gameList = (List<Game>) new GameLab(this);
+		
 		if (gameList == null) {
 			gameList = new ArrayList<Game>();
 		}
@@ -157,21 +159,21 @@ public class GameBrowserActivity extends ListActivity {
 		}
 	}
 
-	private List<Game> getDataForListView() {
-		List<Game> gameList = new ArrayList<Game>();
-		Game game1 = new Game("My First Game", "Dungeons and Dragons",
-				"20.05.2014");
-		Game game2 = new Game("The Best Game", "Vampire the Masquerade",
-				"20.05.2014");
-		Game game3 = new Game("Schwarze Auge Game", "Das Schwarze Auge",
-				"21.05.2014");
-
-		gameList.add(game1);
-		gameList.add(game2);
-		gameList.add(game3);
-		gameList.add(game3);
-		return gameList;
-	}
+//	private List<Game> getDataForListView() {
+//		List<Game> gameList = new ArrayList<Game>();
+//		Game game1 = new Game("My First Game", "Dungeons and Dragons",
+//				"20.05.2014");
+//		Game game2 = new Game("The Best Game", "Vampire the Masquerade",
+//				"20.05.2014");
+//		Game game3 = new Game("Schwarze Auge Game", "Das Schwarze Auge",
+//				"21.05.2014");
+//
+//		gameList.add(game1);
+//		gameList.add(game2);
+//		gameList.add(game3);
+//		gameList.add(game3);
+//		return gameList;
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

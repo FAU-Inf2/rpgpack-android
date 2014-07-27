@@ -1,35 +1,52 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class Game {
+public class Game{
 	private String gameName;
 	private String author;
 	private String date;
 	private List<String> tagList;
 	private String description;
 	private Template template;
-	private List<Charakter> charakterList;
+	private List<GameCharacter> characterList;
 
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
-			List<Charakter> charakterList) {
-		this.gameName = gameName;
-		this.author = author;
-		this.date = date;
+			List<GameCharacter> characterList) {
+		this(gameName, template, date);
 		this.tagList = tagList;
 		this.description = description;
 		this.template = template;
-		this.charakterList = charakterList;
+		this.setCharakterList(characterList);
 	}
 
-	public Game(String gameName, String templateName, String date) {
+	public Game(String gameName, Template template, String date) {
+		this();
 		this.gameName = gameName;
-		// TODO change it to template later
-		this.description = templateName;
+		this.template = template;
 		this.date = date;
+	}
+
+	public Game() {
+		this.characterList = new ArrayList<GameCharacter>();
+	}
+
+	public boolean addCharacter(GameCharacter character) {
+		Log.e("Character is null?", "" + (character == null));
+		Log.e("List is null?", "" + (characterList == null));
+		characterList.add(character);
+		return true;
+	}
+	
+	public boolean removeCharacter(GameCharacter character) {
+		characterList.remove(character);
+		return true;
 	}
 
 	public String getGameName() {
@@ -80,12 +97,13 @@ public class Game {
 		this.template = template;
 	}
 
-	public List<Charakter> getCharakterList() {
-		return charakterList;
+	public List<GameCharacter> getCharakterList() {
+		return characterList;
 	}
 
-	public void setCharakterList(List<Charakter> charakterList) {
-		this.charakterList = charakterList;
+	public void setCharakterList(List<GameCharacter> charakterList) {
+		Log.e("CharacterList", "Setting CharacterList to "+charakterList);
+		this.characterList = charakterList;
 	}
 
 }

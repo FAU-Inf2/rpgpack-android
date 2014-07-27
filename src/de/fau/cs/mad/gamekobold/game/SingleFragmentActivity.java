@@ -10,7 +10,7 @@ public abstract class SingleFragmentActivity extends Activity {
 	// abstract method to instantiate the fragment
 	protected abstract Fragment createFragment();
 
-	// set the activity s view to be inflated from activity_fragment.xml.
+	// set the activitys view to be inflated from activity_fragment.xml.
 	// look for the fragment in the FragmentManager in that container, creating
 	// and adding it if it does not exist.
 	@Override

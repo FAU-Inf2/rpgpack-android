@@ -1,20 +1,16 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +31,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.R.color;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
@@ -77,7 +72,7 @@ public class TemplateDetailsActivity extends Activity {
 
 		ImageView ivIcon = (ImageView) findViewById(R.id.icon1);
 		TextView tvTempalteName = (TextView) findViewById(R.id.textView1);
-		TextView tvGameName = (TextView) findViewById(R.id.textView4);
+		TextView tvWorldName = (TextView) findViewById(R.id.textView4);
 		TextView tvInfo = (TextView) findViewById(R.id.textView3);
 		// TextView tvDescription = (TextView) findViewById(R.id.textView2);
 		Button backButton = (Button) findViewById(R.id.button1);
@@ -93,7 +88,7 @@ public class TemplateDetailsActivity extends Activity {
 			if (template != null) {
 				curTemplate = template;
 				tvTempalteName.setText(curTemplate.getTemplateName());
-				tvGameName.setText(curTemplate.getGameName());
+				tvWorldName.setText(curTemplate.getWorldName());
 				tvInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 

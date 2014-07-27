@@ -60,7 +60,6 @@ public class CreateNewTemplateActivity extends Activity {
 		Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
 		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
-		// final String[] items = new String[] { "von Kamera", "von SD-Karte" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.select_dialog_item, getResources()
 						.getStringArray(R.array.image_picker_items));
@@ -274,16 +273,8 @@ public class CreateNewTemplateActivity extends Activity {
 			// get the uri of selected image
 			imageUri = data.getData();
 
-			// Assume user selects the image from sdcard using Gallery app. The
-			// uri from Gallery app does not give the real path to selected
-			// image, so it has to be resolved on content provider. Method
-			// getRealPathFromURI used to resolve the real path from the uri.
 			path = getRealPathFromURI(imageUri); // from Gallery
 
-			// If the path is null, assume user selects the image using File
-			// Manager app. File Manager app returns different information than
-			// Gallery app. To get the real path to selected image, use
-			// getImagePath method from the uri
 			if (path == null)
 				path = imageUri.getPath(); // from File Manager
 

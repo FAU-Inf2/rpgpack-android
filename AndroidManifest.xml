@@ -82,6 +82,8 @@
             android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.PlayCharacterActivity" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

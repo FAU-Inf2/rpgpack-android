@@ -4,22 +4,26 @@
     android:layout_height="match_parent"
     android:background="@color/background" >
 
-    <ImageView
-        android:id="@+id/icon1"
+
+    <ImageButton
+        android:id="@+id/buttonAddIcon"
         android:layout_width="104dp"
         android:layout_height="110dp"
         android:layout_gravity="left|fill_vertical"
         android:layout_margin="8dp"
+        android:layout_marginLeft="5dip"
+        android:layout_marginTop="5dip"
+        android:adjustViewBounds="true"
         android:background="@drawable/shape_templatedetails_roundcorner_iconbutton"
         android:padding="6dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/addphoto" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonCreateGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/button1"
         android:layout_toRightOf="@+id/Button01"
         android:background="@color/bright_green"
         android:text="@string/save_game"
@@ -39,9 +43,9 @@
         android:id="@+id/gameName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/icon1"
+        android:layout_alignTop="@+id/buttonAddIcon"
         android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/icon1"
+        android:layout_toRightOf="@+id/buttonAddIcon"
         android:hint="@string/hint_game_name"
         android:lines="1"
         android:maxLines="1"
@@ -58,11 +62,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/gameName"
         android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/icon1"
+        android:layout_toRightOf="@+id/buttonAddIcon"
         android:ems="10"
         android:hint="@string/hint_1"
         android:lines="1"
-    android:maxLines="1"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" />
 
@@ -75,9 +79,9 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_toLeftOf="@+id/buttonInfoPopup"
         android:ems="10"
-        android:lines="1"
-    android:maxLines="1"
         android:hint="@string/hint_1"
+        android:lines="1"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" >
     </EditText>
@@ -88,9 +92,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/icon1"
+        android:layout_alignRight="@+id/buttonAddIcon"
         android:background="@color/grey"
         android:text="@string/back"
         android:textColor="@color/white" />
+
+    <GridView
+        android:id="@+id/pickedCharacterGridView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/buttonInfoPopup"
+        android:numColumns="8" >
+    </GridView>
+
+    <ExpandableListView
+        android:id="@+id/expandableTemplateList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonCreateGame"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/pickedCharacterGridView" >
+    </ExpandableListView>
 
 </RelativeLayout>

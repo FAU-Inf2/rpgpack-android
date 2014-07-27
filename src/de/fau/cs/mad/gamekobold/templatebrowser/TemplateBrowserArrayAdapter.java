@@ -86,7 +86,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						parent, false);
 				TextView tName = (TextView) rowView
 						.findViewById(R.id.textView1);
-				TextView tGame = (TextView) rowView
+				TextView tWorld = (TextView) rowView
 						.findViewById(R.id.textView2);
 				TextView tAdditionalInfo = (TextView) rowView
 						.findViewById(R.id.textView3);
@@ -97,7 +97,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				Template curTemplate = objects.get(position);
 
 				tName.setText(curTemplate.getTemplateName());
-				tGame.setText(curTemplate.getGameName());
+				tWorld.setText(curTemplate.getWorldName());
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor()
 						+ ", " + curTemplate.getDate());
 
@@ -122,7 +122,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						parent, false);				
 
 				TextView tName = (TextView) rowView.findViewById(R.id.textView1);
-				TextView tGame = (TextView) rowView.findViewById(R.id.textView2);
+				TextView tWorld = (TextView) rowView.findViewById(R.id.textView2);
 				TextView tAdditionalInfo = (TextView) rowView
 						.findViewById(R.id.textView3);
 
@@ -132,7 +132,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				Template curTemplate = objects.get(position);
 
 				tName.setText(curTemplate.getTemplateName());
-				tGame.setText(curTemplate.getGameName());
+				tWorld.setText(curTemplate.getWorldName());
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import de.fau.cs.mad.gamekobold.R;
 
@@ -18,7 +19,6 @@ public class GameBrowserFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.game_browser_title);
 		games = GameLab.get(getActivity()).getGames();
-
 		GameBrowserArrayAdapter adapter = new GameBrowserArrayAdapter(
 				getActivity(), games);
 		setListAdapter(adapter);
