@@ -65,7 +65,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 						.getItemAtPosition(position);
 
 				Toast.makeText(context,
-						curGameCharacter.getCharacterName() + " wird zum Spiel hizugefügt!",
+						curGameCharacter.getCharacterName() + " wird zum Spiel hinzugefuegt!",
 						Toast.LENGTH_SHORT).show();
 
 				// TODO pruefen ob es nur ein Template moeglich ist!!!!
