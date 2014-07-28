@@ -2,8 +2,10 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.jackson.TemplateSaverTask;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;

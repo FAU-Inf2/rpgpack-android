@@ -1,6 +1,5 @@
-package de.fau.cs.mad.gamekobold.template_generator;
+package de.fau.cs.mad.gamekobold.jackson;
 
-import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
