@@ -20,6 +20,7 @@ public class PlayCharacterFragment extends Fragment {
 		getActivity().setTitle(R.string.played_character_title);
 	}
 
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
