@@ -106,4 +106,8 @@ public class Template implements Serializable{
 		}
 		return fileName;
 	}
+	
+	public void takeOverValues(final Template otherTemplate) {
+		this.description = otherTemplate.description;
+	}
 }

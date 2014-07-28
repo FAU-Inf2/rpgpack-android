@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -66,7 +68,7 @@ public class Template implements Parcelable{
 //			Log.d("TEMPLATE", "characterSheet:null");
 //		}
 //	}
-	
+
 	
 	public static String getSanitizeFileNameForTemplate(Template template) {
 		final String forbiddenCharacters = "/\\?%*:|\"<>1";
@@ -98,30 +100,70 @@ public class Template implements Parcelable{
 		return fileName;
 	}
 	
-	//TODO vllt unter files/Templates/ speichern
 	/**
-	 * @param activity 
-	 * @param fileName file name to be used
+	 * Takes over all values form the given Template
+	 * @param otherTemplate TemplateBrowser Template
+	 */
+	public void takeOverValues(de.fau.cs.mad.gamekobold.templatebrowser.Template otherTemplate) {
+		templateName = otherTemplate.getTemplateName();
+		gameName = otherTemplate.getGameName();
+		author = otherTemplate.getAuthor();
+		date = otherTemplate.getDate();
+		iconID = otherTemplate.getIconID();
+		description = otherTemplate.getDescription();
+	}
+	
+	/**
+	 * 
+	 * @param context Context to be used.
+	 * @param setLastEditedFlag If this is set to true, the "last edited template" preference will be updated.
 	 * @throws JsonGenerationException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * Saves the template as a json file in the template directory with the given name
+	 * Saves this template to a file. The filename and directory will automatically be determined.
 	 */
-	public void saveToJSON(Activity activity) throws JsonGenerationException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		File dir = getTemplateDirectory(activity);
+	public void saveToFile(Context context, boolean setLastEditedFlag) throws JsonGenerationException, JsonMappingException, IOException {
+		File dir = getTemplateDirectory(context);
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + getFileName());
+		saveToFile(outStream);
+		if(setLastEditedFlag) {
+			// save in shared preferences the last edited template file name
+			SharedPreferences pref = context.getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
+			SharedPreferences.Editor edit = pref.edit();
+			edit.putString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, getFileName());
+			edit.commit();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param file The file to which this template will be saved to.
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * Saves this template to the given file.
+	 */
+	public void saveToFile(File file) throws JsonGenerationException, JsonMappingException, IOException {
+		FileOutputStream outStream = new FileOutputStream(file);
+		saveToFile(outStream);
+	}
+	
+	/**
+	 * 
+	 * @param outStream FileOutputStream to be used
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * Writes this template to the given FileOutputStream.
+	 */
+	private void saveToFile(FileOutputStream outStream) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
 		if(USE_PRETTY_WRITER) {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
 		}
 		else {
 			mapper.writer().writeValue(outStream, this);
 		}
-		// save in shared preferences the last edited template file name
-		SharedPreferences pref = activity.getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
-		SharedPreferences.Editor edit = pref.edit();
-		edit.putString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, getFileName());
-		edit.commit();
 	}
 
 	/**
@@ -159,39 +201,52 @@ public class Template implements Parcelable{
 	 * 
 	 * @param context
 	 * @param fileName Template file name
-	 * @return Loaded template
+	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
+	 * @return The Loaded template
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
 	 * Loads the template with the given file name. The file is supposed to be in the template directory.
 	 */
-	public static Template loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
+	public static Template loadFromJSONFile(Context context, String fileName, boolean onlyMetaData) throws JsonParseException, JsonMappingException, IOException {
 		File dir = getTemplateDirectory(context);
 		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
-		Template template = mapper.readValue(inStream, Template.class);
-		return template;
+		return loadFromJSONFile(inStream, onlyMetaData);
 	}
 	
 	/**
 	 * 
-	 * @param templateFile template to be loaded
-	 * @return the loaded template
+	 * @param file The File representing the json.
+	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
+	 * @return The loaded Template
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * 
-	 * Loads the template meta data saved in @templateFile. No template structure is loaded.
-	 * Only items like name, author, game name are loaded!
 	 */
-	public static Template loadFromJSONFileForTemplateBrowser(File templateFile) throws JsonParseException, JsonMappingException, IOException {
+	public static Template loadFromJSONFile(File file, boolean onlyMetaData) throws JsonParseException, JsonMappingException, IOException {
+		FileInputStream inStream = new FileInputStream(file);
+		return loadFromJSONFile(inStream, onlyMetaData);
+	}
+	
+	/**
+	 *
+	 * @param inStream FileInputStream to user for loading
+	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
+	 * @return The loaded template
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * Loads a template using the FileInputStream
+	 */
+	private static Template loadFromJSONFile(FileInputStream inStream, boolean onlyMetaData) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		// in order to load only meta data we use mix in annotations
-		// the Template.Character sheet won't be loaded.
-		mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
-		FileInputStream inStream = new FileInputStream(templateFile);
+		if(onlyMetaData) {
+			// in order to load only meta data we use mix in annotations
+			// the Template.Character sheet won't be loaded.
+			mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
+		}
 		Template template = mapper.readValue(inStream, Template.class);
-		return template;
+		return template;				
 	}
 
 	/**
@@ -200,7 +255,12 @@ public class Template implements Parcelable{
 	 */
 	public String toJSON() throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writer().writeValueAsString(this);
+		if(USE_PRETTY_WRITER) {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+		}
+		else {
+			return mapper.writer().writeValueAsString(this);
+		}
 	}
 	
 	/**

@@ -32,8 +32,6 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
-
-	public static final String DELETED_TEMPLATE = "DELETED_TEMPLATE";
 	private List<Template> templateList = null;
 	private static Activity myActivity = null;
 
@@ -97,7 +95,7 @@ public class TemplateBrowserActivity extends ListActivity {
 
 					i.putExtra("position", position);
 					i.putExtra("template", templateList.get(position));
-					startActivity(i);
+					startActivityForResult(i, 0);
 				}
 			}
 		});
@@ -216,28 +214,66 @@ public class TemplateBrowserActivity extends ListActivity {
 	}
 
 	// the TemplateDetailsActivity sends an intent if the template has been
-	// deleted.
+	// deleted or changed
 	@Override
 	protected void onNewIntent(Intent newIntent) {
-		// templateListChanged =
-		// newIntent.getBooleanExtra(TEMPLATE_LIST_CHANGED, false);
-		Template deletedTemplate = (Template) newIntent
-				.getSerializableExtra(DELETED_TEMPLATE);
-		if (deletedTemplate != null) {
-			if (deletedTemplate.absoluteFilePath != null) {
-				for (final Template template : templateList) {
-					if (template.absoluteFilePath != null) {
-						if (template.absoluteFilePath
-								.equals(deletedTemplate.absoluteFilePath)) {
-							@SuppressWarnings("unchecked")
-							ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
-							adapter.remove(template);
-							adapter.notifyDataSetChanged();
-							break;
+		// get extras
+		Bundle extras = newIntent.getExtras();
+		// check if we got extras
+		if(extras == null) {
+			return;
+		}
+		// check if a template has been changed
+		if(extras.getBoolean(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE_CHANGED)) {
+//			Log.d("TemplateBrowserActivity", "Template changed!");
+//			// get changed template
+//			final Template changedTemplate = (Template) newIntent
+//					.getSerializableExtra(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE);
+//			// null pointer check
+//			if (changedTemplate != null) {
+//				// is it a real template?
+//				if (changedTemplate.absoluteFilePath != null) {
+//					// find and change template in browser
+//					for (final Template template : templateList) {
+//						// check if we found it
+//						if (template.absoluteFilePath != null) {
+//							if (template.absoluteFilePath
+//									.equals(changedTemplate.absoluteFilePath)) {
+//								// take over changes
+//								template.takeOverValues(changedTemplate);
+//								@SuppressWarnings("unchecked")
+//								ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
+//								adapter.notifyDataSetChanged();
+//								break;
+//							}
+//						}
+//					}
+//				}
+//			}
+			return;
+		}
+		// check if a template has been deleted
+		else if(extras.getBoolean(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE_DELETED)) {
+			Log.d("TemplateBrowserActivity", "Template deleted!");
+			final Template deletedTemplate = (Template) newIntent
+					.getSerializableExtra(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE);
+			if (deletedTemplate != null) {
+				if (deletedTemplate.absoluteFilePath != null) {
+					for (final Template template : templateList) {
+						if (template.absoluteFilePath != null) {
+							if (template.absoluteFilePath
+									.equals(deletedTemplate.absoluteFilePath)) {
+								@SuppressWarnings("unchecked")
+								ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
+								adapter.remove(template);
+								adapter.notifyDataSetChanged();
+								break;
+							}
 						}
 					}
 				}
 			}
+			return;
 		}
 	}
 
@@ -258,6 +294,50 @@ public class TemplateBrowserActivity extends ListActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("ON RESULT", "NEW RESULT");
+		Log.d("ON RESULT", "RESULT CODE:"+resultCode);
+		if(resultCode == RESULT_OK) {
+			Log.d("ON RESULT", "RESULT_OK");
+			final Bundle extras = data.getExtras();
+			if(extras == null) {
+				return;
+			}
+			Log.d("ON RESULT", "EXTRAS NOT NULL");
+			if(extras.getBoolean(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE_CHANGED)) {
+				Log.d("onActivityResult", "template changed");
+				// get changed template
+				final Template changedTemplate = (Template) data
+						.getSerializableExtra(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE);
+				// null pointer check
+				if (changedTemplate != null) {
+					// is it a real template?
+					if (changedTemplate.absoluteFilePath != null) {
+						// find and change template in browser
+						for (final Template template : templateList) {
+							// check if we found it
+							if (template.absoluteFilePath != null) {
+								if (template.absoluteFilePath
+										.equals(changedTemplate.absoluteFilePath)) {
+									// take over changes
+									template.takeOverValues(changedTemplate);
+									@SuppressWarnings("unchecked")
+									ArrayAdapter<Template> adapter = (ArrayAdapter<Template>) getListAdapter();
+									adapter.notifyDataSetChanged();
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if(extras.getBoolean(TemplateDetailsActivity.INTENT_EXTRA_TEMPLATE_DELETED)) {
+				
+			}
+		}
 	}
 
 	/**
@@ -284,12 +364,12 @@ public class TemplateBrowserActivity extends ListActivity {
 		adapter.notifyDataSetChanged();
 	}
 
-	private void startEditingOfTemplate(Template template) {
-		String fileName = template.getFileName();
-		if (!fileName.isEmpty()) {
-			startEditingOfTemplate(fileName);
-		}
-	}
+//	private void startEditingOfTemplate(Template template) {
+//		String fileName = template.getFileName();
+//		if (!fileName.isEmpty()) {
+//			startEditingOfTemplate(fileName);
+//		}
+//	}
 
 	private void startEditingOfTemplate(String fileName) {
 		if (fileName.equals("")) {
@@ -323,11 +403,6 @@ public class TemplateBrowserActivity extends ListActivity {
 
 		@Override
 		protected List<Template> doInBackground(Void... params) {
-			/*
-			 * for(int i = 0 ; i < 15; i++) { try { Thread.sleep(150); } catch
-			 * (InterruptedException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); } }
-			 */
 			List<Template> templateList = new ArrayList<Template>();
 			Template template1 = new Template(
 					"My First Template",
@@ -359,7 +434,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					for (final File file : fileList) {
 						try {
 							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
-									.loadFromJSONFileForTemplateBrowser(file);
+									.loadFromJSONFile(file, true);
 						} catch (JsonParseException | JsonMappingException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
