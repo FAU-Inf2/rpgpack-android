@@ -396,7 +396,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			String filename = params[0];*/
 			try {
 				if( (myActivity != null) && (myTemplate != null) ) {
-					myTemplate.saveToJSON(myActivity);
+					myTemplate.saveToFile(myActivity, true);
 				}
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -469,7 +469,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			final String FILE_NAME = params[0];
 			Template template = null;
 			try {
-				template = Template.loadFromJSONFile(appContext, FILE_NAME);
+				template = Template.loadFromJSONFile(appContext, FILE_NAME, false);
 			} catch (Throwable e) {
 				//e.printStackTrace();
 				return null;

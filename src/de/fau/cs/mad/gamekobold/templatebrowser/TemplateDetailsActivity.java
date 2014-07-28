@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.TemplateChangesSaverTask;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -39,6 +40,11 @@ public class TemplateDetailsActivity extends Activity {
 	private CharacterGridArrayAdapter adapter;
 	private GridView gridView;
 	private static Activity myActivity;
+	private boolean templateChanged = false;
+	
+	public final static String INTENT_EXTRA_TEMPLATE_CHANGED = "extra_template_changed";
+	public final static String INTENT_EXTRA_TEMPLATE_DELETED = "extra_template_deleted";
+	public final static String INTENT_EXTRA_TEMPLATE = "extra_template";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +122,7 @@ public class TemplateDetailsActivity extends Activity {
 		backButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(TemplateDetailsActivity.this,
-						TemplateBrowserActivity.class);
-				startActivity(i);
+				goBackToBrowser();
 			}
 		});
 
@@ -176,7 +180,8 @@ public class TemplateDetailsActivity extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == android.R.id.home) {
-			onBackPressed();
+//			onBackPressed();
+			goBackToBrowser();
 			return true;
 		} else if (id == R.id.action_delete_template) {
 			final AlertDialog.Builder dialogBuilder = new Builder(this);
@@ -224,16 +229,14 @@ public class TemplateDetailsActivity extends Activity {
 									}
 								}
 							}
-							// onBackPressed();
 							Intent sendIntent = new Intent(
 									TemplateDetailsActivity.this,
 									TemplateBrowserActivity.class);
 							sendIntent.setAction(Intent.ACTION_SEND);
-							sendIntent.putExtra(
-									TemplateBrowserActivity.DELETED_TEMPLATE,
-									curTemplate);
-							// sendIntent.setType("text/plain");
+							sendIntent.putExtra(INTENT_EXTRA_TEMPLATE_DELETED, true);
+							sendIntent.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
 							startActivity(sendIntent);
+							setResult(RESULT_OK, sendIntent);
 							finish();
 							// Log.d("reachable", "is this beeing called?!"); //
 							// yes
@@ -328,7 +331,44 @@ public class TemplateDetailsActivity extends Activity {
 			adapter.notifyDataSetChanged();
 		}
 	}
+	
+	/**
+	 * Starts the TemplateBrowser Activity.
+	 * Sets the flag for checking for template changes.
+	 */
+	private void goBackToBrowser() {
+		// TODO here
+		Intent i = new Intent(TemplateDetailsActivity.this,
+				TemplateBrowserActivity.class);
+		i.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, templateChanged);
+		if(templateChanged) {
+			i.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
+		}
+		startActivity(i);
+	}
 
+	@Override
+	public void onBackPressed() {
+		//goBackToBrowser();
+		super.onBackPressed();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		if(templateChanged) {
+			// save the changes before we leave
+			TemplateChangesSaverTask saverTask = new TemplateChangesSaverTask(getApplicationContext());
+			saverTask.execute(new Template [] { curTemplate });
+			templateChanged = false;
+//			Intent data = new Intent();
+//			data.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, true);
+//			data.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
+//			setResult(RESULT_OK, data);
+//			finish();
+		}
+	}
+	
 	public static class TemplateInfoDialogFragment extends DialogFragment {
 		private EditText templateInfo;
 		public TemplateDetailsActivity templateDetailsActivity;
@@ -379,7 +419,14 @@ public class TemplateDetailsActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// TODO
+							if(!myTemplate.getDescription().equals(templateInfo.getEditableText().toString())) {
+								myTemplate.setDescription(templateInfo.getEditableText().toString());
+								templateDetailsActivity.templateChanged = true;
+								Intent data = new Intent();
+								data.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, true);
+								data.putExtra(INTENT_EXTRA_TEMPLATE, templateDetailsActivity.curTemplate);
+								templateDetailsActivity.setResult(RESULT_OK, data);
+							}
 						}
 					});
 
