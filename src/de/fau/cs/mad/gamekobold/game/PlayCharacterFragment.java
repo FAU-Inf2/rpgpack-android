@@ -1,16 +1,23 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
 
 public class PlayCharacterFragment extends Fragment {
 	public static final String EXTRA_PLAYED_CHARACTER = "de.fau.cs.mad.gamekobold.game.character";
 
+	
 	private GameCharacter playedCharacter;
 	private TextView characterName;
 
@@ -18,6 +25,7 @@ public class PlayCharacterFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.played_character_title);
+
 	}
 
 	
@@ -35,4 +43,5 @@ public class PlayCharacterFragment extends Fragment {
 				+ playedCharacter.getCharacterName() + " spielen!");
 		return view;
 	}
+	
 }

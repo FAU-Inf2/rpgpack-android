@@ -197,5 +197,16 @@
       <!-- play_character_fragment-->
     <string name="played_character_title">Dein Character zum Spielen</string>
     
+    <!-- Toolbox -->
+    <string name="open_templategenerator">Template Generator</string>
+    <string name="open_timer">Timer</string>
+    <string name="open_tactical">Taktische Karte</string>    
+    <string-array name="action_toolbox_list">
+        <item>Template Generator</item>
+        <item>Timer</item>
+        <item>Taktische Karte</item>
+    </string-array>
+    
+    
     
 </resources>
