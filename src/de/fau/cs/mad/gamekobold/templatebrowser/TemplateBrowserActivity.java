@@ -435,7 +435,9 @@ public class TemplateBrowserActivity extends ListActivity {
 						try {
 							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
 									.loadFromJSONFile(file, true);
-						} catch (JsonParseException | JsonMappingException e) {
+						} catch (JsonParseException e) {
+							e.printStackTrace();
+						} catch (JsonMappingException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
 							e.printStackTrace();
