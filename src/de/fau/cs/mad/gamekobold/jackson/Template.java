@@ -69,9 +69,9 @@ public class Template implements Parcelable{
 //		}
 //	}
 
-	
+
 	public static String getSanitizeFileNameForTemplate(Template template) {
-		final String forbiddenCharacters = "/\\?%*:|\"<>1";
+		final String forbiddenCharacters = "/\\?%*:|\"<>";
 		StringBuilder builder = new StringBuilder();
 		for(final char character : template.templateName.toCharArray()) {
 			if(forbiddenCharacters.indexOf(character) != -1) {
@@ -87,11 +87,11 @@ public class Template implements Parcelable{
 			Date date = new Date();
 			builder.append(format.format(date));
 		}
-		
+
 		//Log.d("sanitizeFileName:", "orig:"+template.fileName+" sani:"+builder.toString());
 		return builder.toString();
 	}
-	
+
 	@JsonIgnore
 	public String getFileName() {
 		if(fileName == null) {
@@ -134,7 +134,7 @@ public class Template implements Parcelable{
 			edit.commit();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param file The file to which this template will be saved to.
@@ -147,7 +147,7 @@ public class Template implements Parcelable{
 		FileOutputStream outStream = new FileOutputStream(file);
 		saveToFile(outStream);
 	}
-	
+
 	/**
 	 * 
 	 * @param outStream FileOutputStream to be used
@@ -185,7 +185,7 @@ public class Template implements Parcelable{
 		}
 		return templateDir;
 	}
-	
+
 	/**
 	 * Checks whether the file for this template exists on the file system.
 	 * @param context
@@ -196,7 +196,7 @@ public class Template implements Parcelable{
 		File templateFile = new File(dir, getFileName());
 		return templateFile.exists();
 	}
-	
+
 	/**
 	 * 
 	 * @param context
@@ -213,7 +213,7 @@ public class Template implements Parcelable{
 		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
 		return loadFromJSONFile(inStream, onlyMetaData);
 	}
-	
+
 	/**
 	 * 
 	 * @param file The File representing the json.
@@ -227,7 +227,7 @@ public class Template implements Parcelable{
 		FileInputStream inStream = new FileInputStream(file);
 		return loadFromJSONFile(inStream, onlyMetaData);
 	}
-	
+
 	/**
 	 *
 	 * @param inStream FileInputStream to user for loading
@@ -262,7 +262,7 @@ public class Template implements Parcelable{
 			return mapper.writer().writeValueAsString(this);
 		}
 	}
-	
+
 	/**
 	 * @param context
 	 * @return the character root folder directory
@@ -295,7 +295,7 @@ public class Template implements Parcelable{
 		characterFolder.mkdir();
 		return characterFolder;
 	}
-	
+
 	// TODO move to some other class?
 	/**
 	 * 

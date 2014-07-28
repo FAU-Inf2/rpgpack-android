@@ -8,8 +8,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 /**
- * 
- * @author fortysix
+ *
  *	AsyncTask to save changes made to the meta data of a Template.
  *	Pass the changed BrowserTemplate to the execute method.
  *	This class will take care of taking over the changes and saves it to the file system.
@@ -55,7 +54,7 @@ public class TemplateChangesSaverTask extends AsyncTask<Template, Void, Boolean>
 			jacksonTemplate.saveToFile(templateFile);
 		}
 		catch(Throwable e) {
-			// if any thing went wrong -> fail
+			// if anything went wrong -> fail
 			return Boolean.FALSE;
 		}
 		return Boolean.TRUE;

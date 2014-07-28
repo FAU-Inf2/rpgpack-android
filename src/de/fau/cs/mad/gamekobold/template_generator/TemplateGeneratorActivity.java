@@ -43,7 +43,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	 public static boolean skipNextOnPauseSave = false;
 	 public static boolean forceSaveOnNextOnPause = false;
-	 //needed for saving
+	 //needed for loading the template
 	 public static TemplateGeneratorActivity myActivity = null;
 	 private CountDownLatch countDownLatch;
 	 /*
@@ -375,47 +375,12 @@ public class TemplateGeneratorActivity extends FragmentActivity {
     	((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
    	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.getRootTable(), this);
     }
-    
-    public static void saveTemplateAsync() {
-    	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
-    	task.execute();
+
+    private void saveTemplateAsync() {
+    	TemplateSaverTask saverTask = new TemplateSaverTask(getApplicationContext(), true);
+    	saverTask.execute(new Template [] { myTemplate });
     }
-    
-    /*public static void saveTemplateAsync(String filename) {
-    	JacksonSaveTemplateTask task = new JacksonSaveTemplateTask();
-//    	task.execute(new String[] {filename});
-    	task.execute();
-    }*/
-    
-    private static class JacksonSaveTemplateTask extends AsyncTask</*String*/ Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(/*String... params*/Void... params) {
-			/*if(params.length != 1) {
-				return Boolean.FALSE;
-			}
-			String filename = params[0];*/
-			try {
-				if( (myActivity != null) && (myTemplate != null) ) {
-					myTemplate.saveToFile(myActivity, true);
-				}
-			} catch (Throwable e) {
-				e.printStackTrace();
-				return Boolean.FALSE;
-			}
-			return Boolean.TRUE;
-		}
-    	
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if(!result) {
-				Toast.makeText(myActivity, "Failed to save template!", Toast.LENGTH_LONG).show();
-			}
-			else {
-				Log.d("MainTemplateGenerator", "saved template async");
-			}
-		}
-    }
-    
+
     @Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
