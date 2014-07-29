@@ -3,10 +3,13 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -24,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -245,4 +249,21 @@ public class CreateNewGameFragment extends Fragment {
 		inflater.inflate(R.menu.fragment_templates_list, menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.menu_item_load_template_from_store:
+	            openStore();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+
+	private void openStore() {
+		// Spiel erstellen
+		Intent intent = new Intent(getActivity(), TemplateStoreMainActivity.class);
+		startActivity(intent);	
+	}
 }

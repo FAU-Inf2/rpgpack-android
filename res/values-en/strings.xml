@@ -209,4 +209,6 @@
         <item>Taktische Karte</item>
     </string-array>
 
+    <!-- Template Store -->
+    <string name="title_activity_template_store_main">Template Store</string>
 </resources>

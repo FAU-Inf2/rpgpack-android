@@ -91,7 +91,7 @@
     <string name="warning_set_name">Dein Template braucht einen Namen!</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
-    <string name="msg_file_already_exists">Für deises Tempalte existiert bereits eine Datei!</string>
+    <string name="msg_file_already_exists">Für dieses Template existiert bereits eine Datei!</string>
     <string name="msg_yes_to_overwrite">Klicke auf JA um diese Datei zu Überschreiben.</string>
 
     <!-- FolderElementAdapter -->
@@ -179,37 +179,37 @@
     <string name="save_game">Spiel speichern</string>
     <string name="game_browser_title">Deine Spiele</string>
 
-
     <!-- fragment_create_new_game -->
     <string name="hint_game_name">Spielname...</string>
     <string name="hint_1">Hint1...</string>
     <string name="hint_2">Hint2...</string>
     <string name="hint_3">Hint3...</string>
 
-     <!-- fragment_game_details -->
+    <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
     <string name="text_remove_character_from_game">Charakter aus diesem Spiel löschen?</string>
     <string name="text_click_to_remove_character_from_game">Klicke auf JA um diesen Character aus dem Spiel zu löschen.</string>
-    
-      <!-- fragment_games_list -->
+
+    <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
-    
-      <!-- play_character_fragment-->
+
+    <!-- play_character_fragment -->
     <string name="played_character_title">Dein Character zum Spielen</string>
-    
+
     <!-- Toolbox -->
     <string name="open_randomgenerator">Template Generator</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Taktische Karte</string>
-    <string name="btn_start">Start</string> 
-    <string name="btn_pause">Pause</string>  
-       
+    <string name="btn_start">Start</string>
+    <string name="btn_pause">Pause</string>
+
     <string-array name="action_toolbox_list">
         <item>Template Generator</item>
         <item>Timer</item>
         <item>Taktische Karte</item>
     </string-array>
-    
-    
-    
+
+    <!-- Template Store -->
+    <string name="title_activity_template_store_main">Template Store</string>
+
 </resources>
