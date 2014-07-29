@@ -18,6 +18,11 @@ public class CheckBoxClass extends AbstractColumnEntry{
 	public CheckBoxClass(@JsonProperty("checked") boolean isChecked) {
 		checked = isChecked;
 	}
+	
+	public CheckBoxClass(String value) {
+		// true if content == "true", false otherwise. no exception thrown!
+		checked = Boolean.parseBoolean(value);		
+	}
 
 	@Override
 	public String getType() {

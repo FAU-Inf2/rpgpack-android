@@ -1,23 +1,28 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import android.util.Log;
 
 public class Table extends AbstractTable{
-	public List<Row> rows;
-	public int numberOfColumns;
+	private List<Row> rows;
+	private int numberOfColumns;
+
 	public ArrayList<ColumnHeader> columnHeaders;
 	public boolean writeOnly;
-	
+
 	public Table() {
 		tableName = "";
 		columnHeaders = new ArrayList<ColumnHeader>();
 		numberOfColumns = 0;
 		writeOnly = false;
+		rows = new ArrayList<Row>();
 	}
 	
 	public Table(String name, ArrayList<ColumnHeader> headers){
@@ -25,6 +30,52 @@ public class Table extends AbstractTable{
 		numberOfColumns = headers.size();
 		columnHeaders = headers;
 		writeOnly = false;
+		rows = new ArrayList<Row>();
+	}
+	
+	@JsonCreator
+	public Table(@JsonProperty("name") String name,
+				@JsonProperty("columnHeaders") ArrayList<ColumnHeader> headers,
+				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows) {
+		tableName = name;
+		numberOfColumns = headers.size();
+		columnHeaders = headers;
+		writeOnly = false;
+		rows = new ArrayList<Row>();
+		// parse rows
+		for(final ArrayList<String> row : loadedRows) {
+			// create new row
+			Row newRow = new Row();
+			// infalte
+			newRow.inflate(headers, row);
+			// add
+			rows.add(newRow);
+		}
+	}
+	
+	/**
+	 * Used for saving to json by jackson library.
+	 * @return
+	 */
+	@JsonProperty("rows")
+	public List<List<String>> getRows() {
+		List<List<String>> ret = new LinkedList<List<String>>();
+		for(final Row row : rows) {
+			ret.add(row.getEntries());
+		}
+		return ret;
+	}
+	
+	public Row getRow(int index) {
+		if(index < 0 || index >= rows.size()) {
+			return null;
+		}
+		return rows.get(index);
+	}
+	
+	@JsonIgnore
+	public int getNumberOfColumns() {
+		return numberOfColumns;
 	}
 	
 	public void print() {
@@ -40,9 +91,6 @@ public class Table extends AbstractTable{
 			}
 		}
 		Log.d("TABLE-print", builder.toString());
-		if(rows == null) {
-			return;
-		}
 		for(int i = 0; i < rows.size(); i++) {
 			rows.get(i).print();
 		}
@@ -53,13 +101,10 @@ public class Table extends AbstractTable{
 	 * @return The newly created row.
 	 */
 	public Row addNewRow() {
-		if(rows == null) {
-			rows = new ArrayList<Row>();
-		}
 		Row ret = new Row();
 		// add cells
 		for(final ColumnHeader header : columnHeaders) {
-			ret.addColumn(header);
+			ret.addColumn(header, "");
 		}
 		rows.add(ret);
 		return ret;
@@ -69,9 +114,9 @@ public class Table extends AbstractTable{
 	 * Removes the last row.
 	 */
 	public void removeRow() {
-		if(rows != null) {
+		if(!rows.isEmpty()) {
 			rows.remove(rows.size()-1);
-		}		
+		}
 	}
 
 	/**
@@ -80,11 +125,9 @@ public class Table extends AbstractTable{
 	 */
 	public void removeRow(int index) {
 		Log.d("TABLE", "removeRow:"+index);
-		if(rows != null) {
-			if(index >= 0 && index < rows.size()) {
-				rows.remove(index);	
-			}
-		}		
+		if(index >= 0 && index < rows.size()) {
+			rows.remove(index);
+		}
 	}
 	
 	/**
@@ -92,14 +135,16 @@ public class Table extends AbstractTable{
 	 * @param header The ColumnHeader with the information for the new Column.
 	 */
 	 public void addColumn(ColumnHeader header) {
-		columnHeaders.add(header);
-	 	if(rows != null) {
-	 		for(final Row row : rows) {
-	 			row.addColumn(header);
-			}
-		}
-		numberOfColumns++;
-		Log.d("JACKSON_TABLE", "added column");
+		 // add header
+		 columnHeaders.add(header);
+		 // add column to every row
+		 for(final Row row : rows) {
+	 		row.addColumn(header, "");
+		 }
+		 // inc column count
+		 numberOfColumns++;
+		 // log
+		 Log.d("JACKSON_TABLE", "added column");
 	 }
 	 
 	 /**
@@ -116,10 +161,8 @@ public class Table extends AbstractTable{
 	 	if(!columnHeaders.isEmpty()) {
 	 		columnHeaders.remove(columnHeaders.size()-1);
 	 		//rows
-	 		if(rows != null) {
-	 			for(final Row row : rows) {
-	 				row.removeColumn();
-	 			}
+	 		for(final Row row : rows) {
+	 			row.removeColumn();
 	 		}
 	 		numberOfColumns--;
 			Log.d("JACKSON_TABLE", "removed column");
@@ -133,7 +176,7 @@ public class Table extends AbstractTable{
 	  * @return True if title changed, false otherwise.
 	  */
 	 public boolean setColumnTitle(int index, String title) {
-		if(index >= numberOfColumns) {
+		if(index >= numberOfColumns || index < 0) {
 			return false;
 	 	}
 	 	ColumnHeader header = columnHeaders.get(index);
@@ -149,20 +192,17 @@ public class Table extends AbstractTable{
 	 
 	 @JsonIgnore
 	 public int getRowCount() {
-		 if(rows == null) {
-			 return 0;
-		 }
 		 return rows.size();
 	 }
 	 
-	 public AbstractColumnEntry getEntry(int columnIndex, int rowIndex) {
+	 public IEditableContent getEntry(int columnIndex, int rowIndex) {
 		 if(columnIndex < 0 || columnIndex >= numberOfColumns) {
 			 return null;
 		 }
 		 if(rowIndex < 0 || rowIndex >= getRowCount()) {
 			 return null;
 		 }
-		 return rows.get(rowIndex).entries.get(columnIndex);
+		 return rows.get(rowIndex).getEntry(rowIndex);
 	 }
 //	 /**
 //	  * Changes the type of the column identified by index.

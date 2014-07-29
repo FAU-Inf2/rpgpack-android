@@ -205,8 +205,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			}
 		});
 		setAddButtonStyle(addRowBelow);
-		// moved to onCreateView();
-		addItemList();
+		// removed because we could otherwise not save/load tables with 0 rows
+		//addItemList();
     }
 	
 	@Override
@@ -229,56 +229,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
 //                        getResources().getDrawable(android.R.drawable.star_on)),
 //                FragmentTab.class, null);
-		
-		/*
-		 * JACKSON START
-		 */
-//		Log.d("TableFragment", "jacksonInflateWithData:"+jacksonInflateWithData);
-//		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
-//		// check if we have inflated the table with some data
-//		// BUT also check if we got any saved columns (they are only created if user goes into table!)
-//		// so if there are no saved columns or we didn't load any data we add the default columns 
-//		if(jacksonTableColumnNumber > 0) {
-//			// set flag, so we don't add new columns to the jackson table while loading
-//			jacksonInflateWithData = true;
-//			// create the right amount of columns
-//			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
-//			Log.d("jackson table inflating","amountCol:"+amountColumns);
-//			while(amountColumns < jacksonTableColumnNumber) {
-//				Log.d("jackson table inflating","addColumn()");
-//				addColumn();
-//			}
-//			while(amountColumns > jacksonTableColumnNumber) {
-//				Log.d("jackson table inflating","removeColumn()");
-//				removeColumn();
-//			}
-//			// set titles
-//			TableRow headerRow = (TableRow) headerTable.getChildAt(0);
-//			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
-//			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
-//			for(int i = 0; i < amountColumns; i++) {
-//				View view = headerRow.getChildAt(i);
-//				Log.d("TableFragment-onCreateView", "view:"+view);
-//				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
-//				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
-//				setHeaderTableStyle((EditText)view);
-//				// check size
-//				checkResize(0, 0, (EditText)view, headerRow);
-//		        int width = getNeededWidth(i);
-//				int height = getNeededHeight(0, headerRow);
-//				final LayoutParams lparams = new LayoutParams(width, height);
-//			    view.setLayoutParams(lparams);
-//			}
-//			Log.d("TABLE_FRAGMENT", "loaded table header data");
-//		}
-//		else {
-//			// add the 2 default columns
-//			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline1),
-//					StringClass.TYPE_STRING));
-//			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
-//					StringClass.TYPE_STRING));
-//			Log.d("TableFragment", "added default columns");
-//		}
+
+		//
+		// JACKSON START
 		// check for saved rows
 		if(jacksonTable.getRowCount() > 0) {
 			jacksonInflateWithData = true;
@@ -297,8 +250,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//
 		// JACKSON END
 		//
-		// call addItemList here instead of onCreate, because of jackson initialization
-//		addItemList();
 		return mainView;
 	}
 	
@@ -724,8 +675,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 		else {
 			// it is a row of the table
-			Row jRow = jacksonTable.rows.get(table.indexOfChild(row));
-			jacksonEntry = jRow.entries.get(columnIndex);
+			Row jRow = jacksonTable.getRow(table.indexOfChild(row));
+			jacksonEntry = jRow.getEntry(columnIndex);
 		}
 		newElement.addTextChangedListener(new TextWatcher() {
 			private final IEditableContent content = jacksonEntry;
@@ -1266,7 +1217,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 */
 	private void jacksonLoadTableHeader(final TableRow headerRow) {
 		//TODO HERE
-		final int jacksonTableColumnNumber = jacksonTable.numberOfColumns;
+		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
 		// check if we got any saved columns (they are only created if user goes into table!)
 		// so if there are no saved columns or we didn't load any data we add the default columns 
 		if(jacksonTableColumnNumber > 0) {
@@ -1300,7 +1251,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				final LayoutParams lparams = new LayoutParams(width, height);
 			    view.setLayoutParams(lparams);
 			}
-			jacksonInflateWithData = true;
+			jacksonInflateWithData = false;
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
 		}
 		else {
@@ -1344,9 +1295,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			Log.d("TableFragment", "added default columns");
 		}
 	}
-	//
-	// JACKSON END
-	//
 	//
 	// JACKSON END
 	//

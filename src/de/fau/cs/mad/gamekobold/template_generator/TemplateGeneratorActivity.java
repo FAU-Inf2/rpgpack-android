@@ -438,12 +438,13 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 			try {
 				template = Template.loadFromJSONFile(appContext, FILE_NAME, false);
 			} catch (Throwable e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 				return null;
 			}
 			return template;
 		}
 		
+		// TODO redo ?
 		@Override
 		protected void onPostExecute(Template result) {
 			// wrong set up
