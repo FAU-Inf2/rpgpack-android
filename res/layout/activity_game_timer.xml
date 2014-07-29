@@ -27,5 +27,15 @@
     		android:paddingLeft="15dip"
 	        android:layout_alignParentRight="true"
 	        android:text="@string/btn_pause" />
+        
+        <TextView  
+     		android:id="@+id/textViewTime" 
+     		android:layout_marginTop="20dp" 
+     		android:textColor="@color/white"
+     		android:layout_width="wrap_content"  
+     		android:layout_height="wrap_content"  
+      		android:layout_centerHorizontal="true"  
+     		android:textSize="35sp" />  
+        
               
 </RelativeLayout>
