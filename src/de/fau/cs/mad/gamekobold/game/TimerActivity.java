@@ -51,6 +51,7 @@ public class TimerActivity extends Activity{
          }  
          @Override  
         public void onFinish() {  
+        //testcomment
           textViewTimeHour.setText("-");
           textViewTimeMin.setText("-");
           textViewTimeSec.setText("-");
