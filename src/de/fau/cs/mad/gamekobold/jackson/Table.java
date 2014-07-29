@@ -14,7 +14,7 @@ public class Table extends AbstractTable{
 	private List<Row> rows;
 	private int numberOfColumns;
 
-	public ArrayList<ColumnHeader> columnHeaders;
+	private ArrayList<ColumnHeader> columnHeaders;
 	public boolean writeOnly;
 
 	public Table() {
@@ -71,6 +71,17 @@ public class Table extends AbstractTable{
 			return null;
 		}
 		return rows.get(index);
+	}
+	
+	public ArrayList<ColumnHeader> getColumnHeaders() {
+		return columnHeaders;
+	}
+	
+	public ColumnHeader getColumnHeader(int index) {
+		if(index < 0 || index >= columnHeaders.size()) {
+			return null;
+		}
+		return columnHeaders.get(index);
 	}
 	
 	@JsonIgnore
@@ -202,7 +213,7 @@ public class Table extends AbstractTable{
 		 if(rowIndex < 0 || rowIndex >= getRowCount()) {
 			 return null;
 		 }
-		 return rows.get(rowIndex).getEntry(rowIndex);
+		 return rows.get(rowIndex).getEntry(columnIndex);
 	 }
 //	 /**
 //	  * Changes the type of the column identified by index.

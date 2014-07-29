@@ -41,7 +41,12 @@ public class ColumnHeader implements IEditableContent{
 
 	@Override
 	public void setContent(String newContent) {
+		Log.d("ColumnHeader", "Changed from:"+name+" to:"+newContent);
 		name = newContent;
-		Log.d("ColumnHeader", "Changed name to:"+newContent);
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 }
