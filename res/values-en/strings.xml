@@ -197,9 +197,12 @@
     <string name="played_character_title">Current character for play</string>
     
     <!-- Toolbox -->
-    <string name="open_templategenerator">Template Generator</string>
+    <string name="open_randomgenerator">Template Generator</string>
     <string name="open_timer">Timer</string>
-    <string name="open_tactical">Taktische Karte</string>
+    <string name="open_tactical">Tactical Map</string>
+    <string name="btn_start">Start</string> 
+    <string name="btn_pause">Pause</string>  
+    
     <string-array name="action_toolbox_list">
         <item>Template Generator</item>
         <item>Timer</item>
