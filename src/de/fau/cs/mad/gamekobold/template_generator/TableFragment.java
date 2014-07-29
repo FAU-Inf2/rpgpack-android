@@ -629,7 +629,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		// JACKSON START
 		//
 		if(jacksonEntry != null) {
-			newElement.setText(jacksonEntry.toString());
+			newElement.setText(jacksonEntry.getContent());
 			newElement.addTextChangedListener(new TextWatcher() {
 				private final IEditableContent content = jacksonEntry;
 				public void afterTextChanged(Editable s) {
@@ -1024,7 +1024,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			// sets the associated jackson row to this 
 			cb.setTag(R.id.jackson_row_tag_id, jacksonEntry);
 			// set checked state to jackson state
-			cb.setChecked(Boolean.parseBoolean(jacksonEntry.toString()));
+			cb.setChecked(Boolean.parseBoolean(jacksonEntry.getContent()));
 		}
 		((LinearLayout) newElement).addView(cb);
 		((LinearLayout) newElement).setGravity(Gravity.CENTER);

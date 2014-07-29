@@ -39,4 +39,9 @@ public class CheckBoxClass extends AbstractColumnEntry{
 		// true if content == "true", false otherwise. no exception thrown!
 		checked = Boolean.parseBoolean(content);
 	}
+
+	@Override
+	public String getContent() {
+		return String.valueOf(checked);
+	}
 }
