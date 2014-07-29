@@ -28,6 +28,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity.Template
 public class CreateNewTemplateActivity extends Activity {
 	private Uri imageUri;
 	private Template newTemplate;
+	private EditText edDescription;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
@@ -50,10 +52,10 @@ public class CreateNewTemplateActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
 		myActivity = this;
-		newTemplate = null;
+		newTemplate = new Template();
 
 		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
-
+		edDescription = (EditText)findViewById(R.id.description);
 		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);
 		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
 		final TextView tvDescription = (TextView) findViewById(R.id.description);
@@ -194,19 +196,25 @@ public class CreateNewTemplateActivity extends Activity {
 						TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
 						true);
 				// create template for data transfer
-				final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
+		//		final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data
-				jTemplate.templateName = tvTemplateName.getText().toString();
-				jTemplate.gameName = tvGameName.getText().toString();
+//				jTemplate.templateName = tvTemplateName.getText().toString();
+//				jTemplate.gameName = tvGameName.getText().toString();
+				newTemplate.templateName = tvTemplateName.getText().toString();
+				newTemplate.gameName = tvGameName.getText().toString();
 				// TODO author
-				jTemplate.author = "Registered Author";
-				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
+//				jTemplate.author = "Registered Author";
+//				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
+				newTemplate.author = "Registered Author";
+				newTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
 						.format(new Date());
 				// TODO icon id
-				jTemplate.iconID = 0;
-				jTemplate.description = tvDescription.getText().toString();
+//				jTemplate.iconID = 0;
+//				jTemplate.description = tvDescription.getText().toString();
+				newTemplate.iconID = 0;
+				newTemplate.description = tvDescription.getText().toString();
 				// check to see if a file for this template already exists
-				if (jTemplate.doesTemplateFileExist(myActivity)) {
+				if (newTemplate.doesTemplateFileExist(myActivity)) {
 					// if yes we show a dialog and ask whether to overwrite the
 					// file or not.
 					// Log.d("CreateNewTemplateActivity",
@@ -233,7 +241,7 @@ public class CreateNewTemplateActivity extends Activity {
 										int which) {
 									intent.putExtra(
 											de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
-											jTemplate);
+											newTemplate);
 									startActivity(intent);
 								}
 							});
@@ -245,7 +253,7 @@ public class CreateNewTemplateActivity extends Activity {
 					// "File does not exist.");
 					intent.putExtra(
 							de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
-							jTemplate);
+							newTemplate);
 					startActivity(intent);
 				}
 				/*
@@ -357,13 +365,16 @@ public class CreateNewTemplateActivity extends Activity {
 			String positiveButtonText;
 
 			positiveButtonText = getString(R.string.save_changes);
+			final EditText editText = (EditText)view.findViewById(R.id.editTextAdditionalInformation);
+			editText.setText(myTemplate.description);
 
 			builder.setMessage(getString(R.string.popup_template_details_info_titel));
 			builder.setPositiveButton(positiveButtonText,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// TODO save info text for a new template!
+							myTemplate.description = editText.getEditableText().toString();
+							createNewTemplateActivity.edDescription.setText(editText.getEditableText().toString());
 						}
 					});
 
