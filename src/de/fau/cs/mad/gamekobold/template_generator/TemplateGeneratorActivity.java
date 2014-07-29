@@ -59,7 +59,7 @@ public class TemplateGeneratorActivity extends FragmentActivity {
 	 GeneralFragment topFragment;
 	 //the one above which is only visible in the slideout-menu
 	 protected FolderFragment rootFragment;
-	 protected static Activity theActiveActivity;
+	 protected static TemplateGeneratorActivity theActiveActivity;
 	 
 	 //variables for slideout-menu
 	 protected DrawerLayout mDrawerLayout;

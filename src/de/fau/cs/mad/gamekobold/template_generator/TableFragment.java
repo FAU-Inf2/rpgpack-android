@@ -25,6 +25,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -89,15 +91,15 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	// also set in createTableHeader !! onCreate is called when orientation is rotated ->
 	// amountColumns = #before change but we recreate the header table with 2 columns
 	int amountColumns = 2;
-	AlertDialog dialog;
-	TableLayout dialogTable;
+//	AlertDialog dialog;
+//	TableLayout dialogTable;
 	SessionMonitorEditText dialogRowCounter = null;
 	//menu shown when long clicking a row
 	protected TableRow contextMenuRow;
 	protected PopupWindow popupStyles = null;
 	protected View stylesView;
-	protected ArrayList<View> popupViewList = new ArrayList<>();
-	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
+//	protected ArrayList<View> popupViewList = new ArrayList<>();
+//	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
 
 
 	
@@ -107,61 +109,61 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         setRetainInstance(true);
         //create the table that will be shown in the dialog
         LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
-        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
-        dialogRowCounter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
-        dialogRowCounter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
-        	@Override
-        	public void onEditSessionComplete(TextView v) {
-        		int valueGiven = (Integer.parseInt(v.getText().toString()));
-        		if(valueGiven < 0){
-        			v.setText(Integer.toString(1));
-        		}
-        		else if(valueGiven > 99){
-        			v.setText(Integer.toString(99));
-        		}
-        		adaptDialogTable(dialogTable, (Integer.parseInt(v.getText().toString())));
-        	}
-        });
-        //create add and subtract buttons for the dialog
-        ImageButton addButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_add_column);
-        addButton.setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-        		int newValue = oldValue+1;
-        		dialogRowCounter.setText(Integer.toString(newValue));
-        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-        	}
-        });
-        ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
-        subtractButton.setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-        		int newValue = oldValue-1;
-        		dialogRowCounter.setText(Integer.toString(newValue));
-        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-        	}
-        });
-        //create the dialog
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
-        alertDialogBuilder.setView(dialogViewTableView);
-        alertDialogBuilder
-        .setCancelable(false)
-        .setPositiveButton(getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog,int id) {
-        		setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
-        		adaptHeaderTable(dialogTable);
-        		setTypeContents();
-        	}
-        })
-        .setNegativeButton(getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog,int id) {
-        		dialog.cancel();
-        	}
-        });
-        dialog = alertDialogBuilder.create();
+//        View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
+//        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
+//        dialogRowCounter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
+//        dialogRowCounter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
+//        	@Override
+//        	public void onEditSessionComplete(TextView v) {
+//        		int valueGiven = (Integer.parseInt(v.getText().toString()));
+//        		if(valueGiven < 0){
+//        			v.setText(Integer.toString(1));
+//        		}
+//        		else if(valueGiven > 99){
+//        			v.setText(Integer.toString(99));
+//        		}
+//        		adaptDialogTable(dialogTable, (Integer.parseInt(v.getText().toString())));
+//        	}
+//        });
+//        //create add and subtract buttons for the dialog
+//        ImageButton addButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_add_column);
+//        addButton.setOnClickListener(new OnClickListener() {
+//        	@Override
+//        	public void onClick(View v) {
+//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
+//        		int newValue = oldValue+1;
+//        		dialogRowCounter.setText(Integer.toString(newValue));
+//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
+//        	}
+//        });
+//        ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
+//        subtractButton.setOnClickListener(new OnClickListener() {
+//        	@Override
+//        	public void onClick(View v) {
+//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
+//        		int newValue = oldValue-1;
+//        		dialogRowCounter.setText(Integer.toString(newValue));
+//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
+//        	}
+//        });
+//        //create the dialog
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+//        alertDialogBuilder.setView(dialogViewTableView);
+//        alertDialogBuilder
+//        .setCancelable(false)
+//        .setPositiveButton(getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
+//        	public void onClick(DialogInterface dialog,int id) {
+//        		setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
+//        		adaptHeaderTable(dialogTable);
+//        		setTypeContents();
+//        	}
+//        })
+//        .setNegativeButton(getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
+//        	public void onClick(DialogInterface dialog,int id) {
+//        		dialog.cancel();
+//        	}
+//        });
+//        dialog = alertDialogBuilder.create();
         
         
         stylesView = inflater.inflate(R.layout.table_view_styles, (ViewGroup) getActivity().findViewById(R.id.popup_element));
@@ -300,7 +302,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		return mainView;
 	}
 	
-	protected void setTypeContents(){
+	protected void setTypeContents(TableLayout dialogTable){
 		Log.d("TableFragment", "setTypeContents");
 		for(int i=1; i<dialogTable.getChildCount(); i++){
 			int indexOfTable = i-1;
@@ -828,9 +830,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		});
         LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, null);
-        popupViewList.add(popupView);
-        final int popupViewIndex = popupViewList.indexOf(popupView);
-        Log.d("popupList", "popupViewIndex == " + popupViewIndex);
 
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
@@ -984,9 +983,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
 //		popup.setOutsideTouchable(false);
         popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        popupList.add(popup);
-        final int popupIndex = popupList.indexOf(popup);
-        Log.d("popupList", "popupIndex == " + popupIndex);
         
         
 
@@ -1172,7 +1168,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			setHeaderTableStyle((EditText) newElement);
 			((EditText) newElement)
 					.setText(getResources().getString(R.string.headline)
-							+ "  "
+							+ " "
 							+ (((TableRow) headerTable.getChildAt(0))
 									.getChildCount()));
 		} else {
@@ -1357,9 +1353,20 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 
 	@Override
 	public void showDialog() {
-		adaptDialogTable(dialogTable);
-		dialogRowCounter.setText(Integer.toString(amountColumns));
-		dialog.show();
+		Log.d("showDialog", "showDialog in TableFragment");
+		TableEditDialog dialog = TableEditDialog.newInstance();
+//		android.support.v4.app.FragmentManager fm = TemplateGeneratorActivity.theActiveActivity.getSupportFragmentManager();
+		dialog.setTargetFragment(this, 0);
+//		dialog.show(fm, "tableEditDialog");
+//		
+//		DialogFragment newFragment = TableEditDialog.newInstance();
+//	    newFragment.show(getFragmentManager(), "dialog");
+//	    
+	    dialog.show(getFragmentManager(), "MyDialog");
+
+//		adaptDialogTable(dialogTable);
+//		dialogRowCounter.setText(Integer.toString(amountColumns));
+//		dialog.show();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -1374,7 +1381,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			view.setBackgroundDrawable(res);
 		}
 		if(view instanceof TextView){
-			Log.d("setTableStyle", "now changed!");
+//			Log.d("setTableStyle", "now changed!");
 			TextView text = (TextView) view;
 			text.setTextColor(getResources().getColor(R.color.background));
 			text.setSingleLine();
@@ -1535,6 +1542,26 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	}
 	
 	/**
+	 * 
+	 * @param row
+	 * @return type of the row with index row
+	 */
+	protected content_type getType(int row){
+		TableRow tableRow = (TableRow) table.getChildAt(0);
+		View tableView = tableRow.getChildAt(row);
+		if(tableView instanceof LinearLayout){
+			View embeddedLayout = ((LinearLayout) tableView).getChildAt(0);
+			if(embeddedLayout instanceof CheckBox){
+				return content_type.checkbox;
+			}
+			else if(embeddedLayout instanceof TextView){
+				return content_type.popup;
+			}
+		}
+		return content_type.editText;
+	}
+	
+	/**
 	 * adapt the dialog table to have exactly rowsToShow rows
 	 * @param dialogTable
 	 * @param rowsToShow
@@ -1557,7 +1584,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
-			Log.d("dialog", "add");
+//			Log.d("dialog", "add");
 			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
