@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
 import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,7 +42,17 @@ public class ColumnHeader implements IEditableContent{
 
 	@Override
 	public void setContent(String newContent) {
+		Log.d("ColumnHeader", "Changed from:"+name+" to:"+newContent);
 		name = newContent;
-		Log.d("ColumnHeader", "Changed name to:"+newContent);
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	@Override
+	public String getContent() {
+		return name;
 	}
 }

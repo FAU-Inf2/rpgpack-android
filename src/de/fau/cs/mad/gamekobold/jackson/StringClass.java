@@ -33,4 +33,9 @@ public class StringClass extends AbstractColumnEntry {
 	public void setContent(String content) {
 		mainText = content;
 	}
+
+	@Override
+	public String getContent() {
+		return mainText;
+	}
 }

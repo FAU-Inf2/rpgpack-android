@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
-import de.fau.cs.mad.gamekobold.jackson.Row;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
@@ -247,6 +246,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			}
 			jacksonInflateWithData = false;
 		}
+		else {
+			addItemList();
+		}
 		//
 		// JACKSON END
 		//
@@ -269,7 +271,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof EditText)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initEditText(tableRow);
+						newElement = initEditText(tableRow, null);
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
@@ -277,7 +279,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						// TODO learn new code and come back later maybe to fix stuff
+						// TODO(Benni) learn new code and come back later maybe to fix stuff
 						newElement = initCheckBox(tableRow, null);
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "FFFFFFFFF");
@@ -285,7 +287,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					else if(!(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						// TODO learn new code and come back later maybe to fix stuff
+						// TODO(Benni) learn new code and come back later maybe to fix stuff
 						newElement = initCheckBox(tableRow, null);
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
@@ -295,13 +297,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow);
+						newElement = initPopup(tableRow, null);
 						tableRow.addView(newElement, indexOfTable);
 					}
 					else if(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow);
+						newElement = initPopup(tableRow, null);
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
@@ -341,59 +343,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		// Wrap-up the content of the row
 		rowParams.height = TableRow.LayoutParams.MATCH_PARENT;
 		rowParams.width = TableRow.LayoutParams.MATCH_PARENT;
-		// The simplified version of the table of the picture above will have two columns
-		// FIRST COLUMN
 		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
 		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
 		headerTable.addView(row);
 		jacksonLoadTableHeader(row);
-//		final EditText col1 = new EditText(getActivity());
-//		col1.setText(getResources().getString(R.string.headline1));
-//		col1.setGravity(Gravity.CENTER);
-//		setHeaderTableStyle(col1);
-//		col1.addTextChangedListener(new TextWatcher(){
-//			public void afterTextChanged(Editable s) {
-//				checkResize(0, 0, col1, row);
-//				/*
-//				 *  JACKSON START
-//				 */
-//				jacksonTable.setColumnTitle(0, s.toString());
-//				//Log.d("TABLE_FRAGMENT", "column title changed");
-//				/*
-//				 *  JACKSON END
-//				 */
-//			}
-//			public void beforeTextChanged(CharSequence s, int start, int count, int after){
-//			}
-//			public void onTextChanged(CharSequence s, int start, int before, int count){
-//			}
-//		});
-//		row.addView(col1);
-//		// SECOND COLUMN
-//		final EditText col2 = new EditText(getActivity());
-//		setHeaderTableStyle(col2);
-//		col2.setText(getResources().getString(R.string.headline2));
-//		col2.setGravity(Gravity.CENTER);
-//		col2.addTextChangedListener(new TextWatcher() {
-//			public void afterTextChanged(Editable s) {
-//				checkResize(0, 0, col2, row);
-//				/*
-//				 *  JACKSON START
-//				 */
-//				jacksonTable.setColumnTitle(1, s.toString());
-//				//Log.d("TABLE_FRAGMENT", "column title changed");
-//				/*
-//				 *  JACKSON END
-//				 */
-//			}
-//			public void beforeTextChanged(CharSequence s, int start, int count, int after){
-//			}
-//			public void onTextChanged(CharSequence s, int start, int before, int count){
-//			}
-//		});
-//		row.addView(col2);
-//		headerTable.addView(row);
 		return headerTable;
 	}
 	
@@ -423,6 +377,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 * @param row
 	 */
 	protected void removeRow(TableRow row) {
+		if(table.getChildCount() <= 1) {
+			return;
+		}
 		// JACKSON
 		if(!jacksonInflateWithData) {
 			jacksonTable.removeRow(table.indexOfChild(row));
@@ -649,7 +606,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 	}
 	
-	private EditText initEditText(final TableRow row){
+	private EditText initEditText(final TableRow row, final IEditableContent jacksonEntry){
+//		Log.d("initEditText", "jacksonEntry:"+jacksonEntry.hashCode());
 		final EditText newElement = new EditText(getActivity());
 		newElement.setGravity(Gravity.CENTER);
 		newElement.addTextChangedListener(new TextWatcher(){
@@ -661,43 +619,50 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
+		if(row == headerTable.getChildAt(0)) {
+			setHeaderTableStyle((EditText) newElement);
+		}
+		else {
+			setTableStyle(newElement);
+		}
 		//
 		// JACKSON START
 		//
-		// The jackson entry ( column header or row entry) this EditText corresponds to.
-		final IEditableContent jacksonEntry;
-		// The column index for this EditText
-		final int columnIndex = row.getChildCount();
-		// if it is added to the table header
-		if(row == headerTable.getChildAt(0)) {
-			// get the entry from the jackson column header
-			jacksonEntry = jacksonTable.columnHeaders.get(columnIndex);
-		}
-		else {
-			// it is a row of the table
-			Row jRow = jacksonTable.getRow(table.indexOfChild(row));
-			jacksonEntry = jRow.getEntry(columnIndex);
-		}
-		newElement.addTextChangedListener(new TextWatcher() {
-			private final IEditableContent content = jacksonEntry;
-			public void afterTextChanged(Editable s) {
-				// guard. only set new content if we are not currently inflating with data.
-				if(!jacksonInflateWithData) {
-					content.setContent(s.toString());
+		if(jacksonEntry != null) {
+			newElement.setText(jacksonEntry.getContent());
+			newElement.addTextChangedListener(new TextWatcher() {
+				private final IEditableContent content = jacksonEntry;
+				public void afterTextChanged(Editable s) {
+					// guard. only set new content if we are not currently inflating with data.
+					if(!jacksonInflateWithData) {
+						content.setContent(s.toString());
+					}
+					checkResize(0, 0, newElement, row);
 				}
-				checkResize(0, 0, newElement, row);
-			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){
-			}
-			public void onTextChanged(CharSequence s, int start, int before, int count){
-			}
-		});
+				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+				}
+				public void onTextChanged(CharSequence s, int start, int before, int count){
+				}
+			});
+		}
 		//
 		// JACKSON END
 		//
-		((EditText) newElement).setText(getResources().getString(R.string.blank));
+		// we can do it like this with a check, or we change the default value in jackson model
+		// check is needed, because we would otherwise overwrite the loaded value
+		if(newElement.getText().toString().isEmpty()) {
+			if(row == headerTable.getChildAt(0)) {
+				newElement.setText(getResources().getString(R.string.headline)
+								+ " "
+								+ (((TableRow) headerTable.getChildAt(0))
+										.getChildCount()+1));
+			}	
+			else {
+				((EditText) newElement).setText(getResources().getString(R.string.blank));
+			}
+		}
 //		((EditText) newElement).clearFocus();
-		setTableStyle(newElement);
+//		setTableStyle(newElement);
 		return newElement;
 	}
 	
@@ -731,44 +696,35 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         return results;
     }
 	
-    private LinearLayout initPopup(final TableRow row){
+    private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry){
 		Log.d("TABLE_FRAGMENT", "init_popup");
 
 		final LinearLayout ll = new LinearLayout(getActivity());
 		final TextView newElement = new TextView(getActivity());
-		/*
-		 * JACKSON START
-		 */
-		// only add to header cells
-		if(row == headerTable.getChildAt(0)) {
-			// guard. only set column title to default if we are not currently inflating with data
-			/*if(!jacksonInflateWithData) {
-			jacksonTable.setColumnTitle(((TableRow)headerTable.getChildAt(0)).getChildCount(),
-							"Headline " + (((TableRow) headerTable.getChildAt(0)).getChildCount()+1));
-			}*/
-			newElement.addTextChangedListener(new TextWatcher() {
-				// column index for this header cell  !index! no + 1 needed
-				private final int columnIndex = ((TableRow)headerTable.getChildAt(0)).getChildCount();
-				// callback
-				public void afterTextChanged(Editable s) {
-					// guard. only set column title if we are not currently inflating with data
-					if(!jacksonInflateWithData) {
-						// only save if the title changed
-						if(jacksonTable.setColumnTitle(columnIndex, s.toString())) {
-							Log.d("TABLE_FRAGMENT", "column title changed");
-							//TemplateGeneratorActivity.saveTemplateAsync();	
-						}
-					}
-				}
-				public void beforeTextChanged(CharSequence s, int start, int count, int after){
-				}
-				public void onTextChanged(CharSequence s, int start, int before, int count){
-				}
-			});
-		}
-		/*
-		 * JACKSON END
-		 */
+		//
+		// JACKSON START
+		//
+		//temporarily disabled, have to take a closer look to popups
+//		if(jacksonEntry != null) {
+//			newElement.setText(jacksonEntry.toString());
+//			newElement.addTextChangedListener(new TextWatcher() {
+//				final IEditableContent myJacksonEntry = jacksonEntry;
+//				// callback
+//				public void afterTextChanged(Editable s) {
+//					// guard. only set column title if we are not currently inflating with data
+//					if(!jacksonInflateWithData) {
+//						myJacksonEntry.setContent(s.toString());
+//					}
+//				}
+//				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//				}
+//				public void onTextChanged(CharSequence s, int start, int before, int count){
+//				}
+//			});
+//		}
+		//
+		// JACKSON END
+		//
 		final TextView txt = (TextView) newElement;
 		txt.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
@@ -1067,6 +1023,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			cb.setOnCheckedChangeListener(this);
 			// sets the associated jackson row to this 
 			cb.setTag(R.id.jackson_row_tag_id, jacksonEntry);
+			// set checked state to jackson state
+			cb.setChecked(Boolean.parseBoolean(jacksonEntry.getContent()));
 		}
 		((LinearLayout) newElement).addView(cb);
 		((LinearLayout) newElement).setGravity(Gravity.CENTER);
@@ -1094,19 +1052,28 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	firstRowView = firstRow.getChildAt(columnIndex);
         }
         if(firstRowView instanceof EditText){
-        	newElement = initEditText(row);
+        	newElement = initEditText(row, jacksonTable.getEntry(columnIndex, rowIndex));
         }
         else if(firstRowView instanceof LinearLayout){
         	if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
         		newElement = initCheckBox(row, jacksonTable.getEntry(columnIndex, rowIndex));
         	}
         	else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
-            	newElement = initPopup(row);
+            	newElement = initPopup(row, jacksonTable.getEntry(columnIndex, rowIndex));
             }
         }
         else{
         	//firstRowView should be null now -> its a new column
-        	newElement = initEditText(row);
+        	// could also be the first row inserted after an empty table
+        	// quick temp fix
+        	if(row == headerTable.getChildAt(0)) {
+//        		Log.d("row==headerTable", "col:"+columnIndex+ " row:"+rowIndex);
+        		newElement = initEditText(row, jacksonTable.getColumnHeader(columnIndex));
+        	}
+        	else {
+//        		Log.d("row==ChildTable", "col:"+columnIndex+ " row:"+rowIndex);
+        		newElement = initEditText(row, jacksonTable.getEntry(columnIndex, rowIndex));
+        	}
         }
 		row.addView(newElement);
 		int width = getNeededWidth(columnIndex);
@@ -1115,18 +1082,20 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //		int oldHeight = oneColumn.getMeasuredWidth();
 		final LayoutParams lparams = new LayoutParams(width, height);
 	    newElement.setLayoutParams(lparams);
-        if (headerTable.indexOfChild(row) != -1) {
-			setHeaderTableStyle((EditText) newElement);
-			((EditText) newElement)
-					.setText(getResources().getString(R.string.headline)
-							+ " "
-							+ (((TableRow) headerTable.getChildAt(0))
-									.getChildCount()));
-		} else {
+	    // moved to initEditText
+//        if (headerTable.indexOfChild(row) != -1) {
+			//setHeaderTableStyle((EditText) newElement);
+//			if(((EditText)newElement).getText().toString().isEmpty()) {
+//				((EditText) newElement)
+//						.setText(getResources().getString(R.string.headline)
+//								+ " "
+//								+ (((TableRow) headerTable.getChildAt(0))
+//										.getChildCount()));
+//			}
+//		} else {
 //			setTableStyle(newElement);
-		}
+//		}
 
-        
 	}
 	
 	/**
@@ -1216,7 +1185,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 * @param headerRow The TableRow for the header
 	 */
 	private void jacksonLoadTableHeader(final TableRow headerRow) {
-		//TODO HERE
 		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
 		// check if we got any saved columns (they are only created if user goes into table!)
 		// so if there are no saved columns or we didn't load any data we add the default columns 
@@ -1227,6 +1195,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			// create the right amount of columns
 			Log.d("jackson table inflating","jacksonNumberCol:"+jacksonTableColumnNumber);
 			Log.d("jackson table inflating","amountCol:"+amountColumns);
+			// TODO redo, we are starting with 0 columns every time
 			while(amountColumns < jacksonTableColumnNumber) {
 				Log.d("jackson table inflating","addColumn()");
 				addColumn();
@@ -1238,24 +1207,25 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			// set titles
 			Log.d("TableFragment-onCreateView", "headerRow:"+headerRow);
 			Log.d("TableFragment-onCreateView", "Column#:"+amountColumns);
-			for(int i = 0; i < amountColumns; i++) {
-				View view = headerRow.getChildAt(i);
-				Log.d("TableFragment-onCreateView", "view:"+view);
-				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.columnHeaders.get(i).name);
-				((EditText)view).setText(jacksonTable.columnHeaders.get(i).name);
-				setHeaderTableStyle((EditText)view);
-				// check size
-				checkResize(0, 0, (EditText)view, headerRow);
-		        int width = getNeededWidth(i);
-				int height = getNeededHeight(0, headerRow);
-				final LayoutParams lparams = new LayoutParams(width, height);
-			    view.setLayoutParams(lparams);
-			}
+//			for(int i = 0; i < amountColumns; i++) {
+//				View view = headerRow.getChildAt(i);
+//				Log.d("TableFragment-onCreateView", "view:"+view);
+//				Log.d("TABLE INFLATING", "setting column("+i+") header title:"+jacksonTable.getColumnHeader(i).name);
+//				((EditText)view).setText(jacksonTable.getColumnHeader(i).name);
+//				setHeaderTableStyle((EditText)view);
+//				// check size
+//				checkResize(0, 0, (EditText)view, headerRow);
+//		        int width = getNeededWidth(i);
+//				int height = getNeededHeight(0, headerRow);
+//				final LayoutParams lparams = new LayoutParams(width, height);
+//			    view.setLayoutParams(lparams);
+//			}
 			jacksonInflateWithData = false;
 			Log.d("TABLE_FRAGMENT", "loaded table header data");
 		}
 		else {
 			// add the 2 default columns
+			//TODO do it with addColumn
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline1),
 					StringClass.TYPE_STRING));
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),

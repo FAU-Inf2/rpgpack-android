@@ -33,4 +33,9 @@ public class PopupClass extends AbstractColumnEntry{
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	@Override
+	public String getContent() {
+		return content;
+	}
 }
