@@ -16,6 +16,7 @@ public class TimerActivity extends Activity{
 	
 	Button btn_start, btn_pause;
 	TextView textViewTimeHour, textViewTimeMin, textViewTimeSec ;
+	Boolean timer_status = false;
 	
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +39,9 @@ public class TimerActivity extends Activity{
          @Override  
         public void onFinish() {  
         //add some sound
-          textViewTimeHour.setText("0");
-          textViewTimeMin.setText("0");
-          textViewTimeSec.setText("0");
+          textViewTimeHour.setText("00");
+          textViewTimeMin.setText("00");
+          textViewTimeSec.setText("00");
         }  
          @Override  
          public void onTick(long millisUntilFinished) {  
@@ -54,6 +55,23 @@ public class TimerActivity extends Activity{
                 textViewTimeSec.setText(s);
          }  
     }
+	 @Override
+	 public void onSaveInstanceState(Bundle icicle) {
+		 super.onSaveInstanceState(icicle);
+		 icicle.putString("hour", ((TextView)findViewById(R.id.textViewTimeHour)).getText().toString());
+		 icicle.putString("minute", ((TextView)findViewById(R.id.textViewTimeMin)).getText().toString());
+		 icicle.putString("second", ((TextView)findViewById(R.id.textViewTimeSec)).getText().toString());
+		 icicle.putBoolean("status", timer_status);
+	 }
+	 
+	 @Override
+	 public void onRestoreInstanceState(Bundle icicle) {
+		 textViewTimeHour.setText(icicle.getString("hour"));
+		 textViewTimeMin.setText(icicle.getString("minute"));
+		 textViewTimeSec.setText(icicle.getString("second"));
+		 if(icicle.getBoolean("status"))
+			 startTimer(findViewById(android.R.id.content));
+	 }
 
 	 public void addSec(View v) {
 		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
@@ -152,10 +170,12 @@ public class TimerActivity extends Activity{
 		 long time = ((((60 * hour) + min) * 60) + sec)*1000;
 		 final CounterClass timer = new CounterClass(time,1000);  
 		 timer.start();
+		 timer_status = true;
 		 btn_pause.setOnClickListener(new OnClickListener() {  
 			 @Override  
 			 public void onClick(View v) {  
 				 timer.cancel();  
+				 timer_status = false;
 			 }  
 		 });
 	 }	 
