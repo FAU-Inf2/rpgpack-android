@@ -88,6 +88,9 @@
         </activity>
         <activity android:name=".game.TimerActivity" >
         </activity>
+        <activity android:name=".game.ToolboxRandomGenerator" >
+        </activity>
+        
         <activity
             android:name=".templatestore.TemplateStoreMainActivity"
             android:label="@string/title_activity_template_store_main"

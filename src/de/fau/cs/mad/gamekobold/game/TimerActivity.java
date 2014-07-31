@@ -1,18 +1,14 @@
 package de.fau.cs.mad.gamekobold.game;
 
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import de.fau.cs.mad.gamekobold.game.TimerDialog;
 import de.fau.cs.mad.gamekobold.game.Timer;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import android.os.CountDownTimer; 
 
