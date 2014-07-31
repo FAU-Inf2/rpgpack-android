@@ -214,11 +214,11 @@ public class TimerActivity extends Activity{
 			 }   
 			 public void onTick(long millisUntilFinished) {  
 				 long millis = millisUntilFinished;  
-				 long h = TimeUnit.MILLISECONDS.toHours(millis);
-				 long m = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
-				 long s = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis));      
+				 String h = String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis));
+				 String m = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)));
+				 String s = String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));      
                       
-				 textViewTime.setText(String.format("%d02:%d02:%d02", h, m, s));          
+				 textViewTime.setText(h + ":" + m + ":" + s);          
 			 }  
 		 };
 		 return timer;
