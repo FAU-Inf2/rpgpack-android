@@ -18,7 +18,7 @@ import android.os.CountDownTimer;
 
 public class TimerActivity extends Activity{
 	
-	TextView textViewTimeHour, textViewTimeMin, textViewTimeSec ;
+	TextView textViewTime;
 	
 	Boolean timer_status = false;
 	private CountDownTimer timer;
@@ -28,28 +28,29 @@ public class TimerActivity extends Activity{
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_game_timer);
 		 
-		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		 textViewTimeHour.setText("00");
-		 textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
-		 textViewTimeMin.setText("00");
-		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
-		 textViewTimeSec.setText("00");
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 textViewTime.setText("00:00:00");
+		 
+		 textViewTime.setOnClickListener(new View.OnClickListener() {
+
+		        @Override
+		        public void onClick(View v) {
+		        	setTimer(findViewById(android.R.id.content));
+		        }
+		    });
+		 		 
 	}
 	
 	 @Override
 	 public void onSaveInstanceState(Bundle icicle) {
 		 super.onSaveInstanceState(icicle);
-		 icicle.putString("hour", ((TextView)findViewById(R.id.textViewTimeHour)).getText().toString());
-		 icicle.putString("minute", ((TextView)findViewById(R.id.textViewTimeMin)).getText().toString());
-		 icicle.putString("second", ((TextView)findViewById(R.id.textViewTimeSec)).getText().toString());
+		 icicle.putString("time", ((TextView)findViewById(R.id.textViewTime)).getText().toString());
 		 icicle.putBoolean("status", timer_status);
 	 }
 	 
 	 @Override
 	 public void onRestoreInstanceState(Bundle icicle) {
-		 textViewTimeHour.setText(icicle.getString("hour"));
-		 textViewTimeMin.setText(icicle.getString("minute"));
-		 textViewTimeSec.setText(icicle.getString("second"));
+		 textViewTime.setText(icicle.getString("time"));
 		 if(icicle.getBoolean("status"))
 			 startTimer(findViewById(android.R.id.content));
 	 }
@@ -59,82 +60,81 @@ public class TimerActivity extends Activity{
 
 			@Override
 			public void onTimeSet(Timer view, int hour, int minute, int seconds) {
-				// TODO Auto-generated method stub
-				((TextView)findViewById(R.id.textViewTimeHour)).setText(String.format("%02d", hour));
-				((TextView)findViewById(R.id.textViewTimeMin)).setText(String.format("%02d", minute));
-				((TextView)findViewById(R.id.textViewTimeSec)).setText(String.format("%02d", seconds));				
+				((TextView)findViewById(R.id.textViewTime)).setText(String.format("%02d:%02d:%02d", hour, minute, seconds));
 			}
-		}, Integer.parseInt(textViewTimeHour.getText().toString()), 
-		Integer.parseInt(textViewTimeMin.getText().toString()),
-		Integer.parseInt(textViewTimeSec.getText().toString()));
+		}, getTimeInt(textViewTime)[0], getTimeInt(textViewTime)[1], getTimeInt(textViewTime)[2]);
 		mTimer.show();		
 	}	
 	 
 	 public void addSec(View v) {
-		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
-		 String tmp = textViewTimeSec.getText().toString();
-		 int sec = Integer.parseInt(tmp) + 15;
-		 if (sec > 59){
-			 sec = sec - 60;
-			 addMin(findViewById(android.R.id.content));
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 int [] time = getTimeInt(textViewTime);
+		 time[2] = time[2] + 15;
+		 if (time[2] > 59){
+			time[2] = time[2] - 60;
+			int tmp = time[2];
+			addMin(findViewById(android.R.id.content));
+			time = getTimeInt(textViewTime);
+			time[2] = tmp;
+			 
 		}
-		tmp = String.format("%02d", sec);
-		textViewTimeSec.setText(tmp);
+		setTime(time);
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
 		}
 	 }
 	 
 	 public void addMin(View v){
-		textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
-		String tmp = textViewTimeMin.getText().toString();
-		int min = Integer.parseInt(tmp) + 1;
-		if (min > 59){
-			min = min - 60;
+		textViewTime = (TextView)findViewById(R.id.textViewTime);
+		int [] time = getTimeInt(textViewTime);
+		time[1] = time[1] + 1;
+		if (time[1] > 59){
+			time[1] = time[1] - 60;
+			int tmp = time[1];
 			addHour(findViewById(android.R.id.content));
+			time = getTimeInt(textViewTime);
+			time[1] = tmp;
 		}
-		tmp = String.format("%02d", min);
-		textViewTimeMin.setText(tmp);
+		setTime(time);
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
 		}
 	 }
 	 
 	 public void addHour(View v){
-		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		 String tmp = textViewTimeHour.getText().toString();
-		 int hour = Integer.parseInt(tmp) + 1;
-		 tmp = String.format("%02d", hour);
-		 textViewTimeHour.setText(tmp);
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 int [] time = getTimeInt(textViewTime);
+		 
+		 time[0] = time[0] + 1;
+		 setTime(time);
+		 
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
 		}
 	 }
 	 
 	 public void removeSec(View v) {
-		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
-		 textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
-		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		 int hour = Integer.parseInt(textViewTimeHour.getText().toString());
-		 int min = Integer.parseInt(textViewTimeMin.getText().toString());
-		 String tmp = textViewTimeSec.getText().toString();
-		 int sec = Integer.parseInt(tmp);
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 int [] time = getTimeInt(textViewTime);
 		 		 
-		 if (hour > 0 || min > 0){
-			sec = sec - 15;
-			if (sec < 0){
-				 sec = sec + 60;
-				 removeMin(findViewById(android.R.id.content));
+		 if (time[0] > 0 || time[1] > 0){
+			time[2] = time[2] - 15;
+			if (time[2] < 0){
+				time[2] = time[2] + 60;
+				int tmp = time[2];
+				removeMin(findViewById(android.R.id.content));
+				time = getTimeInt(textViewTime);
+				time[2] = tmp;
+				 
 			}
 		 }
-		 else if(sec > 0){
-			 sec = sec - 15;
-			 if (sec < 0){
-				 sec = 0;
+		 else if(time[2] > 0){
+			 time[2] = time[2] - 15;
+			 if (time[2] < 0){
+				 time[2] = 0;
 			 }
 		 }
-		tmp = String.format("%02d", sec);
-		textViewTimeSec.setText(tmp);
+		 setTime(time);	
 		
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
@@ -142,23 +142,23 @@ public class TimerActivity extends Activity{
 	 }
 	 
 	 public void removeMin(View v){		 
-		textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
-		textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		int hour = Integer.parseInt(textViewTimeHour.getText().toString());
-		String tmp = textViewTimeMin.getText().toString();
-		int min = Integer.parseInt(tmp);
-		
-		if (hour > 0){
-			min = min - 1;
-			if (min < 0 ){
-				min = min + 60;
+		textViewTime = (TextView)findViewById(R.id.textViewTime);
+		int [] time = getTimeInt(textViewTime);
+			
+		if (time[0] > 0){
+			time[1] = time[1] - 1;
+			if (time[1] < 0 ){
+				time[1] = time[1] + 60;
+				int tmp = time[1];
 				removeHour(findViewById(android.R.id.content)); 
+				time = getTimeInt(textViewTime);
+				time[1] = tmp;
 			}
 		}
-		else if(min > 0)
-			min = min -1;
-		tmp = String.format("%02d", min);
-		textViewTimeMin.setText(tmp);	
+		else if(time[1] > 0)
+			time[1] = time[1] -1;
+		
+		setTime(time);	
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
 		}
@@ -166,19 +166,22 @@ public class TimerActivity extends Activity{
 	 }
 	 
 	 public void removeHour(View v){
-		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		 String tmp = textViewTimeHour.getText().toString();
-		 int hour = Integer.parseInt(tmp);
-		 if (hour > 0)
-		 	hour = hour - 1;		 	
-		 tmp = String.format("%02d", hour);
-		 textViewTimeHour.setText(tmp);
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 int [] time = getTimeInt(textViewTime);
+		 if (time[0] > 0)
+			 time[0] = time[0] - 1;		 	
+		 setTime(time);
 		 if (timer_status)
 			startTimer(findViewById(android.R.id.content));
 	 }
+	 
+	 public void setTime(int[] time){
+		 String tmp = String.format("%02d:%02d:%02d", time[0], time[1], time[2]);
+		 textViewTime.setText(tmp);
+	 }
 	 	 
 	 public void startTimer(View v){
-		 long time = getTime();
+		 long time = getTimems();
 		 if (timer_status){
 			 timer.cancel();
 		 }
@@ -194,40 +197,40 @@ public class TimerActivity extends Activity{
 		 timer_status = false;
 	 }
 	 
-	 public long getTime(){
+	 public long getTimems(){
 		 //returns setted time in ms
-		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
-		 textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
-		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
-		 int sec = Integer.parseInt(textViewTimeSec.getText().toString());
-		 int min = Integer.parseInt(textViewTimeMin.getText().toString());
-		 int hour = Integer.parseInt(textViewTimeHour.getText().toString());
-		 long time = ((((60 * hour) + min) * 60) + sec)*1000;
-		 return time;
+		 textViewTime = (TextView)findViewById(R.id.textViewTime);
+		 int [] time = getTimeInt(textViewTime);
+		 long timems = ((((60 * time[0]) + time[1]) * 60) + time[2])*1000;
+		 return timems;
 	 }
 	 
 	 public CountDownTimer createTimer(long time) {
 		 timer = new CountDownTimer(time,1000){
 			 public void onFinish() {  
 				 //add some sound
-				 textViewTimeHour.setText("00");
-				 textViewTimeMin.setText("00");
-				 textViewTimeSec.setText("00");
+				 textViewTime.setText("00:00:00");
 				 timer_status = false;
 			 }   
 			 public void onTick(long millisUntilFinished) {  
 				 long millis = millisUntilFinished;  
-				 String h = String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis));
-				 String m = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)));
-				 String s = String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));      
+				 long h = TimeUnit.MILLISECONDS.toHours(millis);
+				 long m = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
+				 long s = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis));      
                       
-				 textViewTimeHour.setText(h);
-				 textViewTimeMin.setText(m);
-				 textViewTimeSec.setText(s);
-                
+				 textViewTime.setText(String.format("%d02:%d02:%d02", h, m, s));          
 			 }  
 		 };
 		 return timer;
+	 }
+	 
+	 public int [] getTimeInt(TextView time){
+		 int [] time_array = new int [3];
+		 String time_string = textViewTime.getText().toString();
+		 String [] tmp = time_string.split(":");
+		 for (int i = 0; i<3; i++)
+			 time_array[i] = Integer.parseInt(tmp[i]);
+		 return time_array;
 	 }
 	 
 }
