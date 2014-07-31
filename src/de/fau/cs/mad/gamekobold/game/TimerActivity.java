@@ -1,6 +1,10 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
+import de.fau.cs.mad.gamekobold.game.TimerDialog;
+import de.fau.cs.mad.gamekobold.game.Timer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +19,7 @@ import android.os.CountDownTimer;
 public class TimerActivity extends Activity{
 	
 	TextView textViewTimeHour, textViewTimeMin, textViewTimeSec ;
+	
 	Boolean timer_status = false;
 	private CountDownTimer timer;
 	
@@ -22,6 +27,7 @@ public class TimerActivity extends Activity{
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_game_timer);
+		 
 		 textViewTimeHour = (TextView)findViewById(R.id.textViewTimeHour);
 		 textViewTimeHour.setText("00");
 		 textViewTimeMin = (TextView)findViewById(R.id.textViewTimeMin);
@@ -48,6 +54,22 @@ public class TimerActivity extends Activity{
 			 startTimer(findViewById(android.R.id.content));
 	 }
 
+	public void setTimer(View v){
+		TimerDialog mTimer = new TimerDialog(this, new TimerDialog.OnTimeSetListener() {
+
+			@Override
+			public void onTimeSet(Timer view, int hour, int minute, int seconds) {
+				// TODO Auto-generated method stub
+				((TextView)findViewById(R.id.textViewTimeHour)).setText(String.format("%02d", hour));
+				((TextView)findViewById(R.id.textViewTimeMin)).setText(String.format("%02d", minute));
+				((TextView)findViewById(R.id.textViewTimeSec)).setText(String.format("%02d", seconds));				
+			}
+		}, Integer.parseInt(textViewTimeHour.getText().toString()), 
+		Integer.parseInt(textViewTimeMin.getText().toString()),
+		Integer.parseInt(textViewTimeSec.getText().toString()));
+		mTimer.show();		
+	}	
+	 
 	 public void addSec(View v) {
 		 textViewTimeSec = (TextView)findViewById(R.id.textViewTimeSec);
 		 String tmp = textViewTimeSec.getText().toString();

@@ -28,7 +28,7 @@
 	        android:layout_alignParentRight="true"
 	        android:onClick="stopTimer"
 	        android:text="@string/btn_pause" />
-        
+       
         <Button
 	        android:id="@+id/btn_plus_hour"
 	        android:layout_width="50dp"
@@ -135,6 +135,17 @@
 	        android:paddingLeft="15dip"
      		android:textSize="35sp" />
 
-        
+         <Button
+             android:id="@+id/timerset"
+             android:layout_width="90dp"
+             android:layout_height="45dp"
+             android:layout_alignBaseline="@+id/btn_start"
+             android:layout_alignBottom="@+id/btn_start"
+             android:layout_centerHorizontal="true"
+             android:background="@color/background_green"
+             android:onClick="setTimer"
+             android:paddingLeft="15dip"
+             android:text="Timer"
+             android:textColor="@color/white" />
              
 </RelativeLayout>

@@ -201,7 +201,8 @@
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Tactical Map</string>
     <string name="btn_start">Start</string> 
-    <string name="btn_pause">Pause</string>  
+    <string name="btn_pause">Pause</string>
+    <string name="set_time">Set Time</string>  
     
     <string-array name="action_toolbox_list">
         <item>Template Generator</item>
