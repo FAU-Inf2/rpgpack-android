@@ -111,17 +111,20 @@ public class FolderFragment extends GeneralFragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
 		super.onCreateView(inflater, container, savedInstanceState);
-		view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
+		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator_add_button, null);
+			TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
+			addRowBelow.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					dialogCreateElement.show();
+				}
+			});
+			setAddButtonStyle(addRowBelow);
+		}
+		else{
+			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator, null);
+		}
 		mainView = view;
-		TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
-		addRowBelow.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				//				addItemList();
-				dialogCreateElement.show();
-			}
-		});
-		setAddButtonStyle(addRowBelow);
-		
         lView = (ListView) view.findViewById(R.id.listView_items);
         lView.setAdapter(dataAdapter);
         return view;
