@@ -1,11 +1,17 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import de.fau.cs.mad.gamekobold.game.TimerDialog;
 import de.fau.cs.mad.gamekobold.game.Timer;
 
 import android.app.Activity;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -101,8 +107,10 @@ public class TimerActivity extends Activity{
 		 textViewTime = (TextView)findViewById(R.id.textViewTime);
 		 int [] time = getTimeInt(textViewTime);
 		 
-		 time[0] = time[0] + 1;
-		 setTime(time);
+		 if (time[0] < 99){
+			 time[0] = time[0] + 1;
+			 setTime(time);
+		 }
 		 
 		if (timer_status){
 			startTimer(findViewById(android.R.id.content));
@@ -205,9 +213,42 @@ public class TimerActivity extends Activity{
 		 timer = new CountDownTimer(time,1000){
 			 public void onFinish() {  
 				 //add some sound
+				 Uri defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+				 MediaPlayer mediaPlayer = new MediaPlayer();
+				 
 				 textViewTime.setText("00:00:00");
 				 timer_status = false;
+				 try {
+					mediaPlayer.setDataSource(getApplicationContext(), defaultRingtoneUri);
+					mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+					mediaPlayer.prepare();
+			     
+					mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+
+						@Override
+						public void onCompletion(MediaPlayer mp){
+							mp.release();
+						}
+					});
+			     
+					mediaPlayer.start();
+				 } catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				}
+				 
 			 }   
+			 
 			 public void onTick(long millisUntilFinished) {  
 				 long millis = millisUntilFinished;  
 				 String h = String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis));

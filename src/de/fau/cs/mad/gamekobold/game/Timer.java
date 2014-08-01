@@ -28,13 +28,12 @@ public class Timer extends FrameLayout{
 		
 			@Override
 			public String format(int value) {
-			// TODO Auto-generated method stub
 			return String.format("%02d", value);
 		}
 	};
     
     // state
-    private int mCurrentHour = 0; // 0-23
+    private int mCurrentHour = 0; // 0-99
     private int mCurrentMinute = 0; // 0-59
     private int mCurrentSeconds = 0; // 0-59
 
@@ -120,12 +119,13 @@ public class Timer extends FrameLayout{
         // now that the hour/minute picker objects have been initialized, set
         // the hour range properly based on the 12/24 hour display mode.
         configurePickerRanges();
+        setOnTimeChangedListener(NO_OP_CHANGE_LISTENER);
 
         // initialize to current time
+        /*
         Calendar cal = Calendar.getInstance();
-        setOnTimeChangedListener(NO_OP_CHANGE_LISTENER);
         
-        // by default we're not in 24 hour mode
+        
         setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
         setCurrentMinute(cal.get(Calendar.MINUTE));
         setCurrentSecond(cal.get(Calendar.SECOND));
@@ -133,6 +133,7 @@ public class Timer extends FrameLayout{
         if (!isEnabled()) {
             setEnabled(false);
         }
+        */
     }
     
     @Override
@@ -212,7 +213,7 @@ public class Timer extends FrameLayout{
     }
 
     /**
-     * @return The current hour (0-23).
+     * @return The current hour (0-99).
      */
     public Integer getCurrentHour() {
         return mCurrentHour;
@@ -272,7 +273,7 @@ public class Timer extends FrameLayout{
 
     private void configurePickerRanges() {
     	mHourPicker.setMinValue(0);
-    	mHourPicker.setMaxValue(23);
+    	mHourPicker.setMaxValue(99);
     	mHourPicker.setFormatter(TWO_DIGIT_FORMATTER);
     }
 
