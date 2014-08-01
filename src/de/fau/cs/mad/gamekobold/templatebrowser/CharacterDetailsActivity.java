@@ -2,9 +2,12 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
 
+import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
+import de.fau.cs.mad.gamekobold.game.GameBrowserActivity1;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +23,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -129,6 +133,16 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				relLayout.setBackgroundColor(sheet.color);
 			}
 		}
+		
+		final Button characterEditButton = (Button)findViewById(R.id.button1);
+		characterEditButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(CharacterDetailsActivity.this, CharacterEditActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
 	@Override

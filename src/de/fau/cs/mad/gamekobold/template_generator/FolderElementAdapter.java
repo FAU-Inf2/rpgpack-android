@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
 public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
@@ -79,7 +80,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     		public void onClick(View v) {
     			GeneralFragment newFragment;
     			GeneralFragment oldFragment;
-				FragmentTransaction fragmentTransaction = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getFragmentManager().beginTransaction();
+				FragmentTransaction fragmentTransaction = SlideoutNavigationActivity.getAc().getFragmentManager().beginTransaction();
 				//attach fragment (old one if it already exists)
     			if(data.childFragment == null) {
     				/*
@@ -121,7 +122,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     				fragmentTransaction.attach(newFragment);
     			}
     			//detach old and set backstack-element (for back button)
-    			oldFragment = ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment;
+    			oldFragment = SlideoutNavigationActivity.getAc().getCurrentFragment();
 				fragmentTransaction.detach(oldFragment);
 				newFragment.backStackElement = oldFragment;
 				newFragment.fragment_parent = oldFragment;
@@ -131,14 +132,14 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				//next line now done in GeneralFragment.onAttach
 //    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
     			//set old Fragment to be the parent IF NOT from slideout menu
-				if(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+				if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)) {
 					//drawer is open -> new fragment will be top fragment
-					((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).topFragment = newFragment;
+					SlideoutNavigationActivity.getAc().setTopFragment(newFragment);
 					newFragment.isATopFragment = true;
 	    			newFragment.fragment_parent = oldFragment;
-					((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).mDrawerLayout.closeDrawers();
+					SlideoutNavigationActivity.getAc().getDrawerLayout().closeDrawers();
 				}
-				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).invalidateOptionsMenu();
+				SlideoutNavigationActivity.getAc().invalidateOptionsMenu();
     			newFragment.elementName = holder.elementName.getText().toString();
     		}
     	});
@@ -151,8 +152,8 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         // Check to see if this row has already been painted once.
         if (convertView == null) {
             // If it hasn't, set up everything:
-            LayoutInflater inflator = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
-            view = inflator.inflate(R.layout.initialrow, null);
+            LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
+            view = inflator.inflate(R.layout.initialrow, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
             final ViewHolder holder = new ViewHolder();
             holder.elementName = (EditText) view.findViewById(R.id.text);
             holder.row = view;

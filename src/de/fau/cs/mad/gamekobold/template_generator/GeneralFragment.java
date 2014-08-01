@@ -2,6 +2,8 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.util.ArrayList;
 
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -15,10 +17,10 @@ public abstract class GeneralFragment extends Fragment {
 	protected GeneralFragment fragment_parent = null;
 	protected ArrayList<TableFragment> tables; //tables that are below this fragment
 	protected GeneralFragment backStackElement = null;
-	protected boolean isATopFragment = false;
+	public boolean isATopFragment = false;
 
 
-	String elementName;
+	public String elementName;
 	
 	public GeneralFragment() {
 		super();
@@ -29,9 +31,21 @@ public abstract class GeneralFragment extends Fragment {
 
 	public abstract void showDialog();
 	
+	public GeneralFragment getParent(){
+		return fragment_parent;
+	}
+	
+	public GeneralFragment getBackStackElement(){
+		return backStackElement;
+	}
+	
+	public void setBackStackElement(GeneralFragment newValue){
+		backStackElement = newValue;
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
-		((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = this;
+		SlideoutNavigationActivity.getAc().setCurrentFragment(this);
 		super.onAttach(activity);
 	}
 	
@@ -48,7 +62,7 @@ public abstract class GeneralFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = this;
+		SlideoutNavigationActivity.getAc().setCurrentFragment(this);
 		if(savedInstanceState != null){
 			backStackElement = (GeneralFragment) getFragmentManager().getFragment(savedInstanceState,"backStackElement");
 			fragment_parent = (GeneralFragment) getFragmentManager().getFragment(savedInstanceState,"fragment_parent");
@@ -57,7 +71,7 @@ public abstract class GeneralFragment extends Fragment {
 		while(!searchedTopFragment.isATopFragment){
 			searchedTopFragment = searchedTopFragment.fragment_parent;
 		}
-		((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).topFragment = searchedTopFragment;
+		SlideoutNavigationActivity.getAc().setTopFragment(searchedTopFragment);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	

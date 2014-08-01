@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import de.fau.cs.mad.gamekobold.template_generator.TableFragment.content_type;
 import android.app.AlertDialog;
@@ -43,10 +44,10 @@ public class TableEditDialog extends DialogFragment {
 
 //		storedDialogTable = new TableLayout(getActivity());
 
-        alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
+        alertDialogBuilder = new AlertDialog.Builder(SlideoutNavigationActivity.theActiveActivity);
         alertDialogBuilder
         .setCancelable(false)
-        .setPositiveButton(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
+        .setPositiveButton(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
         		targetFragment.setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
         		adaptHeaderTable(dialogTable);
@@ -54,7 +55,7 @@ public class TableEditDialog extends DialogFragment {
         		dialog.dismiss();
         	}
         })
-        .setNegativeButton(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
+        .setNegativeButton(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
         		dialog.dismiss();
         	}
@@ -150,15 +151,15 @@ public class TableEditDialog extends DialogFragment {
 			for(int k=0; k<3; k++){
 				View theView = null;
 				if(k==2 && i != -1){
-					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
-					String [] spin_arry = TemplateGeneratorActivity.theActiveActivity.getResources().getStringArray(R.array.spaltentypen);
-					spin.setAdapter(targetFragment.new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
+					Spinner spin = new Spinner(SlideoutNavigationActivity.theActiveActivity);
+					String [] spin_arry = SlideoutNavigationActivity.theActiveActivity.getResources().getStringArray(R.array.spaltentypen);
+					spin.setAdapter(targetFragment.new DialogSpinnerAdapter<CharSequence>(SlideoutNavigationActivity.theActiveActivity, spin_arry));
 					theView = spin;
 					targetFragment.setSpinnerStyle(spin);
 					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
-							((TextView) parent.getChildAt(0)).setTextColor(TemplateGeneratorActivity.theActiveActivity.getResources().getColor(R.color.background));
+							((TextView) parent.getChildAt(0)).setTextColor(SlideoutNavigationActivity.theActiveActivity.getResources().getColor(R.color.background));
 							
 						}
 						@Override
@@ -170,20 +171,20 @@ public class TableEditDialog extends DialogFragment {
 					spin.setSelection(((Spinner) storedRow.getChildAt(k)).getSelectedItemPosition());
 				}
 				else{
-					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
+					final EditText oneColumn = new EditText(SlideoutNavigationActivity.theActiveActivity);
 					targetFragment.setTableStyle((EditText) oneColumn);
 					if (i == -1) {
 						if (k == 0) {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.number));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.number));
 						} else if (k == 1) {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.column_name));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.column_name));
 						} else {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.column_type));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.column_type));
 						}
 					}
 					// insert the number of the column in the first row
 					else if (k == 0) {
-						oneColumn.setText((i + 1) + TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.dot));
+						oneColumn.setText((i + 1) + SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.dot));
 					} else if (k == 1) {
 //						TableRow headerRow = (TableRow) targetFragment.headerTable
 //								.getChildAt(0);
@@ -259,7 +260,7 @@ public class TableEditDialog extends DialogFragment {
 		}
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
-			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
+			final TableRow row = new TableRow(SlideoutNavigationActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
 			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
@@ -267,15 +268,15 @@ public class TableEditDialog extends DialogFragment {
 			for(int k=0; k<3; k++){
 				View theView = null;
 				if(k==2 && i != -1){
-					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
-					String [] spin_arry = TemplateGeneratorActivity.theActiveActivity.getResources().getStringArray(R.array.spaltentypen);
-					spin.setAdapter(targetFragment.new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
+					Spinner spin = new Spinner(SlideoutNavigationActivity.theActiveActivity);
+					String [] spin_arry = SlideoutNavigationActivity.theActiveActivity.getResources().getStringArray(R.array.spaltentypen);
+					spin.setAdapter(targetFragment.new DialogSpinnerAdapter<CharSequence>(SlideoutNavigationActivity.theActiveActivity, spin_arry));
 					theView = spin;
 					targetFragment.setSpinnerStyle(spin);
 					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View arg1, int arg2, long arg3) {
-							((TextView) parent.getChildAt(0)).setTextColor(TemplateGeneratorActivity.theActiveActivity.getResources().getColor(R.color.background));
+							((TextView) parent.getChildAt(0)).setTextColor(SlideoutNavigationActivity.theActiveActivity.getResources().getColor(R.color.background));
 							
 						}
 						@Override
@@ -286,20 +287,20 @@ public class TableEditDialog extends DialogFragment {
 					setSpinner(spin, targetFragment.getType(i));
 				}
 				else{
-					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
+					final EditText oneColumn = new EditText(SlideoutNavigationActivity.theActiveActivity);
 					targetFragment.setTableStyle((EditText) oneColumn);
 					if (i == -1) {
 						if (k == 0) {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.number));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.number));
 						} else if (k == 1) {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.column_name));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.column_name));
 						} else {
-							oneColumn.setText(TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.column_type));
+							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.column_type));
 						}
 					}
 					// insert the number of the column in the first row
 					else if (k == 0) {
-						oneColumn.setText((i + 1) + TemplateGeneratorActivity.theActiveActivity.getResources().getString(R.string.dot));
+						oneColumn.setText((i + 1) + SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.dot));
 					} else if (k == 1) {
 						TableRow headerRow = (TableRow) targetFragment.headerTable
 								.getChildAt(0);

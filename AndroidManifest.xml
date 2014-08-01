@@ -16,14 +16,14 @@
     </uses-permission>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
     </uses-permission>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="de.fau.cs.mad.gamekobold.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,74 +32,68 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AlljoynTest"
+            android:name="de.fau.cs.mad.gamekobold.AlljoynTest"
             android:label="@string/title_activity_alljoyn_test"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.fau.cs.mad.gamekobold.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.fau.cs.mad.gamekobold.MainActivity" />
         </activity>
         <activity
-            android:name=".template_generator.TemplateGeneratorActivity"
+            android:name="de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity"
             android:label="Root"
             android:theme="@style/template_generator_style"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name=".templatebrowser.TemplateBrowserActivity"
+            android:name="de.fau.cs.mad.gamekobold.character.CharacterEditActivity"
+            android:label="Root"
+            android:theme="@style/template_generator_style"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask" >
         </activity>
-        <activity android:name=".templatebrowser.CreateNewTemplateActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity" >
         </activity>
-        <activity android:name=".templatebrowser.TemplateDetailsActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity" >
         </activity>
-        <activity android:name=".template_generator.ShowLists" >
+        <activity android:name="de.fau.cs.mad.gamekobold.template_generator.ShowLists" >
         </activity>
-        <activity android:name=".matrix.MatrixViewActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity" >
         </activity>
-        <activity android:name=".matrix.AddNewItemActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
         </activity>
-        <activity android:name=".matrix.TemplateGeneratorWelcomeActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.matrix.TemplateGeneratorWelcomeActivity" >
         </activity>
         <activity
-            android:name=".slidingmenu.TemplateGeneratorWelcomeActivity"
+            android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
             android:label="@string/title_activity_template_generator_welcome" >
         </activity>
-        <activity android:name=".templatebrowser.CharacterDetailsActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity" >
         </activity>
         <activity
-            android:name=".game.GameBrowserActivity"
+            android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity"
             android:label="@string/title_activity_new_game" >
         </activity>
         <activity
-            android:name=".game.GameDetailsActivity"
+            android:name="de.fau.cs.mad.gamekobold.game.GameDetailsActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        <activity android:name=".game.GameBrowserActivity1" >
+        <activity android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity1" >
         </activity>
         <activity
-            android:name=".game.CreateNewGameActivity"
+            android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        <activity android:name=".game.PlayCharacterActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.game.PlayCharacterActivity" >
         </activity>
-        <activity android:name=".game.ToolboxActivity" >
-        </activity>
-        <activity android:name=".game.TimerActivity" >
-        </activity>
-        <activity android:name=".game.ToolboxRandomGenerator" >
-        </activity>
-        
-        <activity
-            android:name=".templatestore.TemplateStoreMainActivity"
-            android:label="@string/title_activity_template_store_main"
-            android:parentActivityName=".game.CreateNewGameActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity" />
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
     </application>
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

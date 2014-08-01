@@ -59,7 +59,7 @@ public class FolderFragment extends GeneralFragment {
         }
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
         if(dataAdapter == null) {
-        	dataAdapter = new FolderElementAdapter((TemplateGeneratorActivity)getActivity(), R.layout.initialrow, allData);
+        	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), R.layout.initialrow, allData);
             /*
              * JACKSON START
              */
@@ -68,8 +68,8 @@ public class FolderFragment extends GeneralFragment {
              * JACKSON END
              */
         }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
-        LayoutInflater inflater = TemplateGeneratorActivity.theActiveActivity.getLayoutInflater();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SlideoutNavigationActivity.theActiveActivity);
+        LayoutInflater inflater = SlideoutNavigationActivity.theActiveActivity.getLayoutInflater();
         dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
         final EditText nameInput = (EditText) dialogViewCreateElement.findViewById(R.id.enter_name_of_element);
         nameInput.setSingleLine();
@@ -153,7 +153,7 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void addItemList(element_type selected, String name) {
-		FolderElementData newDataItem = new FolderElementData((TemplateGeneratorActivity)getActivity(), selected);
+		FolderElementData newDataItem = new FolderElementData((SlideoutNavigationActivity)getActivity(), selected);
 		newDataItem.text.setText(name);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		/*

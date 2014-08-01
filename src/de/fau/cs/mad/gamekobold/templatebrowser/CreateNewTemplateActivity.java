@@ -33,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -193,7 +194,7 @@ public class CreateNewTemplateActivity extends Activity {
 				 */
 				// flag to distinguish between editing and creating
 				intent.putExtra(
-						TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 						true);
 				// create template for data transfer
 		//		final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();

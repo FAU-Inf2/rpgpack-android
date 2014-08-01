@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -107,7 +108,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         super.onCreate(savedInstanceState);   
         setRetainInstance(true);
         //create the table that will be shown in the dialog
-        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
 //        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
 //        dialogRowCounter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
@@ -358,7 +359,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		if(v instanceof TableRow){
 			contextMenuRow = (TableRow) v;
 		}
-		MenuInflater inflater = TemplateGeneratorActivity.theActiveActivity.getMenuInflater();
+		MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
 		inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 	}
 	
@@ -735,12 +736,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
-        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, null);
 
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
-        popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
+        popupHeadline.setText(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getCurrentFragment().elementName);
         final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
         
         
@@ -897,7 +898,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         addRefButton.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
 //        		Animation slide_up = AnimationUtils.loadAnimation(TemplateGeneratorActivity.theActiveActivity, R.animator.slide_up);
-                LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupReferencesView = inflater.inflate(R.layout.table_view_references, null);
                 LinearLayout reference_list = (LinearLayout) popupReferencesView.findViewById(R.id.reference_list);
                 final PopupWindow popupReferences = new PopupWindow(popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -911,9 +912,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //	                    inputPopup.requestFocus();
 //					}
 //				});
-                ArrayList<String> allRefs = getAllElementsToRef(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).rootFragment);
+                ArrayList<String> allRefs = getAllElementsToRef(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
                 for(String aReference : allRefs){
-                	TextView oneLine = new TextView(TemplateGeneratorActivity.theActiveActivity);
+                	TextView oneLine = new TextView(SlideoutNavigationActivity.theActiveActivity);
                 	oneLine.setText(aReference);
                 	oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
                 	           getResources().getDimension(R.dimen.text_large));
@@ -938,7 +939,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                 	reference_list.addView(oneLine);
                 }
 //                reference_view.startAnimation(slide_up);
-    			popupReferences.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+    			popupReferences.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
         	}
         });
         //following does not work yet
@@ -974,8 +975,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				popupHeadline.setText(headline);
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-				popup.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-				InputMethodManager inputMgr = (InputMethodManager)TemplateGeneratorActivity.theActiveActivity.
+				popup.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+				InputMethodManager inputMgr = (InputMethodManager)SlideoutNavigationActivity.theActiveActivity.
 						getSystemService(Context.INPUT_METHOD_SERVICE);
 					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
 			}
@@ -1503,7 +1504,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
 //			Log.d("dialog", "add");
-			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
+			final TableRow row = new TableRow(SlideoutNavigationActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
 			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
@@ -1511,9 +1512,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			for(int k=0; k<3; k++){
 				View theView = null;
 				if(k==2 && i != -1){
-					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
+					Spinner spin = new Spinner(SlideoutNavigationActivity.theActiveActivity);
 					String [] spin_arry = getResources().getStringArray(R.array.spaltentypen);
-					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
+					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(SlideoutNavigationActivity.theActiveActivity, spin_arry));
 					theView = spin;
 					setSpinnerStyle(spin);
 					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -1529,7 +1530,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					});
 				}
 				else{
-					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
+					final EditText oneColumn = new EditText(SlideoutNavigationActivity.theActiveActivity);
 					setTableStyle((EditText) oneColumn);
 					if (i == -1) {
 						if (k == 0) {
