@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -96,8 +97,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	SessionMonitorEditText dialogRowCounter = null;
 	//menu shown when long clicking a row
 	protected TableRow contextMenuRow;
-	protected PopupWindow popupStyles = null;
-	protected View stylesView;
 //	protected ArrayList<View> popupViewList = new ArrayList<>();
 //	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
 
@@ -107,104 +106,44 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);   
         setRetainInstance(true);
-        //create the table that will be shown in the dialog
-        LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
-//        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
-//        dialogRowCounter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
-//        dialogRowCounter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
-//        	@Override
-//        	public void onEditSessionComplete(TextView v) {
-//        		int valueGiven = (Integer.parseInt(v.getText().toString()));
-//        		if(valueGiven < 0){
-//        			v.setText(Integer.toString(1));
-//        		}
-//        		else if(valueGiven > 99){
-//        			v.setText(Integer.toString(99));
-//        		}
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(v.getText().toString())));
-//        	}
-//        });
-//        //create add and subtract buttons for the dialog
-//        ImageButton addButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_add_column);
-//        addButton.setOnClickListener(new OnClickListener() {
-//        	@Override
-//        	public void onClick(View v) {
-//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		int newValue = oldValue+1;
-//        		dialogRowCounter.setText(Integer.toString(newValue));
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-//        	}
-//        });
-//        ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
-//        subtractButton.setOnClickListener(new OnClickListener() {
-//        	@Override
-//        	public void onClick(View v) {
-//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		int newValue = oldValue-1;
-//        		dialogRowCounter.setText(Integer.toString(newValue));
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-//        	}
-//        });
-//        //create the dialog
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
-//        alertDialogBuilder.setView(dialogViewTableView);
-//        alertDialogBuilder
-//        .setCancelable(false)
-//        .setPositiveButton(getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog,int id) {
-//        		setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		adaptHeaderTable(dialogTable);
-//        		setTypeContents();
-//        	}
-//        })
-//        .setNegativeButton(getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog,int id) {
-//        		dialog.cancel();
-//        	}
-//        });
-//        dialog = alertDialogBuilder.create();
-        
-        
-        stylesView = inflater.inflate(R.layout.table_view_styles, (ViewGroup) getActivity().findViewById(R.id.popup_element));
-//        Button italic = (Button) stylesView.findViewById(R.id.italic_button);
-        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.1), getResources().getDisplayMetrics()));
-		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth), getResources().getDisplayMetrics()));
-        popupStyles = new PopupWindow(stylesView, popupWidth, popupHeight, true);
-        popupStyles.setOutsideTouchable(false);
-//        popupStyles.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
-        mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
-        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
-        createTableHeader();
-        //set the 3 buttons
-		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
-		buttonAdd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
-		addColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addColumn();
-			}
-		});
-		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
-		removeColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				removeColumn();
-			}
-		});
-		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
-		addRowBelow.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		setAddButtonStyle(addRowBelow);
+    	LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+			Log.d("TableFragment", "inflated for TemplateGenerator");
+        	//create the table that will be shown in the dialog
+        	mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, new LinearLayout(getActivity()), false);
+        	table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
+        	createTableHeader();
+        	//set the 3 buttons
+        	Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
+        	buttonAdd.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addItemList();
+        		}
+        	});
+        	Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
+        	addColumnButton.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addColumn();
+        		}
+        	});
+        	Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
+        	removeColumnButton.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			removeColumn();
+        		}
+        	});
+        	TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
+        	addRowBelow.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addItemList();
+        		}
+        	});
+        	setAddButtonStyle(addRowBelow);
+        }
+        else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+			Log.d("TableFragment", "inflated for CharacterEditActivity");
+        	mainView = (RelativeLayout) inflater.inflate(R.layout.character_edit_table_view, new LinearLayout(getActivity()), false);
+        }
 		// removed because we could otherwise not save/load tables with 0 rows
 		//addItemList();
     }
@@ -212,43 +151,26 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		
-		//tabhost
-//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
-//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
-//
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-
-		//
 		// JACKSON START
-		// check for saved rows
-		if(jacksonTable.getRowCount() > 0) {
-			jacksonInflateWithData = true;
-			// adjust row count
-			int jacksonRowNum = jacksonTable.getRowCount();
-			while(table.getChildCount() < jacksonRowNum) {
+		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+			// check for saved rows
+			if(jacksonTable.getRowCount() > 0) {
+				jacksonInflateWithData = true;
+				// adjust row count
+				int jacksonRowNum = jacksonTable.getRowCount();
+				while(table.getChildCount() < jacksonRowNum) {
+					addItemList();
+					Log.d("TableFragment", "added row");
+				}
+				while(table.getChildCount() > jacksonRowNum) {
+					removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
+					Log.d("TableFragment", "removed row");
+				}
+				jacksonInflateWithData = false;
+			}
+			else {
 				addItemList();
-				Log.d("TableFragment", "added row");
 			}
-			while(table.getChildCount() > jacksonRowNum) {
-				removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
-				Log.d("TableFragment", "removed row");
-			}
-			jacksonInflateWithData = false;
-		}
-		else {
-			addItemList();
 		}
 		//
 		// JACKSON END
