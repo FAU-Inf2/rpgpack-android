@@ -66,7 +66,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
 				 if(template != null) {
 					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
-					// template.print();
+					 // template.print();
 					 myTemplate = template;
 				 }
 				 else {
@@ -152,6 +152,22 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
+	
+	@Override
+	protected void onStart(){
+		//
+		 // JACKSON START
+		 //
+		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
+		 // onCreate finishes
+		 if(countDownLatch != null) {
+			countDownLatch.countDown();
+		 }
+		 //
+		 // JACKSON END
+		 //
+		 super.onStart();
 	}
 	
 	@Override

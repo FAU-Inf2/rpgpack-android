@@ -42,17 +42,6 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 	 
 	@Override
 	protected void onStart() {
-		 //
-		 // JACKSON START
-		 //
-		 // CountDownLatch. If we are editing a template the async task will wait with inflation till
-		 // onCreate finishes
-		 if(countDownLatch != null) {
-			countDownLatch.countDown();
-		 }
-		 //
-		 // JACKSON END
-		 //
 		 super.onStart();
 	}
 	 

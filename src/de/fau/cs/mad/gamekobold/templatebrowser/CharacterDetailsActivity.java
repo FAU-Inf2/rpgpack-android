@@ -4,6 +4,7 @@ import java.io.File;
 
 import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
@@ -39,6 +40,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private CharacterSheet sheet;
 	private Uri iconUri;
 	private ImageButton characterIconButton;
+	private String templateName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				// set to character color
 				relLayout.setBackgroundColor(sheet.color);
 			}
+			templateName = (String)extras.getString("templateName");
 		}
 		
 		final Button characterEditButton = (Button)findViewById(R.id.button1);
@@ -139,12 +142,20 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(CharacterDetailsActivity.this, CharacterEditActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				// flag to distinguish between editing and creating
+				intent.putExtra(
+						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+						false);
+				intent.putExtra(
+						SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+						templateName);
 				startActivity(intent);
 			}
 		});
 
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();

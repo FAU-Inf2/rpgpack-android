@@ -70,6 +70,7 @@ public class TemplateDetailsActivity extends Activity {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CharacterDetailsActivity.class);
 					i.putExtra("CharacterSheet", adapter.getItem(position));
+					i.putExtra("templateName", getFileName());
 					startActivity(i);
 				}
 			}
@@ -132,15 +133,7 @@ public class TemplateDetailsActivity extends Activity {
 			public void onClick(View v) {
 				if (curTemplate != null) {
 					if (curTemplate.absoluteFilePath != null) {
-						int lastSlashPos = curTemplate.absoluteFilePath
-								.lastIndexOf("/");
-						String fileName = null;
-						if (lastSlashPos == -1) {
-							fileName = curTemplate.absoluteFilePath;
-						} else {
-							fileName = curTemplate.absoluteFilePath
-									.substring(lastSlashPos + 1);
-						}
+						String fileName = getFileName();
 						Intent intent = new Intent(
 								TemplateDetailsActivity.this,
 								TemplateGeneratorActivity.class);
@@ -161,6 +154,17 @@ public class TemplateDetailsActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+		}
+	}
+	
+	protected String getFileName(){
+		int lastSlashPos = curTemplate.absoluteFilePath
+				.lastIndexOf("/");
+		if (lastSlashPos == -1) {
+			return curTemplate.absoluteFilePath;
+		} else {
+			return curTemplate.absoluteFilePath
+					.substring(lastSlashPos + 1);
 		}
 	}
 

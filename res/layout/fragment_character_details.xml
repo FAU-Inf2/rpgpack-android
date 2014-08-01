@@ -114,7 +114,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:background="@color/background_green"
-        android:text="Button"
+        android:text="@string/edit_character"
         android:textColor="@color/white" />
 
     <EditText
