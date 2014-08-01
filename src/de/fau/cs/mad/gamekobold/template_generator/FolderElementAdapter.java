@@ -123,24 +123,28 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     			}
     			//detach old and set backstack-element (for back button)
     			oldFragment = SlideoutNavigationActivity.getAc().getCurrentFragment();
-				fragmentTransaction.detach(oldFragment);
-				newFragment.backStackElement = oldFragment;
-				newFragment.fragment_parent = oldFragment;
-				fragmentTransaction.addToBackStack(null);
-				fragmentTransaction.commit();
-				data.childFragment = newFragment;
-				//next line now done in GeneralFragment.onAttach
-//    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
-    			//set old Fragment to be the parent IF NOT from slideout menu
+    			if(oldFragment != newFragment){
+    				fragmentTransaction.detach(oldFragment);
+    				newFragment.backStackElement = oldFragment;
+    				newFragment.fragment_parent = oldFragment;
+    				fragmentTransaction.addToBackStack(null);
+    				fragmentTransaction.commit();
+    				data.childFragment = newFragment;
+    				//next line now done in GeneralFragment.onAttach
+    				//    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
+    				//set old Fragment to be the parent IF NOT from slideout menu
+    				if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)) {
+    					//drawer is open -> new fragment will be top fragment
+    					SlideoutNavigationActivity.getAc().setTopFragment(newFragment);
+    					newFragment.isATopFragment = true;
+    					newFragment.fragment_parent = oldFragment;
+    				}
+    				SlideoutNavigationActivity.getAc().invalidateOptionsMenu();
+    				newFragment.elementName = holder.elementName.getText().toString();
+    			}
 				if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)) {
-					//drawer is open -> new fragment will be top fragment
-					SlideoutNavigationActivity.getAc().setTopFragment(newFragment);
-					newFragment.isATopFragment = true;
-	    			newFragment.fragment_parent = oldFragment;
 					SlideoutNavigationActivity.getAc().getDrawerLayout().closeDrawers();
 				}
-				SlideoutNavigationActivity.getAc().invalidateOptionsMenu();
-    			newFragment.elementName = holder.elementName.getText().toString();
     		}
     	});
     }
