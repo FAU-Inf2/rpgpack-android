@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 public class ToolboxRandomGenerator extends Activity{
    
 	private TextView contentView;
+	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,45 +30,36 @@ public class ToolboxRandomGenerator extends Activity{
 
 	        @Override
 	        public void onClick(View v) {
-	        	DownloadTask task = new DownloadTask();
-	            task.execute("http://www.random.org/integers/?num=1&min=1&max=6&col=1&base=10&format=plain&rnd=new");
+	        	int i = diceRoller(6);
+	        	contentView.setText(String.valueOf(i));
 	        }
 	    });
         
     }
+	  
+    public void randomCharList(View v){
+    	 shuffleArray(char_array);
+    	 String s = "";
+    	 for (int i = 0; i<char_array.length; i++){
+    		 s = s + char_array[i] + "\n"; 
+    	 }
+    	 contentView.setText(s);
+    }
+    
+    static void shuffleArray(String[] ar){
+    	Random rnd = new Random();
+    	for (int i = ar.length - 1; i > 0; i--){
+    		int index = rnd.nextInt(i + 1);
+    		String a = ar[index];
+    		ar[index] = ar[i];
+    		ar[i] = a;
+    	}
+    }
+    
+    static int diceRoller(int maxValue){
+    	Random rnd = new Random();
+    	int rndint = (rnd.nextInt(maxValue))+1;
+    	return rndint;
+    }
 	
-    private class DownloadTask extends AsyncTask<String, Void, String>{
-
-            @Override
-            protected String doInBackground(String... urls) {
-                HttpResponse response = null;
-                HttpGet httpGet = null;
-                HttpClient mHttpClient = null;
-                String s = "";
-
-                try {
-                    if(mHttpClient == null){
-                        mHttpClient = new DefaultHttpClient();
-                    }
-
-
-                    httpGet = new HttpGet(urls[0]);
-
-
-                    response = mHttpClient.execute(httpGet);
-                    s = EntityUtils.toString(response.getEntity(), "UTF-8");
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } 
-                return s;
-            }
-
-            @Override
-            protected void onPostExecute(String result){
-                contentView.setText(result);
-
-            }
-        }
 }
