@@ -3,11 +3,13 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -58,6 +60,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -108,7 +112,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         setRetainInstance(true);
     	LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
-			Log.d("TableFragment", "inflated for TemplateGenerator");
+//			Log.d("TableFragment", "inflated for TemplateGenerator");
         	//create the table that will be shown in the dialog
         	mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, new LinearLayout(getActivity()), false);
         	table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
@@ -172,10 +176,70 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				addItemList();
 			}
 		}
+		else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+			// check for saved rows
+			fillListView();
+		}
 		//
 		// JACKSON END
 		//
 		return mainView;
+	}
+	
+	
+	private void fillListView(){
+		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
+		final int jacksonRowNum = jacksonTable.getRowCount();
+
+		// check if we got any saved columns (they are only created if user goes into table!)
+		// so if there are no saved columns or we didn't load any data we add the default columns 
+		
+//		jacksonTable.getEntry(columnIndex, rowIndex)
+//		List<String> your_array_list = new ArrayList<String>();
+//        your_array_list.add("foo");
+//		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+//                this, 
+//                android.R.layout.simple_list_item_1,
+//                your_array_list );
+		String[] groupList = new String[jacksonRowNum];
+		String[][] itemList = new String[jacksonRowNum][];
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			groupList[rowIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
+		}
+		
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			itemList[rowIndex] = new String[jacksonTableColumnNumber-1];
+			for(int columnIndex=1; columnIndex<jacksonTableColumnNumber; columnIndex++){
+//				View firstRowView = null;
+				//TODO: get saved table type from jackson here
+				//now just assume it is edittext
+//				TableRow firstRow = (TableRow) table.getChildAt(0);
+				IEditableContent jacksonEntry = null;
+				jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//				if(firstRow != null){
+//					firstRowView = firstRow.getChildAt(columnIndex);
+//				}
+//				if(firstRowView instanceof EditText){
+//					jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//				}
+//				else if(firstRowView instanceof LinearLayout){
+//					if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
+//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//					}
+//					else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
+//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//					}
+//				}
+				if(jacksonEntry != null) {
+					String content = jacksonEntry.getContent();
+					itemList[rowIndex][columnIndex-1] = content;
+				}
+			}
+		}
+		ExpandableListView expListView = (ExpandableListView) mainView.findViewById(R.id.exp_table_list_view);
+        final ExpandableListAdapter expListAdapter = new CustomExpandableListAdapter(
+                getActivity(), groupList, itemList);
+        expListView.setAdapter(expListAdapter);
 	}
 	
 	protected void setTypeContents(TableLayout dialogTable){
@@ -422,12 +486,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				usedTable = headerTable;
 			}
 		}
-		Log.d("index", "indexOfRow  == " + indexOfRow);
+//		Log.d("index", "indexOfRow  == " + indexOfRow);
 		int indexOfColumn = -1;
 		if(usedTable.getChildAt(indexOfRow) instanceof TableRow){
 			indexOfColumn = ((TableRow) usedTable.getChildAt(indexOfRow)).indexOfChild(textEdited);
 		}
-		Log.d("index", "indexOfColumn  == " + indexOfColumn);
+//		Log.d("index", "indexOfColumn  == " + indexOfColumn);
 		int largestWidth = 0;
 		//traverse over all columns to get biggest width
 		//first columns of normal table
@@ -1266,7 +1330,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		int height = size.y;
 		textViewParams.height = height;
 		textViewParams.width = width;
-		Log.d("width", "SCREEN.x == " + width);
+//		Log.d("width", "SCREEN.x == " + width);
 		text.setMaxWidth(width);
 		String uri = "@drawable/cell_shape_add";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
@@ -1283,7 +1347,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	
 	@SuppressWarnings("deprecation")
 	protected void setHeaderTableStyle(EditText text){
-		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
+//		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
 		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
 		String uri = "@drawable/cell_shape_green";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
