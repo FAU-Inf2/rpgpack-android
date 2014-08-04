@@ -2,7 +2,6 @@ package de.fau.cs.mad.gamekobold.game;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class GameDetailsCharacterGridAdapter extends
@@ -22,8 +20,6 @@ public class GameDetailsCharacterGridAdapter extends
 	private List<GameCharacter> characters;
 	private int layoutID;
 
-	final int arraySize;
-
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
 			Template template) {
 		// super(context, R.layout.itemlayout_expandablelist_charakter, template
@@ -32,7 +28,6 @@ public class GameDetailsCharacterGridAdapter extends
 		this.context = context;
 		this.characters = template.getCharacters();
 		this.layoutID = layoutID;
-		this.arraySize = characters.size() - 1;
 	}
 
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
@@ -41,7 +36,6 @@ public class GameDetailsCharacterGridAdapter extends
 		this.context = context;
 		this.characters = game.getCharakterList();
 		this.layoutID = layoutID;
-		this.arraySize = characters.size() - 1;
 	}
 
 	@Override
