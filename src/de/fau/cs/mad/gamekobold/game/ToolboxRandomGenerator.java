@@ -18,8 +18,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -28,31 +30,42 @@ import android.widget.TextView;
 public class ToolboxRandomGenerator extends Activity{
    
 	ArrayList<String> list = new ArrayList<String>();
-	private TextView contentView;
+	GridView grid;
+	private TextView TextView, testText;
+	Button btn_add;
+	public String [] dice_array = {"Add d4","Add d6","Add d8","Add d10","Add d12","Add d20"};
 	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_game_toolbox_random);
-        contentView = (TextView) findViewById(R.id.textView);    
+        
+        TextView = (TextView) findViewById(R.id.textView);
+        btn_add = (Button)findViewById(R.id.btn_add);
+        
     }
 	  
     public void randomCharList(View v){
     	 shuffleArray(char_array);
     	 String s = "";
+    	 setContentView(R.layout.activity_game_toolbox_random);
+         
+         TextView = (TextView) findViewById(R.id.textView);
+    	 
     	 for (int i = 0; i<char_array.length; i++){
     		 s = s + char_array[i] + "\n"; 
     	 }
-    	 contentView.setText(s);
+    	 TextView.setText(s);
     }
     
     public void addDice(View v){
     	    	
     	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
-    	GridView grid = new GridView(ToolboxRandomGenerator.this);
+    	grid = new GridView(ToolboxRandomGenerator.this);
     	if (list.size()<10){
-    		list.add(String.valueOf(list.size()));
+    		list.add(getDiceNum((String) btn_add.getText()));
     	}
     	
     	ToolboxRandomElementAdapter adp=new ToolboxRandomElementAdapter (ToolboxRandomGenerator.this, list);
@@ -64,9 +77,21 @@ public class ToolboxRandomGenerator extends Activity{
     }
     
     public void rollDice(View v){
-    	int i = diceRoller(6);
-    	contentView.setText(String.valueOf(i));
+    	final int size = grid.getChildCount();
+    	for(int i = 0; i < size; i++) {
+    		  ViewGroup gridChild = (ViewGroup) grid.getChildAt(i);
+    		  int childSize = gridChild.getChildCount();
+    		  for(int k = 0; k < childSize; k++) {
+    		    if( gridChild.getChildAt(k) instanceof TextView ) {
+    		    	TextView tmp = (TextView)gridChild.getChildAt(k);
+    		    	int maxValue = Integer.parseInt((String) tmp.getHint());
+    		    	int dice = diceRoller(maxValue);
+    		    	tmp.setText(String.valueOf(dice));
+    		    }
+    		  }
+    		}
     }
+    
     static void shuffleArray(String[] ar){
     	Random rnd = new Random();
     	for (int i = ar.length - 1; i > 0; i--){
@@ -81,6 +106,24 @@ public class ToolboxRandomGenerator extends Activity{
     	Random rnd = new Random();
     	int rndint = (rnd.nextInt(maxValue))+1;
     	return rndint;
+    }
+    
+    public void diceUp(View v){
+    	int pos = 0;
+    	
+    	for(int i=0; i < dice_array.length; i++){
+    		if (dice_array[i].equals(btn_add.getText()))
+    			pos = i+1;
+    	}
+    	if (pos > dice_array.length-1){
+    		pos = 0;
+    	}
+    	btn_add.setText(dice_array[pos]);
+    }
+    
+    public String getDiceNum(String s){
+    	s = s.replaceAll("\\D+","");
+    	return s;
     }
 
 }
