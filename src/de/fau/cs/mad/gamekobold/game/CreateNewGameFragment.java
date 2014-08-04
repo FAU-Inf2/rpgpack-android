@@ -61,6 +61,7 @@ public class CreateNewGameFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//templates we want to display
 		templates = TemplateLab.get(getActivity()).getTemplates();
 		newGame = new Game();
 		setHasOptionsMenu(true);

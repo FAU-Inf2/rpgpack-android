@@ -39,7 +39,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int templatePosition, int characterPosition,
-			boolean isLastCaracter, View convertView, ViewGroup parent) {
+			boolean isLastCharacter, View convertView, ViewGroup parent) {
+		CharacterGridAdapter adapter;
 
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) this.context
@@ -51,7 +52,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		GridView gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
 
-		CharacterGridAdapter adapter = new CharacterGridAdapter(context,
+		adapter = new CharacterGridAdapter(context,
 				R.layout.itemlayout_expandablelist_charakter,
 				templates.get(templatePosition));
 
@@ -60,23 +61,33 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
+				// add to picked character
+				if (position != adapterView.getChildCount() - 1) {
+					GameCharacter curGameCharacter = (GameCharacter) adapterView
+							.getItemAtPosition(position);
 
-				GameCharacter curGameCharacter = (GameCharacter) adapterView
-						.getItemAtPosition(position);
+					Toast.makeText(
+							context,
+							curGameCharacter.getCharacterName()
+									+ " wird zum Spiel hinzugefuegt!",
+							Toast.LENGTH_SHORT).show();
 
-				Toast.makeText(context,
-						curGameCharacter.getCharacterName() + " wird zum Spiel hinzugefuegt!",
-						Toast.LENGTH_SHORT).show();
+					// TODO pruefen ob es nur ein Template moeglich ist!!!!
+					Log.d("newGame is null?", "" + (newGame == null));
 
-				// TODO pruefen ob es nur ein Template moeglich ist!!!!
-				Log.d("newGame is null?", "" + (newGame == null));
+					newGame.setTemplate(curGameCharacter.getTemplate());
 
-				newGame.setTemplate(curGameCharacter.getTemplate());
+					Log.d("Character is null?", "" + (curGameCharacter == null));
 
-				Log.d("Character is null?", "" + (curGameCharacter == null));
+					newGame.addCharacter(curGameCharacter);
+					notifyDataSetChanged();
+				}
+				// create new character from template
+				else {
+					Toast.makeText(context, "Neues Charakter wird erstellt!",
+							Toast.LENGTH_SHORT).show();
+				}
 
-				newGame.addCharacter(curGameCharacter);
-				notifyDataSetChanged();
 			}
 		});
 
