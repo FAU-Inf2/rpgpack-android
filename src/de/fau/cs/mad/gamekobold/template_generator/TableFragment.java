@@ -10,8 +10,10 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
+import de.fau.cs.mad.gamekobold.jackson.CheckBoxClass;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
+import de.fau.cs.mad.gamekobold.jackson.PopupClass;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
@@ -30,6 +32,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SearchViewCompat;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -244,21 +247,55 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	
 	protected void setTypeContents(TableLayout dialogTable){
 		Log.d("TableFragment", "setTypeContents");
+		final int jsonOldNumberOfColumns = jacksonTable.getNumberOfColumns();
 		for(int i=1; i<dialogTable.getChildCount(); i++){
 			int indexOfTable = i-1;
 			TableRow dialogTableRow = (TableRow) dialogTable.getChildAt(i);
+			final Spinner spin = (Spinner) dialogTableRow.getChildAt(2);
+			final String choice = spin.getSelectedItem().toString();
+			//
+			// JSON START
+			// check index
+			if(indexOfTable > jsonOldNumberOfColumns) {
+				// we have to create a new column
+				if(choice.equals("Textfeld")){
+					jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
+				}
+				else if(choice.equals("CheckBox")){
+					jacksonTable.addColumn(new ColumnHeader("", CheckBoxClass.TYPE_STRING));
+				}
+				else if(choice.equals("PopUp")){
+					jacksonTable.addColumn(new ColumnHeader("", PopupClass.TYPE_STRING));
+				}
+			}
+			else {
+				// we have to change the type
+				// change column type in json
+				if(choice.equals("Textfeld")){
+					jacksonTable.changeColumnType(indexOfTable, StringClass.TYPE_STRING);
+				}
+				else if(choice.equals("CheckBox")){
+					jacksonTable.changeColumnType(indexOfTable, CheckBoxClass.TYPE_STRING);
+				}
+				else if(choice.equals("PopUp")){
+					jacksonTable.changeColumnType(indexOfTable, PopupClass.TYPE_STRING);
+				}				
+			}
+			// JSON END
+			//
 			for(int k=0; k<table.getChildCount(); k++){
 				boolean isModified = false;
 				View newElement = null;
 				final TableRow tableRow = (TableRow) table.getChildAt(k);
 				View elementToAdapt = tableRow.getChildAt(indexOfTable);
-				Spinner spin = (Spinner) dialogTableRow.getChildAt(2);
-				String choice = spin.getSelectedItem().toString();
+				// moved before jackson part above
+//				Spinner spin = (Spinner) dialogTableRow.getChildAt(2);
+//				String choice = spin.getSelectedItem().toString();
 				if(choice.equals("Textfeld")){
 					if(!(elementToAdapt instanceof EditText)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initEditText(tableRow, null);
+						newElement = initEditText(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
@@ -266,16 +303,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						// TODO(Benni) learn new code and come back later maybe to fix stuff
-						newElement = initCheckBox(tableRow, null);
+						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "FFFFFFFFF");
 					}
 					else if(!(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						// TODO(Benni) learn new code and come back later maybe to fix stuff
-						newElement = initCheckBox(tableRow, null);
+						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
 					}
@@ -284,13 +319,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow, null);
+						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 					}
 					else if(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow, null);
+						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}

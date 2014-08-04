@@ -215,30 +215,47 @@ public class Table extends AbstractTable{
 		 }
 		 return rows.get(rowIndex).getEntry(columnIndex);
 	 }
-//	 /**
-//	  * Changes the type of the column identified by index.
-//	  * All old values of the rows will be deleted and replaced with default values.
-//	  * @param index
-//	  * @param newType
-//	  */
-//	 public void changeColumnType(int index, ColumnHeader newType) {
-//		 if(index < 0 || index >= numberOfColumns || newType == null) {
-//			 return;
-//		 }
-//		 columnHeaders.set(index, newType);
-//		 AbstractColumnEntry newEntry;
-//		 if(newType.isCheckBox()) {
-//			 newEntry = new CheckBoxClass();
-//		 }
-//		 else if(newType.isPopup()) {
-//			 newEntry = new PopupClass();
-//		 }
-//		 else {
-//			 newEntry = new StringClass();
-//		 }
-//		 for(final Row row : rows) {
-//			 
-//			 row.entries.set(index, newEntry);
-//		 }
-//	 }
+
+	 /**
+	  * Changes the type of the column identified by index.
+	  * All old values of the rows will be deleted and replaced with default values.
+	  * Only Changes the type if it is a new one.
+	  * @param index
+	  * @param newType
+	  */
+	 public void changeColumnType(int index, final String newType) {
+		 if(index < 0 || index >= numberOfColumns || newType == null) {
+			 return;
+		 }
+		 // change header
+		 final ColumnHeader oldHeader = columnHeaders.get(index);
+		 // check if old type == new type
+		 if(oldHeader.type.equals(newType)) {
+			 return;
+		 }
+		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.name, newType, oldHeader.hidden);
+		 columnHeaders.set(index, newHeader);
+		 // create new entry according to type
+		 // checkbox
+		 if(newHeader.isCheckBox()) {
+			 // set new type for all rows
+			 for(final Row row : rows) {
+				 row.setColumnValue(index, new CheckBoxClass());
+			 }
+		 }
+		 // Popup
+		 else if(newHeader.isPopup()) {
+			 // set new type for all rows 
+			 for(final Row row : rows) {
+				 row.setColumnValue(index, new PopupClass());
+			 }
+		 }
+		 // Text
+		 else {
+			 // set new type for all rows
+			 for(final Row row : rows) {
+				 row.setColumnValue(index, new StringClass());
+			 }
+		 }
+	 }
 }
