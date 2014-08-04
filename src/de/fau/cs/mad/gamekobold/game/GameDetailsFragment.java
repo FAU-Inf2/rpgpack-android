@@ -65,7 +65,7 @@ public class GameDetailsFragment extends Fragment {
 		gameName.setText(game.getGameName());
 		templateName.setText(game.getTemplate().getTemplateName());
 		date.setText(game.getDate());
-
+		
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_expandablelist_charakter,
 				game);
