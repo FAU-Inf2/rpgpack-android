@@ -57,14 +57,21 @@ public class CreateNewGameFragment extends Fragment {
 	private ImageButton addImageButton;
 	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
+	private GameCharacter createNewCharacter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//templates we want to display
+		// templates we want to display
 		templates = TemplateLab.get(getActivity()).getTemplates();
 		newGame = new Game();
 		setHasOptionsMenu(true);
+
+		// fake item to create New Character from template
+		createNewCharacter = new GameCharacter("+");
+		for (Template t : templates) {
+			t.addCharacter(createNewCharacter);
+		}
 	}
 
 	@Override

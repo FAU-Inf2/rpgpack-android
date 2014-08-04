@@ -41,8 +41,6 @@ public class TemplateLab {
 		GameCharacter character2t4 = new GameCharacter("Meggy", "28.07.2014",
 				template4);
 
-		GameCharacter createNewCharacter = new GameCharacter("+");
-
 		template1.addCharacter(character1t1);
 		template1.addCharacter(character2t1);
 		template1.addCharacter(character3t1);
@@ -51,12 +49,6 @@ public class TemplateLab {
 		template3.addCharacter(character1t3);
 		template4.addCharacter(character1t4);
 		template4.addCharacter(character2t4);
-
-		// fake item to create New Character from template
-		template1.addCharacter(createNewCharacter);
-		template2.addCharacter(createNewCharacter);
-		template3.addCharacter(createNewCharacter);
-		template4.addCharacter(createNewCharacter);
 
 		templates.add(template1);
 		templates.add(template2);

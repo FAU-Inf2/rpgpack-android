@@ -41,6 +41,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// last item -> create new Character
 		if (position == characters.size() - 1) {
+			Log.d("position", "" + String.valueOf(position));
+			
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

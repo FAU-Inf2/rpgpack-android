@@ -40,7 +40,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int templatePosition, int characterPosition,
 			boolean isLastCharacter, View convertView, ViewGroup parent) {
-		CharacterGridAdapter adapter;
 
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) this.context
@@ -52,7 +51,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		GridView gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
 
-		adapter = new CharacterGridAdapter(context,
+		CharacterGridAdapter adapter = new CharacterGridAdapter(context,
 				R.layout.itemlayout_expandablelist_charakter,
 				templates.get(templatePosition));
 
@@ -199,7 +198,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.charactersCounter);
 
 		characterCounter.setText(String.valueOf(curTemplate.getCharacters()
-				.size()));
+				.size()-1));
 
 		return convertView;
 
