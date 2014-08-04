@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -30,9 +31,9 @@ public class WarningLeaveDialog extends DialogFragment{
 			public void onClick(DialogInterface dialog, int id) {
 				//TODO: hier sollte verworfen werden
 				// JACKSON START
-				TemplateGeneratorActivity.skipNextOnPauseSave = true;
+				SlideoutNavigationActivity.skipNextOnPauseSave = true;
 				// JACKSON END
-				((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
+				((TemplateGeneratorActivity) SlideoutNavigationActivity.theActiveActivity).superBackPressed();
 			} });
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -43,7 +44,7 @@ public class WarningLeaveDialog extends DialogFragment{
 				/*
 				 * JACKSON START
 				 */ 
-				TemplateGeneratorActivity.forceSaveOnNextOnPause = true;
+				SlideoutNavigationActivity.forceSaveOnNextOnPause = true;
 				/*
 				 * JACKSON END
 				 */

@@ -39,7 +39,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int templatePosition, int characterPosition,
-			boolean isLastCaracter, View convertView, ViewGroup parent) {
+			boolean isLastCharacter, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) this.context
@@ -60,23 +60,34 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
+				// add to picked character
+				if (position != adapterView.getChildCount() - 1) {
+					
+					GameCharacter curGameCharacter = (GameCharacter) adapterView
+							.getItemAtPosition(position);
 
-				GameCharacter curGameCharacter = (GameCharacter) adapterView
-						.getItemAtPosition(position);
+					Toast.makeText(
+							context,
+							curGameCharacter.getCharacterName()
+									+ " wird zum Spiel hinzugefuegt!",
+							Toast.LENGTH_SHORT).show();
 
-				Toast.makeText(context,
-						curGameCharacter.getCharacterName() + " wird zum Spiel hinzugefuegt!",
-						Toast.LENGTH_SHORT).show();
+					// TODO pruefen ob es nur ein Template moeglich ist!!!!
+					Log.d("newGame is null?", "" + (newGame == null));
 
-				// TODO pruefen ob es nur ein Template moeglich ist!!!!
-				Log.e("newGame is null?", "" + (newGame == null));
+					newGame.setTemplate(curGameCharacter.getTemplate());
 
-				newGame.setTemplate(curGameCharacter.getTemplate());
+					Log.d("Character is null?", "" + (curGameCharacter == null));
 
-				Log.e("Character is null?", "" + (curGameCharacter == null));
+					newGame.addCharacter(curGameCharacter);
+					notifyDataSetChanged();
+				}
+				// create new character from template
+				else {
+					Toast.makeText(context, "Neues Charakter wird erstellt!",
+							Toast.LENGTH_SHORT).show();
+				}
 
-				newGame.addCharacter(curGameCharacter);
-				notifyDataSetChanged();
 			}
 		});
 
@@ -86,31 +97,44 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					View view, final int position, long id) {
 				Log.d("LONG CLICK", "pos:" + position);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setTitle(context.getResources().getString(
-						R.string.text_remove_character_from_game));
-				builder.setMessage(context.getResources().getString(
-						R.string.text_click_to_remove_character_from_game));
-				builder.setNegativeButton(
-						context.getResources().getString(R.string.no),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						});
-				builder.setPositiveButton(
-						context.getResources().getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO remove character from game
-								// removeCharacter(position);
-							}
-						});
-				builder.create().show();
-				return true;
+				// if longclicked on last item >create new character<
+				if (position == adapterView.getChildCount() - 1) {
+					// do nothing
+					return false;
+				}
+
+				// if longclicked on character -> redirect to
+				// edit-character-mode
+				else {
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							context);
+
+					builder.setTitle(context.getResources().getString(
+							R.string.text_redirect_to_edit_character));
+					builder.setMessage(context.getResources().getString(
+							R.string.click_to_redirect_to_edit_character));
+					builder.setNegativeButton(
+							context.getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
+					builder.setPositiveButton(
+							context.getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO remove character from game
+									// removeCharacter(position);
+								}
+							});
+					builder.create().show();
+					return true;
+				}
 			}
 		});
 
@@ -188,7 +212,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.charactersCounter);
 
 		characterCounter.setText(String.valueOf(curTemplate.getCharacters()
-				.size()));
+				.size() - 1));
 
 		return convertView;
 

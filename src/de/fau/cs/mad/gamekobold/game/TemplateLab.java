@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import android.content.Context;
+import android.util.Log;
 
 public class TemplateLab {
 	private static TemplateLab sTemplateLab;
@@ -53,6 +54,13 @@ public class TemplateLab {
 		templates.add(template2);
 		templates.add(template3);
 		templates.add(template4);
+
+		// fake item to create New Character from template
+		GameCharacter createNewCharacter = new GameCharacter("+");
+		for (Template t : templates) {
+			t.addCharacter(createNewCharacter);
+		}
+
 	}
 
 	public static TemplateLab get(Context c) {

@@ -31,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
@@ -64,6 +65,7 @@ public class TemplateDetailsActivity extends Activity {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CharacterDetailsActivity.class);
 					i.putExtra("CharacterSheet", adapter.getItem(position));
+					i.putExtra("templateName", getFileName());
 					startActivity(i);
 				}
 			}
@@ -125,26 +127,18 @@ public class TemplateDetailsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (curTemplate != null) {
-					if (curTemplate.fileAbsolutePath != null) {
-						int lastSlashPos = curTemplate.fileAbsolutePath
-								.lastIndexOf("/");
-						String fileName = null;
-						if (lastSlashPos == -1) {
-							fileName = curTemplate.fileAbsolutePath;
-						} else {
-							fileName = curTemplate.fileAbsolutePath
-									.substring(lastSlashPos + 1);
-						}
+					if (curTemplate.absoluteFilePath != null) {
+						String fileName = getFileName();
 						Intent intent = new Intent(
 								TemplateDetailsActivity.this,
 								TemplateGeneratorActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						// flag to distinguish between editing and creating
 						intent.putExtra(
-								TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+								SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 								false);
 						intent.putExtra(
-								TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME,
+								SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 								fileName);
 						startActivity(intent);
 					}
@@ -155,6 +149,17 @@ public class TemplateDetailsActivity extends Activity {
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
+		}
+	}
+	
+	protected String getFileName(){
+		int lastSlashPos = curTemplate.absoluteFilePath
+				.lastIndexOf("/");
+		if (lastSlashPos == -1) {
+			return curTemplate.absoluteFilePath;
+		} else {
+			return curTemplate.absoluteFilePath
+					.substring(lastSlashPos + 1);
 		}
 	}
 
@@ -203,11 +208,11 @@ public class TemplateDetailsActivity extends Activity {
 											// check if we removed the last
 											// edited template
 											SharedPreferences pref = getSharedPreferences(
-													TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+													SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,
 													MODE_PRIVATE);
 											String lastEditedTemplate = pref
 													.getString(
-															TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+															SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
 															"");
 											if (lastEditedTemplate.equals(file
 													.getName())) {
@@ -215,7 +220,7 @@ public class TemplateDetailsActivity extends Activity {
 												// saved preference
 												SharedPreferences.Editor editor = pref
 														.edit();
-												editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+												editor.remove(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME);
 												editor.commit();
 											}
 										}

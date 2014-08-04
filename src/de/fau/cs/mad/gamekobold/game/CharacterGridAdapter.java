@@ -22,8 +22,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	private int layoutID;
 
 	public CharacterGridAdapter(Context context, int layoutID, Template template) {
-//		super(context, R.layout.itemlayout_expandablelist_charakter, template
-//				.getCharacters());
+		// super(context, R.layout.itemlayout_expandablelist_charakter, template
+		// .getCharacters());
 		super(context, layoutID, template.getCharacters());
 		this.context = context;
 		this.characters = template.getCharacters();
@@ -39,31 +39,66 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		// last item -> create new Character
+		if (position == characters.size() - 1) {
+			Log.d("position", "" + String.valueOf(position));
+			Log.d("characters.size", "" + String.valueOf(characters.size() - 1));
+			
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			// if it's not recycled, initialize some attributes
+			if (convertView == null) {
+				convertView = inflater
+						.inflate(
+								R.layout.itemlayout_expandablelist_create_new_character,
+								parent, false);
 
-		// if it's not recycled, initialize some attributes
-		if (convertView == null) {
-			convertView = inflater
-					.inflate(layoutID, parent, false);
+				GameCharacter curCharacter = characters.get(position);
 
-			GameCharacter curCharacter = characters.get(position);
+				TextView iName = (TextView) convertView
+						.findViewById(R.id.textItemTitle);
 
-			TextView iName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
+				iName.setText(curCharacter.getCharacterName());
+			}
+			// or reuse
+			else {
+				Log.e("Reusing", "true");
+				TextView iName = (TextView) convertView
+						.findViewById(R.id.textItemTitle);
+				GameCharacter curCharacter = characters.get(position);
+				iName.setText(curCharacter.getCharacterName());
+				Log.d("Character is null?", "" + (curCharacter == null));
+			}
+			// normal item
+		} else {
 
-			iName.setText(curCharacter.getCharacterName());
-		}
-		// or reuse
-		else {
-			Log.e("Reusing", "true");
-			TextView iName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			GameCharacter curCharacter = characters.get(position);
-			iName.setText(curCharacter.getCharacterName());
-			Log.e("Character is null?", "" + (curCharacter == null));
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			// if it's not recycled, initialize some attributes
+			if (convertView == null) {
+				convertView = inflater.inflate(layoutID, parent, false);
+
+				GameCharacter curCharacter = characters.get(position);
+
+				TextView iName = (TextView) convertView
+						.findViewById(R.id.textItemTitle);
+
+				iName.setText(curCharacter.getCharacterName());
+			}
+			// or reuse
+			else {
+				Log.e("Reusing", "true");
+				TextView iName = (TextView) convertView
+						.findViewById(R.id.textItemTitle);
+				GameCharacter curCharacter = characters.get(position);
+				iName.setText(curCharacter.getCharacterName());
+				Log.d("Character is null?", "" + (curCharacter == null));
+			}
+
 		}
 		return convertView;
 	}
+
 }

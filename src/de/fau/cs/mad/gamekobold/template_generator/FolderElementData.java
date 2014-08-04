@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import android.content.Context;
 import android.text.Editable;
@@ -30,7 +31,7 @@ public class FolderElementData{
 	
 	public FolderElementData(Context parent, element_type typeOfElement) {
 		type = typeOfElement;
-        text = new EditText(TemplateGeneratorActivity.theActiveActivity);
+        text = new EditText(SlideoutNavigationActivity.theActiveActivity);
         // create new TextWatcher for this data element.
         // it is added to the view representing this element
         // if the name is changed by the user we set the data element name and jackson table name

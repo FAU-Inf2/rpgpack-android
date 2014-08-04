@@ -27,7 +27,11 @@ public class GameCharacter implements Serializable{
 		this.date = date;
 		this.template = template;
 	}
-
+	//fake item -> createNewCharacter
+	public GameCharacter(String characterName) {
+		this.characterName = characterName;
+	}
+	
 	public String getCharacterName() {
 		return characterName;
 	}

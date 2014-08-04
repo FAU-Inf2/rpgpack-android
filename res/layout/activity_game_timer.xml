@@ -10,9 +10,9 @@
 	        android:layout_height="45dp"
 	        android:layout_alignParentBottom="true"
 	        android:layout_marginBottom="20dip"
+	        android:layout_marginLeft="20dip"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
-    		android:paddingLeft="15dip"
 	        android:onClick="startTimer"
 	        android:text="@string/btn_start" />
     
@@ -20,20 +20,21 @@
 	        android:id="@+id/btn_stop"
 	        android:layout_width="90dp"
 	        android:layout_height="45dp"
-	        android:layout_alignBaseline="@+id/btn_start"
+	        android:layout_marginRight="20dip"
        		android:layout_alignBottom="@+id/btn_start"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
-    		android:paddingLeft="15dip"
 	        android:layout_alignParentRight="true"
 	        android:onClick="stopTimer"
 	        android:text="@string/btn_pause" />
-        
+       
         <Button
 	        android:id="@+id/btn_plus_hour"
-	        android:layout_width="50dp"
-	        android:layout_height="30dp"
-	        android:layout_above="@+id/textViewTimeHour"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_alignBaseline="@+id/btn_plus_min"
+	        android:layout_toLeftOf="@+id/btn_plus_min"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="addHour"
@@ -41,36 +42,36 @@
         
         <Button
 	        android:id="@+id/btn_plus_min"
-	        android:layout_width="50dp"
-	        android:layout_height="30dp"
-	        android:layout_alignBaseline="@+id/btn_plus_hour"
-       		android:layout_alignBottom="@+id/btn_plus_hour"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginTop="20dp"
+	        android:layout_alignParentTop="true"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="addMin"
-    		android:paddingLeft="15dip"
 			android:layout_centerHorizontal="true"
 	        android:text="+m" />
         
+        
         <Button
 	        android:id="@+id/btn_plus_sec"
-	        android:layout_width="50dp"
-	        android:layout_height="30dp"
-	        android:layout_alignBaseline="@+id/btn_plus_hour"
-       		android:layout_alignBottom="@+id/btn_plus_hour"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignBaseline="@+id/btn_plus_min"
+	        android:layout_toRightOf="@+id/btn_plus_min"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="addSec"
-    		android:paddingLeft="15dip"
-	        android:layout_alignParentRight="true"
 	        android:text="+s" />
         
         <Button
 	        android:id="@+id/btn_minus_hour"
-	        android:layout_width="50dp"
-	        android:layout_height="30dp"
-	        android:layout_below="@+id/textViewTimeHour"
-	        android:layout_alignLeft="@+id/btn_plus_hour"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_below="@+id/textViewTime"
+	        android:layout_toLeftOf="@+id/btn_minus_min"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="removeHour"
@@ -78,63 +79,34 @@
         
          <Button
             android:id="@+id/btn_minus_min"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-           	android:layout_alignBaseline="@+id/btn_minus_hour"
-       		android:layout_alignBottom="@+id/btn_minus_hour"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/textViewTime"
             android:background="@color/background_green"
             android:onClick="removeMin"
-            android:paddingLeft="15dip"
             android:layout_centerHorizontal="true"
             android:text="-m"
             android:textColor="@color/white" />
         
         <Button
 	        android:id="@+id/btn_minus_sec"
-	        android:layout_width="50dp"
-	        android:layout_height="30dp"
-	        android:layout_alignBaseline="@+id/btn_minus_hour"
-       		android:layout_alignBottom="@+id/btn_minus_hour"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_alignBaseline="@+id/btn_minus_min"
+	        android:layout_toRightOf="@+id/btn_minus_min"
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="removeSec"
-    		android:paddingLeft="15dip"
-	        android:layout_alignParentRight="true"
 	        android:text="-s" />
         
           <TextView  
-     		android:id="@+id/textViewTimeHour" 
-     		android:layout_alignBaseline="@+id/textViewTimeMin"
-       		android:layout_alignBottom="@+id/textViewTimeMin"
+     		android:id="@+id/textViewTime"
+			android:layout_below="@+id/btn_plus_min"
      		android:textColor="@color/white"
      		android:layout_width="wrap_content"  
-     		android:layout_height="wrap_content"  
-	        android:layout_alignParentLeft="true"
-	        android:paddingRight="15dip"
+     		android:layout_height="wrap_content"
+     		android:layout_centerHorizontal="true"  
      		android:textSize="35sp" />     
-        
-        <TextView  
-     		android:id="@+id/textViewTimeMin" 
-     		android:layout_marginTop="40dp"
-     		android:layout_alignBaseline="@+id/textViewTimeMin"
-       		android:layout_alignBottom="@+id/textViewTimeMin"
-     		android:textColor="@color/white"
-     		android:layout_width="wrap_content"  
-     		android:layout_height="wrap_content"  
-      		android:layout_centerHorizontal="true"  
-     		android:textSize="35sp" />
-        
-         <TextView  
-     		android:id="@+id/textViewTimeSec" 
-     		android:layout_alignBaseline="@+id/textViewTimeMin"
-       		android:layout_alignBottom="@+id/textViewTimeMin"
-     		android:textColor="@color/white"
-     		android:layout_width="wrap_content"  
-     		android:layout_height="wrap_content"  
-	        android:layout_alignParentRight="true"
-	        android:paddingLeft="15dip"
-     		android:textSize="35sp" />
-
-        
-             
+           
 </RelativeLayout>

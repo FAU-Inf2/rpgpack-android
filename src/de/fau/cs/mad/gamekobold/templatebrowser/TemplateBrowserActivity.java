@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
@@ -67,12 +68,12 @@ public class TemplateBrowserActivity extends ListActivity {
 				else if (position == adapter.getCount() - 2) {
 					// get shared preferences
 					SharedPreferences pref = getSharedPreferences(
-							TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+							SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,
 							Activity.MODE_PRIVATE);
 					// get last edited template file name
 					String templateFileName = pref
 							.getString(
-									TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+									SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
 									"");
 					// check for existence
 					if (templateFileName.equals("")) {
@@ -145,11 +146,11 @@ public class TemplateBrowserActivity extends ListActivity {
 													// check if we removed the
 													// last edited template
 													SharedPreferences pref = getSharedPreferences(
-															TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,
+															SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,
 															MODE_PRIVATE);
 													String lastEditedTemplate = pref
 															.getString(
-																	TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME,
+																	SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
 																	"");
 													if (lastEditedTemplate
 															.equals(file
@@ -159,7 +160,7 @@ public class TemplateBrowserActivity extends ListActivity {
 														// preference
 														SharedPreferences.Editor editor = pref
 																.edit();
-														editor.remove(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME);
+														editor.remove(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME);
 														editor.commit();
 													}
 													removeItem(longClickedTemplate);
@@ -323,9 +324,9 @@ public class TemplateBrowserActivity extends ListActivity {
 				TemplateGeneratorActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// flag to distinguish between editing and creating
-		intent.putExtra(TemplateGeneratorActivity.MODE_CREATE_NEW_TEMPLATE,
+		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 				false);
-		intent.putExtra(TemplateGeneratorActivity.EDIT_TEMPLATE_FILE_NAME,
+		intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 				fileName);
 		startActivity(intent);
 	}

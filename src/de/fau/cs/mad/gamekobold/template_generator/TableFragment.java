@@ -3,9 +3,13 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
 import de.fau.cs.mad.gamekobold.jackson.StringClass;
@@ -56,6 +60,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -95,8 +101,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	SessionMonitorEditText dialogRowCounter = null;
 	//menu shown when long clicking a row
 	protected TableRow contextMenuRow;
-	protected PopupWindow popupStyles = null;
-	protected View stylesView;
 //	protected ArrayList<View> popupViewList = new ArrayList<>();
 //	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
 
@@ -106,104 +110,44 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);   
         setRetainInstance(true);
-        //create the table that will be shown in the dialog
-        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View dialogViewTableView = inflater.inflate(R.layout.alertdialog_template_generator_tableview, null);
-//        dialogTable = ((TableLayout) dialogViewTableView.findViewById(R.id.tableView_alert_table));
-//        dialogRowCounter = (SessionMonitorEditText) dialogViewTableView.findViewById(R.id.edit_spaltenanzahl);
-//        dialogRowCounter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
-//        	@Override
-//        	public void onEditSessionComplete(TextView v) {
-//        		int valueGiven = (Integer.parseInt(v.getText().toString()));
-//        		if(valueGiven < 0){
-//        			v.setText(Integer.toString(1));
-//        		}
-//        		else if(valueGiven > 99){
-//        			v.setText(Integer.toString(99));
-//        		}
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(v.getText().toString())));
-//        	}
-//        });
-//        //create add and subtract buttons for the dialog
-//        ImageButton addButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_add_column);
-//        addButton.setOnClickListener(new OnClickListener() {
-//        	@Override
-//        	public void onClick(View v) {
-//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		int newValue = oldValue+1;
-//        		dialogRowCounter.setText(Integer.toString(newValue));
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-//        	}
-//        });
-//        ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
-//        subtractButton.setOnClickListener(new OnClickListener() {
-//        	@Override
-//        	public void onClick(View v) {
-//        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		int newValue = oldValue-1;
-//        		dialogRowCounter.setText(Integer.toString(newValue));
-//        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
-//        	}
-//        });
-//        //create the dialog
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TemplateGeneratorActivity.theActiveActivity);
-//        alertDialogBuilder.setView(dialogViewTableView);
-//        alertDialogBuilder
-//        .setCancelable(false)
-//        .setPositiveButton(getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog,int id) {
-//        		setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
-//        		adaptHeaderTable(dialogTable);
-//        		setTypeContents();
-//        	}
-//        })
-//        .setNegativeButton(getResources().getString(R.string.go_back),new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog,int id) {
-//        		dialog.cancel();
-//        	}
-//        });
-//        dialog = alertDialogBuilder.create();
-        
-        
-        stylesView = inflater.inflate(R.layout.table_view_styles, (ViewGroup) getActivity().findViewById(R.id.popup_element));
-//        Button italic = (Button) stylesView.findViewById(R.id.italic_button);
-        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-		int popupHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpHeight*0.1), getResources().getDisplayMetrics()));
-		int popupWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) (dpWidth), getResources().getDisplayMetrics()));
-        popupStyles = new PopupWindow(stylesView, popupWidth, popupHeight, true);
-        popupStyles.setOutsideTouchable(false);
-//        popupStyles.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
-        mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, null);
-        table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
-        createTableHeader();
-        //set the 3 buttons
-		Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
-		buttonAdd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
-		addColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addColumn();
-			}
-		});
-		Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
-		removeColumnButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				removeColumn();
-			}
-		});
-		TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
-		addRowBelow.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				addItemList();
-			}
-		});
-		setAddButtonStyle(addRowBelow);
+    	LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+//			Log.d("TableFragment", "inflated for TemplateGenerator");
+        	//create the table that will be shown in the dialog
+        	mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, new LinearLayout(getActivity()), false);
+        	table = (TableLayout) mainView.findViewById(R.id.template_generator_table);
+        	createTableHeader();
+        	//set the 3 buttons
+        	Button buttonAdd = (Button)mainView.findViewById(R.id.add_row);
+        	buttonAdd.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addItemList();
+        		}
+        	});
+        	Button addColumnButton = (Button)mainView.findViewById(R.id.add_column);
+        	addColumnButton.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addColumn();
+        		}
+        	});
+        	Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
+        	removeColumnButton.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			removeColumn();
+        		}
+        	});
+        	TextView addRowBelow = (TextView)mainView.findViewById(R.id.add_below);
+        	addRowBelow.setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			addItemList();
+        		}
+        	});
+        	setAddButtonStyle(addRowBelow);
+        }
+        else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+			Log.d("TableFragment", "inflated for CharacterEditActivity");
+        	mainView = (RelativeLayout) inflater.inflate(R.layout.character_edit_table_view, new LinearLayout(getActivity()), false);
+        }
 		// removed because we could otherwise not save/load tables with 0 rows
 		//addItemList();
     }
@@ -211,48 +155,91 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		
-		//tabhost
-//		mTabHost = (FragmentTabHost)mainView.findViewById(R.id.tabhost);
-//		mTabHost.setup(getActivity(), ((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).getSupportFragmentManager(), R.id.tabFrameLayout);
-//
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab1").setIndicator("Tab 1",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab2").setIndicator("Tab 2",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-//        mTabHost.addTab(
-//                mTabHost.newTabSpec("tab3").setIndicator("Tab 3",
-//                        getResources().getDrawable(android.R.drawable.star_on)),
-//                FragmentTab.class, null);
-
-		//
 		// JACKSON START
-		// check for saved rows
-		if(jacksonTable.getRowCount() > 0) {
-			jacksonInflateWithData = true;
-			// adjust row count
-			int jacksonRowNum = jacksonTable.getRowCount();
-			while(table.getChildCount() < jacksonRowNum) {
+		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+			// check for saved rows
+			if(jacksonTable.getRowCount() > 0) {
+				jacksonInflateWithData = true;
+				// adjust row count
+				int jacksonRowNum = jacksonTable.getRowCount();
+				while(table.getChildCount() < jacksonRowNum) {
+					addItemList();
+					Log.d("TableFragment", "added row");
+				}
+				while(table.getChildCount() > jacksonRowNum) {
+					removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
+					Log.d("TableFragment", "removed row");
+				}
+				jacksonInflateWithData = false;
+			}
+			else {
 				addItemList();
-				Log.d("TableFragment", "added row");
 			}
-			while(table.getChildCount() > jacksonRowNum) {
-				removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
-				Log.d("TableFragment", "removed row");
-			}
-			jacksonInflateWithData = false;
 		}
-		else {
-			addItemList();
+		else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+			// check for saved rows
+			fillListView();
 		}
 		//
 		// JACKSON END
 		//
 		return mainView;
+	}
+	
+	
+	private void fillListView(){
+		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
+		final int jacksonRowNum = jacksonTable.getRowCount();
+
+		// check if we got any saved columns (they are only created if user goes into table!)
+		// so if there are no saved columns or we didn't load any data we add the default columns 
+		
+//		jacksonTable.getEntry(columnIndex, rowIndex)
+//		List<String> your_array_list = new ArrayList<String>();
+//        your_array_list.add("foo");
+//		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+//                this, 
+//                android.R.layout.simple_list_item_1,
+//                your_array_list );
+		String[] groupList = new String[jacksonRowNum];
+		String[][] itemList = new String[jacksonRowNum][];
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			groupList[rowIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
+		}
+		
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			itemList[rowIndex] = new String[jacksonTableColumnNumber-1];
+			for(int columnIndex=1; columnIndex<jacksonTableColumnNumber; columnIndex++){
+//				View firstRowView = null;
+				//TODO: get saved table type from jackson here
+				//now just assume it is edittext
+//				TableRow firstRow = (TableRow) table.getChildAt(0);
+				IEditableContent jacksonEntry = null;
+				jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//				if(firstRow != null){
+//					firstRowView = firstRow.getChildAt(columnIndex);
+//				}
+//				if(firstRowView instanceof EditText){
+//					jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//				}
+//				else if(firstRowView instanceof LinearLayout){
+//					if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
+//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//					}
+//					else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
+//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+//					}
+//				}
+				if(jacksonEntry != null) {
+					String content = jacksonEntry.getContent();
+					itemList[rowIndex][columnIndex-1] = content;
+				}
+			}
+		}
+		ExpandableListView expListView = (ExpandableListView) mainView.findViewById(R.id.exp_table_list_view);
+        final ExpandableListAdapter expListAdapter = new CustomExpandableListAdapter(
+                getActivity(), groupList, itemList);
+        expListView.setAdapter(expListAdapter);
 	}
 	
 	protected void setTypeContents(TableLayout dialogTable){
@@ -358,7 +345,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		if(v instanceof TableRow){
 			contextMenuRow = (TableRow) v;
 		}
-		MenuInflater inflater = TemplateGeneratorActivity.theActiveActivity.getMenuInflater();
+		MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
 		inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 	}
 	
@@ -499,12 +486,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				usedTable = headerTable;
 			}
 		}
-		Log.d("index", "indexOfRow  == " + indexOfRow);
+//		Log.d("index", "indexOfRow  == " + indexOfRow);
 		int indexOfColumn = -1;
 		if(usedTable.getChildAt(indexOfRow) instanceof TableRow){
 			indexOfColumn = ((TableRow) usedTable.getChildAt(indexOfRow)).indexOfChild(textEdited);
 		}
-		Log.d("index", "indexOfColumn  == " + indexOfColumn);
+//		Log.d("index", "indexOfColumn  == " + indexOfColumn);
 		int largestWidth = 0;
 		//traverse over all columns to get biggest width
 		//first columns of normal table
@@ -735,12 +722,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			public void onTextChanged(CharSequence s, int start, int before, int count){
 			}
 		});
-        LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, null);
 
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
-        popupHeadline.setText(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment.elementName);
+        popupHeadline.setText(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getCurrentFragment().elementName);
         final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
         
         
@@ -897,7 +884,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         addRefButton.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
 //        		Animation slide_up = AnimationUtils.loadAnimation(TemplateGeneratorActivity.theActiveActivity, R.animator.slide_up);
-                LayoutInflater inflater = (LayoutInflater) TemplateGeneratorActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupReferencesView = inflater.inflate(R.layout.table_view_references, null);
                 LinearLayout reference_list = (LinearLayout) popupReferencesView.findViewById(R.id.reference_list);
                 final PopupWindow popupReferences = new PopupWindow(popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -911,9 +898,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //	                    inputPopup.requestFocus();
 //					}
 //				});
-                ArrayList<String> allRefs = getAllElementsToRef(((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).rootFragment);
+                ArrayList<String> allRefs = getAllElementsToRef(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
                 for(String aReference : allRefs){
-                	TextView oneLine = new TextView(TemplateGeneratorActivity.theActiveActivity);
+                	TextView oneLine = new TextView(SlideoutNavigationActivity.theActiveActivity);
                 	oneLine.setText(aReference);
                 	oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
                 	           getResources().getDimension(R.dimen.text_large));
@@ -938,7 +925,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                 	reference_list.addView(oneLine);
                 }
 //                reference_view.startAnimation(slide_up);
-    			popupReferences.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+    			popupReferences.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
         	}
         });
         //following does not work yet
@@ -974,8 +961,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				popupHeadline.setText(headline);
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-				popup.showAtLocation(TemplateGeneratorActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-				InputMethodManager inputMgr = (InputMethodManager)TemplateGeneratorActivity.theActiveActivity.
+				popup.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+				InputMethodManager inputMgr = (InputMethodManager)SlideoutNavigationActivity.theActiveActivity.
 						getSystemService(Context.INPUT_METHOD_SERVICE);
 					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
 			}
@@ -1343,7 +1330,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		int height = size.y;
 		textViewParams.height = height;
 		textViewParams.width = width;
-		Log.d("width", "SCREEN.x == " + width);
+//		Log.d("width", "SCREEN.x == " + width);
 		text.setMaxWidth(width);
 		String uri = "@drawable/cell_shape_add";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
@@ -1360,7 +1347,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	
 	@SuppressWarnings("deprecation")
 	protected void setHeaderTableStyle(EditText text){
-		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
+//		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
 		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
 		String uri = "@drawable/cell_shape_green";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
@@ -1503,7 +1490,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//second step: add rows if needed
 		for(int i=firstRowToAdd-1; i<rowsNeeded; i++){
 //			Log.d("dialog", "add");
-			final TableRow row = new TableRow(TemplateGeneratorActivity.theActiveActivity);
+			final TableRow row = new TableRow(SlideoutNavigationActivity.theActiveActivity);
 			TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
 			rowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
 			rowParams.width = TableRow.LayoutParams.WRAP_CONTENT;
@@ -1511,9 +1498,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			for(int k=0; k<3; k++){
 				View theView = null;
 				if(k==2 && i != -1){
-					Spinner spin = new Spinner(TemplateGeneratorActivity.theActiveActivity);
+					Spinner spin = new Spinner(SlideoutNavigationActivity.theActiveActivity);
 					String [] spin_arry = getResources().getStringArray(R.array.spaltentypen);
-					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(TemplateGeneratorActivity.theActiveActivity, spin_arry));
+					spin.setAdapter(new DialogSpinnerAdapter<CharSequence>(SlideoutNavigationActivity.theActiveActivity, spin_arry));
 					theView = spin;
 					setSpinnerStyle(spin);
 					spin.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -1529,7 +1516,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					});
 				}
 				else{
-					final EditText oneColumn = new EditText(TemplateGeneratorActivity.theActiveActivity);
+					final EditText oneColumn = new EditText(SlideoutNavigationActivity.theActiveActivity);
 					setTableStyle((EditText) oneColumn);
 					if (i == -1) {
 						if (k == 0) {

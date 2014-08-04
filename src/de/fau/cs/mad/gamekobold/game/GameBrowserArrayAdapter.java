@@ -82,8 +82,9 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				gName.setText(curGame.getGameName());
 				gTemplate.setText(curGame.getTemplate().getTemplateName());
 				gDate.setText(curGame.getDate());
+				// size-1 as last item is fake!(for creating new character)
 				gCounter.setText(String.valueOf(curGame.getCharakterList()
-						.size()));
+						.size() - 1));
 				// // change the icon for different games
 				// GameIcons gameIcons = GameIcons.getInstance();
 				// imageView.setImageResource(Integer.valueOf(gameIcons

@@ -44,7 +44,8 @@ public class ToolboxActivity extends SingleFragmentActivity{
 	}
 
 	public void openRandomGenerator(View view) {
-		this.notImplemented();
+		Intent intent = new Intent(ToolboxActivity.this, ToolboxRandomGenerator.class);
+		startActivity(intent);
 	}
 	
 		

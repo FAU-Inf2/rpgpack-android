@@ -24,7 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 public class Template implements Parcelable{
 	@JsonIgnore
 	public static boolean USE_PRETTY_WRITER = true;
@@ -128,9 +128,9 @@ public class Template implements Parcelable{
 		saveToFile(outStream);
 		if(setLastEditedFlag) {
 			// save in shared preferences the last edited template file name
-			SharedPreferences pref = context.getSharedPreferences(TemplateGeneratorActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
+			SharedPreferences pref = context.getSharedPreferences(SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
 			SharedPreferences.Editor edit = pref.edit();
-			edit.putString(TemplateGeneratorActivity.LAST_EDITED_TEMPLATE_NAME, getFileName());
+			edit.putString(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME, getFileName());
 			edit.commit();
 		}
 	}
