@@ -96,31 +96,43 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					View view, final int position, long id) {
 				Log.d("LONG CLICK", "pos:" + position);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setTitle(context.getResources().getString(
-						R.string.text_remove_character_from_game));
-				builder.setMessage(context.getResources().getString(
-						R.string.text_click_to_remove_character_from_game));
-				builder.setNegativeButton(
-						context.getResources().getString(R.string.no),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						});
-				builder.setPositiveButton(
-						context.getResources().getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// TODO remove character from game
-								// removeCharacter(position);
-							}
-						});
-				builder.create().show();
-				return true;
+				// if longclicked on last item >create new character<
+				if (position == adapterView.getChildCount() - 1) {
+					// do nothing
+					return false;
+				}
+				
+				// if longclicked on character
+				else {
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							context);
+
+					builder.setTitle(context.getResources().getString(
+							R.string.text_redirect_to_edit_character));
+					builder.setMessage(context.getResources().getString(
+							R.string.click_to_redirect_to_edit_character));
+					builder.setNegativeButton(
+							context.getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
+					builder.setPositiveButton(
+							context.getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO remove character from game
+									// removeCharacter(position);
+								}
+							});
+					builder.create().show();
+					return true;
+				}
 			}
 		});
 
@@ -198,7 +210,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.charactersCounter);
 
 		characterCounter.setText(String.valueOf(curTemplate.getCharacters()
-				.size()-1));
+				.size() - 1));
 
 		return convertView;
 

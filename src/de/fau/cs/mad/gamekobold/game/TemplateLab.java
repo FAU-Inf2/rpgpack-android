@@ -54,6 +54,13 @@ public class TemplateLab {
 		templates.add(template2);
 		templates.add(template3);
 		templates.add(template4);
+
+		// fake item to create New Character from template
+		GameCharacter createNewCharacter = new GameCharacter("+");
+		for (Template t : templates) {
+			t.addCharacter(createNewCharacter);
+		}
+
 	}
 
 	public static TemplateLab get(Context c) {

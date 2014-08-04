@@ -64,10 +64,10 @@ public class GameDetailsFragment extends Fragment {
 		templateName.setText(game.getTemplate().getTemplateName());
 		date.setText(game.getDate());
 
-		final CharacterGridAdapter characterGridAdapter = new CharacterGridAdapter(
+		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_expandablelist_charakter,
 				game);
-		gameCharacterGridView.setAdapter(characterGridAdapter);
+		gameCharacterGridView.setAdapter(gameDetailsCharacterGridAdapter);
 
 		gameCharacterGridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -126,7 +126,7 @@ public class GameDetailsFragment extends Fragment {
 										// remove picked character from the
 										// current game
 										game.removeCharacter(curGameCharacter);
-										characterGridAdapter
+										gameDetailsCharacterGridAdapter
 												.notifyDataSetChanged();
 									}
 								});
