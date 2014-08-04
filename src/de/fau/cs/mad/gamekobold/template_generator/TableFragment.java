@@ -842,6 +842,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         
         
         inputPopup.addTextChangedListener(new TextWatcher() { 
+        	final IEditableContent myJacksonEntry = jacksonEntry;
         	public void afterTextChanged(Editable s) { 
         		int position = Selection.getSelectionStart(inputPopup.getText());
         		if (position < 0){
@@ -881,6 +882,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                     }
                     inputPopup.setText(s);
                     inputPopup.setSelection(position);
+                    myJacksonEntry.setContent(s.toString());
         		}
         			
         	}
@@ -892,6 +894,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	} 
         });
         
+        // TEST
+        if(!jacksonEntry.getContent().isEmpty()) {
+        	inputPopup.setText(jacksonEntry.getContent());
+        }
+        // TEST END
         
         //before
 //        toggleBold.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
