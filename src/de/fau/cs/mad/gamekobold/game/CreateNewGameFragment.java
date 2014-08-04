@@ -58,7 +58,6 @@ public class CreateNewGameFragment extends Fragment {
 	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,10 +83,10 @@ public class CreateNewGameFragment extends Fragment {
 		pickedCharacterGridView = (GridView) view
 				.findViewById(R.id.pickedCharacterGridView);
 
-		final CharacterGridAdapter characterGridAdapter = new CharacterGridAdapter(
+		final PickedCharacterGridAdapter pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_grid_picked_character,
 				newGame);
-		pickedCharacterGridView.setAdapter(characterGridAdapter);
+		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView
 				.setOnItemClickListener(new OnItemClickListener() {
@@ -159,7 +158,7 @@ public class CreateNewGameFragment extends Fragment {
 										// remove picked character from the new
 										// game
 										newGame.removeCharacter(curGameCharacter);
-										characterGridAdapter
+										pickedCharacterGridAdapter
 												.notifyDataSetChanged();
 									}
 								});

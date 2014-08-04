@@ -62,6 +62,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					int position, long id) {
 				// add to picked character
 				if (position != adapterView.getChildCount() - 1) {
+					
 					GameCharacter curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
@@ -101,8 +102,9 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					// do nothing
 					return false;
 				}
-				
-				// if longclicked on character
+
+				// if longclicked on character -> redirect to
+				// edit-character-mode
 				else {
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(
