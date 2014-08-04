@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class GameDetailsFragment extends Fragment {
@@ -34,7 +36,7 @@ public class GameDetailsFragment extends Fragment {
 	private TextView description;
 	private TextView templateName;
 	private ImageView gameIcon;
-	private Button buttonInfo;
+	private Button infoButton;
 	private GridView gameCharacterGridView;
 
 	@Override
@@ -56,7 +58,7 @@ public class GameDetailsFragment extends Fragment {
 		date = (TextView) view.findViewById(R.id.textViewDate);
 		templateName = (TextView) view.findViewById(R.id.textViewWorldName);
 		gameIcon = (ImageView) view.findViewById(R.id.iconGame);
-		buttonInfo = (Button) view.findViewById(R.id.buttonInfoPopup);
+		infoButton = (Button) view.findViewById(R.id.buttonGameInfoPopup);
 		gameCharacterGridView = (GridView) view
 				.findViewById(R.id.gridViewCharacters);
 
@@ -135,6 +137,22 @@ public class GameDetailsFragment extends Fragment {
 					}
 				});
 
+		infoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// show popup with some space for Game Info
+				showPopup();
+			}
+		});
+
 		return view;
+	}
+
+	private void showPopup() {
+		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
+				.newInstance(game);
+		gameInfoDialogFragment.show(getFragmentManager(),
+				"popupGameInfoFragment");
+
 	}
 }

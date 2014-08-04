@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +42,6 @@ public class CreateNewGameFragment extends Fragment {
 
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
-	private static final String DIALOG_NOTICE = "notice";
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
@@ -263,9 +261,7 @@ public class CreateNewGameFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// show popup with some space for Game Info
-				FragmentManager fm = getActivity().getFragmentManager();
-				GameInfoDialogFragment popupGameInfoFragment = new GameInfoDialogFragment();
-				popupGameInfoFragment.show(fm, DIALOG_NOTICE);
+				showPopup();
 			}
 		});
 
@@ -298,7 +294,24 @@ public class CreateNewGameFragment extends Fragment {
 	}
 
 	// TODO check this!
+
+	private void showPopup() {
+		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
+				.newInstance(newGame);
+		gameInfoDialogFragment.show(getFragmentManager(),
+				"popupGameInfoFragment");
+
+	}
+
 	public static class GameInfoDialogFragment extends DialogFragment {
+		private EditText editTextInfo;
+		private Game curGame;
+
+		public static GameInfoDialogFragment newInstance(Game game) {
+			GameInfoDialogFragment fragment = new GameInfoDialogFragment();
+			fragment.curGame = game;
+			return fragment;
+		}
 
 		@Override
 		public Dialog onCreateDialog(Bundle SaveInstanceState) {
@@ -313,22 +326,30 @@ public class CreateNewGameFragment extends Fragment {
 			// layout
 			View view = inflater.inflate(R.layout.popup_create_game_info, null);
 
-			builder.setView(view);
-
-			final EditText editText = (EditText) view
+			// get all EditTexts
+			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
+			Log.d("curGame is null?", "" +(curGame == null));
+			//TODO Check it!!!!
+//			if (!curGame.getDescription().isEmpty()) {
+//				editTextInfo.setText(curGame.getDescription());
+//			} else {
+//				editTextInfo.setText(getActivity().getString(
+//						R.string.no_description_found));
+//			}
+
+			builder.setView(view);
 
 			builder.setMessage(getString(R.string.popup_create_game_info_titel));
 			builder.setPositiveButton(getString(R.string.save_changes),
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// myTemplate.description =
-							// editText.getEditableText()
-							// .toString();
-							// createNewTemplateActivity.edDescription
-							// .setText(editText.getEditableText()
-							// .toString());
+							// save new game notices
+							curGame.setDescription(editTextInfo
+									.getEditableText().toString());
+							// game changed!!!
+							// TODO check it!! newGame vs myGame
 						}
 					});
 
@@ -360,5 +381,4 @@ public class CreateNewGameFragment extends Fragment {
 			return dialog;
 		}
 	}
-
 }
