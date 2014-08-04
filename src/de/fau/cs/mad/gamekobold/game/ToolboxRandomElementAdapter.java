@@ -30,6 +30,7 @@ public class ToolboxRandomElementAdapter extends BaseAdapter {
      
         TextView textView = (TextView) convertView.findViewById(R.id.grid_item);
         textView.setText(textViewValues.get(position));
+        textView.setHint(textViewValues.get(position));
 
         return convertView;
     }
