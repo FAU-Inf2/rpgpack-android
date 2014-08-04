@@ -33,8 +33,7 @@ public class ToolboxRandomGenerator extends Activity{
 	        	int i = diceRoller(6);
 	        	contentView.setText(String.valueOf(i));
 	        }
-	    });
-        
+	    });      
     }
 	  
     public void randomCharList(View v){
