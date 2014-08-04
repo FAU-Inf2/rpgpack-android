@@ -127,7 +127,7 @@ public class TemplateDetailsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (curTemplate != null) {
-					if (curTemplate.absoluteFilePath != null) {
+					if (curTemplate.fileAbsolutePath != null) {
 						String fileName = getFileName();
 						Intent intent = new Intent(
 								TemplateDetailsActivity.this,
@@ -153,12 +153,12 @@ public class TemplateDetailsActivity extends Activity {
 	}
 	
 	protected String getFileName(){
-		int lastSlashPos = curTemplate.absoluteFilePath
+		int lastSlashPos = curTemplate.fileAbsolutePath
 				.lastIndexOf("/");
 		if (lastSlashPos == -1) {
-			return curTemplate.absoluteFilePath;
+			return curTemplate.fileAbsolutePath;
 		} else {
-			return curTemplate.absoluteFilePath
+			return curTemplate.fileAbsolutePath
 					.substring(lastSlashPos + 1);
 		}
 	}
