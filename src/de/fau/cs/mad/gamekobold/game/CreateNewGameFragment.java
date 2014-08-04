@@ -56,6 +56,7 @@ public class CreateNewGameFragment extends Fragment {
 	private Button createGameButton;
 	private ImageButton addImageButton;
 	private ExpandableListView expandableTemplateList;
+	private GameCharacter curCharacter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +100,24 @@ public class CreateNewGameFragment extends Fragment {
 										.getText()
 										+ " Item " + position + " was clicked",
 								Toast.LENGTH_SHORT).show();
+
 						// TODO hier gehts zur Characteransicht zum Spielen
+						curCharacter = (GameCharacter) adapterView
+								.getItemAtPosition(position);
+
+						Toast.makeText(
+								getActivity(),
+								((TextView) view
+										.findViewById(R.id.textItemTitle))
+										.getText(), Toast.LENGTH_SHORT).show();
+
+						// Start playCharactedActivity
+						Intent i = new Intent(getActivity(),
+								PlayCharacterActivity.class);
+						i.putExtra(
+								PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
+								curCharacter);
+						startActivity(i);
 
 					}
 				});
@@ -251,19 +269,20 @@ public class CreateNewGameFragment extends Fragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.menu_item_load_template_from_store:
-	            openStore();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.menu_item_load_template_from_store:
+			openStore();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void openStore() {
 		// Spiel erstellen
-		Intent intent = new Intent(getActivity(), TemplateStoreMainActivity.class);
-		startActivity(intent);	
+		Intent intent = new Intent(getActivity(),
+				TemplateStoreMainActivity.class);
+		startActivity(intent);
 	}
 }

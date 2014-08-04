@@ -8,7 +8,7 @@ import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
-import de.fau.cs.mad.gamekobold.game.GameBrowserActivity1;
+import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.app.Activity;
 import android.app.AlertDialog;

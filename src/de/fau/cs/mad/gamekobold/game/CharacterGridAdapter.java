@@ -62,7 +62,7 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 					.findViewById(R.id.textItemTitle);
 			GameCharacter curCharacter = characters.get(position);
 			iName.setText(curCharacter.getCharacterName());
-			Log.e("Character is null?", "" + (curCharacter == null));
+			Log.d("Character is null?", "" + (curCharacter == null));
 		}
 		return convertView;
 	}

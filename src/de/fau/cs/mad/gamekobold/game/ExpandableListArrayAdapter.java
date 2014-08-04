@@ -69,11 +69,11 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 						Toast.LENGTH_SHORT).show();
 
 				// TODO pruefen ob es nur ein Template moeglich ist!!!!
-				Log.e("newGame is null?", "" + (newGame == null));
+				Log.d("newGame is null?", "" + (newGame == null));
 
 				newGame.setTemplate(curGameCharacter.getTemplate());
 
-				Log.e("Character is null?", "" + (curGameCharacter == null));
+				Log.d("Character is null?", "" + (curGameCharacter == null));
 
 				newGame.addCharacter(curGameCharacter);
 				notifyDataSetChanged();

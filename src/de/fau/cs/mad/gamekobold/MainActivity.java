@@ -1,17 +1,16 @@
 package de.fau.cs.mad.gamekobold;
 
-import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
-import de.fau.cs.mad.gamekobold.game.GameBrowserActivity1;
-import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
+import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 
 public class MainActivity extends Activity {
 
@@ -43,7 +42,7 @@ public class MainActivity extends Activity {
 
 	public void startGame(View view) {
 		// Spiel erstellen
-		Intent intent = new Intent(MainActivity.this, GameBrowserActivity1.class);
+		Intent intent = new Intent(MainActivity.this, GameBrowserActivity.class);
 		startActivity(intent);
 	}
 
