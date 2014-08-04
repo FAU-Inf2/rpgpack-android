@@ -199,7 +199,7 @@ public class MatrixFragment extends GeneralFragment {
 		public MatrixFragment matrixFragment;
 		public MatrixItem editItem = null;
 
-		// TODO pr�fen
+		// TODO pruefen
 		public static AddNewItemDialogFragment newInstance(
 				MatrixFragment receiver) {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
