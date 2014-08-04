@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ public class Template implements Serializable {
 	private String date;
 	private int iconID;
 	private String description;
-	public String absoluteFilePath = null;
+	public String fileAbsolutePath = null;
+	private long fileTimeStamp = 0;
 	
 	//TODO pruefen in die andere richtung!!!
 	private List<GameCharacter> characters = new ArrayList<GameCharacter>();
@@ -103,18 +105,18 @@ public class Template implements Serializable {
 	}
 
 	public String getFileName() {
-		if (absoluteFilePath == null) {
+		if (fileAbsolutePath == null) {
 			return "";
 		}
-		if (absoluteFilePath.isEmpty()) {
+		if (fileAbsolutePath.isEmpty()) {
 			return "";
 		}
-		int lastSlashPos = absoluteFilePath.lastIndexOf("/");
+		int lastSlashPos = fileAbsolutePath.lastIndexOf("/");
 		String fileName = null;
 		if (lastSlashPos == -1) {
-			fileName = absoluteFilePath;
+			fileName = fileAbsolutePath;
 		} else {
-			fileName = absoluteFilePath.substring(lastSlashPos + 1);
+			fileName = fileAbsolutePath.substring(lastSlashPos + 1);
 		}
 		return fileName;
 	}
@@ -129,5 +131,37 @@ public class Template implements Serializable {
 
 	public void takeOverValues(final Template otherTemplate) {
 		this.description = otherTemplate.description;
+	}
+	
+	/**
+	 * Checks whether the file for this template has changed by checking the time stamp of it.
+	 * @return true if the file has been changed, false otherwise.
+	 */
+	public boolean hasFileTimeStampChanged() {
+		if(fileAbsolutePath == null) {
+			return false;
+		}
+		final File templateFile = new File(fileAbsolutePath);
+		final long newTimeStamp = templateFile.lastModified();
+		if(newTimeStamp > fileTimeStamp) {
+			fileTimeStamp = newTimeStamp;
+			return true;
+		}
+		return false;
+	}
+	
+	public void setFileTimeStamp(final long timeStamp) {
+		fileTimeStamp = timeStamp;
+	}
+	
+	public long getFileTimeStamp() {
+		return fileTimeStamp;
+	}
+	
+	public File getTemplateFile() {
+		if(fileAbsolutePath == null) {
+			return null;
+		}
+		return new File(fileAbsolutePath);
 	}
 }

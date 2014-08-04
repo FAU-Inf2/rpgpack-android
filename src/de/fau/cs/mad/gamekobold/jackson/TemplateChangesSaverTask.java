@@ -16,29 +16,25 @@ import android.widget.Toast;
 public class TemplateChangesSaverTask extends AsyncTask<Template, Void, Boolean> {
 	// TODO not realy needed if we write a method for saving directly to a file.
 	private final Context appContext;
-	
+
 	public TemplateChangesSaverTask(Context context) {
 		appContext = context;
 	}
-	
-	
-//	@Override
-//	protected void onPreExecute() {
-//	}
-	
+
+
 	@Override
 	protected Boolean doInBackground(Template... params) {
 		Template template = params[0];
 		// check for filepath existence
-		if(template.absoluteFilePath == null) {
+		if(template.fileAbsolutePath == null) {
 			return Boolean.FALSE;
 		}
 		// check for valid filepath
-		if(template.absoluteFilePath.isEmpty()) {
+		if(template.fileAbsolutePath.isEmpty()) {
 			return Boolean.FALSE;
 		}
 		// create File Object for template
-		File templateFile = new File(template.absoluteFilePath);
+		File templateFile = new File(template.fileAbsolutePath);
 		// check if the file exists. if not -> fail.
 		if(!templateFile.exists()) {
 			return Boolean.FALSE;

@@ -32,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
-import de.fau.cs.mad.gamekobold.jackson.TemplateChangesSaverTask;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -41,10 +40,6 @@ public class TemplateDetailsActivity extends Activity {
 	private GridView gridView;
 	private static Activity myActivity;
 	private boolean templateChanged = false;
-	
-	public final static String INTENT_EXTRA_TEMPLATE_CHANGED = "extra_template_changed";
-	public final static String INTENT_EXTRA_TEMPLATE_DELETED = "extra_template_deleted";
-	public final static String INTENT_EXTRA_TEMPLATE = "extra_template";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +96,7 @@ public class TemplateDetailsActivity extends Activity {
 				ivIcon.setImageResource(Integer.valueOf(templateIcons
 						.getTempalteIcon(curTemplate.getIconID())));
 
-				if (curTemplate.absoluteFilePath == null) {
+				if (curTemplate.fileAbsolutePath == null) {
 					editButton.setEnabled(false);
 				}
 				setTitle(curTemplate.getTemplateName());
@@ -130,14 +125,14 @@ public class TemplateDetailsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (curTemplate != null) {
-					if (curTemplate.absoluteFilePath != null) {
-						int lastSlashPos = curTemplate.absoluteFilePath
+					if (curTemplate.fileAbsolutePath != null) {
+						int lastSlashPos = curTemplate.fileAbsolutePath
 								.lastIndexOf("/");
 						String fileName = null;
 						if (lastSlashPos == -1) {
-							fileName = curTemplate.absoluteFilePath;
+							fileName = curTemplate.fileAbsolutePath;
 						} else {
-							fileName = curTemplate.absoluteFilePath
+							fileName = curTemplate.fileAbsolutePath
 									.substring(lastSlashPos + 1);
 						}
 						Intent intent = new Intent(
@@ -165,7 +160,6 @@ public class TemplateDetailsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_details, menu);
 		return super.onCreateOptionsMenu(menu);
@@ -201,10 +195,9 @@ public class TemplateDetailsActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							if (curTemplate.absoluteFilePath != null) {
-								if (!curTemplate.absoluteFilePath.isEmpty()) {
-									File file = new File(
-											curTemplate.absoluteFilePath);
+							if (curTemplate.fileAbsolutePath != null) {
+								if (!curTemplate.fileAbsolutePath.isEmpty()) {
+									final File file = curTemplate.getTemplateFile();
 									if (file != null) {
 										if (file.delete()) {
 											// check if we removed the last
@@ -229,17 +222,7 @@ public class TemplateDetailsActivity extends Activity {
 									}
 								}
 							}
-							Intent sendIntent = new Intent(
-									TemplateDetailsActivity.this,
-									TemplateBrowserActivity.class);
-							sendIntent.setAction(Intent.ACTION_SEND);
-							sendIntent.putExtra(INTENT_EXTRA_TEMPLATE_DELETED, true);
-							sendIntent.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
-							startActivity(sendIntent);
-							setResult(RESULT_OK, sendIntent);
-							finish();
-							// Log.d("reachable", "is this beeing called?!"); //
-							// yes
+							goBackToBrowser();
 						}
 					});
 			dialogBuilder.create().show();
@@ -334,38 +317,44 @@ public class TemplateDetailsActivity extends Activity {
 	
 	/**
 	 * Starts the TemplateBrowser Activity.
-	 * Sets the flag for checking for template changes.
 	 */
 	private void goBackToBrowser() {
-		// TODO here
 		Intent i = new Intent(TemplateDetailsActivity.this,
 				TemplateBrowserActivity.class);
-		i.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, templateChanged);
-		if(templateChanged) {
-			i.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
-		}
 		startActivity(i);
 	}
 
 	@Override
 	public void onBackPressed() {
-		//goBackToBrowser();
-		super.onBackPressed();
+		goBackToBrowser();
+		//super.onBackPressed();
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
+		// check if we changed the template
 		if(templateChanged) {
-			// save the changes before we leave
-			TemplateChangesSaverTask saverTask = new TemplateChangesSaverTask(getApplicationContext());
-			saverTask.execute(new Template [] { curTemplate });
 			templateChanged = false;
-//			Intent data = new Intent();
-//			data.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, true);
-//			data.putExtra(INTENT_EXTRA_TEMPLATE, curTemplate);
-//			setResult(RESULT_OK, data);
-//			finish();
+			// load template from file
+			final File templateFile = curTemplate.getTemplateFile();
+			// check for null pointer
+			if(templateFile != null) {
+				de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = null;
+				//TODO maybe show a progress dialog but saving in ui thread ?!
+				try {
+					//load template
+					jacksonTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile( templateFile,
+																								false);
+				// take over all changes
+					jacksonTemplate.takeOverValues(curTemplate);
+				// save template again.
+					jacksonTemplate.saveToFile(templateFile);
+				}
+				catch(Throwable e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -422,10 +411,6 @@ public class TemplateDetailsActivity extends Activity {
 							if(!myTemplate.getDescription().equals(templateInfo.getEditableText().toString())) {
 								myTemplate.setDescription(templateInfo.getEditableText().toString());
 								templateDetailsActivity.templateChanged = true;
-								Intent data = new Intent();
-								data.putExtra(INTENT_EXTRA_TEMPLATE_CHANGED, true);
-								data.putExtra(INTENT_EXTRA_TEMPLATE, templateDetailsActivity.curTemplate);
-								templateDetailsActivity.setResult(RESULT_OK, data);
 							}
 						}
 					});
@@ -476,5 +461,4 @@ public class TemplateDetailsActivity extends Activity {
 			return rootView;
 		}
 	}
-
 }
