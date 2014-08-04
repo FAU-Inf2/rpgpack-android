@@ -28,7 +28,8 @@ import android.widget.TextView;
 public class ToolboxRandomGenerator extends Activity{
    
 	ArrayList<String> list = new ArrayList<String>();
-	private TextView contentView;
+	GridView grid;
+	private TextView contentView, testText;
 	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
     
 	@Override
@@ -50,7 +51,7 @@ public class ToolboxRandomGenerator extends Activity{
     public void addDice(View v){
     	    	
     	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
-    	GridView grid = new GridView(ToolboxRandomGenerator.this);
+    	grid = new GridView(ToolboxRandomGenerator.this);
     	if (list.size()<10){
     		list.add(String.valueOf(list.size()));
     	}
@@ -64,9 +65,20 @@ public class ToolboxRandomGenerator extends Activity{
     }
     
     public void rollDice(View v){
-    	int i = diceRoller(6);
-    	contentView.setText(String.valueOf(i));
+    	final int size = grid.getChildCount();
+    	for(int i = 0; i < size; i++) {
+    		  ViewGroup gridChild = (ViewGroup) grid.getChildAt(i);
+    		  int childSize = gridChild.getChildCount();
+    		  for(int k = 0; k < childSize; k++) {
+    		    if( gridChild.getChildAt(k) instanceof TextView ) {
+    		    	int dice = diceRoller(6);
+    		    	TextView tmp = (TextView)gridChild.getChildAt(k);
+    		    	tmp.setText(String.valueOf(dice));
+    		    }
+    		  }
+    		}
     }
+    
     static void shuffleArray(String[] ar){
     	Random rnd = new Random();
     	for (int i = ar.length - 1; i > 0; i--){
