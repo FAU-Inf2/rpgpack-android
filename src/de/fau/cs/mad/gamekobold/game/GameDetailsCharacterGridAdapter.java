@@ -22,6 +22,8 @@ public class GameDetailsCharacterGridAdapter extends
 	private List<GameCharacter> characters;
 	private int layoutID;
 
+	final int arraySize;
+
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
 			Template template) {
 		// super(context, R.layout.itemlayout_expandablelist_charakter, template
@@ -30,6 +32,7 @@ public class GameDetailsCharacterGridAdapter extends
 		this.context = context;
 		this.characters = template.getCharacters();
 		this.layoutID = layoutID;
+		this.arraySize = characters.size() - 1;
 	}
 
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
@@ -37,9 +40,8 @@ public class GameDetailsCharacterGridAdapter extends
 		super(context, layoutID, game.getCharakterList());
 		this.context = context;
 		this.characters = game.getCharakterList();
-		// remove last fake item
-		this.characters.remove(game.getCharakterList().size() - 1);
 		this.layoutID = layoutID;
+		this.arraySize = characters.size() - 1;
 	}
 
 	@Override
@@ -69,6 +71,12 @@ public class GameDetailsCharacterGridAdapter extends
 		}
 
 		return convertView;
+	}
+
+	@Override
+	public int getCount() {
+		// as we don't want to show last fake item
+		return (characters.size() - 1);
 	}
 
 }
