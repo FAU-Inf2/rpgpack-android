@@ -82,8 +82,6 @@
             android:name="de.fau.cs.mad.gamekobold.game.GameDetailsActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity" >
-        </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
             android:windowSoftInputMode="adjustResize" >
