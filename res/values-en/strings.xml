@@ -196,15 +196,15 @@
 
     <!-- play_character_fragment -->
     <string name="played_character_title">Current character for play</string>
-    
+
     <!-- Toolbox -->
     <string name="open_randomgenerator">Template Generator</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Tactical Map</string>
-    <string name="btn_start">Start</string> 
+    <string name="btn_start">Start</string>
     <string name="btn_pause">Pause</string>
-    <string name="set_time">Set Time</string>  
-    
+    <string name="set_time">Set Time</string>
+
     <string-array name="action_toolbox_list">
         <item>Template Generator</item>
         <item>Timer</item>
@@ -213,8 +213,12 @@
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
-    
-      <!-- ExpandableLIstArrayAdapter -->
+
+    <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">You want to edit this character?</string>
-	<string name="click_to_redirect_to_edit_character">Click Yes to go to the character-editor.</string>
+    <string name="click_to_redirect_to_edit_character">Click Yes to go to the character-editor.</string>
+
+    <!-- CreateNewGameFragment -->
+    <string name="popup_create_game_info_titel">Game notices</string>
+
 </resources>
