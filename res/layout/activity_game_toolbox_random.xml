@@ -26,7 +26,7 @@
 	android:layout_centerHorizontal="true"
 	android:background="@color/background_green"
 	android:onClick="rollDice"
-	android:text="Add d6"
+	android:text="Roll"
 	android:textColor="@color/white" />
     
     <Button
