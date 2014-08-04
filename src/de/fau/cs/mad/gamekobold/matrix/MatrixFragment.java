@@ -199,7 +199,7 @@ public class MatrixFragment extends GeneralFragment {
 		public MatrixFragment matrixFragment;
 		public MatrixItem editItem = null;
 
-		// TODO pr�fen
+		// TODO pruefen
 		public static AddNewItemDialogFragment newInstance(
 				MatrixFragment receiver) {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
@@ -256,10 +256,15 @@ public class MatrixFragment extends GeneralFragment {
 									.toString();
 							final String defValue = defaultVal
 									.getEditableText().toString();
-							final int min = Integer.parseInt(rangeMin
-									.getEditableText().toString());
-							final int max = Integer.parseInt(rangeMax
-									.getEditableText().toString());
+							int min = 0;
+							if(!rangeMin.getEditableText().toString().isEmpty()) {
+								min = Integer.parseInt(rangeMin
+										.getEditableText().toString());
+							}
+							int max = 0;
+							if(!rangeMax.getEditableText().toString().isEmpty()) {
+								max = Integer.parseInt(rangeMax.getEditableText().toString());
+							}
 							final String mod = modificator.getEditableText()
 									.toString();
 							/*

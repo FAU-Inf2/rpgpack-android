@@ -3,20 +3,13 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.fau.cs.mad.gamekobold.MainActivity;
-import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
-import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,9 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,15 +34,18 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
 	// private List<String> tagList;
 
-	private Uri imageUri;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
+	private static final String DIALOG_NOTICE = "notice";
 
+	private Uri imageUri;
 	private ArrayList<Template> templates;
 	private Game newGame;
 	private TextView gameName;
@@ -57,6 +54,7 @@ public class CreateNewGameFragment extends Fragment {
 	private ImageButton addImageButton;
 	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
+	private Button infoButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -259,6 +257,18 @@ public class CreateNewGameFragment extends Fragment {
 			}
 		});
 
+		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
+
+		infoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// show popup with some space for Game Info
+				FragmentManager fm = getActivity().getFragmentManager();
+				GameInfoDialogFragment popupGameInfoFragment = new GameInfoDialogFragment();
+				popupGameInfoFragment.show(fm, DIALOG_NOTICE);
+			}
+		});
+
 		return view;
 	}
 
@@ -286,4 +296,69 @@ public class CreateNewGameFragment extends Fragment {
 				TemplateStoreMainActivity.class);
 		startActivity(intent);
 	}
+
+	// TODO check this!
+	public static class GameInfoDialogFragment extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle SaveInstanceState) {
+			// Use the Builder class for convenient Dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+			// Get the layout inflater
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+
+			// Inflate and set the layout for the dialog
+			// Pass null as the parent view because its going in the dialog
+			// layout
+			View view = inflater.inflate(R.layout.popup_create_game_info, null);
+
+			builder.setView(view);
+
+			final EditText editText = (EditText) view
+					.findViewById(R.id.editTextAdditionalInformation);
+
+			builder.setMessage(getString(R.string.popup_create_game_info_titel));
+			builder.setPositiveButton(getString(R.string.save_changes),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// myTemplate.description =
+							// editText.getEditableText()
+							// .toString();
+							// createNewTemplateActivity.edDescription
+							// .setText(editText.getEditableText()
+							// .toString());
+						}
+					});
+
+			builder.setNegativeButton(getString(R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+							GameInfoDialogFragment.this.getDialog().cancel();
+						}
+					});
+
+			// Create the AlertDialog object and return it
+			final AlertDialog dialog = builder.create();
+
+			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+				@Override
+				public void onShow(final DialogInterface dialog) {
+
+					Button positiveButton = ((AlertDialog) dialog)
+							.getButton(DialogInterface.BUTTON_POSITIVE);
+
+					// set OK button color here
+					positiveButton.setBackgroundColor(getActivity()
+							.getResources().getColor(R.color.bright_green));
+					positiveButton.invalidate();
+				}
+			});
+			return dialog;
+		}
+	}
+
 }

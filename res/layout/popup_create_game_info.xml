@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/editTextAdditionalInformation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ems="10"
+         android:gravity="top" 
+        android:inputType="textMultiLine"
+        android:lines="15"
+        android:maxLines="40"
+        android:hint="@string/hint_set_your_description_text"
+        android:textColor="@color/white" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>

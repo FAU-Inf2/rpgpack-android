@@ -217,5 +217,8 @@
      <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">Willst Du den Charakter ansehen und ggf. ändern?</string>
 	<string name="click_to_redirect_to_edit_character">Klicke auf JA um zu Charakter-Editor zu gelangen.</string>
+	
+	  <!-- CreateNewGameFragment -->
+	<string name="popup_create_game_info_titel">Spielnotizen</string>
     
 </resources>
