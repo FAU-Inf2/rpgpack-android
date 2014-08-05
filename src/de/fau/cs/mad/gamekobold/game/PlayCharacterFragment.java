@@ -38,6 +38,7 @@ public class PlayCharacterFragment extends Fragment {
 		playedCharacter = (GameCharacter) getActivity().getIntent()
 				.getSerializableExtra(EXTRA_PLAYED_CHARACTER);
 
+		// FIXME check it for character grid view! null pointer exception!
 		getActivity().setTitle(
 				playedGame.getGameName() + " > "
 						+ playedCharacter.getCharacterName());
