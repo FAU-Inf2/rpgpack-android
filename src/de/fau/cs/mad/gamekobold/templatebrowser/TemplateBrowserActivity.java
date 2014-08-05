@@ -380,23 +380,23 @@ public class TemplateBrowserActivity extends ListActivity {
 						try {
 							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
 									.loadFromJSONFile(file, true);
+							if (loadedTemplate != null) {
+								Template temp = new Template(
+										loadedTemplate.templateName,
+										loadedTemplate.gameName,
+										loadedTemplate.author, loadedTemplate.date,
+										loadedTemplate.iconID,
+										loadedTemplate.description);
+								if (temp.getTemplateName().equals("")) {
+									temp.setTemplateName(file.getName());
+								}
+								temp.fileAbsolutePath = file.getAbsolutePath();
+								// set time stamp
+								temp.setFileTimeStamp(file.lastModified());
+								templateList.add(temp);
+							}
 						} catch (Throwable e) {
 							e.printStackTrace();
-						}
-						if (loadedTemplate != null) {
-							Template temp = new Template(
-									loadedTemplate.templateName,
-									loadedTemplate.gameName,
-									loadedTemplate.author, loadedTemplate.date,
-									loadedTemplate.iconID,
-									loadedTemplate.description);
-							if (temp.getTemplateName().equals("")) {
-								temp.setTemplateName(file.getName());
-							}
-							temp.fileAbsolutePath = file.getAbsolutePath();
-							// set time stamp
-							temp.setFileTimeStamp(file.lastModified());
-							templateList.add(temp);
 						}
 					}
 				}

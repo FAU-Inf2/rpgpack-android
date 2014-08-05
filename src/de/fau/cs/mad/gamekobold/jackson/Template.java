@@ -35,12 +35,12 @@ public class Template implements Parcelable{
 	/* META DATA */
 	@JsonIgnore
 	private String fileName = null;
-	public String templateName;
-	public String gameName;
-	public String author;
-	public String date;
+	public String templateName = "";
+	public String gameName = "";
+	public String author = "";
+	public String date = "";
 	public int iconID;
-	public String description;
+	public String description = "";
 	/* Character */
 	public CharacterSheet characterSheet = null;
 	
