@@ -54,6 +54,14 @@
             android:onClick="iconClicked"
             android:src="@drawable/paint_unpressed"
             android:tag="#FF0000" />
+
+        <ImageView
+            android:id="@+id/red_dot"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/red_dot" />
+        
     </LinearLayout>
 
 </LinearLayout>
