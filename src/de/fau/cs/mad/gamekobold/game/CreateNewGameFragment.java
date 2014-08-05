@@ -3,12 +3,17 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -217,9 +222,8 @@ public class CreateNewGameFragment extends Fragment {
 								android.provider.MediaStore.EXTRA_OUTPUT,
 								imageUri);
 						intent.putExtra("return-data", true);
+						startActivityForResult(intent, PICK_FROM_CAMERA);
 
-						getActivity().startActivityForResult(intent,
-								PICK_FROM_CAMERA);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -235,9 +239,8 @@ public class CreateNewGameFragment extends Fragment {
 					intent.setType("image/*");
 					intent.setAction(Intent.ACTION_GET_CONTENT);
 
-					getActivity().startActivityForResult(
-							Intent.createChooser(intent,
-									"Complete action using"), PICK_FROM_FILE);
+					startActivityForResult(Intent.createChooser(intent,
+							"Complete action using"), PICK_FROM_FILE);
 				}
 			}
 		});
@@ -329,14 +332,14 @@ public class CreateNewGameFragment extends Fragment {
 			// get all EditTexts
 			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
-			Log.d("curGame is null?", "" +(curGame == null));
-			//TODO Check it!!!!
-//			if (!curGame.getDescription().isEmpty()) {
-//				editTextInfo.setText(curGame.getDescription());
-//			} else {
-//				editTextInfo.setText(getActivity().getString(
-//						R.string.no_description_found));
-//			}
+			Log.d("curGame is null?", "" + (curGame == null));
+			// TODO Check it!!!!
+			// if (!curGame.getDescription().isEmpty()) {
+			// editTextInfo.setText(curGame.getDescription());
+			// } else {
+			// editTextInfo.setText(getActivity().getString(
+			// R.string.no_description_found));
+			// }
 
 			builder.setView(view);
 
@@ -381,4 +384,73 @@ public class CreateNewGameFragment extends Fragment {
 			return dialog;
 		}
 	}
+
+	// to handle the selected image with image picker
+	// public void returnResult() {
+	// getActivity().setResult(Activity.RESULT_OK, null);
+	// }
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (resultCode != Activity.RESULT_OK)
+			return;
+
+		Bitmap bitmap = null;
+		String path = "";
+
+		Log.i("Here is Bitmap null!", "" + (bitmap == null));
+
+		if (requestCode == PICK_FROM_FILE) {
+			// get the uri of selected image
+			imageUri = intent.getData();
+
+			// Assume user selects the image from sdcard using Gallery app. The
+			// uri from Gallery app does not give the real path to selected
+			// image, so it has to be resolved on content provider. Method
+			// getRealPathFromURI used to resolve the real path from the uri.
+			path = getRealPathFromURI(getActivity(), imageUri); // from Gallery
+
+			// If the path is null, assume user selects the image using File
+			// Manager app. File Manager app returns different information than
+			// Gallery app. To get the real path to selected image, use
+			// getImagePath method from the uri
+			if (path == null)
+				path = imageUri.getPath(); // from File Manager
+
+			if (path != null)
+				bitmap = BitmapFactory.decodeFile(path);
+
+			Log.i("Bitmap is null?", "" + (bitmap == null));
+
+		} else if (requestCode == PICK_FROM_CAMERA) {
+			// If user choose to take picture from camera, get the real path of
+			// temporary file
+			path = imageUri.getPath();
+			bitmap = BitmapFactory.decodeFile(path);
+
+			Log.i("Bitmap is null?", "" + (bitmap == null));
+		}
+		if (bitmap != null) {
+			addImageButton.setImageBitmap(bitmap);
+		}
+		// TODO store image path for later use
+	}
+
+	// TODO refactoring?
+	public String getRealPathFromURI(Context context, Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media.DATA };
+		Cursor cursor = context.getContentResolver().query(contentUri, proj,
+				null, null, null);
+		if (cursor == null)
+			return null;
+
+		int column_index = cursor
+				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+		if (cursor.moveToFirst()) {
+			return cursor.getString(column_index);
+		} else
+			return null;
+	}
+
 }

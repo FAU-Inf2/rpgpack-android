@@ -7,7 +7,7 @@ import java.util.List;
 import android.util.Log;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class Game{
+public class Game implements Serializable {
 	private String gameName;
 	private String author;
 	private String date;
@@ -43,7 +43,7 @@ public class Game{
 		characterList.add(character);
 		return true;
 	}
-	
+
 	public boolean removeCharacter(GameCharacter character) {
 		characterList.remove(character);
 		return true;
@@ -102,7 +102,7 @@ public class Game{
 	}
 
 	public void setCharakterList(List<GameCharacter> charakterList) {
-		Log.e("CharacterList", "Setting CharacterList to "+charakterList);
+		Log.e("CharacterList", "Setting CharacterList to " + charakterList);
 		this.characterList = charakterList;
 	}
 
