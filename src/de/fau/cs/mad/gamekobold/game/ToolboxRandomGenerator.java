@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -22,8 +21,7 @@ public class ToolboxRandomGenerator extends Activity{
 	ArrayList<String> rolled_dice = new ArrayList<String>();
 	GridView grid;
 	Boolean isGrid = false;
-	private TextView tv_test;
-	Button btn_add;
+	private TextView tv_test, tv_sum;
 	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
     
 	@Override
@@ -33,7 +31,7 @@ public class ToolboxRandomGenerator extends Activity{
         setContentView(R.layout.activity_game_toolbox_random);
         
         tv_test = (TextView) findViewById(R.id.tv_test);
-        btn_add = (Button)findViewById(R.id.btn_add);
+        tv_sum = (TextView) findViewById(R.id.tv_sum);
         
     }
 	
@@ -43,6 +41,7 @@ public class ToolboxRandomGenerator extends Activity{
 		 icicle.putStringArrayList("dice_list", dice_list);
 		 icicle.putStringArrayList("rolled_dice", rolled_dice);
 		 icicle.putBoolean("isGrid", isGrid);
+		 icicle.putString("sum", tv_sum.getText().toString());
 		 icicle.putString("test_string", tv_test.getText().toString());
 	 }
 	 
@@ -54,8 +53,10 @@ public class ToolboxRandomGenerator extends Activity{
 		 dice_list.addAll(icicle.getStringArrayList("dice_list"));
 		 isGrid = icicle.getBoolean("isGrid");
 		 
-		 if (isGrid)
+		 if (isGrid){
 			 setGridView();
+			 tv_sum.setText(icicle.getString("sum"));
+		 }
 		 else
 			 tv_test.setText(icicle.getString("test_string"));
 	 }
@@ -63,10 +64,10 @@ public class ToolboxRandomGenerator extends Activity{
     public void randomCharList(View v){
     	dice_list.removeAll(dice_list);
     	rolled_dice.removeAll(rolled_dice);
+    	tv_test.setText("");
     	shuffleArray(char_array);
     	String s = "";
     	setContentView(R.layout.activity_game_toolbox_random);
-        btn_add = (Button)findViewById(R.id.btn_add);
     	 
     	for (int i = 0; i<char_array.length; i++){
     		s = s + char_array[i] + "\n";	 
@@ -169,8 +170,8 @@ public class ToolboxRandomGenerator extends Activity{
     public void clearView (View v) {
     	isGrid = false;
     	setContentView(R.layout.activity_game_toolbox_random);
-    	btn_add = (Button)findViewById(R.id.btn_add);
         tv_test.setText("");
+        tv_sum.setText("");
     	dice_list.removeAll(dice_list);
     	rolled_dice.removeAll(rolled_dice);
     }
