@@ -89,6 +89,8 @@ public class GameDetailsFragment extends Fragment {
 						PlayCharacterActivity.class);
 				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
 						curCharacter);
+				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+						game);
 				startActivity(i);
 
 			}
