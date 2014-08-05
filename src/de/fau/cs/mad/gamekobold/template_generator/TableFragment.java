@@ -161,12 +161,33 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		// JACKSON START
 		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
 			// check for saved rows
+			table.removeAllViews();
 			if(jacksonTable.getRowCount() > 0) {
 				jacksonInflateWithData = true;
 				// adjust row count
-				int jacksonRowNum = jacksonTable.getRowCount();
+				final int jacksonRowNum = jacksonTable.getRowCount();
 				while(table.getChildCount() < jacksonRowNum) {
-					addItemList();
+					// TODO hier die rows laden
+//					addItemList();
+					final int columnCount = jacksonTable.getNumberOfColumns();
+			        final TableRow row = new TableRow(getActivity());
+			        registerForContextMenu(row);
+					for(int i = 0 ; i < columnCount; i++) {
+						final int rowIndex = table.getChildCount();
+						final ColumnHeader header = jacksonTable.getColumnHeader(i);
+						View newElement;
+						if(header.isString()) {
+							newElement = initEditText(row, jacksonTable.getEntry(i, rowIndex));
+						}
+						else if(header.isCheckBox()) {
+							newElement = initCheckBox(row, jacksonTable.getEntry(i, rowIndex));
+						}
+						else {
+							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex));
+						}
+						row.addView(newElement);
+					}
+			        table.addView(row);
 					Log.d("TableFragment", "added row");
 				}
 				while(table.getChildCount() > jacksonRowNum) {
@@ -821,6 +842,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         
         
         inputPopup.addTextChangedListener(new TextWatcher() { 
+        	final IEditableContent myJacksonEntry = jacksonEntry;
         	public void afterTextChanged(Editable s) { 
         		int position = Selection.getSelectionStart(inputPopup.getText());
         		if (position < 0){
@@ -860,6 +882,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                     }
                     inputPopup.setText(s);
                     inputPopup.setSelection(position);
+                    myJacksonEntry.setContent(s.toString());
         		}
         			
         	}
@@ -871,6 +894,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	} 
         });
         
+        // TEST
+        if(!jacksonEntry.getContent().isEmpty()) {
+        	inputPopup.setText(jacksonEntry.getContent());
+        }
+        // TEST END
         
         //before
 //        toggleBold.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
