@@ -11,8 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-public class ToolboxActivity extends SingleFragmentActivity{
+public class ToolboxActivity extends SingleFragmentActivity {
 
 	@Override
 	protected Fragment createFragment() {
@@ -32,21 +31,23 @@ public class ToolboxActivity extends SingleFragmentActivity{
 		AlertDialog dialog = builder.create();
 		dialog.show();
 
-	}	
-	
+	}
+
 	public void openTimer(View view) {
 		Intent intent = new Intent(ToolboxActivity.this, TimerActivity.class);
 		startActivity(intent);
 	}
 
 	public void openTactical(View view) {
-		this.notImplemented();
+		Intent intent = new Intent(ToolboxActivity.this,
+				ToolboxMapActivity.class);
+		startActivity(intent);
 	}
 
 	public void openRandomGenerator(View view) {
-		Intent intent = new Intent(ToolboxActivity.this, ToolboxRandomGenerator.class);
+		Intent intent = new Intent(ToolboxActivity.this,
+				ToolboxRandomGenerator.class);
 		startActivity(intent);
 	}
-	
-		
+
 }

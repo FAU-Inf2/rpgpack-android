@@ -5,7 +5,10 @@ import java.util.Random;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ToolboxRandomGenerator extends Activity{
-   
+	
 	ArrayList<String> dice_list = new ArrayList<String>();
 	ArrayList<String> rolled_dice = new ArrayList<String>();
 	GridView grid;
@@ -83,6 +86,7 @@ public class ToolboxRandomGenerator extends Activity{
     	PopupMenu popup = new PopupMenu(getBaseContext(), v);
     	 
         popup.getMenuInflater().inflate(R.menu.game_toolbox_random, popup.getMenu());
+        
 
         popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
