@@ -35,6 +35,8 @@ public class CharacterSheet implements Parcelable{
 	public int color = Color.parseColor("#2980b9");
 	@JsonIgnore
 	public String fileAbsolutePath = null;
+	@JsonIgnore
+	public long fileTimeStamp;
 	
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -44,6 +46,7 @@ public class CharacterSheet implements Parcelable{
 		level = 3;
 		description = "";
 		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
 	
 	public CharacterSheet(String name) {
@@ -51,6 +54,7 @@ public class CharacterSheet implements Parcelable{
 		level = 3;
 		description = "";
 		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
 	
 	@JsonCreator
@@ -60,6 +64,7 @@ public class CharacterSheet implements Parcelable{
 		level = 3;
 		description = "";
 		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
 	
 	public ContainerTable getRootTable() {
@@ -95,6 +100,7 @@ public class CharacterSheet implements Parcelable{
 		FileInputStream inStream = new FileInputStream(jsonFile);
 		CharacterSheet sheet = mapper.readValue(inStream, CharacterSheet.class);
 		sheet.fileAbsolutePath = jsonFile.getAbsolutePath();
+		sheet.fileTimeStamp = jsonFile.lastModified();
 		return sheet;		
 	}
 	
@@ -137,6 +143,7 @@ public class CharacterSheet implements Parcelable{
 		dest.writeString(description);
 		dest.writeInt(level);
 		dest.writeString(fileAbsolutePath);
+		dest.writeLong(fileTimeStamp);
 	}
 	
 	public static final Parcelable.Creator<CharacterSheet> CREATOR = new Creator<CharacterSheet>() {
@@ -154,6 +161,7 @@ public class CharacterSheet implements Parcelable{
 			sheet.description = source.readString();
 			sheet.level = source.readInt();
 			sheet.fileAbsolutePath = source.readString();
+			sheet.fileTimeStamp = source.readLong();
 			return sheet;
 		}
 	};

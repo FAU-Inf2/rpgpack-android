@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class TemplateDetailsActivity extends Activity {
 	private GridView gridView;
 	private static Activity myActivity;
 	private boolean templateChanged = false;
+	private long characterFolderTimeStamp;
+	private File characterFolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,7 @@ public class TemplateDetailsActivity extends Activity {
 		Button editButton = (Button) findViewById(R.id.button2);
 		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
+		characterFolder = null;
 		curTemplate = null;
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
@@ -102,9 +106,8 @@ public class TemplateDetailsActivity extends Activity {
 					editButton.setEnabled(false);
 				}
 				setTitle(curTemplate.getTemplateName());
-				// load all characters for this template
-				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
-				loadingTask.execute(new Template[] { curTemplate });
+				characterFolderTimeStamp = 0;
+				characterFolder = de.fau.cs.mad.gamekobold.jackson.Template.getDirectoryForCharacters(this, curTemplate, false);
 			}
 		}
 
@@ -152,6 +155,46 @@ public class TemplateDetailsActivity extends Activity {
 		}
 	}
 	
+	@Override
+	public void onResume() {
+		if(characterFolder != null) {
+			// check to determine if there is a new character or one has been deleted
+			final long newFolderTimeStamp = characterFolder.lastModified();
+			if(newFolderTimeStamp > characterFolderTimeStamp) {
+				// load all characters for this template
+				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
+				loadingTask.execute(new Template[] { curTemplate });
+				characterFolderTimeStamp = newFolderTimeStamp;
+			}
+			else {
+				//check every single template
+				boolean characterListChanged = false;
+				for(int i = 0; i < adapter.getCount() - 1; i++) {
+					CharacterSheet sheet = adapter.getItem(i);
+					final File sheetFile = new File(sheet.fileAbsolutePath);
+					if(sheetFile != null) {
+						final long newTimeStamp = sheetFile.lastModified();
+						if(newTimeStamp > sheet.fileTimeStamp) {
+							try {
+								adapter.remove(sheet);
+								sheet = CharacterSheet.loadCharacterSheet(sheetFile, true);
+								adapter.insert(sheet, i);
+								characterListChanged = true;
+							}
+							catch(Throwable e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				if(characterListChanged) {
+					adapter.notifyDataSetChanged();
+				}
+			}
+		}
+		super.onResume();
+	}
+
 	protected String getFileName(){
 		int lastSlashPos = curTemplate.fileAbsolutePath
 				.lastIndexOf("/");
