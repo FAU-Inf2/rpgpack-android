@@ -50,17 +50,27 @@
 	android:layout_centerHorizontal="true"  
 	android:textSize="20sp" />
 
+	<TextView  
+	android:id="@+id/tv_sum"
+	android:textColor="@color/white"
+	android:layout_alignParentBottom="true"
+	android:layout_marginBottom="75dp"
+	android:layout_width="wrap_content"  
+	android:layout_height="wrap_content"
+	android:layout_centerHorizontal="true"  
+	android:textSize="20sp" />
+	
 	<Button
-	    android:id="@+id/btn_dice_up"
-	    android:layout_width="45dp"
-	    android:layout_height="45dp"
-	    android:layout_above="@+id/btn_add"
-	    android:layout_alignRight="@+id/btn_add"
-	    android:layout_marginRight="14dp"
-	    android:layout_marginBottom="10dp"
-	    android:background="@color/background_green"
-	    android:onClick="diceUp"
-	    android:text="+"
-	    android:textColor="@color/white" />
+	android:id="@+id/btn_dice_up"
+	android:layout_width="45dp"
+	android:layout_height="45dp"
+	android:layout_above="@+id/btn_add"
+	android:layout_alignRight="@+id/btn_add"
+	android:layout_marginRight="14dp"
+	android:layout_marginBottom="10dp"
+	android:background="@color/background_green"
+	android:onClick="diceUp"
+	android:text="+"
+	android:textColor="@color/white" />
            
 </RelativeLayout>

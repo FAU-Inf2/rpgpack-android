@@ -48,11 +48,13 @@ public class ToolboxRandomGenerator extends Activity{
     }
 	  
     public void randomCharList(View v){
+    	list.removeAll(list);
     	 shuffleArray(char_array);
     	 String s = "";
     	 setContentView(R.layout.activity_game_toolbox_random);
          
          TextView = (TextView) findViewById(R.id.textView);
+         btn_add = (Button)findViewById(R.id.btn_add);
     	 
     	 for (int i = 0; i<char_array.length; i++){
     		 s = s + char_array[i] + "\n"; 
@@ -61,23 +63,18 @@ public class ToolboxRandomGenerator extends Activity{
     }
     
     public void addDice(View v){
-    	    	
-    	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
-    	grid = new GridView(ToolboxRandomGenerator.this);
-    	if (list.size()<10){
-    		list.add(getDiceNum((String) btn_add.getText()));
-    	}
     	
-    	ToolboxRandomElementAdapter adp=new ToolboxRandomElementAdapter (ToolboxRandomGenerator.this, list);
-    	grid.setNumColumns(3);
-        grid.setBackgroundColor(getResources().getColor(R.color.background_dark));        
-        grid.setAdapter(adp);
-        relativeLayout.addView(grid);
-    	setContentView(relativeLayout);
+    	TextView.setText("");
+    	
+    	if (list.size()<9)
+    		list.add(getDiceNum((String) btn_add.getText()));
+    		
+    	setGridView();
     }
     
     public void rollDice(View v){
     	final int size = grid.getChildCount();
+    	int sum = 0;
     	for(int i = 0; i < size; i++) {
     		  ViewGroup gridChild = (ViewGroup) grid.getChildAt(i);
     		  int childSize = gridChild.getChildCount();
@@ -86,10 +83,13 @@ public class ToolboxRandomGenerator extends Activity{
     		    	TextView tmp = (TextView)gridChild.getChildAt(k);
     		    	int maxValue = Integer.parseInt((String) tmp.getHint());
     		    	int dice = diceRoller(maxValue);
+    		    	sum = sum + dice;
     		    	tmp.setText(String.valueOf(dice));
-    		    }
     		  }
     		}
+    	}
+    	TextView tv_sum = (TextView)findViewById(R.id.tv_sum);
+    	tv_sum.setText("Sum: " + String.valueOf(sum));
     }
     
     static void shuffleArray(String[] ar){
@@ -125,5 +125,26 @@ public class ToolboxRandomGenerator extends Activity{
     	s = s.replaceAll("\\D+","");
     	return s;
     }
+    
+    public void clearView (View v) {
+    	setContentView(R.layout.activity_game_toolbox_random);
+    	TextView = (TextView) findViewById(R.id.textView);
+    	btn_add = (Button)findViewById(R.id.btn_add);
+    	TextView.setText("");
+    	list.removeAll(list);
+    }
 
+    public void setGridView(){
+
+    	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
+    	grid = new GridView(ToolboxRandomGenerator.this);
+    	ToolboxRandomElementAdapter adp=new ToolboxRandomElementAdapter (ToolboxRandomGenerator.this, list);
+    	grid.setNumColumns(3);
+        grid.setBackgroundColor(getResources().getColor(R.color.background_dark));        
+        grid.setAdapter(adp);
+        relativeLayout.addView(grid);
+    	setContentView(relativeLayout);
+    	
+    }
+    
 }
