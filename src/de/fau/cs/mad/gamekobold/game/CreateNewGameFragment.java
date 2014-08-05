@@ -66,6 +66,8 @@ public class CreateNewGameFragment extends Fragment {
 		templates = TemplateLab.get(getActivity()).getTemplates();
 		newGame = new Game();
 		setHasOptionsMenu(true);
+		getActivity().setTitle(
+				getResources().getString(R.string.titel_create_game));
 	}
 
 	@Override
@@ -73,6 +75,9 @@ public class CreateNewGameFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_create_new_game, parent,
 				false);
+
+		// for back-button
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		expandableTemplateList = (ExpandableListView) view
 				.findViewById(R.id.expandableTemplateList);
@@ -284,6 +289,15 @@ public class CreateNewGameFragment extends Fragment {
 		case R.id.menu_item_load_template_from_store:
 			openStore();
 			return true;
+			// TODO check it!!!
+			// handling back-button
+			// case android.R.id.home:
+			// Intent intent = new Intent(getActivity(),
+			// GameBrowserActivity.class);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			// startActivity(intent);
+			// // finish();
+			// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
