@@ -15,7 +15,7 @@
         android:src="@drawable/addphoto" />
 
     <Button
-        android:id="@+id/buttonSaveGame"
+        android:id="@+id/buttonEditGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_below="@+id/textViewWorldName"
-        android:layout_toLeftOf="@+id/buttonInfoPopup"
+        android:layout_toLeftOf="@+id/buttonGameInfoPopup"
         android:text="Date"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" />
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/buttonSaveGame"
+        android:layout_toLeftOf="@+id/buttonEditGame"
         android:background="@color/grey"
         android:text="@string/back"
         android:textColor="@color/white" />
@@ -71,7 +71,7 @@
         android:id="@+id/gridViewCharacters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonSaveGame"
+        android:layout_above="@+id/buttonEditGame"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/iconGame"
         android:numColumns="3" >
