@@ -65,7 +65,7 @@ public class TemplateDetailsActivity extends Activity {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CharacterDetailsActivity.class);
 					i.putExtra("CharacterSheet", adapter.getItem(position));
-					i.putExtra("templateName", getFileName());
+					i.putExtra("templateFileName", getFileName());
 					startActivity(i);
 				}
 			}
@@ -274,10 +274,10 @@ public class TemplateDetailsActivity extends Activity {
 			characterList.add(sheet);
 			//
 			File dir = de.fau.cs.mad.gamekobold.jackson.Template
-					.getDirectoryForCharacters(myActivity, params[0]);
-			Log.d("TemplateDetails",
-					"character Folder:" + dir.getAbsolutePath());
+					.getDirectoryForCharacters(myActivity, params[0], false);
 			if (dir != null) {
+				Log.d("TemplateDetails",
+						"character Folder:" + dir.getAbsolutePath());
 				if (dir.isDirectory()) {
 					final File[] characters = dir.listFiles();
 					for (final File character : characters) {

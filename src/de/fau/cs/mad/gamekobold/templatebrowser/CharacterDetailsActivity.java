@@ -40,7 +40,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private CharacterSheet sheet;
 	private Uri iconUri;
 	private ImageButton characterIconButton;
-	private String templateName;
+	private String templateFileName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				// set to character color
 				relLayout.setBackgroundColor(sheet.color);
 			}
-			templateName = (String)extras.getString("templateName");
+			templateFileName = (String)extras.getString("templateFileName");
 		}
 		
 		final Button characterEditButton = (Button)findViewById(R.id.button1);
@@ -149,7 +149,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 						false);
 				intent.putExtra(
 						SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-						templateName);
+						templateFileName);
 				startActivity(intent);
 			}
 		});

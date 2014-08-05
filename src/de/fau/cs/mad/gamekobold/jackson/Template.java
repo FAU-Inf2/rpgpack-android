@@ -265,9 +265,10 @@ public class Template implements Parcelable{
 
 	/**
 	 * @param context
-	 * @return the character root folder directory
-	 * Returns the directory in which all characters for this template are stored
-	 * The structure should be like "app/Characters/$TemplateName/Character1.json"
+	 * @return The character root folder directory.
+	 * Returns the directory in which all characters for this template are stored.
+	 * Creates the directory if it does not exist.
+	 * The structure should be like "app/Characters/$TemplateName/Character1.json".
 	 */
 	public File getDirectoryForCharacters(Context context) {
 		File rootDir;
@@ -301,9 +302,12 @@ public class Template implements Parcelable{
 	 * 
 	 * @param context context
 	 * @param template template for which to get the directory
+	 * @param createIfNotExists If set to true the directory will be created if it does not already exist.
 	 * @return directory for the given template in which the characters are saved
 	 */
-	public static File getDirectoryForCharacters(Context context, de.fau.cs.mad.gamekobold.templatebrowser.Template template) {
+	public static File getDirectoryForCharacters(Context context,
+									de.fau.cs.mad.gamekobold.templatebrowser.Template template,
+									boolean createIfNotExists) {
 		File rootDir;
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 			File externalStorage = Environment.getExternalStorageDirectory();
@@ -324,6 +328,9 @@ public class Template implements Parcelable{
 					return dir;
 				}
 			}
+		}
+		if(!createIfNotExists) {
+			return null;
 		}
 		// folder not found, so we create a new one
 		File characterFolder = new File(rootDir.getAbsolutePath() + File.separatorChar + template.getFileName());
