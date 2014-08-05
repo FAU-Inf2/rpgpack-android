@@ -172,10 +172,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					final int columnCount = jacksonTable.getNumberOfColumns();
 			        final TableRow row = new TableRow(getActivity());
 			        registerForContextMenu(row);
+			        table.addView(row);
 					for(int i = 0 ; i < columnCount; i++) {
-						final int rowIndex = table.getChildCount();
+						final int rowIndex = table.getChildCount()-1;
 						final ColumnHeader header = jacksonTable.getColumnHeader(i);
-						View newElement;
+						View newElement = null;
 						if(header.isString()) {
 							newElement = initEditText(row, jacksonTable.getEntry(i, rowIndex));
 						}
@@ -186,8 +187,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex));
 						}
 						row.addView(newElement);
+						final int width = getNeededWidth(i);
+						final int height = getNeededHeight(rowIndex, row);
+						final LayoutParams lparams = new LayoutParams(width, height);
+					    newElement.setLayoutParams(lparams);
 					}
-			        table.addView(row);
 					Log.d("TableFragment", "added row");
 				}
 				while(table.getChildCount() > jacksonRowNum) {
