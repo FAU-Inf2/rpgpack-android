@@ -220,5 +220,6 @@
 
     <!-- CreateNewGameFragment -->
     <string name="popup_create_game_info_titel">Game notices</string>
+    <string name="titel_create_game">New Game</string>
 
 </resources>

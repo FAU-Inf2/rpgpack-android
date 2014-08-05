@@ -25,8 +25,6 @@ public class PlayCharacterFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// getActivity().setTitle(R.string.played_character_title);
-
 	}
 
 	@Override
