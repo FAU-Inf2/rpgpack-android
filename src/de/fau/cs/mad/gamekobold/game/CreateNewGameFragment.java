@@ -45,19 +45,26 @@ import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 public class CreateNewGameFragment extends Fragment {
 	// private List<String> tagList;
 
+	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
+
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
 	private Game newGame;
-	private TextView gameName;
+	private Game gameToEdit;
+	private EditText gameName;
+	private EditText worldName;
+	private EditText gameDate;
 	private GridView pickedCharacterGridView;
 	private Button createGameButton;
 	private ImageButton addImageButton;
 	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
 	private Button infoButton;
+	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
+	private ExpandableListArrayAdapter expandableListAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,9 @@ public class CreateNewGameFragment extends Fragment {
 		templates = TemplateLab.get(getActivity()).getTemplates();
 		newGame = new Game();
 		setHasOptionsMenu(true);
+		getActivity().setTitle(
+				getResources().getString(R.string.titel_create_game));
+
 	}
 
 	@Override
@@ -74,19 +84,50 @@ public class CreateNewGameFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_create_new_game, parent,
 				false);
 
+		// for back-button
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		gameName = (EditText) view.findViewById(R.id.gameNameText);
+		worldName = (EditText) view.findViewById(R.id.worldNameText);
+		gameDate = (EditText) view.findViewById(R.id.gameDateText);
+		addImageButton = (ImageButton) view.findViewById(R.id.buttonAddIcon);
+		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
+		pickedCharacterGridView = (GridView) view
+				.findViewById(R.id.pickedCharacterGridView);
 		expandableTemplateList = (ExpandableListView) view
 				.findViewById(R.id.expandableTemplateList);
 
-		ExpandableListArrayAdapter expandableListAdapter = new ExpandableListArrayAdapter(
-				getActivity(), templates, newGame);
+		// we've got a game for edit
+		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+			gameToEdit = (Game) getActivity().getIntent().getSerializableExtra(
+					EXTRA_GAME_TO_EDIT);
+
+			// remove last fake item
+			gameToEdit.removeCharacter(gameToEdit.getCharakterList().get(
+					gameToEdit.getCharakterList().size() - 1));
+			gameName.setText(gameToEdit.getGameName());
+			worldName.setText(gameToEdit.getTemplate().getWorldName());
+			gameDate.setText(gameToEdit.getDate());
+			// addImageButton.setImageBitmap(gameToEdit.getBitmap);
+			getActivity().setTitle(gameToEdit.getGameName());
+
+		}
+
+		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+			expandableListAdapter = new ExpandableListArrayAdapter(
+					getActivity(), templates, gameToEdit);
+			pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
+					getActivity(), R.layout.itemlayout_grid_picked_character,
+					gameToEdit);
+		} else {
+			expandableListAdapter = new ExpandableListArrayAdapter(
+					getActivity(), templates, newGame);
+			pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
+					getActivity(), R.layout.itemlayout_grid_picked_character,
+					newGame);
+		}
+
 		expandableTemplateList.setAdapter(expandableListAdapter);
-
-		pickedCharacterGridView = (GridView) view
-				.findViewById(R.id.pickedCharacterGridView);
-
-		final PickedCharacterGridAdapter pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
-				getActivity(), R.layout.itemlayout_grid_picked_character,
-				newGame);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView
@@ -103,9 +144,12 @@ public class CreateNewGameFragment extends Fragment {
 										+ " Item " + position + " was clicked",
 								Toast.LENGTH_SHORT).show();
 
-						// TODO hier gehts zur Characteransicht zum Spielen
+						// it goes to character-view
 						curCharacter = (GameCharacter) adapterView
 								.getItemAtPosition(position);
+
+						Log.i("curCharacter is null?", ""
+								+ (curCharacter == null));
 
 						Toast.makeText(
 								getActivity(),
@@ -119,8 +163,17 @@ public class CreateNewGameFragment extends Fragment {
 						i.putExtra(
 								PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
 								curCharacter);
-						startActivity(i);
 
+						if ((getActivity().getIntent()
+								.hasExtra(EXTRA_GAME_TO_EDIT))) {
+							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+									gameToEdit);
+						} else {
+							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+									newGame);
+						}
+
+						startActivity(i);
 					}
 				});
 
@@ -158,9 +211,18 @@ public class CreateNewGameFragment extends Fragment {
 											int which) {
 										// remove picked character from the new
 										// game
-										newGame.removeCharacter(curGameCharacter);
-										pickedCharacterGridAdapter
-												.notifyDataSetChanged();
+
+										if ((getActivity().getIntent()
+												.hasExtra(EXTRA_GAME_TO_EDIT))) {
+											gameToEdit
+													.removeCharacter(curGameCharacter);
+											pickedCharacterGridAdapter
+													.notifyDataSetChanged();
+										} else {
+											newGame.removeCharacter(curGameCharacter);
+											pickedCharacterGridAdapter
+													.notifyDataSetChanged();
+										}
 									}
 								});
 						builder.create().show();
@@ -168,7 +230,6 @@ public class CreateNewGameFragment extends Fragment {
 					}
 				});
 
-		gameName = (EditText) view.findViewById(R.id.gameName);
 		gameName.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence c, int start, int before,
 					int count) {
@@ -245,8 +306,6 @@ public class CreateNewGameFragment extends Fragment {
 			}
 		});
 
-		addImageButton = (ImageButton) view.findViewById(R.id.buttonAddIcon);
-
 		final AlertDialog dialog = builder.create();
 		addImageButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -258,13 +317,15 @@ public class CreateNewGameFragment extends Fragment {
 			}
 		});
 
-		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
-
 		infoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// show popup with some space for Game Info
-				showPopup();
+
+				if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+					showPopup(gameToEdit);
+				} else
+					showPopup(newGame);
 			}
 		});
 
@@ -284,6 +345,15 @@ public class CreateNewGameFragment extends Fragment {
 		case R.id.menu_item_load_template_from_store:
 			openStore();
 			return true;
+			// TODO check it!!!
+			// handling back-button
+			// case android.R.id.home:
+			// Intent intent = new Intent(getActivity(),
+			// GameBrowserActivity.class);
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			// startActivity(intent);
+			// // finish();
+			// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -298,9 +368,9 @@ public class CreateNewGameFragment extends Fragment {
 
 	// TODO check this!
 
-	private void showPopup() {
+	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(newGame);
+				.newInstance(game);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -34,14 +35,16 @@ public class GameDetailsFragment extends Fragment {
 	private TextView gameName;
 	private TextView date;
 	private TextView description;
-	private TextView templateName;
+	private TextView worldName;
 	private ImageView gameIcon;
 	private Button infoButton;
+	private Button editGameButton;
 	private GridView gameCharacterGridView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -49,23 +52,27 @@ public class GameDetailsFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_game_details, parent,
 				false);
+		// for back-button
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		String gName = (String) getActivity().getIntent().getSerializableExtra(
 				EXTRA_GAME_NAME);
 		game = GameLab.get(getActivity()).getGame(gName);
 
+		getActivity().setTitle(game.getGameName());
+
 		gameName = (TextView) view.findViewById(R.id.gameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);
-		templateName = (TextView) view.findViewById(R.id.textViewWorldName);
+		worldName = (TextView) view.findViewById(R.id.textViewWorldName);
 		gameIcon = (ImageView) view.findViewById(R.id.iconGame);
 		infoButton = (Button) view.findViewById(R.id.buttonGameInfoPopup);
 		gameCharacterGridView = (GridView) view
 				.findViewById(R.id.gridViewCharacters);
 
 		gameName.setText(game.getGameName());
-		templateName.setText(game.getTemplate().getTemplateName());
+		worldName.setText(game.getTemplate().getWorldName());
 		date.setText(game.getDate());
-		
+
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_expandablelist_charakter,
 				game);
@@ -89,8 +96,7 @@ public class GameDetailsFragment extends Fragment {
 						PlayCharacterActivity.class);
 				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
 						curCharacter);
-				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
-						game);
+				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME, game);
 				startActivity(i);
 
 			}
@@ -147,6 +153,25 @@ public class GameDetailsFragment extends Fragment {
 			}
 		});
 
+		editGameButton = (Button) view.findViewById(R.id.buttonEditGame);
+		editGameButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// go into edit game mode
+				Toast.makeText(getActivity(),
+						"Nun kann Du das Spiel bearbeiten!", Toast.LENGTH_SHORT)
+						.show();
+				// TODO
+				// Start createNewGameActivity with current game values!
+				Intent i = new Intent(getActivity(),
+						CreateNewGameActivity.class);
+
+				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
+
+				startActivity(i);
+			}
+		});
+
 		return view;
 	}
 
@@ -156,5 +181,20 @@ public class GameDetailsFragment extends Fragment {
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 
+	}
+
+	// handling back-button
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(getActivity(), GameBrowserActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			// finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

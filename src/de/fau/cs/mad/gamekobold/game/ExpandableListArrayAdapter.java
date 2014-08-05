@@ -5,17 +5,23 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
@@ -24,6 +30,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	public LayoutInflater inflater;
 	private Context context;
 	private Game newGame;
+	private GameCharacter curGameCharacter;
 
 	public ExpandableListArrayAdapter(Context context,
 			ArrayList<Template> templates, Game game) {
@@ -38,7 +45,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int templatePosition, int characterPosition,
+	public View getChildView(final int templatePosition, int characterPosition,
 			boolean isLastCharacter, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
@@ -62,8 +69,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					int position, long id) {
 				// add to picked character
 				if (position != adapterView.getChildCount() - 1) {
-					
-					GameCharacter curGameCharacter = (GameCharacter) adapterView
+
+					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
 					Toast.makeText(
@@ -84,10 +91,21 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				}
 				// create new character from template
 				else {
-					Toast.makeText(context, "Neues Charakter wird erstellt!",
-							Toast.LENGTH_SHORT).show();
+					// TODO Check it now it is just dummy template -> not able
+					// to create character!
+					// FIXME change it to real data!
+					Intent intent = new Intent(context,
+							CharacterEditActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					// flag to distinguish between editing and creating
+					intent.putExtra(
+							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							false);
+					intent.putExtra(
+							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+							templates.get(templatePosition).getTemplateName());
+					context.startActivity(intent);
 				}
-
 			}
 		});
 

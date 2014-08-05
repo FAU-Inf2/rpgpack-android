@@ -13,11 +13,13 @@ import de.fau.cs.mad.gamekobold.R;
 public class ToolboxRandomElementAdapter extends BaseAdapter {
     private Context context;
     private final ArrayList<String> textViewValues;
+    private final ArrayList<String> textViewItems;
     LayoutInflater inflater;
     
-    public ToolboxRandomElementAdapter(Context context, ArrayList<String> items) {
+    public ToolboxRandomElementAdapter(Context context, ArrayList<String> items, ArrayList<String> values) {
         this.context = context;
-        this.textViewValues = items;
+        this.textViewItems = items;
+        this.textViewValues = values;
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -30,7 +32,7 @@ public class ToolboxRandomElementAdapter extends BaseAdapter {
      
         TextView textView = (TextView) convertView.findViewById(R.id.grid_item);
         textView.setText(textViewValues.get(position));
-        textView.setHint(textViewValues.get(position));
+        textView.setHint(textViewItems.get(position));
         
         switch (Integer.parseInt((String) textView.getHint())){
         case 4: 	textView.setBackgroundResource(R.drawable.d4_128x128);
@@ -54,12 +56,12 @@ public class ToolboxRandomElementAdapter extends BaseAdapter {
     
     @Override
     public int getCount() {
-        return textViewValues.size();
+        return textViewItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return textViewValues.get(position);
+        return textViewItems.get(position);
     }
 
     @Override

@@ -210,6 +210,13 @@
         <item>Timer</item>
         <item>Taktische Karte</item>
     </string-array>
+    
+    <string name="add_d4">Add d4</string>
+    <string name="add_d6">Add d6</string>
+    <string name="add_d8">Add d8</string>
+    <string name="add_d10">Add d10</string>
+    <string name="add_d12">Add d12</string>
+    <string name="add_d20">Add d20</string>
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
@@ -220,5 +227,5 @@
 	
 	  <!-- CreateNewGameFragment -->
 	<string name="popup_create_game_info_titel">Spielnotizen</string>
-    
+    <string name="titel_create_game">Neues Spiel</string>
 </resources>

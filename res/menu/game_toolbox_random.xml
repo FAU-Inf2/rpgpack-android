@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"  
+	android:layout_height="wrap_content"
+	android:background="@color/background_dark" >
+	
+    <item
+        android:id="@+id/item_d4"
+        android:textColor="@color/white"
+        android:icon="@drawable/d4_128x128"
+        android:layout_width="wrap_content"  
+		android:layout_height="wrap_content"
+        android:title="@string/add_d4"/>
+ 
+    <item
+        android:id="@+id/item_d6"
+        android:textColor="@color/white"
+       	android:icon="@drawable/ic_launcher"
+        android:title="@string/add_d6"/>
+ 
+    <item
+        android:id="@+id/item_d8"
+        android:textColor="@color/white"
+        android:title="@string/add_d8"/>
+    
+	<item
+        android:id="@+id/item_d10"
+        android:textColor="@color/white"
+        android:title="@string/add_d10"/>
+        
+	<item
+        android:id="@+id/item_d12"
+        android:textColor="@color/white"
+        android:title="@string/add_d12"/>
+	
+	<item
+        android:id="@+id/item_d20"
+        android:textColor="@color/white"
+        android:title="@string/add_d20"/>
+ 
+</menu>
