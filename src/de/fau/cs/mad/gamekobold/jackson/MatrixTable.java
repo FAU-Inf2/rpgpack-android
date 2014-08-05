@@ -7,9 +7,11 @@ import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 
+@JsonTypeName("matrix")
 public class MatrixTable extends AbstractTable{
 	public List<MatrixItem> entries;
 	
@@ -28,6 +30,10 @@ public class MatrixTable extends AbstractTable{
 	 */
 	@JsonProperty("entries")
 	public List<MatrixItem> getEntries() {
+		// need this check if a matrix table is created but never visited.
+		if(entries.isEmpty()) {
+			return entries;
+		}
 		return entries.subList(0, entries.size()-1);
 	}
 	

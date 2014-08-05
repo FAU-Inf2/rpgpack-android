@@ -18,21 +18,22 @@ public class GameLab {
 		this.games = new ArrayList<Game>();
 		this.templates = new TemplateLab(appContext).getTemplates();
 
-		Game game1 = new Game("My First Game", templates.get(0),
-				"20.05.2014");
-		Game game2 = new Game("The Best Game", templates.get(1),
-				"20.05.2014");
+		Game game1 = new Game("My First Game", templates.get(0), "20.05.2014");
+		Game game2 = new Game("The Best Game", templates.get(1), "20.05.2014");
 		Game game3 = new Game("Schwarze Auge Game", templates.get(2),
 				"21.05.2014");
+
+		Game gameAddNew = new Game("Create New Game...");
 
 		game1.setCharakterList(templates.get(0).getCharacters());
 		game2.setCharakterList(templates.get(1).getCharacters());
 		game3.setCharakterList(templates.get(2).getCharacters());
-		
+
 		games.add(game1);
 		games.add(game2);
 		games.add(game3);
-		
+		games.add(gameAddNew);
+
 	}
 
 	public static GameLab get(Context c) {

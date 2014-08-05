@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/iconGame"
+        android:layout_alignParentLeft="true"
         android:background="@color/bright_green"
         android:text="@string/text_change_game"
         android:textColor="@color/white" />
@@ -55,16 +55,6 @@
         android:layout_toLeftOf="@+id/buttonGameInfoPopup"
         android:text="Date"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/buttonEditGame"
-        android:background="@color/grey"
-        android:text="@string/back"
         android:textColor="@color/white" />
 
     <GridView

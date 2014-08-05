@@ -7,14 +7,18 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import android.util.Log;
 
+@JsonTypeName("table")
 public class Table extends AbstractTable{
 	private List<Row> rows;
 	private int numberOfColumns;
 
 	private ArrayList<ColumnHeader> columnHeaders;
+	
+	@JsonIgnore
 	public boolean writeOnly;
 
 	public Table() {
@@ -35,7 +39,7 @@ public class Table extends AbstractTable{
 	
 	@JsonCreator
 	public Table(@JsonProperty("name") String name,
-				@JsonProperty("columnHeaders") ArrayList<ColumnHeader> headers,
+				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
 				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows) {
 		tableName = name;
 		numberOfColumns = headers.size();
@@ -73,6 +77,7 @@ public class Table extends AbstractTable{
 		return rows.get(index);
 	}
 	
+	@JsonProperty(value="columns")
 	public ArrayList<ColumnHeader> getColumnHeaders() {
 		return columnHeaders;
 	}
