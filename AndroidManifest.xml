@@ -90,6 +90,7 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
+        <activity android:name=".templatestore.TemplateStoreMainActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
