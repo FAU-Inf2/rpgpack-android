@@ -75,6 +75,7 @@ public class CreateNewGameFragment extends Fragment {
 		setHasOptionsMenu(true);
 		getActivity().setTitle(
 				getResources().getString(R.string.titel_create_game));
+
 	}
 
 	@Override
@@ -108,6 +109,7 @@ public class CreateNewGameFragment extends Fragment {
 			worldName.setText(gameToEdit.getTemplate().getWorldName());
 			gameDate.setText(gameToEdit.getDate());
 			// addImageButton.setImageBitmap(gameToEdit.getBitmap);
+			getActivity().setTitle(gameToEdit.getGameName());
 
 		}
 
@@ -142,9 +144,12 @@ public class CreateNewGameFragment extends Fragment {
 										+ " Item " + position + " was clicked",
 								Toast.LENGTH_SHORT).show();
 
-						// TODO hier gehts zur Characteransicht zum Spielen
+						// it goes to character-view
 						curCharacter = (GameCharacter) adapterView
 								.getItemAtPosition(position);
+
+						Log.i("curCharacter is null?", ""
+								+ (curCharacter == null));
 
 						Toast.makeText(
 								getActivity(),
@@ -158,8 +163,17 @@ public class CreateNewGameFragment extends Fragment {
 						i.putExtra(
 								PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
 								curCharacter);
-						startActivity(i);
 
+						if ((getActivity().getIntent()
+								.hasExtra(EXTRA_GAME_TO_EDIT))) {
+							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+									gameToEdit);
+						} else {
+							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+									newGame);
+						}
+
+						startActivity(i);
 					}
 				});
 

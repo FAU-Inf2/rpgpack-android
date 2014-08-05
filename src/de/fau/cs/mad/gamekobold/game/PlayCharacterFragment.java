@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.game;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +36,13 @@ public class PlayCharacterFragment extends Fragment {
 
 		playedGame = (Game) getActivity().getIntent().getSerializableExtra(
 				EXTRA_PLAYED_GAME);
+
+		Log.i("playedGame is null?", "" + (playedGame == null));
+
 		playedCharacter = (GameCharacter) getActivity().getIntent()
 				.getSerializableExtra(EXTRA_PLAYED_CHARACTER);
+
+		Log.i("playedCharacter is null?", "" + (playedCharacter == null));
 
 		// FIXME check it for character grid view! null pointer exception!
 		getActivity().setTitle(
