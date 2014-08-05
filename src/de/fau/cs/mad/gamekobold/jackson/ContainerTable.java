@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import android.util.Log;
 
-
+@JsonTypeName("folder")
 public class ContainerTable extends AbstractTable{
 	public List<AbstractTable> subTables;
 	

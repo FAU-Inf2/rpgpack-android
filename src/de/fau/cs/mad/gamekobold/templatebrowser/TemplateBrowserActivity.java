@@ -135,13 +135,23 @@ public class TemplateBrowserActivity extends ListActivity {
 										public void onClick(
 												DialogInterface dialog,
 												int which) {
-											File file = new File(
-													longClickedTemplate.fileAbsolutePath);
+											File file = longClickedTemplate.getTemplateFile();
 											if (file != null) {
 												Log.d("TempalteBrowser",
 														"delete template:"
 																+ longClickedTemplate);
-												// removeItem(longClickedTemplate);
+												// delete characters
+												final File characterDir = de.fau.cs.mad.gamekobold.jackson.Template.
+														getDirectoryForCharacters(TemplateBrowserActivity.this, longClickedTemplate, false);
+												if(characterDir != null) {
+													// delete characters
+													final File[] characterFiles = characterDir.listFiles();
+													for(final File character : characterFiles) {
+														character.delete();
+													}
+													// delete dircetory
+													characterDir.delete();
+												}
 												if (file.delete()) {
 													// check if we removed the
 													// last edited template

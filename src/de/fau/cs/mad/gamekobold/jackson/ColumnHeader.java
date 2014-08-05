@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ColumnHeader implements IEditableContent{
 	public String name,type;
+
 	public boolean hidden;
 	
 	
