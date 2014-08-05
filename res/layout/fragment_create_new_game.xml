@@ -33,13 +33,13 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/worldNameText"
         android:layout_margin="5dp"
         android:background="@drawable/info2_white"
         android:scaleType="fitXY" />
 
     <EditText
-        android:id="@+id/gameName"
+        android:id="@+id/gameNameText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/buttonAddIcon"
@@ -57,10 +57,10 @@
     </EditText>
 
     <EditText
-        android:id="@+id/textView4"
+        android:id="@+id/worldNameText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gameName"
+        android:layout_below="@+id/gameNameText"
         android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/buttonAddIcon"
         android:ems="10"
@@ -72,12 +72,12 @@
         android:textColor="@color/white" />
 
     <EditText
-        android:id="@+id/textView3"
+        android:id="@+id/gameDateText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/buttonInfoPopup"
         android:layout_alignBottom="@+id/buttonInfoPopup"
-        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignLeft="@+id/worldNameText"
         android:layout_toLeftOf="@+id/buttonInfoPopup"
         android:ems="10"
         android:hint="@string/hint_1"

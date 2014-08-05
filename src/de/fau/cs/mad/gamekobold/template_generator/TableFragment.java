@@ -4,9 +4,13 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ReattachingPopup;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
@@ -41,6 +45,7 @@ import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -65,10 +70,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -106,6 +108,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	protected TableRow contextMenuRow;
 //	protected ArrayList<View> popupViewList = new ArrayList<>();
 //	protected ArrayList<PopupWindow> popupList = new ArrayList<>();
+	public Map<Pair<Integer,Integer>, ReattachingPopup> popupList = new ConcurrentHashMap<Pair<Integer,Integer>, ReattachingPopup>();
+	public List<ReattachingPopup> currentlyShownPopups = new ArrayList<ReattachingPopup>();
 
 
 	
@@ -184,7 +188,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 							newElement = initCheckBox(row, jacksonTable.getEntry(i, rowIndex));
 						}
 						else {
-							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex));
+							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex), i, rowIndex);
 						}
 						row.addView(newElement);
 						final int width = getNeededWidth(i);
@@ -211,9 +215,43 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//
 		// JACKSON END
 		//
+		
+		//show all previously shown popups
+//		Stack<ReattachingPopup> copyStack = (Stack<ReattachingPopup>) currentPopups.clone();
+//		currentPopups.clear();
+//		while(!copyStack.isEmpty()){
+//			ReattachingPopup toShow = copyStack.pop();
+//			toShow.show();
+//		}
+		int popupsToShow = currentlyShownPopups.size();
+		for(int i=0; i<popupsToShow; i++){
+			final ReattachingPopup toShow = currentlyShownPopups.remove(0);
+			if(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content) == null){
+				Log.d("SlideoutNavigationActivity", "IS NULL!!!!!");
+			}
+			mainView.post(new Runnable() {
+		        public void run() {
+		        	toShow.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+		        }
+		    });
+//			toShow.show(this, SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content));
+		}
 		return mainView;
 	}
 	
+	@Override
+	public void onResume(){
+		super.onResume();
+//		int popupsToShow = currentlyShownPopups.size();
+//		for(int i=0; i<popupsToShow; i++){
+//			ReattachingPopup toShow = currentlyShownPopups.remove(0);
+//			if(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content) == null){
+//				Log.d("SlideoutNavigationActivity", "IS NULL!!!!!");
+//			}
+//			toShow.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+////			toShow.show(this, SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content));
+//		}
+	}
 	
 	private void fillListView(){
 		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
@@ -344,13 +382,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k));
+						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k), indexOfTable, k);
 						tableRow.addView(newElement, indexOfTable);
 					}
 					else if(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k));
+						newElement = initPopup(tableRow, jacksonTable.getEntry(indexOfTable, k), indexOfTable, k);
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
@@ -743,7 +781,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         return results;
     }
 	
-    private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry){
+    private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry, int columnIndex, int rowIndex){
 		Log.d("TABLE_FRAGMENT", "init_popup");
 
 		final LinearLayout ll = new LinearLayout(getActivity());
@@ -940,21 +978,35 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //		int mainWidth = mainView.getMeasuredWidth();
 //		int mainHeight = mainView.getMeasuredHeight();
 //        final PopupWindow popup = new PopupWindow(popupView, popupWidth, popupHeight, true);
-        final PopupWindow popup = new PopupWindow(popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-		popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
+		ReattachingPopup searchedPopup = null;
+		ReattachingPopup savedPopup = null;
+		if((savedPopup =
+				popupList.get(new Pair<Integer, Integer>(Integer.valueOf(columnIndex), Integer.valueOf(rowIndex))))
+				== null){
+	        Log.d("searchedPopup", "new one");
+			searchedPopup = new ReattachingPopup(this, popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+		}
+		else{
+	        Log.d("searchedPopup", "saved one");
+			searchedPopup = savedPopup;
+		}
+		final ReattachingPopup popup = searchedPopup;
+//		final ReattachingPopup popup = new ReattachingPopup(this, popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popup.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
 //		popup.setOutsideTouchable(false);
         popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         
         
 
         final Button addRefButton = (Button) popupView.findViewById(R.id.add_ref);
+        final TableFragment tf = this; 
         addRefButton.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
 //        		Animation slide_up = AnimationUtils.loadAnimation(TemplateGeneratorActivity.theActiveActivity, R.animator.slide_up);
                 LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupReferencesView = inflater.inflate(R.layout.table_view_references, null);
                 LinearLayout reference_list = (LinearLayout) popupReferencesView.findViewById(R.id.reference_list);
-                final PopupWindow popupReferences = new PopupWindow(popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                final ReattachingPopup popupReferences = new ReattachingPopup(tf, popupReferencesView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                 popupReferences.setBackgroundDrawable(new BitmapDrawable(getResources(),""));
                 popupReferences.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 //                popupReferences.setOnDismissListener(new OnDismissListener() {
@@ -1113,7 +1165,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         		newElement = initCheckBox(row, jacksonTable.getEntry(columnIndex, rowIndex));
         	}
         	else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
-            	newElement = initPopup(row, jacksonTable.getEntry(columnIndex, rowIndex));
+            	newElement = initPopup(row, jacksonTable.getEntry(columnIndex, rowIndex), columnIndex, rowIndex);
             }
         }
         else{
@@ -1209,6 +1261,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			//
 			//  JACKSON END
 			//
+		}
+	}
+	
+	@Override
+	public void onDetach(){
+		super.onDetach();
+		for(ReattachingPopup p: currentlyShownPopups){
+			p.saveDismiss();
 		}
 	}
 
