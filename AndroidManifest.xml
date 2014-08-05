@@ -90,6 +90,12 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.TimerActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomGenerator" >
+        </activity>
         <activity android:name=".templatestore.TemplateStoreMainActivity"></activity>
     </application>
 
