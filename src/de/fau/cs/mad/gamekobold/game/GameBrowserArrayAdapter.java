@@ -68,19 +68,20 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 				TextView gName = (TextView) rowView
 						.findViewById(R.id.textViewGameName);
-				TextView gTemplate = (TextView) rowView
-						.findViewById(R.id.textViewTemplateName);
+				TextView gWorld = (TextView) rowView
+						.findViewById(R.id.textViewWorldName);
 				TextView gDate = (TextView) rowView
 						.findViewById(R.id.textViewDate);
 				ImageView imageView = (ImageView) rowView
 						.findViewById(R.id.iconView);
 				TextView gCounter = (TextView) rowView
-						.findViewById(R.id.counter);
+						.findViewById(R.id.characterCounter);
 
 				Game curGame = objects.get(position);
+				Log.e("curGame is null?", "" + (curGame == null));
 
 				gName.setText(curGame.getGameName());
-				gTemplate.setText(curGame.getTemplate().getTemplateName());
+				gWorld.setText(curGame.getTemplate().getWorldName());
 				gDate.setText(curGame.getDate());
 				// size-1 as last item is fake!(for creating new character)
 				gCounter.setText(String.valueOf(curGame.getCharakterList()
@@ -90,7 +91,9 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				// imageView.setImageResource(Integer.valueOf(gameIcons
 				// .getGameIcon(curGame.getIconID())));
 			}
-		} else {
+		}
+		// reuse
+		else {
 			// check for last line -> create new game
 			// it uses an other layout
 			if (position == getCount() - 1) {
@@ -106,19 +109,23 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 				TextView gName = (TextView) rowView
 						.findViewById(R.id.textViewGameName);
-				TextView gTemplate = (TextView) rowView
-						.findViewById(R.id.textViewTemplateName);
+				TextView gWorld = (TextView) rowView
+						.findViewById(R.id.textViewWorldName);
 				TextView gDate = (TextView) rowView
 						.findViewById(R.id.textViewDate);
-
+				TextView gCounter = (TextView) rowView
+						.findViewById(R.id.characterCounter);
 				ImageView imageView = (ImageView) rowView
 						.findViewById(R.id.iconView);
 
 				Game curGame = objects.get(position);
 
 				gName.setText(curGame.getGameName());
-				gTemplate.setText(curGame.getTemplate().getTemplateName());
+				gWorld.setText(curGame.getTemplate().getWorldName());
 				gDate.setText(curGame.getDate());
+				// size-1 as last item is fake!(for creating new character)
+				gCounter.setText(String.valueOf(curGame.getCharakterList()
+						.size() - 1));
 
 				// // change the icon for different games
 				// GameIcons gameIcons = GameIcons.getInstance();

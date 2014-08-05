@@ -32,6 +32,12 @@ public class Game implements Serializable {
 		this.template = template;
 		this.date = date;
 	}
+	
+	//fake last item for create new game
+	public Game(String gameName) {
+		this();
+		this.gameName = gameName;
+	}
 
 	public Game() {
 		this.characterList = new ArrayList<GameCharacter>();

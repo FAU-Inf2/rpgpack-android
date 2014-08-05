@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/Button01"
         android:background="@color/bright_green"
         android:text="@string/save_game"
         android:textColor="@color/white" />
@@ -87,17 +86,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" >
     </EditText>
-
-    <Button
-        android:id="@+id/Button01"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/buttonAddIcon"
-        android:background="@color/grey"
-        android:text="@string/back"
-        android:textColor="@color/white" />
 
     <GridView
         android:id="@+id/pickedCharacterGridView"

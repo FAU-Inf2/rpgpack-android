@@ -17,7 +17,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textViewTemplateName"
+        android:id="@+id/textViewWorldName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewGameName"
@@ -29,8 +29,8 @@
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewTemplateName"
-        android:layout_below="@+id/textViewTemplateName"
+        android:layout_alignLeft="@+id/textViewWorldName"
+        android:layout_below="@+id/textViewWorldName"
         android:text="Date"
         android:textColor="@color/light_grey" />
 
@@ -45,14 +45,13 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/counter"
+        android:id="@+id/characterCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="38dp"
         android:background="@drawable/counter_bg"
-        android:text="34"
         android:textColor="@color/black" />
 
     <ImageView
@@ -71,11 +70,11 @@
         android:src="@drawable/ic_launcher" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageViewCharacterCountIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/counter"
+        android:layout_toLeftOf="@+id/characterCounter"
         android:adjustViewBounds="true"
         android:gravity="center"
         android:maxWidth="30dip"

@@ -22,15 +22,16 @@ public class GameBrowserFragment extends ListFragment {
 		GameBrowserArrayAdapter adapter = new GameBrowserArrayAdapter(
 				getActivity(), games);
 		setListAdapter(adapter);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Game g = ((GameBrowserArrayAdapter) getListAdapter()).getItem(position);
-		Log.d("sd", g.getGameName() + " was clicked");
+		Log.d("GAME", g.getGameName() + " was clicked");
 
 		if (position == games.size() - 1) {
-			Log.d("sd", games.size() + " was clicked");
+			Log.d("GAME", games.size() + " was clicked");
 			// Start NewGameActivity
 			Intent i = new Intent(getActivity(), CreateNewGameActivity.class);
 			startActivity(i);
