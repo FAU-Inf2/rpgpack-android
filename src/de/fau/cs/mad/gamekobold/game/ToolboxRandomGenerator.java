@@ -17,12 +17,15 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +36,6 @@ public class ToolboxRandomGenerator extends Activity{
 	GridView grid;
 	private TextView TextView, testText;
 	Button btn_add;
-	public String [] dice_array = {"Add d4","Add d6","Add d8","Add d10","Add d12","Add d20"};
 	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
     
 	@Override
@@ -64,12 +66,52 @@ public class ToolboxRandomGenerator extends Activity{
     
     public void addDice(View v){
     	
-    	TextView.setText("");
+    	PopupMenu popup = new PopupMenu(getBaseContext(), v);
+    	 
+        popup.getMenuInflater().inflate(R.menu.game_toolbox_random, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+            	TextView.setText("");
+            	String dice = "";
+            	if (list.size()<9){
+            		
+            		switch (item.getItemId()) {
+                    case R.id.item_d4:
+                    	dice = "4";
+                    	break;
+                    case R.id.item_d6:
+                    	dice = "6";
+                    	break;
+                    case R.id.item_d8:
+                    	dice = "8";
+                    	break;
+                    case R.id.item_d10:
+                    	dice = "10";
+                    	break;
+                    case R.id.item_d12:
+                    	dice = "12";
+                    	break;
+                    case R.id.item_d20:
+                    	dice = "20";
+                    	break;
+                    default:
+                    	break;	
+            		}
+            		
+            		list.add(dice);
+            	}
+            	
+            	setGridView();
+            	return true;
+            }
+        });
+        popup.show();
     	
-    	if (list.size()<9)
-    		list.add(getDiceNum((String) btn_add.getText()));
-    		
-    	setGridView();
+    	
+    	TextView.setText("");
     }
     
     public void rollDice(View v){
@@ -106,19 +148,6 @@ public class ToolboxRandomGenerator extends Activity{
     	Random rnd = new Random();
     	int rndint = (rnd.nextInt(maxValue))+1;
     	return rndint;
-    }
-    
-    public void diceUp(View v){
-    	int pos = 0;
-    	
-    	for(int i=0; i < dice_array.length; i++){
-    		if (dice_array[i].equals(btn_add.getText()))
-    			pos = i+1;
-    	}
-    	if (pos > dice_array.length-1){
-    		pos = 0;
-    	}
-    	btn_add.setText(dice_array[pos]);
     }
     
     public String getDiceNum(String s){
