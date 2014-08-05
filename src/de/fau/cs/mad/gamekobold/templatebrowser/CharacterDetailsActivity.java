@@ -21,6 +21,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,13 +37,14 @@ import android.widget.TextView;
 public class CharacterDetailsActivity extends Activity implements ColorPickerDialogInterface{
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
-	
+
 	private RelativeLayout relLayout;
 	private CharacterSheet sheet;
 	private Uri iconUri;
 	private ImageButton characterIconButton;
 	private String templateFileName;
-	
+	private boolean characterAltered;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
+		characterAltered = false;
 		relLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
@@ -120,6 +124,27 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				dialog.show(getFragmentManager(), "ColorPickerDialog");
 			}
 		});
+		
+		description.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(sheet != null) {
+					if(!sheet.description.equals(s.toString())) {
+						sheet.description = s.toString();
+						characterAltered = true;
+					}
+				}
+			}
+		});
 
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();		
@@ -155,7 +180,34 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		});
 
 	}
-	
+
+	@Override
+	public void onPause() {
+		// TODO maybe save async. Don't know right now.
+		// check if character has been altered
+		if(sheet != null && characterAltered) {
+			if(!sheet.fileAbsolutePath.isEmpty()) {
+				// load sheet. take over changes. save again
+				try {
+					// open file
+					final File jsonFile = new File(sheet.fileAbsolutePath);
+					// load sheet with all data
+					CharacterSheet loadedSheet = CharacterSheet.loadCharacterSheet(jsonFile, false);
+					// take over changes
+					loadedSheet.takeOverChanges(sheet);
+					// save back to the file
+					loadedSheet.saveToJSONFile(jsonFile);
+					// clear flag
+					characterAltered = false;
+				}
+				catch(Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		super.onPause();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -179,10 +231,13 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
 		if(sheet != null) {
-			sheet.color = color;
+			if(sheet.color != color) {
+				sheet.color = color;
+				characterAltered = true;
+			}
 		}
 	}
-	
+
 	@Override
 	// to handle the selected image
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

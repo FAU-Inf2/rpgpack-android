@@ -283,8 +283,7 @@ public class TemplateDetailsActivity extends Activity {
 					for (final File character : characters) {
 						if (character.isFile()) {
 							try {
-								sheet = CharacterSheet
-										.loadForCharacterList(character);
+								sheet = CharacterSheet.loadCharacterSheet(character, true);
 								characterList.add(sheet);
 							} catch (Throwable e) {
 								e.printStackTrace();
