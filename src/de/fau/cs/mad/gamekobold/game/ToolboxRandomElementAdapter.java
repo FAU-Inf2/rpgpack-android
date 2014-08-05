@@ -31,6 +31,23 @@ public class ToolboxRandomElementAdapter extends BaseAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.grid_item);
         textView.setText(textViewValues.get(position));
         textView.setHint(textViewValues.get(position));
+        
+        switch (Integer.parseInt((String) textView.getHint())){
+        case 4: 	textView.setBackgroundResource(R.drawable.d4_128x128);
+        			break;
+        case 6: 	textView.setBackgroundResource(R.drawable.d6_128x128);
+        			break;
+        case 8: 	textView.setBackgroundResource(R.drawable.d8_128x128);
+        			break;
+        case 10: 	textView.setBackgroundResource(R.drawable.d10_128x128);
+        			break;
+        case 12: 	textView.setBackgroundResource(R.drawable.d12_128x128);
+        			break;
+        case 20: 	textView.setBackgroundResource(R.drawable.d20_128x128);
+        			break;
+        default: 	textView.setBackgroundResource(R.color.background_green);   
+        }
+        
 
         return convertView;
     }
