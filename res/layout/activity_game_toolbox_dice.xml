@@ -28,28 +28,7 @@
 	android:onClick="rollDice"
 	android:text="Roll"
 	android:textColor="@color/white" />
-    
-    <Button
-	android:id="@+id/btn_char"
-	android:layout_width="80dp"
-	android:layout_height="45dp"
-	android:layout_alignBaseline="@+id/btn_add"
-	android:layout_alignParentRight="true"
-	android:layout_marginRight="20dip"
-	android:background="@color/background_green"
-	android:onClick="randomCharList"
-	android:text="Charlist"
-	android:textColor="@color/white" />
         
-	<TextView  
-	android:id="@+id/tv_test"
-	android:layout_marginTop="20dip"
-	android:textColor="@color/white"
-	android:layout_width="wrap_content"  
-	android:layout_height="wrap_content"
-	android:layout_centerHorizontal="true"  
-	android:textSize="20sp" />
-
 	<TextView  
 	android:id="@+id/tv_sum"
 	android:textColor="@color/white"

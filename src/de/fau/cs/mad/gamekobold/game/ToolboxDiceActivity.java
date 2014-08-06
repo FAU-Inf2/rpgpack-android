@@ -24,8 +24,7 @@ public class ToolboxDiceActivity extends Activity{
 	ArrayList<String> rolled_dice = new ArrayList<String>();
 	GridView grid;
 	Boolean isGrid = false;
-	private TextView tv_test, tv_sum;
-	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
+	private TextView tv_sum;
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class ToolboxDiceActivity extends Activity{
         
         setContentView(R.layout.activity_game_toolbox_dice);
         
-        tv_test = (TextView) findViewById(R.id.tv_test);
         tv_sum = (TextView) findViewById(R.id.tv_sum);
         
     }
@@ -45,7 +43,6 @@ public class ToolboxDiceActivity extends Activity{
 		 icicle.putStringArrayList("rolled_dice", rolled_dice);
 		 icicle.putBoolean("isGrid", isGrid);
 		 icicle.putString("sum", tv_sum.getText().toString());
-		 icicle.putString("test_string", tv_test.getText().toString());
 	 }
 	 
 	 @Override
@@ -60,29 +57,10 @@ public class ToolboxDiceActivity extends Activity{
 			 setGridView();
 			 tv_sum.setText(icicle.getString("sum"));
 		 }
-		 else
-			 tv_test.setText(icicle.getString("test_string"));
 	 }
-	  
-    public void randomCharList(View v){
-    	dice_list.removeAll(dice_list);
-    	rolled_dice.removeAll(rolled_dice);
-    	tv_test.setText("");
-    	shuffleArray(char_array);
-    	String s = "";
-    	setContentView(R.layout.activity_game_toolbox_dice);
-    	 
-    	for (int i = 0; i<char_array.length; i++){
-    		s = s + char_array[i] + "\n";	 
-    	}
-    	tv_test = (TextView) findViewById(R.id.tv_test);
-    	tv_test.setText(s);
-    	isGrid = false;
-    }
     
     public void addDice(View v){
     	
-        tv_test.setText("");
     	PopupMenu popup = new PopupMenu(getBaseContext(), v);
     	 
         popup.getMenuInflater().inflate(R.menu.game_toolbox_random, popup.getMenu());
@@ -150,15 +128,7 @@ public class ToolboxDiceActivity extends Activity{
     	tv_sum.setText("Sum: " + String.valueOf(sum));
     }
     
-    static void shuffleArray(String[] ar){
-    	Random rnd = new Random();
-    	for (int i = ar.length - 1; i > 0; i--){
-    		int index = rnd.nextInt(i + 1);
-    		String a = ar[index];
-    		ar[index] = ar[i];
-    		ar[i] = a;
-    	}
-    }
+
     
     static int diceRoller(int maxValue){
     	Random rnd = new Random();
@@ -174,7 +144,6 @@ public class ToolboxDiceActivity extends Activity{
     public void clearView (View v) {
     	isGrid = false;
     	setContentView(R.layout.activity_game_toolbox_dice);
-        tv_test.setText("");
         tv_sum.setText("");
     	dice_list.removeAll(dice_list);
     	rolled_dice.removeAll(rolled_dice);
