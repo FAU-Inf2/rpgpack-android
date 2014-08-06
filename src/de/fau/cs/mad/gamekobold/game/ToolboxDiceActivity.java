@@ -63,7 +63,7 @@ public class ToolboxDiceActivity extends Activity{
     	
     	PopupMenu popup = new PopupMenu(getBaseContext(), v);
     	 
-        popup.getMenuInflater().inflate(R.menu.game_toolbox_random, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.game_toolbox_dice, popup.getMenu());
         
 
         popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
