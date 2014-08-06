@@ -22,7 +22,7 @@ public class ToolboxFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_play_toolbox, parent,
+		View view = inflater.inflate(R.layout.fragment_game_toolbox, parent,
 				false);
 		
 		return view;

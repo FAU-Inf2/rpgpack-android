@@ -14,19 +14,19 @@ import android.view.Window;
 import android.widget.TimePicker;
 
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.game.Timer.OnTimeChangedListener;
+import de.fau.cs.mad.gamekobold.game.ToolboxTimer.OnTimeChangedListener;
 
-public class TimerDialog extends AlertDialog implements OnClickListener, OnTimeChangedListener{
+public class ToolboxTimerDialog extends AlertDialog implements OnClickListener, OnTimeChangedListener{
 
     public interface OnTimeSetListener {
-        void onTimeSet(Timer view, int hour, int minute, int seconds);
+        void onTimeSet(ToolboxTimer view, int hour, int minute, int seconds);
     }
 
     private static final String HOUR = "hour";
     private static final String MINUTE = "minute";
     private static final String SECONDS = "seconds";
     
-    private final Timer mTimer;
+    private final ToolboxTimer mTimer;
     private final OnTimeSetListener mCallback;
     private final Calendar mCalendar;
     private final java.text.DateFormat mDateFormat;
@@ -35,7 +35,7 @@ public class TimerDialog extends AlertDialog implements OnClickListener, OnTimeC
     int mInitialMinute;
     int mInitialSeconds;    
 
-    public TimerDialog(Context context,
+    public ToolboxTimerDialog(Context context,
             OnTimeSetListener callBack,
             int hour, int minute, int seconds) {
     	
@@ -43,7 +43,7 @@ public class TimerDialog extends AlertDialog implements OnClickListener, OnTimeC
                 callBack, hour, minute, seconds);
     }
 
-    public TimerDialog(Context context,
+    public ToolboxTimerDialog(Context context,
             int theme,
             OnTimeSetListener callBack,
             int hour, int minute, int seconds) {
@@ -64,9 +64,9 @@ public class TimerDialog extends AlertDialog implements OnClickListener, OnTimeC
         
         LayoutInflater inflater = 
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.dialog_game_timer, null);
+        View view = inflater.inflate(R.layout.dialog_game_toolbox_timer, null);
         setView(view);
-        mTimer = (Timer) view.findViewById(R.id.timer);
+        mTimer = (ToolboxTimer) view.findViewById(R.id.timer);
 
         // initialize state
         mTimer.setCurrentHour(mInitialHour);
@@ -123,7 +123,7 @@ public class TimerDialog extends AlertDialog implements OnClickListener, OnTimeC
     }
 
 	@Override
-	public void onTimeChanged(Timer view, int hour, int minute, int seconds) {
+	public void onTimeChanged(ToolboxTimer view, int hour, int minute, int seconds) {
 		// TODO Auto-generated method stub
 		
 	}

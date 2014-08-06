@@ -34,7 +34,7 @@ public class ToolboxActivity extends SingleFragmentActivity {
 	}
 
 	public void openTimer(View view) {
-		Intent intent = new Intent(ToolboxActivity.this, TimerActivity.class);
+		Intent intent = new Intent(ToolboxActivity.this, ToolboxTimerActivity.class);
 		startActivity(intent);
 	}
 
@@ -44,9 +44,15 @@ public class ToolboxActivity extends SingleFragmentActivity {
 		startActivity(intent);
 	}
 
-	public void openRandomGenerator(View view) {
+	public void openDice(View view) {
 		Intent intent = new Intent(ToolboxActivity.this,
-				ToolboxRandomGenerator.class);
+				ToolboxDiceActivity.class);
+		startActivity(intent);
+	}
+	
+	public void openRandomList(View view) {
+		Intent intent = new Intent(ToolboxActivity.this,
+				ToolboxRandomListActivity.class);
 		startActivity(intent);
 	}
 

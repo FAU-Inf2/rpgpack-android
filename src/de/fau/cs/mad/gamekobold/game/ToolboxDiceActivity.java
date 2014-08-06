@@ -18,7 +18,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ToolboxRandomGenerator extends Activity{
+public class ToolboxDiceActivity extends Activity{
 	
 	ArrayList<String> dice_list = new ArrayList<String>();
 	ArrayList<String> rolled_dice = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class ToolboxRandomGenerator extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.activity_game_toolbox_random);
+        setContentView(R.layout.activity_game_toolbox_dice);
         
         tv_test = (TextView) findViewById(R.id.tv_test);
         tv_sum = (TextView) findViewById(R.id.tv_sum);
@@ -70,7 +70,7 @@ public class ToolboxRandomGenerator extends Activity{
     	tv_test.setText("");
     	shuffleArray(char_array);
     	String s = "";
-    	setContentView(R.layout.activity_game_toolbox_random);
+    	setContentView(R.layout.activity_game_toolbox_dice);
     	 
     	for (int i = 0; i<char_array.length; i++){
     		s = s + char_array[i] + "\n";	 
@@ -173,7 +173,7 @@ public class ToolboxRandomGenerator extends Activity{
     
     public void clearView (View v) {
     	isGrid = false;
-    	setContentView(R.layout.activity_game_toolbox_random);
+    	setContentView(R.layout.activity_game_toolbox_dice);
         tv_test.setText("");
         tv_sum.setText("");
     	dice_list.removeAll(dice_list);
@@ -184,8 +184,8 @@ public class ToolboxRandomGenerator extends Activity{
     	
     	isGrid = true;
     	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
-    	grid = new GridView(ToolboxRandomGenerator.this);
-    	ToolboxRandomElementAdapter adp=new ToolboxRandomElementAdapter (ToolboxRandomGenerator.this, dice_list, rolled_dice);
+    	grid = new GridView(ToolboxDiceActivity.this);
+    	ToolboxDiceElementAdapter adp=new ToolboxDiceElementAdapter (ToolboxDiceActivity.this, dice_list, rolled_dice);
     	grid.setNumColumns(3);
         grid.setBackgroundColor(getResources().getColor(R.color.background_dark));        
         grid.setAdapter(adp);

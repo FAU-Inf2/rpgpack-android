@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_dark" >
+
+    <Button
+        android:id="@+id/btn_open_timer"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"   
+        android:background="@color/background_green"
+        android:onClick="openTimer"
+        android:text="@string/open_timer"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_open_tacticalmap"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_alignBottom="@+id/btn_open_timer"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"   
+        android:background="@color/background_green"
+        android:onClick="openTactical"
+        android:text="@string/open_tactical"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_open_dice"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btn_open_timer"
+        android:layout_marginLeft="20dp" 
+        android:layout_marginTop="20dp"      
+        android:background="@color/background_green"
+        android:onClick="openDice"
+        android:text="@string/open_dice"
+        android:textColor="@color/white" /> 
+        
+    <Button
+        android:id="@+id/btn_open_randomlist"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_alignBottom="@+id/btn_open_dice"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"       
+        android:background="@color/background_green"
+        android:onClick="openRandomList"
+        android:text="@string/open_randomlist"
+        android:textColor="@color/white" /> 
+
+</RelativeLayout>
