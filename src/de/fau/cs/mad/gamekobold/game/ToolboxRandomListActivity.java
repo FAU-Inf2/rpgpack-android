@@ -4,50 +4,48 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
-public class ToolboxRandomListActivity extends ListActivity{
+public class ToolboxRandomListActivity extends Activity{
 	
 	private TextView tv_randomlist;
-	
-	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
+	public String [] names = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
+	public ArrayList<String> char_array = new ArrayList<String>();
+			
 	ArrayList<String> listItems=new ArrayList<String>();
 	ArrayAdapter<String> adapter;
+	ListView lv_randomlist;
 	
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
 		 
 		 setContentView(R.layout.activity_game_toolbox_randomlist);
-		 adapter=new ArrayAdapter<String>(this,
-		            android.R.layout.simple_list_item_1,
-		            listItems);
-		        setListAdapter(adapter);
 		 tv_randomlist = (TextView) findViewById(R.id.tv_randomlist);
-		 addItems();
+		 
+		 shuffleArray(names);
+		 for(String item : names)
+			 char_array.add(item);
+		 
+		 setListView();
+		 
 		 		 
 	}
 	
-
-    public void addItems() {
-        for(String item : char_array){
-        	listItems.add(item);	
-        }
-        adapter.notifyDataSetChanged();
-    }
-	
     public void randomCharList(View v){
     	tv_randomlist.setText("");
-    	shuffleArray(char_array);
+    	shuffleArray(names);
     	String s = "";
     	 
-    	for (int i = 0; i<char_array.length; i++){
-    		s = s + char_array[i] + "\n";	 
+    	for (int i = 0; i<names.length; i++){
+    		s = s + names[i] + "\n";	 
     	}
     	tv_randomlist.setText(s);
     }
@@ -61,4 +59,20 @@ public class ToolboxRandomListActivity extends ListActivity{
     		ar[i] = a;
     	}
     }
+    
+    public void setListView(){
+    	
+    	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.randomlist_layout);
+    	lv_randomlist = new ListView(ToolboxRandomListActivity.this);
+    	ToolboxRandomListElementAdapter adp=new ToolboxRandomListElementAdapter (ToolboxRandomListActivity.this, char_array);
+    	//lv_randomlist.setNumColumns(3);
+    	lv_randomlist.setBackgroundColor(getResources().getColor(R.color.background_dark));   
+    	lv_randomlist.setDivider(new ColorDrawable(this.getResources().getColor(R.color.background_green)));
+    	lv_randomlist.setDividerHeight(1);
+    	lv_randomlist.setAdapter(adp);
+        relativeLayout.addView(lv_randomlist);
+    	setContentView(relativeLayout);
+    	
+    }
+    
 }
