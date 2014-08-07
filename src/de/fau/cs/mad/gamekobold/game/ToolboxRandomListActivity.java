@@ -6,18 +6,23 @@ import java.util.Random;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.R.color;
 
 public class ToolboxRandomListActivity extends Activity {
 
 	public String[] names = { "Albert", "Bertram", "Claudio", "Dennis",
 			"Emanuela", "Franzi", "Gretchen", "Hanna", "Ida" };
 	public ArrayList<String> char_array = new ArrayList<String>();
+	int mSelectedItem = -1;
 
 	ArrayList<String> listItems = new ArrayList<String>();
 	ArrayAdapter<String> adapter;
@@ -56,14 +61,42 @@ public class ToolboxRandomListActivity extends Activity {
 
 		RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.randomlist_layout);
 		lv_randomlist = new ListView(ToolboxRandomListActivity.this);
-		ToolboxRandomListElementAdapter adp = new ToolboxRandomListElementAdapter(
-				ToolboxRandomListActivity.this, char_array);
+		final ToolboxRandomListElementAdapter adp = new ToolboxRandomListElementAdapter(
+				ToolboxRandomListActivity.this, char_array, mSelectedItem);
 		lv_randomlist.setBackgroundColor(getResources().getColor(
 				R.color.background_dark));
 		lv_randomlist.setDivider(new ColorDrawable(this.getResources()
 				.getColor(R.color.background_green)));
 		lv_randomlist.setDividerHeight(1);
 		lv_randomlist.setAdapter(adp);
+		lv_randomlist.setClickable(true);
+		lv_randomlist.setId(0);
+		lv_randomlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lv_randomlist
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> a, View v,
+							int position, long id) {
+						SparseBooleanArray b_ar = lv_randomlist
+								.getCheckedItemPositions();
+						if (!b_ar.get(position)) {
+							lv_randomlist.setItemChecked(position, true);
+							v.setBackgroundColor(color.black);
+							Log.i("position", b_ar.toString());
+						} else {
+							lv_randomlist.setItemChecked(position, false);
+							v.setBackgroundColor(color.grey);
+						}
+
+						// Log.i("position", String.valueOf(position));
+						// mSelectedItem = position;
+						// Log.i("selected", String.valueOf(mSelectedItem));
+						adp.notifyDataSetChanged();
+					}
+
+				});
+
 		relativeLayout.addView(lv_randomlist);
 		setContentView(relativeLayout);
 
