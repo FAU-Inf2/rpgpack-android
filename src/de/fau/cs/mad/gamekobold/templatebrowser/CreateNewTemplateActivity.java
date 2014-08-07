@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -215,7 +216,7 @@ public class CreateNewTemplateActivity extends Activity {
 				newTemplate.iconID = 0;
 				newTemplate.description = tvDescription.getText().toString();
 				// check to see if a file for this template already exists
-				if (newTemplate.doesTemplateFileExist(myActivity)) {
+				if (JacksonInterface.doesTemplateFileExist(newTemplate, myActivity)) {
 					// if yes we show a dialog and ask whether to overwrite the
 					// file or not.
 					// Log.d("CreateNewTemplateActivity",

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
@@ -141,8 +142,7 @@ public class TemplateBrowserActivity extends ListActivity {
 														"delete template:"
 																+ longClickedTemplate);
 												// delete characters
-												final File characterDir = de.fau.cs.mad.gamekobold.jackson.Template.
-														getDirectoryForCharacters(TemplateBrowserActivity.this, longClickedTemplate, false);
+												final File characterDir = JacksonInterface.getDirectoryForCharacters(longClickedTemplate, TemplateBrowserActivity.this, false); 
 												if(characterDir != null) {
 													// delete characters
 													final File[] characterFiles = characterDir.listFiles();
@@ -280,8 +280,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					// file for template
 					final File templateFile = templateToCheck.getTemplateFile();
 					// load template
-					final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
-							.loadFromJSONFile(templateFile, true);
+					final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface.loadTemplate(templateFile, true);
 					// check
 					if (loadedTemplate != null) {
 						// take over changes
@@ -314,7 +313,7 @@ public class TemplateBrowserActivity extends ListActivity {
 	 * @return true if the template list will be reloaded, false otherwise.
 	 */
 	private boolean checkForTemplateDirectoryChange() {
-		final File templateDir = de.fau.cs.mad.gamekobold.jackson.Template.getTemplateDirectory(this);
+		final File templateDir = JacksonInterface.getTemplateRootDirectory(this);
 		final long newTimeStamp = templateDir.lastModified();
 		if(templateFolderTimeStamp < newTimeStamp) {
 			templateFolderTimeStamp = newTimeStamp;
@@ -378,8 +377,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			 * JACKSON START We iterate over all files in the template directory
 			 * and load the data into the list
 			 */
-			File templateDir = de.fau.cs.mad.gamekobold.jackson.Template
-					.getTemplateDirectory(myActivity);
+			File templateDir = JacksonInterface.getTemplateRootDirectory(myActivity);
 			if (templateDir != null) {
 				Log.d("TemplateBrowser",
 						"templateDir:" + templateDir.getAbsolutePath());
@@ -388,8 +386,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 					for (final File file : fileList) {
 						try {
-							loadedTemplate = de.fau.cs.mad.gamekobold.jackson.Template
-									.loadFromJSONFile(file, true);
+							loadedTemplate = JacksonInterface.loadTemplate(file, true); 
 							if (loadedTemplate != null) {
 								Template temp = new Template(
 										loadedTemplate.templateName,

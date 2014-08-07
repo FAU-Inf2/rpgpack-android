@@ -30,7 +30,7 @@ public class TemplateSaverTask extends AsyncTask<Template, Void, Boolean>{
 			return Boolean.FALSE;
 		}
 		try {
-			template.saveToFile(appContext, setLastEditedFlag);
+			JacksonInterface.saveTemplate(template, appContext, setLastEditedFlag);
 		} catch (Throwable e) {
 			e.printStackTrace();
 			return Boolean.FALSE;

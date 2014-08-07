@@ -1,7 +1,6 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -107,7 +107,7 @@ public class TemplateDetailsActivity extends Activity {
 				}
 				setTitle(curTemplate.getTemplateName());
 				characterFolderTimeStamp = 0;
-				characterFolder = de.fau.cs.mad.gamekobold.jackson.Template.getDirectoryForCharacters(this, curTemplate, false);
+				characterFolder = JacksonInterface.getDirectoryForCharacters(curTemplate, this, false); 
 			}
 		}
 
@@ -177,7 +177,7 @@ public class TemplateDetailsActivity extends Activity {
 						if(newTimeStamp > sheet.fileTimeStamp) {
 							try {
 								adapter.remove(sheet);
-								sheet = CharacterSheet.loadCharacterSheet(sheetFile, true);
+								sheet = JacksonInterface.loadCharacterSheet(sheetFile, true);
 								adapter.insert(sheet, i);
 								characterListChanged = true;
 							}
@@ -316,8 +316,7 @@ public class TemplateDetailsActivity extends Activity {
 			sheet.color = Color.parseColor("#2980b9");
 			characterList.add(sheet);
 			//
-			File dir = de.fau.cs.mad.gamekobold.jackson.Template
-					.getDirectoryForCharacters(myActivity, params[0], false);
+			File dir = JacksonInterface.getDirectoryForCharacters(params[0], myActivity, false); 
 			if (dir != null) {
 				Log.d("TemplateDetails",
 						"character Folder:" + dir.getAbsolutePath());
@@ -326,7 +325,7 @@ public class TemplateDetailsActivity extends Activity {
 					for (final File character : characters) {
 						if (character.isFile()) {
 							try {
-								sheet = CharacterSheet.loadCharacterSheet(character, true);
+								sheet = JacksonInterface.loadCharacterSheet(character, true);
 								characterList.add(sheet);
 							} catch (Throwable e) {
 								e.printStackTrace();
@@ -391,12 +390,13 @@ public class TemplateDetailsActivity extends Activity {
 				//TODO maybe show a progress dialog but saving in ui thread ?!
 				try {
 					//load template
-					jacksonTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile( templateFile,
-																								false);
-				// take over all changes
-					jacksonTemplate.takeOverValues(curTemplate);
-				// save template again.
-					jacksonTemplate.saveToFile(templateFile);
+					jacksonTemplate = JacksonInterface.loadTemplate(templateFile, false) ;
+					if(jacksonTemplate != null) {
+						// take over all changes
+						jacksonTemplate.takeOverValues(curTemplate);
+						// save template again.
+						JacksonInterface.saveTemplate(jacksonTemplate, templateFile);	
+					}
 				}
 				catch(Throwable e) {
 					e.printStackTrace();
