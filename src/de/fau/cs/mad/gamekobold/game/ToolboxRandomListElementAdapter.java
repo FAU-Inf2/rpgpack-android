@@ -29,6 +29,7 @@ public class ToolboxRandomListElementAdapter extends BaseAdapter {
         
         TextView textView = (TextView) convertView.findViewById(R.id.listview_item);
         
+        textView.setTextSize(30);
         textView.setText(textViewItems.get(position));
         /*
         switch (Integer.parseInt((String) textView.getHint())){
