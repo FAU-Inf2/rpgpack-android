@@ -171,10 +171,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				// adjust row count
 				final int jacksonRowNum = jacksonTable.getRowCount();
 				while(table.getChildCount() < jacksonRowNum) {
-					// TODO hier die rows laden
-//					addItemList();
 					final int columnCount = jacksonTable.getNumberOfColumns();
-			        final TableRow row = new TableRow(getActivity());
+			        TableRow row = new TableRow(getActivity());
 			        registerForContextMenu(row);
 			        table.addView(row);
 					for(int i = 0 ; i < columnCount; i++) {
@@ -440,11 +438,15 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		Log.d("TableFragment", "onCreateContextMenu view:"+v);
 		if(v instanceof TableRow){
 			contextMenuRow = (TableRow) v;
+//		}
+			// only show if v is a tableRow. we get double calls because we have
+			// to register also checkbox and popup
+			MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
+			inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 		}
-		MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
-		inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 	}
 	
 	public boolean onContextItemSelected(MenuItem item) {
@@ -1097,6 +1099,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		txt.setSingleLine();
 		ll.addView(txt);
 		ll.setGravity(Gravity.CENTER);
+		// set it here because otherwise a long click on the cell
+		// won't trigger the context menu
+		ll.setOnCreateContextMenuListener(this);
 		setTableStyle(ll);
 		return ll;
 	}
@@ -1136,6 +1141,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		((LinearLayout) newElement).setGravity(Gravity.CENTER);
 		cb.setButtonDrawable(R.drawable.custom_checkbox);
 		setTableStyle(newElement);
+		// set it here because otherwise a long click on the drawable/checkbox
+		// won't trigger the context menu
+		cb.setOnCreateContextMenuListener(this);
 		return newElement;
 	}
 	
