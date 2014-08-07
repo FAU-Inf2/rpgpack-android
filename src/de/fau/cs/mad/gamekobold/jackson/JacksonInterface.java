@@ -51,6 +51,14 @@ public abstract class JacksonInterface {
 		return sheet;		
 	}
 
+	/**
+	 * Saves the CharacterSheet to the File.
+	 * @param sheet The CharacterSheet to save.
+	 * @param jsonFile The File to which the sheet will be saved.
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
 	public static void saveCharacterSheet(final CharacterSheet sheet, final File jsonFile) throws JsonGenerationException, JsonMappingException, IOException {
 		if(jsonFile == null || sheet == null) {
 			return;
@@ -70,8 +78,8 @@ public abstract class JacksonInterface {
 	// MISC FUNCTIONS
 	/**
 	 * @param context
-	 * @return the template directory
-	 * Returns the directory templates are saved for this device
+	 * @return The root template directory.
+	 * Returns the root directory templates are saved for this device.
 	 */
 	public static File getTemplateRootDirectory(final Context context) {
 		if(context == null) {
@@ -92,13 +100,13 @@ public abstract class JacksonInterface {
 	}
 
 	/**
-	 * Checks whether the file for this template exists on the file system.
+	 * Checks whether the file for the template exists on the file system.
 	 * @param context
 	 * @return true if the file exists, false otherwise
 	 */
 	public static boolean doesTemplateFileExist(final Template template, final Context context) {
-		// TODO thats not right
 		if(template == null || context == null) {
+			// TODO thats not right
 			return false;
 		}
 		File dir = getTemplateRootDirectory(context);
@@ -107,15 +115,14 @@ public abstract class JacksonInterface {
 	}
 
 	// SAVING FUNCTIONS
-
 	/**
-	 * 
-	 * @param context Context to be used.
-	 * @param setLastEditedFlag If this is set to true, the "last edited template" preference will be updated.
+	 * Saves the template to a file. The filename and directory will automatically be determined.
+	 * @param template The template to save.
+	 * @param context
+	 * @param setLastEditedFlag If set to true, the "last edited template" preference will be updated.
 	 * @throws JsonGenerationException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * Saves this template to a file. The filename and directory will automatically be determined.
 	 */
 	public static void saveTemplate(final Template template, final Context context, boolean setLastEditedFlag) throws JsonGenerationException, JsonMappingException, IOException {
 		if(template == null || context == null) {
@@ -134,12 +141,12 @@ public abstract class JacksonInterface {
 	}
 
 	/**
-	 * 
-	 * @param file The file to which this template will be saved to.
+	 * Saves the template to the given file
+	 * @param template The template to save.
+	 * @param file The file to which the template will be saved to.
 	 * @throws JsonGenerationException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * Saves this template to the given file.
 	 */
 	public static void saveTemplate(final Template template, final File file) throws JsonGenerationException, JsonMappingException, IOException {
 		if(template == null || file == null) {
@@ -150,12 +157,12 @@ public abstract class JacksonInterface {
 	}
 
 	/**
-	 * 
-	 * @param outStream FileOutputStream to be used
+	 * Writes the template to the given FileOutputStream.
+	 * @param template The template to write.
+	 * @param outStream FileOutputStream to be used.
 	 * @throws JsonGenerationException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * Writes this template to the given FileOutputStream.
 	 */
 	private static void saveTemplate(final Template template, final FileOutputStream outStream) throws JsonGenerationException, JsonMappingException, IOException {
 		if(template == null || outStream == null) {
@@ -174,13 +181,13 @@ public abstract class JacksonInterface {
 
 	/**
 	 *
-	 * @param inStream FileInputStream to user for loading
-	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
+	 * @param inStream FileInputStream to use for loading.
+	 * @param onlyMetaData If set to true only meta data will be loaded.
 	 * @return The loaded template
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
-	 * Loads a template using the FileInputStream
+	 * Loads a template using the FileInputStream.
 	 */
 	private static Template loadTemplate(FileInputStream inStream, boolean onlyMetaData) throws JsonParseException, JsonMappingException, IOException {
 		if(inStream == null) {
@@ -197,8 +204,8 @@ public abstract class JacksonInterface {
 	}
 
 	/**
-	 * 
-	 * @param file The File representing the json.
+	 * Loads a template using the given file.
+	 * @param file The template file.
 	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
 	 * @return The loaded Template
 	 * @throws JsonParseException
@@ -218,7 +225,7 @@ public abstract class JacksonInterface {
 	 * @param context
 	 * @param fileName Template file name
 	 * @param onlyMetaData Set to true if you want to load only the metadata of the template.
-	 * @return The Loaded template
+	 * @return The loaded template
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
@@ -235,10 +242,10 @@ public abstract class JacksonInterface {
 	// CHARACTER FOLDER FUNCTIONS
 	/**
 	 * 
-	 * @param context context
-	 * @param template template for which to get the directory
+	 * @param template Template for which to get the directory
+	 * @param context
 	 * @param createIfNotExists If set to true the directory will be created if it does not already exist.
-	 * @return directory for the given template in which the characters are saved
+	 * @return Directory for the given template in which its characters are saved.
 	 */
 	public static File getDirectoryForCharacters(final Template template, final Context context, boolean createIfNotExists) {
 		if(template == null || context == null) {
@@ -246,7 +253,13 @@ public abstract class JacksonInterface {
 		}
 		return getDirectoryForCharacters(template.getFileName(), context, createIfNotExists);
 	}
-
+	/**
+	 * 
+	 * @param template Template for which to get the directory
+	 * @param context
+	 * @param createIfNotExists If set to true the directory will be created if it does not already exist.
+	 * @return Directory for the given template in which its characters are saved.
+	 */
 	public static File getDirectoryForCharacters(final de.fau.cs.mad.gamekobold.templatebrowser.Template template,
 												final Context context, boolean createIfNotExists) {
 		if(template == null || context == null) {
@@ -255,6 +268,13 @@ public abstract class JacksonInterface {
 		return getDirectoryForCharacters(template.getFileName(), context, createIfNotExists);
 	}
 
+	/**
+	 * 
+	 * @param templateFileName The template's filename for which to get the directory.
+	 * @param context
+	 * @param createIfNotExists If set to true the directory will be created if it does not already exist.
+	 * @return Directory for the given template in which its characters are saved.
+	 */
 	private static File getDirectoryForCharacters(final String templateFileName, final Context context, boolean createIfNotExists) {
 		if(templateFileName.isEmpty()) {
 			return null;
