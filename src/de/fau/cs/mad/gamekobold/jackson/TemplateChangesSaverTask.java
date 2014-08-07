@@ -42,12 +42,13 @@ public class TemplateChangesSaverTask extends AsyncTask<Template, Void, Boolean>
 		// load template from file
 		de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = null;
 		try {
-			jacksonTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile( templateFile,
-																						false);
-			// take over all changes
-			jacksonTemplate.takeOverValues(template);
-			// save template again.
-			jacksonTemplate.saveToFile(templateFile);
+			jacksonTemplate = JacksonInterface.loadTemplate(templateFile, false);
+			if(jacksonTemplate != null) {
+				// take over all changes
+				jacksonTemplate.takeOverValues(template);
+				// save template again.
+				JacksonInterface.saveTemplate(jacksonTemplate, templateFile);				
+			}
 		}
 		catch(Throwable e) {
 			// if anything went wrong -> fail

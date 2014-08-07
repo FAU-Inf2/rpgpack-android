@@ -106,6 +106,7 @@ public class Template implements Serializable {
 
 	public String getFileName() {
 		if (fileAbsolutePath == null) {
+			// return null?
 			return "";
 		}
 		if (fileAbsolutePath.isEmpty()) {

@@ -10,6 +10,7 @@ import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -192,11 +193,11 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 					// open file
 					final File jsonFile = new File(sheet.fileAbsolutePath);
 					// load sheet with all data
-					CharacterSheet loadedSheet = CharacterSheet.loadCharacterSheet(jsonFile, false);
+					CharacterSheet loadedSheet = JacksonInterface.loadCharacterSheet(jsonFile, false);
 					// take over changes
 					loadedSheet.takeOverChanges(sheet);
 					// save back to the file
-					loadedSheet.saveToJSONFile(jsonFile);
+					JacksonInterface.saveCharacterSheet(loadedSheet, jsonFile);
 					// clear flag
 					characterAltered = false;
 				}
