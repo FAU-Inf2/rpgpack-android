@@ -99,6 +99,7 @@
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
         <activity android:name=".templatestore.TemplateStoreMainActivity"></activity>
+        <activity android:name=".templatebrowser.CreateNewCharacterActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

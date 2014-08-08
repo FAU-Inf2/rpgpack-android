@@ -2,11 +2,10 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +16,7 @@ public class Template implements Parcelable{
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
+	// TODO set fileName when loading + abspath
 	@JsonIgnore
 	private String fileName = null;
 	public String templateName = "";
@@ -53,32 +53,19 @@ public class Template implements Parcelable{
 //		}
 //	}
 
-	public static String getSanitizeFileNameForTemplate(Template template) {
-		final String forbiddenCharacters = "/\\?%*:|\"<>";
-		StringBuilder builder = new StringBuilder();
-		for(final char character : template.templateName.toCharArray()) {
-			if(forbiddenCharacters.indexOf(character) != -1) {
-				continue;
-			}
-			builder.append(character);
-		}
-		if(!builder.toString().isEmpty()) {
-			builder.append("-"+template.date);
-		}
-		else {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
-			Date date = new Date();
-			builder.append(format.format(date));
-		}
-
-		//Log.d("sanitizeFileName:", "orig:"+template.fileName+" sani:"+builder.toString());
-		return builder.toString();
-	}
-
+	@SuppressLint("SimpleDateFormat")
 	@JsonIgnore
 	public String getFileName() {
 		if(fileName == null) {
-			fileName = getSanitizeFileNameForTemplate(this);
+			final String sanitizedName = JacksonInterface.getSanitizedFileName(templateName); 
+			if(!sanitizedName.isEmpty()) {
+				fileName = sanitizedName + "-" + date;
+			}
+			else {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+				Date date = new Date();
+				fileName = format.format(date);
+			}
 		}
 		return fileName;
 	}

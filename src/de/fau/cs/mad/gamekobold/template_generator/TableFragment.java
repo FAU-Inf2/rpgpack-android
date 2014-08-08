@@ -441,9 +441,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		Log.d("TableFragment", "onCreateContextMenu view:"+v);
 		if(v instanceof TableRow){
 			contextMenuRow = (TableRow) v;
-//		}
-			// only show if v is a tableRow. we get double calls because we have
-			// to register also checkbox and popup
+			// only show if v is a TableRow. We get double calls because
+			// we have to register also checkbox and popup
 			MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
 			inflater.inflate(R.menu.template_generator_remove_table_item, menu);
 		}

@@ -2,15 +2,14 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
 
-import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
-import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

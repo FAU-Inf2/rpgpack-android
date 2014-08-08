@@ -275,7 +275,7 @@ public abstract class JacksonInterface {
 	 * @param createIfNotExists If set to true the directory will be created if it does not already exist.
 	 * @return Directory for the given template in which its characters are saved.
 	 */
-	private static File getDirectoryForCharacters(final String templateFileName, final Context context, boolean createIfNotExists) {
+	public static File getDirectoryForCharacters(final String templateFileName, final Context context, boolean createIfNotExists) {
 		if(templateFileName.isEmpty()) {
 			return null;
 		}
@@ -306,5 +306,24 @@ public abstract class JacksonInterface {
 		File characterFolder = new File(rootDir.getAbsolutePath() + File.separatorChar + templateFileName);
 		characterFolder.mkdir();
 		return characterFolder;
+	}
+	
+	//
+	public static String getSanitizedFileName(String stringToSanitize) {
+		if(stringToSanitize == null) {
+			return "";
+		}
+		if(stringToSanitize.isEmpty()) {
+			return "";
+		}
+		final String forbiddenCharacters = "/\\?%*:|\"<>";
+		StringBuilder builder = new StringBuilder();
+		for(final char character : stringToSanitize.toCharArray()) {
+			if(forbiddenCharacters.indexOf(character) != -1) {
+				continue;
+			}
+			builder.append(character);
+		}
+		return builder.toString();
 	}
 }

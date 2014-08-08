@@ -71,6 +71,14 @@ public class TemplateDetailsActivity extends Activity {
 					i.putExtra("templateFileName", getFileName());
 					startActivity(i);
 				}
+				else {
+					// create new character
+					Intent i = new Intent(TemplateDetailsActivity.this,
+							CreateNewCharacterActivity.class);
+					// TODO bei den anderen auch curTemplate.getFileName()
+					i.putExtra("templateFileName", curTemplate.getFileName());
+					startActivity(i);
+				}
 			}
 		});
 
