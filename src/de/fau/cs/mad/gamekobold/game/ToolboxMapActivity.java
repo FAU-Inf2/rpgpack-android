@@ -4,6 +4,7 @@ import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.DragEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
@@ -12,8 +13,11 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
-public class ToolboxMapActivity extends Activity implements OnTouchListener, OnDragListener{
+public class ToolboxMapActivity extends Activity implements OnTouchListener,
+		OnDragListener {
 
 	private ImageButton currPaint;
 	private ToolboxMapView mapView;
@@ -33,22 +37,22 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener, OnD
 		findViewById(R.id.map).setOnDragListener(this);
 		findViewById(R.id.paint_colors).setOnDragListener(this);
 	}
-	
+
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
 		if (e.getAction() == MotionEvent.ACTION_DOWN) {
 			DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-		    	v.startDrag(null, shadowBuilder, v, 0);
-		    v.setVisibility(View.INVISIBLE);
-		    return true;
+			v.startDrag(null, shadowBuilder, v, 0);
+			v.setVisibility(View.INVISIBLE);
+			return true;
 		} else {
-		    return false;
+			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean onDrag(View v, DragEvent e) {
-		if (e.getAction()==DragEvent.ACTION_DROP) {
+		if (e.getAction() == DragEvent.ACTION_DROP) {
 			View view = (View) e.getLocalState();
 			ViewGroup from = (ViewGroup) view.getParent();
 			from.removeView(view);
@@ -78,4 +82,36 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener, OnD
 		}
 	}
 
+	public void openMenu(View view) {
+
+		PopupMenu popup = new PopupMenu(getBaseContext(), view);
+
+		popup.getMenuInflater().inflate(R.menu.game_toolbox_map,
+				popup.getMenu());
+
+		popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				String bg = "";
+
+				switch (item.getItemId()) {
+				case R.id.item_forest:
+					bg = "forest";
+					break;
+				case R.id.item_rock:
+					bg = "rock";
+					break;
+				default:
+					bg = "forest";
+					break;
+				}
+
+				mapView.setBackground(bg);
+
+				return true;
+			}
+		});
+		popup.show();
+	}
 }
