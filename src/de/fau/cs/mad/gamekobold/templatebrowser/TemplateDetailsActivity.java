@@ -81,6 +81,26 @@ public class TemplateDetailsActivity extends Activity {
 				}
 			}
 		});
+		
+		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				if(position == adapter.getCount()-1) {
+					return true;
+				}
+				// TODO show dialog for deleting character
+				CharacterSheet clickedSheet = adapter.getItem(position);
+				File sheetFile = new File(clickedSheet.fileAbsolutePath);
+				if(sheetFile != null) {
+					sheetFile.delete();
+					adapter.remove(clickedSheet);
+					adapter.notifyDataSetChanged();
+				}
+				return true;
+			}
+		});
 
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 
@@ -197,6 +217,7 @@ public class TemplateDetailsActivity extends Activity {
 				}
 				if(characterListChanged) {
 					adapter.notifyDataSetChanged();
+					characterListChanged = false;
 				}
 			}
 		}
