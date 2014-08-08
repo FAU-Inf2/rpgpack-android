@@ -83,7 +83,6 @@ public class TemplateDetailsActivity extends Activity {
 		});
 		
 		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 					int position, long id) {

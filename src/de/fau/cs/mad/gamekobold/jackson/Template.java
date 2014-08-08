@@ -69,6 +69,10 @@ public class Template implements Parcelable{
 		}
 		return fileName;
 	}
+	
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	/**
 	 * Takes over all values form the given Template

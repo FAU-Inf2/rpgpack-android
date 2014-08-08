@@ -177,6 +177,7 @@ import de.fau.cs.mad.gamekobold.jackson.Template;
 				public void afterTextChanged(Editable s) {
 					if(sheet != null) {
 						sheet.name = s.toString();
+						setTitle(s.toString());
 						characterAltered = true;
 					}
 				}
