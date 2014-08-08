@@ -72,6 +72,7 @@ public class ToolboxRandomListActivity extends Activity {
 		lv_randomlist.setClickable(true);
 		lv_randomlist.setId(0);
 		lv_randomlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lv_randomlist.setItemsCanFocus(false);
 		lv_randomlist
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -80,13 +81,17 @@ public class ToolboxRandomListActivity extends Activity {
 							int position, long id) {
 						SparseBooleanArray b_ar = lv_randomlist
 								.getCheckedItemPositions();
-						if (!b_ar.get(position)) {
+						for (int i = 0; i<b_ar.size();i++){
+							Log.i("puh", "b_ar"+ position + b_ar.get(position));
+						}
+						if (b_ar.get(position) == false) {
 							lv_randomlist.setItemChecked(position, true);
-							v.setBackgroundColor(color.black);
-							Log.i("position", b_ar.toString());
+							v.setBackgroundResource(R.color.background_green);
+							Log.i("position", "true");
 						} else {
 							lv_randomlist.setItemChecked(position, false);
-							v.setBackgroundColor(color.grey);
+							v.setBackgroundResource(R.color.background_dark);
+							Log.i("position", "false");
 						}
 
 						// Log.i("position", String.valueOf(position));

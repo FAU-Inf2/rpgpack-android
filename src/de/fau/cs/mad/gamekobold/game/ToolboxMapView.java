@@ -4,9 +4,11 @@ import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,22 +18,20 @@ import android.view.MotionEvent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class ToolboxMapView extends View{
-	
+public class ToolboxMapView extends View {
+
 	private Path drawPath;
 	private Paint drawPaint, canvasPaint;
 	private int paintColor = 0xFF660000;
 	private Canvas drawCanvas;
 	private Bitmap canvasBitmap;
-	
 
-	
-	public ToolboxMapView(Context context, AttributeSet attrs){
-	    super(context, attrs);
-	    setupMap();
+	public ToolboxMapView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		setupMap();
 	}
-	
-	private void setupMap(){
+
+	private void setupMap() {
 		drawPath = new Path();
 		drawPaint = new Paint();
 		drawPaint.setColor(paintColor);
@@ -41,51 +41,58 @@ public class ToolboxMapView extends View{
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
 		canvasPaint = new Paint(Paint.DITHER_FLAG);
-		}
-	
-	
-	
+	}
+
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		
+		//canvasBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
 		canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 		drawCanvas = new Canvas(canvasBitmap);
+		canvasBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
 		canvas.drawPath(drawPath, drawPaint);
 	}
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		float touchX = event.getX();
-		float touchY = event.getY(); 
+		float touchY = event.getY();
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-		    drawPath.moveTo(touchX, touchY);
-		    break;
+			drawPath.moveTo(touchX, touchY);
+			break;
 		case MotionEvent.ACTION_MOVE:
-		    drawPath.lineTo(touchX, touchY);
-		    break;
+			drawPath.lineTo(touchX, touchY);
+			break;
 		case MotionEvent.ACTION_UP:
-		    drawCanvas.drawPath(drawPath, drawPaint);
-		    drawPath.reset();
-		    break;
+			drawCanvas.drawPath(drawPath, drawPaint);
+			drawPath.reset();
+			break;
 		default:
-		    return false;
+			return false;
 		}
 		invalidate();
 		return true;
 	}
-	
-	public void setColor(String newColor){
-		invalidate(); 
+
+	public void setColor(String newColor) {
+		invalidate();
 		paintColor = Color.parseColor(newColor);
 		drawPaint.setColor(paintColor);
-		}
+	}
 	
-	
+	public void setBackground(String foo) {
+		invalidate();
+		Context context = getContext();
+		int id = context.getResources().getIdentifier(foo, "drawable", context.getPackageName());
+		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
+		drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+		invalidate();
+	}
+
 }
