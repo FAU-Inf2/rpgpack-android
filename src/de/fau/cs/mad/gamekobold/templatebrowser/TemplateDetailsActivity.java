@@ -76,6 +76,8 @@ public class TemplateDetailsActivity extends Activity {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CreateNewCharacterActivity.class);
 					// TODO bei den anderen auch curTemplate.getFileName()
+					// don't add the activity to the history
+					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					i.putExtra("templateFileName", curTemplate.getFileName());
 					startActivity(i);
 				}
@@ -334,13 +336,7 @@ public class TemplateDetailsActivity extends Activity {
 			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 			// testing data
 
-			CharacterSheet sheet = new CharacterSheet("Hodor");
-			sheet.color = Color.parseColor("#9b59b6");
-			characterList.add(sheet);
-			sheet = new CharacterSheet("Thorodin");
-			sheet.color = Color.parseColor("#e74c3c");
-			characterList.add(sheet);
-			sheet = new CharacterSheet("Finn");
+			CharacterSheet sheet = new CharacterSheet("Finn");
 			sheet.color = Color.parseColor("#2980b9");
 			characterList.add(sheet);
 			//
