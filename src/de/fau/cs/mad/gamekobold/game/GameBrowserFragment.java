@@ -22,7 +22,7 @@ public class GameBrowserFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.game_browser_title);
-		games = GameLab.get(getActivity()).getGames();
+		games = new ArrayList<Game>();
 		GameBrowserArrayAdapter adapter = new GameBrowserArrayAdapter(
 				getActivity(), games);
 		setListAdapter(adapter);
@@ -85,6 +85,7 @@ public class GameBrowserFragment extends ListFragment {
 						e.printStackTrace();
 					}
 				}
+				adapter.addAll(GameLab.get(getActivity()).getGames());
 				// add the create new game item, because we clear the list
 				adapter.add(new Game("Create New Game..."));
 				// notify adapter that data set has changed

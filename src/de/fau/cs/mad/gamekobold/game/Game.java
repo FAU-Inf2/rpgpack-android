@@ -23,7 +23,6 @@ public class Game implements Serializable {
 	private String fileAbsolutePath;
 	@JsonIgnore
 	private long fileTimeStamp;
-
 	private List<String> characterFileAbsPathList;
 
 	public Game(String gameName, String author, String date,
