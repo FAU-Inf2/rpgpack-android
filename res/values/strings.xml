@@ -224,4 +224,7 @@
 	  <!-- CreateNewGameFragment -->
 	<string name="popup_create_game_info_titel">Spielnotizen</string>
     <string name="titel_create_game">Neues Spiel</string>
+    
+    <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
+    <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
 </resources>
