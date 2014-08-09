@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.game.Game;
 
 public abstract class JacksonInterface {
 
@@ -347,5 +349,44 @@ public abstract class JacksonInterface {
 			builder.append(character);
 		}
 		return builder.toString();
+	}
+	
+	public static void saveGame(File gameFile, Game game) throws JsonGenerationException, JsonMappingException, IOException {
+		FileOutputStream outStream = new FileOutputStream(gameFile);
+		saveGame(outStream, game);
+	}
+	
+	private static void saveGame(FileOutputStream outStream, Game game) throws JsonGenerationException, JsonMappingException, IOException {
+		if(game == null || outStream == null) {
+			return;
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		if(use_pretty_writer) {
+			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
+		}
+		else {
+			mapper.writer().writeValue(outStream, game);
+		}
+	}
+
+	public static Game loadGame(File gameFile) throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
+		Game game = loadGame(new FileInputStream(gameFile));
+		game.setFileAbsolutePath(gameFile.getAbsolutePath());
+		game.setFileTimeStamp(gameFile.lastModified());
+		return game;
+	}
+	
+	private static Game loadGame(FileInputStream inStream) throws JsonParseException, JsonMappingException, IOException {
+		if(inStream == null) {
+			return null;
+		}
+		ObjectMapper mapper = new ObjectMapper();
+//		if(onlyMetaData) {
+//			// in order to load only meta data we use mix in annotations
+//			// the Template.Character sheet won't be loaded.
+//			mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
+//		}
+		Game game = mapper.readValue(inStream, Game.class);
+		return game;	
 	}
 }

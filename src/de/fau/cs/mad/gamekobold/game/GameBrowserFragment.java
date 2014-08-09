@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 
 public class GameBrowserFragment extends ListFragment {
 	private ArrayList<Game> games;
@@ -32,7 +33,7 @@ public class GameBrowserFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		if(!checkForFolderChanges()) {
-			
+			checkForGameChanges();
 		}
 		super.onResume();
 	}
@@ -61,15 +62,70 @@ public class GameBrowserFragment extends ListFragment {
 	 * @return
 	 */
 	private boolean checkForFolderChanges() {
-		File gameFolder = new File("");
+		File gameFolder = JacksonInterface.getGameRootDirectory(getActivity());
 		if(gameFolder != null) {
 			final long newTimeStamp = gameFolder.lastModified();
 			if(newTimeStamp > gameFolderTimeStamp) {
-				// TODO reload
+				// get adapter
+				final GameBrowserArrayAdapter adapter = (GameBrowserArrayAdapter) getListAdapter();
+				// clear content
+				adapter.clear();
+				// update time stamp
 				gameFolderTimeStamp = newTimeStamp;
+				// list game files
+				final File[] gameFileList = gameFolder.listFiles();
+				// iterate over all files
+				for(final File gameFile : gameFileList) {
+					try {
+						// load and add game
+						final Game game = JacksonInterface.loadGame(gameFile);
+						adapter.add(game);
+					}
+					catch(Throwable e) {
+						e.printStackTrace();
+					}
+				}
+				// add the create new game item, because we clear the list
+				adapter.add(new Game("Create New Game..."));
+				// notify adapter that data set has changed
+				adapter.notifyDataSetChanged();
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	private void checkForGameChanges() {
+		// flag to indicate whether we have changed the list or not
+		boolean gameListChanged = false;
+		// iterate over all loaded games
+		for(final Game game : games) {
+			// get path
+			final String path = game.getFileAbsolutePath();
+			// check if it is valid
+			if(!path.isEmpty()) {
+				// create file
+				File gameFile = new File(path);
+				// check if it has been modified
+				if(gameFile.lastModified() > game.getFileTimeStamp()) {
+					try {
+						// reload the game
+						Game loadedGame = JacksonInterface.loadGame(gameFile);
+						// take over changes
+						game.takeOverValues(loadedGame);
+						// set flag so we notify the adapter later
+						gameListChanged = true;
+					}
+					catch(Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		if(gameListChanged) {
+			// get adapter
+			final GameBrowserArrayAdapter adapter = (GameBrowserArrayAdapter) getListAdapter();
+			adapter.notifyDataSetChanged();
+		}
 	}
 }
