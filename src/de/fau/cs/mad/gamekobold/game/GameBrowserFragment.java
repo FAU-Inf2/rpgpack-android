@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.ListFragment;
@@ -13,6 +14,8 @@ import de.fau.cs.mad.gamekobold.R;
 
 public class GameBrowserFragment extends ListFragment {
 	private ArrayList<Game> games;
+	
+	private long gameFolderTimeStamp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,15 @@ public class GameBrowserFragment extends ListFragment {
 				getActivity(), games);
 		setListAdapter(adapter);
 		setHasOptionsMenu(true);
+		gameFolderTimeStamp = 0;
+	}
+	
+	@Override
+	public void onResume() {
+		if(!checkForFolderChanges()) {
+			
+		}
+		super.onResume();
 	}
 
 	@Override
@@ -41,5 +53,23 @@ public class GameBrowserFragment extends ListFragment {
 			i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME, g.getGameName());
 			startActivity(i);
 		}
+	}
+	
+	/**
+	 * Checks the time stamp for the folder. If the folder has changed, we load
+	 * the entire list again.
+	 * @return
+	 */
+	private boolean checkForFolderChanges() {
+		File gameFolder = new File("");
+		if(gameFolder != null) {
+			final long newTimeStamp = gameFolder.lastModified();
+			if(newTimeStamp > gameFolderTimeStamp) {
+				// TODO reload
+				gameFolderTimeStamp = newTimeStamp;
+				return true;
+			}
+		}
+		return false;
 	}
 }

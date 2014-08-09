@@ -21,6 +21,7 @@ public abstract class JacksonInterface {
 
 	public static final String CHARACTER_ROOT_FOLDER_NAME = "Characters";
 	public static final String TEMPLATE_ROOT_FOLDER_NAME = "Templates";
+	public static final String GAME_ROOT_FOLDER_NAME = "Games";
 
 	/**
 	 * If set to false, jackson will not intend or align anything. Uses less space if set to false.
@@ -77,26 +78,47 @@ public abstract class JacksonInterface {
 	//
 	// MISC FUNCTIONS
 	/**
+	 * Returns the file pointing to the subDir in the apps directory. The apps directory
+	 * may be on the internal or external storage. If an external storage is mounted it
+	 * will be prefered. Also creates the subDir if it does not exist.
+	 * @param subDir The sub directory to get.
+	 * @param context
+	 * @return The file pointing to the subDir in the apps directory.
+	 */
+	private static File getRootDirectoryFor(final String subDir, final Context context) {
+		if(context == null) {
+			return null;
+		}
+		File root;
+		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+			File externalStorage = Environment.getExternalStorageDirectory();
+			root = new File(externalStorage.getAbsolutePath() + File.separatorChar + subDir);
+			if(!root.exists()) {
+				root.mkdir();
+			}
+		}
+		else {
+			root = context.getDir(subDir, Context.MODE_PRIVATE);
+		}
+		return root;
+	}
+
+	/**
 	 * @param context
 	 * @return The root template directory.
 	 * Returns the root directory templates are saved for this device.
 	 */
 	public static File getTemplateRootDirectory(final Context context) {
-		if(context == null) {
-			return null;
-		}
-		File templateDir;
-		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			File externalStorage = Environment.getExternalStorageDirectory();
-			templateDir = new File(externalStorage.getAbsolutePath() + File.separatorChar + TEMPLATE_ROOT_FOLDER_NAME);
-			if(!templateDir.exists()) {
-				templateDir.mkdir();
-			}
-		}
-		else {
-			templateDir = context.getDir(TEMPLATE_ROOT_FOLDER_NAME, Context.MODE_PRIVATE);
-		}
-		return templateDir;
+		return getRootDirectoryFor(TEMPLATE_ROOT_FOLDER_NAME, context);
+	}
+
+	/**
+	 * @param context
+	 * @return The root game directory.
+	 * Returns the root directory games are saved for this device.
+	 */
+	public static File getGameRootDirectory(final Context context) {
+		return getRootDirectoryFor(GAME_ROOT_FOLDER_NAME, context);
 	}
 
 	/**
@@ -283,17 +305,7 @@ public abstract class JacksonInterface {
 		if(templateFileName.isEmpty()) {
 			return null;
 		}
-		File rootDir;
-		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			File externalStorage = Environment.getExternalStorageDirectory();
-			rootDir = new File(externalStorage.getAbsolutePath() + File.separatorChar + CHARACTER_ROOT_FOLDER_NAME);
-			if(!rootDir.exists()) {
-				rootDir.mkdir();
-			}
-		}
-		else {
-			rootDir = context.getDir(CHARACTER_ROOT_FOLDER_NAME, Context.MODE_PRIVATE);
-		}
+		File rootDir = getRootDirectoryFor(CHARACTER_ROOT_FOLDER_NAME, context);
 		// find folder for this template
 		File[] subDirs = rootDir.listFiles();
 		for (final File dir : subDirs) {
@@ -312,7 +324,13 @@ public abstract class JacksonInterface {
 		return characterFolder;
 	}
 	
-	//
+	/**
+	 * Sanitizes the given string. The String returned does not contain any characters
+	 * not allowed for file names. Returns an empty string on failure or if the given
+	 * string contains only forbidden characters.
+	 * @param stringToSanitize The string to sanitize.
+	 * @return The sanitized string.
+	 */
 	public static String getSanitizedFileName(String stringToSanitize) {
 		if(stringToSanitize == null) {
 			return "";
