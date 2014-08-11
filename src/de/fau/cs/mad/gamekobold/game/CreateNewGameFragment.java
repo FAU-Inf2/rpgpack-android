@@ -52,6 +52,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
+	// TODO refactor !!!! too many checks whether it is a newGame or gameToEdit
 	private Game newGame;
 	private Game gameToEdit;
 	private EditText gameName;
@@ -257,6 +258,28 @@ public class CreateNewGameFragment extends Fragment {
 						Toast.LENGTH_SHORT).show();
 				// TODO create newGame object speichern!!!
 
+				// now it goes to GameDetailsFragment
+				// Start GameDetailsActivity
+
+				// we've got a game for edit
+				if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+					Intent i = new Intent(getActivity(),
+							GameDetailsActivity.class);
+					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+							gameToEdit.getGameName());
+					startActivity(i);
+				} else {
+					Log.i("newGame name is null?", ""
+							+ (newGame.getGameName() == null));
+					Log.i("newGame name is: ", "" + newGame.getGameName());
+
+					Intent i = new Intent(getActivity(),
+							GameDetailsActivity.class);
+					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+							newGame.getGameName());
+					startActivity(i);
+				}
+
 			}
 		});
 
@@ -307,6 +330,17 @@ public class CreateNewGameFragment extends Fragment {
 		});
 
 		final AlertDialog dialog = builder.create();
+
+		// FIXME remove, just one simple test
+		// String path1 =
+		// "/storage/emulated/0/Pictures/Paper Pictures/PaperArtist_2014-02-25_18-16-51.jpeg";
+		// Bitmap bitmap1 = BitmapFactory.decodeFile(path1);
+		// addImageButton.setImageBitmap(bitmap1);
+
+		// String path1 = "/storage/emulated/0/tmp_avatar_1407747931597.jpg";
+		// Bitmap bitmap1 = BitmapFactory.decodeFile(path1);
+		// addImageButton.setImageBitmap(bitmap1);
+
 		addImageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -479,6 +513,9 @@ public class CreateNewGameFragment extends Fragment {
 			// getRealPathFromURI used to resolve the real path from the uri.
 			path = getRealPathFromURI(getActivity(), imageUri); // from Gallery
 
+			Log.i("Here is imageUri = ", "" + imageUri);
+			Log.i("Here is path = ", "" + path);
+
 			// If the path is null, assume user selects the image using File
 			// Manager app. File Manager app returns different information than
 			// Gallery app. To get the real path to selected image, use
@@ -488,7 +525,6 @@ public class CreateNewGameFragment extends Fragment {
 
 			if (path != null)
 				bitmap = BitmapFactory.decodeFile(path);
-
 			Log.i("Bitmap is null?", "" + (bitmap == null));
 
 		} else if (requestCode == PICK_FROM_CAMERA) {
@@ -497,12 +533,21 @@ public class CreateNewGameFragment extends Fragment {
 			path = imageUri.getPath();
 			bitmap = BitmapFactory.decodeFile(path);
 
+			Log.i("Here is imageUri = ", "" + imageUri);
+			Log.i("Here is path = ", "" + path);
+
 			Log.i("Bitmap is null?", "" + (bitmap == null));
 		}
+
 		if (bitmap != null) {
 			addImageButton.setImageBitmap(bitmap);
 		}
-		// TODO store image path for later use
+
+		// store image path for later use
+		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+			gameToEdit.setIconPath(path);
+		} else
+			newGame.setIconPath(path);
 	}
 
 	// TODO refactoring?
@@ -523,5 +568,3 @@ public class CreateNewGameFragment extends Fragment {
 	}
 
 }
-
-

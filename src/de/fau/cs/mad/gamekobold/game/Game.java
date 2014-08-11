@@ -18,7 +18,7 @@ public class Game implements Serializable {
 	private Template template;
 	@JsonIgnore
 	private List<GameCharacter> characterList;
-	
+	private String iconPath;
 	@JsonIgnore
 	private String fileAbsolutePath;
 	@JsonIgnore
@@ -27,7 +27,7 @@ public class Game implements Serializable {
 
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
-			List<GameCharacter> characterList) {
+			List<GameCharacter> characterList, String iconPath) {
 		this(gameName, template, date);
 		this.tagList = tagList;
 		this.description = description;
@@ -36,6 +36,16 @@ public class Game implements Serializable {
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 		this.characterFileAbsPathList = new ArrayList<String>();
+		this.iconPath = iconPath;
+	}
+
+	// TODO dte Check it!!! 
+	public Game(String gameName, Template template, String date, String iconPath) {
+		this();
+		this.gameName = gameName;
+		this.template = template;
+		this.date = date;
+		this.iconPath = iconPath;
 	}
 
 	public Game(String gameName, Template template, String date) {
@@ -44,8 +54,8 @@ public class Game implements Serializable {
 		this.template = template;
 		this.date = date;
 	}
-	
-	//fake last item for create new game
+
+	// fake last item for create new game
 	public Game(String gameName) {
 		this();
 		this.gameName = gameName;
@@ -126,6 +136,14 @@ public class Game implements Serializable {
 		Log.e("CharacterList", "Setting CharacterList to " + charakterList);
 		this.characterList = charakterList;
 	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
+	}
 	
 	public String getFileAbsolutePath() {
 		return fileAbsolutePath;
@@ -142,7 +160,7 @@ public class Game implements Serializable {
 	public void setFileTimeStamp(long fileTimeStamp) {
 		this.fileTimeStamp = fileTimeStamp;
 	}
-	
+
 	public void takeOverValues(final Game otherGame) {
 		this.gameName = otherGame.gameName;
 		this.author = otherGame.author;
@@ -153,5 +171,8 @@ public class Game implements Serializable {
 		this.characterList = otherGame.characterList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
 		this.fileTimeStamp = otherGame.fileTimeStamp;
+		this.iconPath = otherGame.iconPath;
 	}
+
+
 }

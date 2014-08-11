@@ -57,6 +57,8 @@ public class GameDetailsFragment extends Fragment {
 
 		String gName = (String) getActivity().getIntent().getSerializableExtra(
 				EXTRA_GAME_NAME);
+		
+		//TODO change it!!!
 		game = GameLab.get(getActivity()).getGame(gName);
 
 		getActivity().setTitle(game.getGameName());
