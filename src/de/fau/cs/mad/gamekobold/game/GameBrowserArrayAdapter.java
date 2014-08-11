@@ -98,8 +98,8 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				if (curGame.getIconPath() == null) {
 					// set some default game icon
 					bitmap = BitmapFactory.decodeResource(
-							context.getResources(), R.drawable.game_default_white);
-
+							context.getResources(),
+							R.drawable.game_default_white);
 				} else {
 					// set game icon
 					bitmap = BitmapFactory.decodeFile(path);
@@ -108,11 +108,6 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				if (bitmap != null) {
 					imageViewGameIcon.setImageBitmap(bitmap);
 				}
-
-				// // change the icon for different games
-				// GameIcons gameIcons = GameIcons.getInstance();
-				// imageView.setImageResource(Integer.valueOf(gameIcons
-				// .getGameIcon(curGame.getIconID())));
 			}
 		}
 		// reuse
@@ -138,7 +133,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 						.findViewById(R.id.textViewDate);
 				TextView gCounter = (TextView) rowView
 						.findViewById(R.id.characterCounter);
-				ImageView imageView = (ImageView) rowView
+				ImageView imageViewGameIcon = (ImageView) rowView
 						.findViewById(R.id.iconView);
 
 				Game curGame = objects.get(position);
@@ -150,10 +145,19 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				gCounter.setText(String.valueOf(curGame.getCharakterList()
 						.size() - 1));
 
-				// // change the icon for different games
-				// GameIcons gameIcons = GameIcons.getInstance();
-				// imageView.setImageResource(Integer.valueOf(gameIcons
-				// .getGameIcon(curGame.getIconID())));
+				if (curGame.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(),
+							R.drawable.game_default_white);
+				} else {
+					// set game icon
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					imageViewGameIcon.setImageBitmap(bitmap);
+				}
 			}
 		}
 		return rowView;
