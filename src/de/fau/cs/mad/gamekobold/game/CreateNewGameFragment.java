@@ -254,6 +254,15 @@ public class CreateNewGameFragment extends Fragment {
 		createGameButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				if (gameName.getEditableText().toString().equals("")) {
+					Toast.makeText(
+							getActivity(),
+							getResources().getString(R.string.warning_set_gamename),
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
 				Toast.makeText(getActivity(), "Dein Game wird erstellt!",
 						Toast.LENGTH_SHORT).show();
 				// TODO create newGame object speichern!!!

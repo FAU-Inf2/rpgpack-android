@@ -224,6 +224,7 @@
     <!-- CreateNewGameFragment -->
     <string name="popup_create_game_info_titel">Game notices</string>
     <string name="titel_create_game">New Game</string>
+    <string name="warning_set_gamename">Your new game should have a name!</string>
     
     <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
     <string name="msg_yes_to_delete_character">Click Yes to delete this character.</string>
