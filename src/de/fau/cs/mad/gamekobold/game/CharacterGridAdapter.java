@@ -3,41 +3,33 @@ package de.fau.cs.mad.gamekobold.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	private Context context;
-	
+
+	// list of highlighted characters
 	public ArrayList<GameCharacter> selectedCharacters = new ArrayList<GameCharacter>();
-	
+
 	// the list of objects we want to display
 	private List<GameCharacter> characters;
-	private int layoutID;
+	private ImageView characterIconImageView;
+	private TextView characterNameTextView;
 
-	public CharacterGridAdapter(Context context, int layoutID, Template template) {
-		// super(context, R.layout.itemlayout_expandablelist_charakter, template
-		// .getCharacters());
-		super(context, layoutID, template.getCharacters());
+	public CharacterGridAdapter(Context context, Template template) {
+		super(context, R.layout.itemlayout_expandablelist_charakter, template
+				.getCharacters());
 		this.context = context;
 		this.characters = template.getCharacters();
-		this.layoutID = layoutID;
-	}
-
-	public CharacterGridAdapter(Context context, int layoutID, Game game) {
-		super(context, layoutID, game.getCharakterList());
-		this.context = context;
-		this.characters = game.getCharakterList();
-		this.layoutID = layoutID;
 	}
 
 	@Override
@@ -59,18 +51,18 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 				GameCharacter curCharacter = characters.get(position);
 
-				TextView iName = (TextView) convertView
+				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
+				characterNameTextView.setText(curCharacter.getCharacterName());
 
-				iName.setText(curCharacter.getCharacterName());
 			}
 			// or reuse
 			else {
 				Log.e("Reusing", "true");
-				TextView iName = (TextView) convertView
+				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 				GameCharacter curCharacter = characters.get(position);
-				iName.setText(curCharacter.getCharacterName());
+				characterNameTextView.setText(curCharacter.getCharacterName());
 				Log.d("Character is null?", "" + (curCharacter == null));
 			}
 			// normal item
@@ -81,14 +73,33 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 			// if it's not recycled, initialize some attributes
 			if (convertView == null) {
-				convertView = inflater.inflate(layoutID, parent, false);
+				convertView = inflater.inflate(
+						R.layout.itemlayout_expandablelist_charakter, parent,
+						false);
 
 				GameCharacter curCharacter = characters.get(position);
 
-				TextView iName = (TextView) convertView
+				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
+				characterNameTextView.setText(curCharacter.getCharacterName());
 
-				iName.setText(curCharacter.getCharacterName());
+				characterIconImageView = (ImageView) convertView
+						.findViewById(R.id.character_icon_circle);
+
+				Log.d("characterIconImageView is null?", ""
+						+ (characterIconImageView == null));
+
+				Log.d("selectedCharacters.contains(position)?", ""
+						+ (selectedCharacters.contains(position)));
+
+				// characterIconImageView.setBackgroundResource(selectedCharacters
+				// .contains(curCharacter) ? (R.drawable.background)
+				// : (R.drawable.clickdummy_background));
+
+				characterIconImageView.setBackgroundColor(selectedCharacters
+						.contains(curCharacter) ? context.getResources()
+						.getColor(R.color.blue) : context.getResources()
+						.getColor(android.R.color.transparent));
 			}
 			// or reuse
 			else {
@@ -98,10 +109,21 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				GameCharacter curCharacter = characters.get(position);
 				iName.setText(curCharacter.getCharacterName());
 				Log.d("Character is null?", "" + (curCharacter == null));
+
+				characterIconImageView = (ImageView) convertView
+						.findViewById(R.id.character_icon_circle);
+
+				// characterIconImageView.setBackgroundResource(selectedCharacters
+				// .contains(curCharacter) ? (R.drawable.background)
+				// : (R.drawable.clickdummy_background));
+
+				characterIconImageView.setBackgroundColor(selectedCharacters
+						.contains(curCharacter) ? context.getResources()
+						.getColor(R.color.blue) : context.getResources()
+						.getColor(android.R.color.transparent));
 			}
 
 		}
 		return convertView;
 	}
-
 }

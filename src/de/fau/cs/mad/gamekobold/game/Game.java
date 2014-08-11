@@ -28,7 +28,7 @@ public class Game implements Serializable {
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
 			List<GameCharacter> characterList, String iconPath) {
-		this(gameName, template, date);
+		this(gameName, template, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
 		this.template = template;
@@ -36,21 +36,15 @@ public class Game implements Serializable {
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 		this.characterFileAbsPathList = new ArrayList<String>();
-		this.iconPath = iconPath;
 	}
 
-	// TODO dte Check it!!! 
 	public Game(String gameName, Template template, String date, String iconPath) {
-		this();
-		this.gameName = gameName;
-		this.template = template;
-		this.date = date;
+		this(gameName, template, date);
 		this.iconPath = iconPath;
 	}
 
 	public Game(String gameName, Template template, String date) {
-		this();
-		this.gameName = gameName;
+		this(gameName);
 		this.template = template;
 		this.date = date;
 	}
@@ -144,7 +138,7 @@ public class Game implements Serializable {
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
-	
+
 	public String getFileAbsolutePath() {
 		return fileAbsolutePath;
 	}
@@ -173,6 +167,5 @@ public class Game implements Serializable {
 		this.fileTimeStamp = otherGame.fileTimeStamp;
 		this.iconPath = otherGame.iconPath;
 	}
-
 
 }

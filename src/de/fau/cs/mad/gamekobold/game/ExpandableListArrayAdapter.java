@@ -1,31 +1,27 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
@@ -37,11 +33,17 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	private GameCharacter curGameCharacter;
 	private GridView gridView;
 
+	// TODO check if it is necessary to set new Adapter every time
+	// now i cache adapter to keep selected characters highlighted
+	private Map<Integer, CharacterGridAdapter> adapterCache;
+
+	@SuppressLint("UseSparseArrays")
 	public ExpandableListArrayAdapter(Context context,
 			ArrayList<Template> templates, Game game) {
 		this.context = context;
 		this.templates = templates;
 		this.newGame = game;
+		this.adapterCache = new HashMap<Integer, CharacterGridAdapter>();
 	}
 
 	public void setInflater(LayoutInflater inflater, Context context) {
@@ -60,12 +62,16 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					R.layout.rowlayout_expandablelist_character, null);
 		}
 
-		GridView gridView = (GridView) convertView
+		gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
-
-		CharacterGridAdapter adapter = new CharacterGridAdapter(context,
-				R.layout.itemlayout_expandablelist_charakter,
-				templates.get(templatePosition));
+		final CharacterGridAdapter adapter;
+		if (this.adapterCache.containsKey(templatePosition)) {
+			adapter = this.adapterCache.get(templatePosition);
+		} else {
+			adapter = new CharacterGridAdapter(context,
+					templates.get(templatePosition));
+			this.adapterCache.put(templatePosition, adapter);
+		}
 
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -79,56 +85,51 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
-					// TODO may be it is better to change chracterList to
-					// characterSet and don't do this check??
-					if (!newGame.getCharakterList().contains(curGameCharacter)) {
+					// selected characters should be highlighted and added into
+					// pickedCharactersGrid
+					// TODO remove highlighting if character was remove in
+					// pickedCharacterGridView
+					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
+					if (selectedCharacters.contains(curGameCharacter)) {
+						selectedCharacters.remove(curGameCharacter);
+						newGame.setTemplate(curGameCharacter.getTemplate());
+						newGame.removeCharacter(curGameCharacter);
+
+					} else {
+						selectedCharacters.add(curGameCharacter);
 						Toast.makeText(
 								context,
 								curGameCharacter.getCharacterName()
 										+ " wird zum Spiel hinzugefuegt!",
 								Toast.LENGTH_SHORT).show();
-
-						// TODO pruefen ob es nur ein Template moeglich ist!!!!
-						Log.d("newGame is null?", "" + (newGame == null));
-
+						// FIXME set Template not here!
 						newGame.setTemplate(curGameCharacter.getTemplate());
-
-						Log.d("Character is null?", ""
-								+ (curGameCharacter == null));
-
 						newGame.addCharacter(curGameCharacter);
-						notifyDataSetChanged();
 					}
 
-					// // TODO try to make an item highlighted
-					// ArrayList<GameCharacter> selectedCharacters =
-					// ((CharacterGridAdapter) adapterView).selectedCharacters;
-					//
-					// if (selectedCharacters.contains(curGameCharacter)) {
-					// selectedCharacters.remove(selectedCharacters
-					// .lastIndexOf(curGameCharacter));
+					// if
+					// (!newGame.getCharakterList().contains(curGameCharacter))
+					// {
 					// Toast.makeText(
 					// context,
 					// curGameCharacter.getCharacterName()
-					// + " removed", Toast.LENGTH_LONG).show();
-					//
-					// view.setBackgroundResource(R.drawable.character_grid_border);
+					// + " wird zum Spiel hinzugefuegt!",
+					// Toast.LENGTH_SHORT).show();
+					// // TODO pruefen ob es nur ein Template moeglich ist!!!!
+					// Log.d("newGame is null?", "" + (newGame == null));
+					// newGame.setTemplate(curGameCharacter.getTemplate());
+					// Log.d("Character is null?", ""
+					// + (curGameCharacter == null));
+					// newGame.addCharacter(curGameCharacter);
+					// // notifyDataSetChanged();
 					// }
-					//
-					// else {
-					// selectedCharacters.add(curGameCharacter);
-					// Toast.makeText(context,
-					// curGameCharacter.getCharacterName() + " added",
-					// Toast.LENGTH_LONG).show();
-					//
-					// view.setBackgroundResource(R.drawable.background);
-					//
-					// }
+
+					adapter.notifyDataSetChanged();
 
 				}
 				// create new character from template
 				else {
-					// TODO Check it now it is just dummy template -> not able
+					// TODO Check it. now it is just dummy template -> not able
 					// to create character!
 					// FIXME change it to real data!
 					Intent intent = new Intent(context,
@@ -193,38 +194,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				}
 			}
 		});
-
-		// TODO replace as not working! try to highlight selected character
-		// gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-		// gridView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
-		// public void onItemCheckedStateChanged(ActionMode mode,
-		// int position, long id, boolean checked) {
-		// Toast.makeText(context, "onItemCheckedStateChanged!",
-		// Toast.LENGTH_LONG).show();
-		// // Required, but not used in this implementation
-		// }
-		//
-		// // ActionMode.Callback methods
-		// public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		//
-		// return true;
-		// }
-		//
-		// public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// return false;
-		// // Required, but not used in this implementation
-		// }
-		//
-		// public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		// Toast.makeText(context, "CLICK!", Toast.LENGTH_LONG).show();
-		// return false;
-		//
-		// }
-		//
-		// public void onDestroyActionMode(ActionMode mode) {
-		// // Required, but not used in this implementation
-		// }
-		// });
 
 		return convertView;
 
