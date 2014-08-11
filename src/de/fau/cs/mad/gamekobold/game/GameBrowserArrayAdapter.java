@@ -4,6 +4,8 @@ import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,9 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView;
+		Bitmap bitmap = null;
+		String path = "";
+
 		if (convertView == null) {
 			// if it is the last row -> create new game
 			if (position == getCount() - 1) {
@@ -72,7 +77,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 						.findViewById(R.id.textViewWorldName);
 				TextView gDate = (TextView) rowView
 						.findViewById(R.id.textViewDate);
-				ImageView imageView = (ImageView) rowView
+				ImageView imageViewGameIcon = (ImageView) rowView
 						.findViewById(R.id.iconView);
 				TextView gCounter = (TextView) rowView
 						.findViewById(R.id.characterCounter);
@@ -86,6 +91,24 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				// size-1 as last item is fake!(for creating new character)
 				gCounter.setText(String.valueOf(curGame.getCharakterList()
 						.size() - 1));
+
+				Log.e("getIconPath is null?", ""
+						+ (curGame.getIconPath() == null));
+
+				if (curGame.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.game_default_white);
+
+				} else {
+					// set game icon
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					imageViewGameIcon.setImageBitmap(bitmap);
+				}
+
 				// // change the icon for different games
 				// GameIcons gameIcons = GameIcons.getInstance();
 				// imageView.setImageResource(Integer.valueOf(gameIcons
