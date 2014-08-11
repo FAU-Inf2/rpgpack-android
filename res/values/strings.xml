@@ -202,11 +202,9 @@
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Taktische Karte</string>
     <string name="open_randomlist">Zufallsliste</string>
-    
     <string name="btn_start">Start</string>
     <string name="btn_pause">Pause</string>
     <string name="set_time">Setze Zeit</string>
- 
     <string name="add_d4">Add d4</string>
     <string name="add_d6">Add d6</string>
     <string name="add_d8">Add d8</string>
@@ -216,18 +214,16 @@
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
-    
-     <!-- ExpandableLIstArrayAdapter -->
+
+    <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">Willst Du den Charakter ansehen und ggf. ändern?</string>
-	<string name="click_to_redirect_to_edit_character">Klicke auf JA um zu Charakter-Editor zu gelangen.</string>
-	
-	  <!-- CreateNewGameFragment -->
-	<string name="popup_create_game_info_titel">Spielnotizen</string>
+    <string name="click_to_redirect_to_edit_character">Klicke auf JA um zu Charakter-Editor zu gelangen.</string>
+
+    <!-- CreateNewGameFragment -->
+    <string name="popup_create_game_info_titel">Spielnotizen</string>
     <string name="titel_create_game">Neues Spiel</string>
     <string name="warning_set_gamename">Dein Spiel braucht einen Namen!</string>
-    
     <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
     <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
-    
-    
+
 </resources>

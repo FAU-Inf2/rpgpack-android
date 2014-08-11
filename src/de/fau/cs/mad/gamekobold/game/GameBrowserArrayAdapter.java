@@ -101,11 +101,11 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 							context.getResources(),
 							R.drawable.game_default_white);
 				} else {
-					// set game icon
 					bitmap = BitmapFactory.decodeFile(path);
 				}
 
 				if (bitmap != null) {
+					// set game icon
 					imageViewGameIcon.setImageBitmap(bitmap);
 				}
 			}
@@ -151,11 +151,11 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 							context.getResources(),
 							R.drawable.game_default_white);
 				} else {
-					// set game icon
 					bitmap = BitmapFactory.decodeFile(path);
 				}
 
 				if (bitmap != null) {
+					// set game icon
 					imageViewGameIcon.setImageBitmap(bitmap);
 				}
 			}
