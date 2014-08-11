@@ -254,15 +254,16 @@ public class CreateNewGameFragment extends Fragment {
 		createGameButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+
 				if (gameName.getEditableText().toString().equals("")) {
 					Toast.makeText(
 							getActivity(),
-							getResources().getString(R.string.warning_set_gamename),
+							getResources().getString(
+									R.string.warning_set_gamename),
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
+
 				Toast.makeText(getActivity(), "Dein Game wird erstellt!",
 						Toast.LENGTH_SHORT).show();
 				// TODO create newGame object speichern!!!
@@ -408,8 +409,6 @@ public class CreateNewGameFragment extends Fragment {
 		startActivity(intent);
 	}
 
-	// TODO check this!
-
 	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
 				.newInstance(game);
@@ -422,6 +421,7 @@ public class CreateNewGameFragment extends Fragment {
 		private EditText editTextInfo;
 		private Game curGame;
 
+		// due to avoiding of using non-default constructor in fragment
 		public static GameInfoDialogFragment newInstance(Game game) {
 			GameInfoDialogFragment fragment = new GameInfoDialogFragment();
 			fragment.curGame = game;
