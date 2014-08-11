@@ -3,8 +3,8 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import de.fau.cs.mad.gamekobold.game.TimerDialog;
-import de.fau.cs.mad.gamekobold.game.Timer;
+import de.fau.cs.mad.gamekobold.game.ToolboxTimerDialog;
+import de.fau.cs.mad.gamekobold.game.ToolboxTimer;
 
 import android.app.Activity;
 import android.media.AudioManager;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import android.os.CountDownTimer; 
 
-public class TimerActivity extends Activity{
+public class ToolboxTimerActivity extends Activity{
 	
 	TextView textViewTime;
 	
@@ -28,7 +28,7 @@ public class TimerActivity extends Activity{
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
-		 setContentView(R.layout.activity_game_timer);
+		 setContentView(R.layout.activity_game_toolbox_timer);
 		 
 		 textViewTime = (TextView)findViewById(R.id.textViewTime);
 		 textViewTime.setText("00:00:00");
@@ -58,10 +58,10 @@ public class TimerActivity extends Activity{
 	 }
 
 	public void setTimer(View v){
-		TimerDialog mTimer = new TimerDialog(this, new TimerDialog.OnTimeSetListener() {
+		ToolboxTimerDialog mTimer = new ToolboxTimerDialog(this, new ToolboxTimerDialog.OnTimeSetListener() {
 
 			@Override
-			public void onTimeSet(Timer view, int hour, int minute, int seconds) {
+			public void onTimeSet(ToolboxTimer view, int hour, int minute, int seconds) {
 				((TextView)findViewById(R.id.textViewTime)).setText(String.format("%02d:%02d:%02d", hour, minute, seconds));
 			}
 		}, getTimeInt(textViewTime)[0], getTimeInt(textViewTime)[1], getTimeInt(textViewTime)[2]);

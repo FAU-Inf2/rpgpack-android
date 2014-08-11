@@ -23,8 +23,6 @@ public class GameLab {
 		Game game3 = new Game("Schwarze Auge Game", templates.get(2),
 				"21.05.2014");
 
-		Game gameAddNew = new Game("Create New Game...");
-
 		game1.setCharakterList(templates.get(0).getCharacters());
 		game2.setCharakterList(templates.get(1).getCharacters());
 		game3.setCharakterList(templates.get(2).getCharacters());
@@ -32,8 +30,6 @@ public class GameLab {
 		games.add(game1);
 		games.add(game2);
 		games.add(game3);
-		games.add(gameAddNew);
-
 	}
 
 	public static GameLab get(Context c) {

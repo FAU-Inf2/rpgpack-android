@@ -33,6 +33,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateDetailsActivity extends Activity {
@@ -41,6 +42,8 @@ public class TemplateDetailsActivity extends Activity {
 	private GridView gridView;
 	private static Activity myActivity;
 	private boolean templateChanged = false;
+	private long characterFolderTimeStamp;
+	private File characterFolder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,57 @@ public class TemplateDetailsActivity extends Activity {
 					i.putExtra("templateFileName", getFileName());
 					startActivity(i);
 				}
+				else {
+					// create new character
+					Intent i = new Intent(TemplateDetailsActivity.this,
+							CreateNewCharacterActivity.class);
+					// TODO bei den anderen auch curTemplate.getFileName()
+					// don't add the activity to the history
+					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+					i.putExtra("templateFileName", curTemplate.getFileName());
+					startActivity(i);
+				}
+			}
+		});
+		
+		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				// skip last element ("create new character")
+				if(position == adapter.getCount()-1) {
+					return true;
+				}
+				final CharacterSheet clickedSheet = adapter.getItem(position);
+				// create and show dialog
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						TemplateDetailsActivity.this);
+				builder.setTitle(getResources().getString(
+						R.string.msg_ask_character_deletion));
+				builder.setMessage(getResources().getString(
+						R.string.msg_yes_to_delete_character));
+				builder.setNegativeButton( 
+						getResources().getString(R.string.no),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {}
+						});
+				builder.setPositiveButton(
+						getResources().getString(R.string.yes),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick( DialogInterface dialog, int which) {
+								File sheetFile = new File(clickedSheet.fileAbsolutePath);
+								if(sheetFile != null) {
+									sheetFile.delete();
+									adapter.remove(clickedSheet);
+									adapter.notifyDataSetChanged();
+								}
+							}
+						});
+				// show dialog
+				builder.create().show();
+				return true;
 			}
 		});
 
@@ -82,6 +136,7 @@ public class TemplateDetailsActivity extends Activity {
 		Button editButton = (Button) findViewById(R.id.button2);
 		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
+		characterFolder = null;
 		curTemplate = null;
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
@@ -102,9 +157,8 @@ public class TemplateDetailsActivity extends Activity {
 					editButton.setEnabled(false);
 				}
 				setTitle(curTemplate.getTemplateName());
-				// load all characters for this template
-				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
-				loadingTask.execute(new Template[] { curTemplate });
+				characterFolderTimeStamp = 0;
+				characterFolder = JacksonInterface.getDirectoryForCharacters(curTemplate, this, false); 
 			}
 		}
 
@@ -152,6 +206,47 @@ public class TemplateDetailsActivity extends Activity {
 		}
 	}
 	
+	@Override
+	public void onResume() {
+		if(characterFolder != null) {
+			// check to determine if there is a new character or one has been deleted
+			final long newFolderTimeStamp = characterFolder.lastModified();
+			if(newFolderTimeStamp > characterFolderTimeStamp) {
+				// load all characters for this template
+				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
+				loadingTask.execute(new Template[] { curTemplate });
+				characterFolderTimeStamp = newFolderTimeStamp;
+			}
+			else {
+				//check every single template
+				boolean characterListChanged = false;
+				for(int i = 0; i < adapter.getCount() - 1; i++) {
+					CharacterSheet sheet = adapter.getItem(i);
+					final File sheetFile = new File(sheet.fileAbsolutePath);
+					if(sheetFile != null) {
+						final long newTimeStamp = sheetFile.lastModified();
+						if(newTimeStamp > sheet.fileTimeStamp) {
+							try {
+								adapter.remove(sheet);
+								sheet = JacksonInterface.loadCharacterSheet(sheetFile, true);
+								adapter.insert(sheet, i);
+								characterListChanged = true;
+							}
+							catch(Throwable e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				if(characterListChanged) {
+					adapter.notifyDataSetChanged();
+					characterListChanged = false;
+				}
+			}
+		}
+		super.onResume();
+	}
+
 	protected String getFileName(){
 		int lastSlashPos = curTemplate.fileAbsolutePath
 				.lastIndexOf("/");
@@ -263,18 +358,11 @@ public class TemplateDetailsActivity extends Activity {
 			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 			// testing data
 
-			CharacterSheet sheet = new CharacterSheet("Hodor");
-			sheet.color = Color.parseColor("#9b59b6");
-			characterList.add(sheet);
-			sheet = new CharacterSheet("Thorodin");
-			sheet.color = Color.parseColor("#e74c3c");
-			characterList.add(sheet);
-			sheet = new CharacterSheet("Finn");
+			CharacterSheet sheet = new CharacterSheet("Finn");
 			sheet.color = Color.parseColor("#2980b9");
 			characterList.add(sheet);
 			//
-			File dir = de.fau.cs.mad.gamekobold.jackson.Template
-					.getDirectoryForCharacters(myActivity, params[0], false);
+			File dir = JacksonInterface.getDirectoryForCharacters(params[0], myActivity, false); 
 			if (dir != null) {
 				Log.d("TemplateDetails",
 						"character Folder:" + dir.getAbsolutePath());
@@ -283,8 +371,7 @@ public class TemplateDetailsActivity extends Activity {
 					for (final File character : characters) {
 						if (character.isFile()) {
 							try {
-								sheet = CharacterSheet
-										.loadForCharacterList(character);
+								sheet = JacksonInterface.loadCharacterSheet(character, true);
 								characterList.add(sheet);
 							} catch (Throwable e) {
 								e.printStackTrace();
@@ -349,12 +436,13 @@ public class TemplateDetailsActivity extends Activity {
 				//TODO maybe show a progress dialog but saving in ui thread ?!
 				try {
 					//load template
-					jacksonTemplate = de.fau.cs.mad.gamekobold.jackson.Template.loadFromJSONFile( templateFile,
-																								false);
-				// take over all changes
-					jacksonTemplate.takeOverValues(curTemplate);
-				// save template again.
-					jacksonTemplate.saveToFile(templateFile);
+					jacksonTemplate = JacksonInterface.loadTemplate(templateFile, false) ;
+					if(jacksonTemplate != null) {
+						// take over all changes
+						jacksonTemplate.takeOverValues(curTemplate);
+						// save template again.
+						JacksonInterface.saveTemplate(jacksonTemplate, templateFile);	
+					}
 				}
 				catch(Throwable e) {
 					e.printStackTrace();

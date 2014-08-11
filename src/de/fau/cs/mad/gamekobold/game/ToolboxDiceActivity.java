@@ -5,7 +5,10 @@ import java.util.Random;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +18,20 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ToolboxRandomGenerator extends Activity{
-   
+public class ToolboxDiceActivity extends Activity{
+	
 	ArrayList<String> dice_list = new ArrayList<String>();
 	ArrayList<String> rolled_dice = new ArrayList<String>();
 	GridView grid;
 	Boolean isGrid = false;
-	private TextView tv_test, tv_sum;
-	public String [] char_array = {"Albert","Bertram","Claudio","Dennis","Emanuela","Franzi","Gretchen","Hanna","Ida"};
+	private TextView tv_sum;
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.activity_game_toolbox_random);
+        setContentView(R.layout.activity_game_toolbox_dice);
         
-        tv_test = (TextView) findViewById(R.id.tv_test);
         tv_sum = (TextView) findViewById(R.id.tv_sum);
         
     }
@@ -42,7 +43,6 @@ public class ToolboxRandomGenerator extends Activity{
 		 icicle.putStringArrayList("rolled_dice", rolled_dice);
 		 icicle.putBoolean("isGrid", isGrid);
 		 icicle.putString("sum", tv_sum.getText().toString());
-		 icicle.putString("test_string", tv_test.getText().toString());
 	 }
 	 
 	 @Override
@@ -57,32 +57,14 @@ public class ToolboxRandomGenerator extends Activity{
 			 setGridView();
 			 tv_sum.setText(icicle.getString("sum"));
 		 }
-		 else
-			 tv_test.setText(icicle.getString("test_string"));
 	 }
-	  
-    public void randomCharList(View v){
-    	dice_list.removeAll(dice_list);
-    	rolled_dice.removeAll(rolled_dice);
-    	tv_test.setText("");
-    	shuffleArray(char_array);
-    	String s = "";
-    	setContentView(R.layout.activity_game_toolbox_random);
-    	 
-    	for (int i = 0; i<char_array.length; i++){
-    		s = s + char_array[i] + "\n";	 
-    	}
-    	tv_test = (TextView) findViewById(R.id.tv_test);
-    	tv_test.setText(s);
-    	isGrid = false;
-    }
     
     public void addDice(View v){
     	
-        tv_test.setText("");
     	PopupMenu popup = new PopupMenu(getBaseContext(), v);
     	 
-        popup.getMenuInflater().inflate(R.menu.game_toolbox_random, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.game_toolbox_dice, popup.getMenu());
+        
 
         popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -146,15 +128,7 @@ public class ToolboxRandomGenerator extends Activity{
     	tv_sum.setText("Sum: " + String.valueOf(sum));
     }
     
-    static void shuffleArray(String[] ar){
-    	Random rnd = new Random();
-    	for (int i = ar.length - 1; i > 0; i--){
-    		int index = rnd.nextInt(i + 1);
-    		String a = ar[index];
-    		ar[index] = ar[i];
-    		ar[i] = a;
-    	}
-    }
+
     
     static int diceRoller(int maxValue){
     	Random rnd = new Random();
@@ -169,8 +143,7 @@ public class ToolboxRandomGenerator extends Activity{
     
     public void clearView (View v) {
     	isGrid = false;
-    	setContentView(R.layout.activity_game_toolbox_random);
-        tv_test.setText("");
+    	setContentView(R.layout.activity_game_toolbox_dice);
         tv_sum.setText("");
     	dice_list.removeAll(dice_list);
     	rolled_dice.removeAll(rolled_dice);
@@ -180,8 +153,8 @@ public class ToolboxRandomGenerator extends Activity{
     	
     	isGrid = true;
     	RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.random_layout);
-    	grid = new GridView(ToolboxRandomGenerator.this);
-    	ToolboxRandomElementAdapter adp=new ToolboxRandomElementAdapter (ToolboxRandomGenerator.this, dice_list, rolled_dice);
+    	grid = new GridView(ToolboxDiceActivity.this);
+    	ToolboxDiceElementAdapter adp=new ToolboxDiceElementAdapter (ToolboxDiceActivity.this, dice_list, rolled_dice);
     	grid.setNumColumns(3);
         grid.setBackgroundColor(getResources().getColor(R.color.background_dark));        
         grid.setAdapter(adp);

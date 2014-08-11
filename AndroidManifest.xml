@@ -90,7 +90,16 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxDiceActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
+        </activity>
         <activity android:name=".templatestore.TemplateStoreMainActivity"></activity>
+        <activity android:name=".templatebrowser.CreateNewCharacterActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

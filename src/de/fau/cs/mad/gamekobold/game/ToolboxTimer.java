@@ -16,10 +16,10 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.Formatter;
 
-public class Timer extends FrameLayout{
+public class ToolboxTimer extends FrameLayout{
 
     private static final OnTimeChangedListener NO_OP_CHANGE_LISTENER = new OnTimeChangedListener() {
-        public void onTimeChanged(Timer view, int hour, int minute, int seconds) {
+        public void onTimeChanged(ToolboxTimer view, int hour, int minute, int seconds) {
         }
     };
     
@@ -56,23 +56,23 @@ public class Timer extends FrameLayout{
          * @param minute The current minute.
          * @param seconds The current second.
          */
-        void onTimeChanged(Timer view, int hour, int minute, int seconds);
+        void onTimeChanged(ToolboxTimer view, int hour, int minute, int seconds);
     }
 
-    public Timer(Context context) {
+    public ToolboxTimer(Context context) {
         this(context, null);
     }
     
-    public Timer(Context context, AttributeSet attrs) {
+    public ToolboxTimer(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public Timer(Context context, AttributeSet attrs, int defStyle) {
+    public ToolboxTimer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         LayoutInflater inflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.widget_game_timer,
+        inflater.inflate(R.layout.widget_game_toolbox_timer,
             this, // we are the parent
             true);
 

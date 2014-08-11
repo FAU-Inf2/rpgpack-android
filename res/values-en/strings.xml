@@ -197,21 +197,17 @@
     <!-- play_character_fragment -->
     <string name="played_character_title">Current character for play</string>
 
-    <!-- Toolbox -->
-    <string name="open_randomgenerator">Template Generator</string>
+        <!-- Toolbox -->
+    <string name="open_dice">Dice Tool</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Tactical Map</string>
+    <string name="open_randomlist">Random List</string>
+    
     <string name="btn_start">Start</string>
     <string name="btn_pause">Pause</string>
     <string name="set_time">Set Time</string>
-
-    <string-array name="action_toolbox_list">
-        <item>Template Generator</item>
-        <item>Timer</item>
-        <item>Taktische Karte</item>
-    </string-array>
-    
-	<string name="add_d4">Add d4</string>
+ 
+    <string name="add_d4">Add d4</string>
     <string name="add_d6">Add d6</string>
     <string name="add_d8">Add d8</string>
     <string name="add_d10">Add d10</string>
@@ -228,5 +224,8 @@
     <!-- CreateNewGameFragment -->
     <string name="popup_create_game_info_titel">Game notices</string>
     <string name="titel_create_game">New Game</string>
-
+    
+    <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
+    <string name="msg_yes_to_delete_character">Click Yes to delete this character.</string>
+    
 </resources>

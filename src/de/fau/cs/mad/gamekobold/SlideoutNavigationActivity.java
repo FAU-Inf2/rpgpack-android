@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold;
 
 import java.util.concurrent.CountDownLatch;
 
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
@@ -332,7 +333,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			final String FILE_NAME = params[0];
 			Template template = null;
 			try {
-				template = Template.loadFromJSONFile(appContext, FILE_NAME, false);
+				template = JacksonInterface.loadTemplate(appContext, FILE_NAME, false);
 			} catch (Throwable e) {
 				e.printStackTrace();
 				return null;

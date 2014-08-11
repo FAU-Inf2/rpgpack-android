@@ -1,63 +1,56 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CharacterSheet implements Parcelable{
-	@JsonIgnore
-	public static final String FOLDER_NAME = "Characters";
-	
+public class CharacterSheet implements Parcelable{	
 	/* METADATA */
 	public String name;
-	@JsonIgnore
 	public int level;
-	@JsonIgnore
 	public String description;
-	
-	@JsonIgnore
 	public int color = Color.parseColor("#2980b9");
-	
+	@JsonIgnore
+	public String fileAbsolutePath = null;
+	@JsonIgnore
+	public long fileTimeStamp;
+
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
-	
+
 	public CharacterSheet() {
 		name = "";
 		level = 3;
 		description = "";
+		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
-	
+
 	public CharacterSheet(String name) {
 		this.name = name;		
 		level = 3;
 		description = "";
+		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
-	
+
 	@JsonCreator
 	public CharacterSheet(@JsonProperty("rootTable") ContainerTable table) {
 		name = "";
 		rootTable = table;
 		level = 3;
 		description = "";
+		fileAbsolutePath = "";
+		fileTimeStamp = 0;
 	}
-	
+
 	public ContainerTable getRootTable() {
 		if(rootTable == null) {
 			rootTable = new ContainerTable();
@@ -65,52 +58,25 @@ public class CharacterSheet implements Parcelable{
 		}
 		return rootTable;
 	}
-	
-//	public void print() {
-//		Log.d("CHARACTER_SHEET","CharacterSheet:"+name);
-//		rootTable.print();
-//	}
-	
-//	public void saveToJSON(Context context, String fileName) throws JsonGenerationException, JsonMappingException, IOException {
-//		ObjectMapper mapper = new ObjectMapper();
-//		File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
-//		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
-//		mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, this);
-//	}
-//	
-//	public static CharacterSheet loadFromJSONFile(Context context, String fileName) throws JsonParseException, JsonMappingException, IOException {
-//		ObjectMapper mapper = new ObjectMapper();
-//		File dir = context.getDir(FOLDER_NAME, Context.MODE_PRIVATE);
-//		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
-//		CharacterSheet sheet = mapper.readValue(inStream, CharacterSheet.class);
-//		return sheet;
-//	}
-	
-	/**
-	 * Loads the CharacterSheet from the provided file.
-	 * Only loads meta data! So no sheet data will be loaded!
-	 * @param jsonFile File object for the character
-	 * @return The CharacterSheet
-	 * @throws JsonParseException
-	 * @throws JsonMappingException
-	 * @throws IOException
-	 */
-	public static CharacterSheet loadForCharacterList(File jsonFile) throws JsonParseException, JsonMappingException, IOException {
-		if(jsonFile == null) {
-			return null;
+
+	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		if(withPrettyWriter) {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
 		}
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.addMixInAnnotations(CharacterSheet.class, CharacterSheetMixInClass.class);
-		FileInputStream inStream = new FileInputStream(jsonFile);
-		CharacterSheet sheet = mapper.readValue(inStream, CharacterSheet.class);
-		return sheet;
-	}
-	
-	public String toJSON() throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writer().writeValueAsString(this);
+		else {
+			return mapper.writer().writeValueAsString(this);
+		}
 	}
 
+	public void takeOverChanges(final CharacterSheet otherSheet) {
+		name = otherSheet.name;
+		color = otherSheet.color;
+		description = otherSheet.description;
+		level = otherSheet.level;
+	}
+
+	// PARCELABLE START
 	@Override
 	public int describeContents() {
 		return 0;
@@ -120,8 +86,12 @@ public class CharacterSheet implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
 		dest.writeInt(color);
+		dest.writeString(description);
+		dest.writeInt(level);
+		dest.writeString(fileAbsolutePath);
+		dest.writeLong(fileTimeStamp);
 	}
-	
+
 	public static final Parcelable.Creator<CharacterSheet> CREATOR = new Creator<CharacterSheet>() {
 		@Override
 		public CharacterSheet[] newArray(int size) {
@@ -134,7 +104,12 @@ public class CharacterSheet implements Parcelable{
 			CharacterSheet sheet = new CharacterSheet();
 			sheet.name = source.readString();
 			sheet.color = source.readInt();
+			sheet.description = source.readString();
+			sheet.level = source.readInt();
+			sheet.fileAbsolutePath = source.readString();
+			sheet.fileTimeStamp = source.readLong();
 			return sheet;
 		}
 	};
+	// PARCELABLE END
 }
