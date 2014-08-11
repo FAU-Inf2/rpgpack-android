@@ -45,7 +45,7 @@ public class FolderFragment extends GeneralFragment {
 	
 	Button buttonAdd;
 	View mainView;
-	FolderElementAdapter dataAdapter;
+	public FolderElementAdapter dataAdapter;
 	AlertDialog dialogCreateElement;
 	View dialogViewCreateElement;
 	

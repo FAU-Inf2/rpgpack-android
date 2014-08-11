@@ -47,6 +47,7 @@ public class TemplateDetailsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+//		Log.d("TemplateDetails", "onCreate" );
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_details);
 		getActionBar().setHomeButtonEnabled(true);
@@ -202,13 +203,16 @@ public class TemplateDetailsActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
+		loadingTask.execute(new Template[] { curTemplate });
 	}
 	
 	@Override
 	public void onResume() {
 		if(characterFolder != null) {
+//			Log.d("TemplateDetails", "onResume" );
 			// check to determine if there is a new character or one has been deleted
 			final long newFolderTimeStamp = characterFolder.lastModified();
 			if(newFolderTimeStamp > characterFolderTimeStamp) {

@@ -22,7 +22,7 @@ public class FolderElementData{
 	 */
 	
 	protected EditText text;
-	protected GeneralFragment childFragment;
+	public GeneralFragment childFragment;
 	protected element_type type;
 	
 	enum element_type{

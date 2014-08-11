@@ -91,7 +91,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 * JACKSON END
 	 */
 	
-	enum content_type{
+	public enum content_type{
 		editText, checkbox, popup;
 	}
 	
@@ -183,7 +183,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 							newElement = initEditText(row, jacksonTable.getEntry(i, rowIndex));
 						}
 						else if(header.isCheckBox()) {
-							newElement = initCheckBox(row, jacksonTable.getEntry(i, rowIndex));
+							newElement = initCheckBox(jacksonTable.getEntry(i, rowIndex));
 						}
 						else {
 							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex), i, rowIndex);
@@ -265,21 +265,46 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //                this, 
 //                android.R.layout.simple_list_item_1,
 //                your_array_list );
+		String[] headlines = new String[jacksonTableColumnNumber];
+		for(int i=0; i<jacksonTableColumnNumber; i++){
+//			IEditableContent jacksonEntry = jacksonTable.getEntry(i, 0);
+			headlines[i] = jacksonTable.getColumnHeader(i).getContent();
+		}
+		
 		String[] groupList = new String[jacksonRowNum];
-		String[][] itemList = new String[jacksonRowNum][];
+		String[][] itemValues = new String[jacksonRowNum][];
+		content_type[][] contentList = new content_type[jacksonRowNum][];
 		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
 			groupList[rowIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
 		}
 		
 		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
-			itemList[rowIndex] = new String[jacksonTableColumnNumber-1];
-			for(int columnIndex=1; columnIndex<jacksonTableColumnNumber; columnIndex++){
+			itemValues[rowIndex] = new String[jacksonTableColumnNumber];
+			contentList[rowIndex] = new content_type[jacksonTableColumnNumber];
+			for(int columnIndex=0; columnIndex<jacksonTableColumnNumber; columnIndex++){
 //				View firstRowView = null;
 				//TODO: get saved table type from jackson here
 				//now just assume it is edittext
 //				TableRow firstRow = (TableRow) table.getChildAt(0);
 				IEditableContent jacksonEntry = null;
 				jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+				
+				final ColumnHeader header = jacksonTable.getColumnHeader(columnIndex);
+				View linkedElement = null;
+//				if(header.isString()) {
+//					linkedElement = initEditText(null, jacksonTable.getEntry(columnIndex, rowIndex));
+//				}
+				if(header.isCheckBox()) {
+					contentList[rowIndex][columnIndex] = content_type.checkbox;
+//					linkedElement = initCheckBox(jacksonTable.getEntry(columnIndex, rowIndex));
+				}
+				else if(header.isPopup()){
+					contentList[rowIndex][columnIndex] = content_type.popup;
+//					linkedElement = initPopup(null, jacksonTable.getEntry(columnIndex, rowIndex), columnIndex, rowIndex);
+				}
+				else{
+					contentList[rowIndex][columnIndex] = content_type.editText;
+				}
 //				if(firstRow != null){
 //					firstRowView = firstRow.getChildAt(columnIndex);
 //				}
@@ -296,13 +321,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //				}
 				if(jacksonEntry != null) {
 					String content = jacksonEntry.getContent();
-					itemList[rowIndex][columnIndex-1] = content;
+					itemValues[rowIndex][columnIndex] = content;
 				}
 			}
 		}
 		ExpandableListView expListView = (ExpandableListView) mainView.findViewById(R.id.exp_table_list_view);
         final ExpandableListAdapter expListAdapter = new CustomExpandableListAdapter(
-                getActivity(), groupList, itemList);
+                getActivity(), jacksonTable, this, headlines, contentList, groupList, itemValues);
+        //TODO: set expandable listview adapter to show popup/checkbox change when clicked
         expListView.setAdapter(expListAdapter);
 	}
 	
@@ -364,14 +390,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
+						newElement = initCheckBox(jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "FFFFFFFFF");
 					}
 					else if(!(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
+						newElement = initCheckBox(jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
 					}
@@ -696,20 +722,24 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //		Log.d("initEditText", "jacksonEntry:"+jacksonEntry.hashCode());
 		final EditText newElement = new EditText(getActivity());
 		newElement.setGravity(Gravity.CENTER);
-		newElement.addTextChangedListener(new TextWatcher(){
-			public void afterTextChanged(Editable s) {
-				checkResize(0, 0, newElement, row);
+			newElement.addTextChangedListener(new TextWatcher(){
+				public void afterTextChanged(Editable s) {
+					if(row !=null){
+						checkResize(0, 0, newElement, row);
+					}
+				}
+				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+				}
+				public void onTextChanged(CharSequence s, int start, int before, int count){
+				}
+			});
+		if(row !=null){
+			if(row == headerTable.getChildAt(0)) {
+				setHeaderTableStyle((EditText) newElement);
 			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){
+			else {
+				setTableStyle(newElement);
 			}
-			public void onTextChanged(CharSequence s, int start, int before, int count){
-			}
-		});
-		if(row == headerTable.getChildAt(0)) {
-			setHeaderTableStyle((EditText) newElement);
-		}
-		else {
-			setTableStyle(newElement);
 		}
 		//
 		// JACKSON START
@@ -723,7 +753,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!jacksonInflateWithData) {
 						content.setContent(s.toString());
 					}
-					checkResize(0, 0, newElement, row);
+					if(row !=null){
+						checkResize(0, 0, newElement, row);
+					}
 				}
 				public void beforeTextChanged(CharSequence s, int start, int count, int after){
 				}
@@ -737,14 +769,16 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		// we can do it like this with a check, or we change the default value in jackson model
 		// check is needed, because we would otherwise overwrite the loaded value
 		if(newElement.getText().toString().isEmpty()) {
-			if(row == headerTable.getChildAt(0)) {
-				newElement.setText(getResources().getString(R.string.headline)
-								+ " "
-								+ (((TableRow) headerTable.getChildAt(0))
-										.getChildCount()+1));
-			}	
-			else {
-				((EditText) newElement).setText(getResources().getString(R.string.blank));
+			if(row !=null){
+				if(row == headerTable.getChildAt(0)) {
+					newElement.setText(getResources().getString(R.string.headline)
+							+ " "
+							+ (((TableRow) headerTable.getChildAt(0))
+									.getChildCount()+1));
+				}	
+				else {
+					((EditText) newElement).setText(getResources().getString(R.string.blank));
+				}
 			}
 		}
 //		((EditText) newElement).clearFocus();
@@ -814,7 +848,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		final TextView txt = (TextView) newElement;
 		txt.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable s) {
-				checkResize(0, 0, txt, row);
+				if(row != null){
+					checkResize(0, 0, txt, row);
+				}
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){
 			}
@@ -1124,7 +1160,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		return columnIndex;
 	}
 	
-	private LinearLayout initCheckBox(final TableRow row, final IEditableContent jacksonEntry){
+	private LinearLayout initCheckBox(final IEditableContent jacksonEntry){
 		LinearLayout newElement = new LinearLayout(getActivity());
 		CheckBox cb = new CheckBox(getActivity());
 		if(jacksonEntry != null) {
@@ -1169,7 +1205,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         }
         else if(firstRowView instanceof LinearLayout){
         	if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
-        		newElement = initCheckBox(row, jacksonTable.getEntry(columnIndex, rowIndex));
+        		newElement = initCheckBox(jacksonTable.getEntry(columnIndex, rowIndex));
         	}
         	else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
             	newElement = initPopup(row, jacksonTable.getEntry(columnIndex, rowIndex), columnIndex, rowIndex);

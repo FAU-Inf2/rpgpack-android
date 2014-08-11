@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:weightSum="2"
     android:padding="10dp" >
  
     <TextView
         android:id="@+id/table_view_item"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0px"
+        android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+    
+    <!-- LinearLayout for popup (height matches parent -->
+    <!--  
+    <LinearLayout 
+        android:orientation="vertical"
+        android:id="@+id/content_keeper_popup"
+                android:layout_weight="1"
+                
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" 
+                android:layout_width="0px"
+        android:layout_height="match_parent"
+        ></LinearLayout>
+    -->
+        <!-- LinearLayout for everything else -->
+    
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:id="@+id/content_keeper"
+                android:layout_gravity="center_vertical"
+        
+                android:layout_weight="1"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" 
+                android:layout_width="0px"
+        android:layout_height="wrap_content"
+        ></LinearLayout>
  
-</RelativeLayout>
+</LinearLayout>
