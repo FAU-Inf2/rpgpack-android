@@ -523,3 +523,5 @@ public class CreateNewGameFragment extends Fragment {
 	}
 
 }
+
+

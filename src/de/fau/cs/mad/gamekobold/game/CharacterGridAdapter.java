@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -15,8 +16,10 @@ import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
-	Context context;
-
+	private Context context;
+	
+	public ArrayList<GameCharacter> selectedCharacters = new ArrayList<GameCharacter>();
+	
 	// the list of objects we want to display
 	private List<GameCharacter> characters;
 	private int layoutID;
@@ -43,7 +46,7 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 		if (position == characters.size() - 1) {
 			Log.d("position", "" + String.valueOf(position));
 			Log.d("characters.size", "" + String.valueOf(characters.size() - 1));
-			
+
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

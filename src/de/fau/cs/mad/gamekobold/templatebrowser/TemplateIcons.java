@@ -30,13 +30,6 @@ public class TemplateIcons {
 		return myID;
 	}
 
-	// public Integer addTemplateIcon(int iconReference) {
-	// int myID = iconID;
-	// iconMap.put(myID, iconReference);
-	// iconID++;
-	// return myID;
-	// }
-
 	public String getTempalteIcon(int iconID) {
 		return iconMap.get(iconID);
 	}

@@ -1,13 +1,17 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -31,6 +35,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	private Context context;
 	private Game newGame;
 	private GameCharacter curGameCharacter;
+	private GridView gridView;
 
 	public ExpandableListArrayAdapter(Context context,
 			ArrayList<Template> templates, Game game) {
@@ -64,6 +69,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
+			@SuppressLint("ResourceAsColor")
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
@@ -73,21 +79,52 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
-					Toast.makeText(
-							context,
-							curGameCharacter.getCharacterName()
-									+ " wird zum Spiel hinzugefuegt!",
-							Toast.LENGTH_SHORT).show();
+					// TODO may be it is better to change chracterList to
+					// characterSet and don't do this check??
+					if (!newGame.getCharakterList().contains(curGameCharacter)) {
+						Toast.makeText(
+								context,
+								curGameCharacter.getCharacterName()
+										+ " wird zum Spiel hinzugefuegt!",
+								Toast.LENGTH_SHORT).show();
 
-					// TODO pruefen ob es nur ein Template moeglich ist!!!!
-					Log.d("newGame is null?", "" + (newGame == null));
+						// TODO pruefen ob es nur ein Template moeglich ist!!!!
+						Log.d("newGame is null?", "" + (newGame == null));
 
-					newGame.setTemplate(curGameCharacter.getTemplate());
+						newGame.setTemplate(curGameCharacter.getTemplate());
 
-					Log.d("Character is null?", "" + (curGameCharacter == null));
+						Log.d("Character is null?", ""
+								+ (curGameCharacter == null));
 
-					newGame.addCharacter(curGameCharacter);
-					notifyDataSetChanged();
+						newGame.addCharacter(curGameCharacter);
+						notifyDataSetChanged();
+					}
+
+					// // TODO try to make an item highlighted
+					// ArrayList<GameCharacter> selectedCharacters =
+					// ((CharacterGridAdapter) adapterView).selectedCharacters;
+					//
+					// if (selectedCharacters.contains(curGameCharacter)) {
+					// selectedCharacters.remove(selectedCharacters
+					// .lastIndexOf(curGameCharacter));
+					// Toast.makeText(
+					// context,
+					// curGameCharacter.getCharacterName()
+					// + " removed", Toast.LENGTH_LONG).show();
+					//
+					// view.setBackgroundResource(R.drawable.character_grid_border);
+					// }
+					//
+					// else {
+					// selectedCharacters.add(curGameCharacter);
+					// Toast.makeText(context,
+					// curGameCharacter.getCharacterName() + " added",
+					// Toast.LENGTH_LONG).show();
+					//
+					// view.setBackgroundResource(R.drawable.background);
+					//
+					// }
+
 				}
 				// create new character from template
 				else {
@@ -106,6 +143,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 							templates.get(templatePosition).getTemplateName());
 					context.startActivity(intent);
 				}
+
 			}
 		});
 
@@ -155,6 +193,38 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				}
 			}
 		});
+
+		// TODO replace as not working! try to highlight selected character
+		// gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+		// gridView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+		// public void onItemCheckedStateChanged(ActionMode mode,
+		// int position, long id, boolean checked) {
+		// Toast.makeText(context, "onItemCheckedStateChanged!",
+		// Toast.LENGTH_LONG).show();
+		// // Required, but not used in this implementation
+		// }
+		//
+		// // ActionMode.Callback methods
+		// public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		//
+		// return true;
+		// }
+		//
+		// public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		// return false;
+		// // Required, but not used in this implementation
+		// }
+		//
+		// public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		// Toast.makeText(context, "CLICK!", Toast.LENGTH_LONG).show();
+		// return false;
+		//
+		// }
+		//
+		// public void onDestroyActionMode(ActionMode mode) {
+		// // Required, but not used in this implementation
+		// }
+		// });
 
 		return convertView;
 
