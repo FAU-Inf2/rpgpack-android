@@ -6,7 +6,7 @@
        <TextView
 		android:layout_width="50dp"
 		android:layout_height="50dp"   
-        android:id="@+id/grid_item"
+        android:id="@+id/grid_dice_item"
         android:layout_gravity="center"
         android:text="Test"
         android:background="@drawable/dice_6"

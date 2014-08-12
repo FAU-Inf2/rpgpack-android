@@ -11,63 +11,72 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 public class ToolboxDiceElementAdapter extends BaseAdapter {
-    private Context context;
-    private final ArrayList<String> textViewValues;
-    private final ArrayList<String> textViewItems;
-    LayoutInflater inflater;
-    
-    public ToolboxDiceElementAdapter(Context context, ArrayList<String> items, ArrayList<String> values) {
-        this.context = context;
-        this.textViewItems = items;
-        this.textViewValues = values;
-        inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
+	private Context context;
+	private final ArrayList<String> textViewValues;
+	private final ArrayList<String> textViewItems;
+	LayoutInflater inflater;
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+	public ToolboxDiceElementAdapter(Context context, ArrayList<String> items,
+			ArrayList<String> values) {
+		this.context = context;
+		this.textViewItems = items;
+		this.textViewValues = values;
+		inflater = (LayoutInflater) this.context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
 
-        View gridView;
+	public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (convertView == null)
-            convertView = inflater.inflate(R.layout.activity_game_toolbox_dice_cell, null);
-     
-        TextView textView = (TextView) convertView.findViewById(R.id.grid_item);
-        textView.setText(textViewValues.get(position));
-        textView.setHint(textViewItems.get(position));
-        
-        switch (Integer.parseInt((String) textView.getHint())){
-        case 4: 	textView.setBackgroundResource(R.drawable.dice_4);
-        			break;
-        case 6: 	textView.setBackgroundResource(R.drawable.dice_6);
-        			break;
-        case 8: 	textView.setBackgroundResource(R.drawable.dice_8);
-        			break;
-        case 10: 	textView.setBackgroundResource(R.drawable.dice_10);
-        			break;
-        case 12: 	textView.setBackgroundResource(R.drawable.dice_12);
-        			break;
-        case 20: 	textView.setBackgroundResource(R.drawable.dice_20);
-        			break;
-        default: 	textView.setBackgroundResource(R.color.background_green);   
-        }
-        
+		View gridView;
 
-        return convertView;
-    }
-    
-    @Override
-    public int getCount() {
-        return textViewItems.size();
-    }
+		if (convertView == null)
+			convertView = inflater.inflate(
+					R.layout.activity_game_toolbox_dice_cell, null);
 
-    @Override
-    public Object getItem(int position) {
-        return textViewItems.get(position);
-    }
+		TextView textView = (TextView) convertView
+				.findViewById(R.id.grid_dice_item);
+		textView.setText(textViewValues.get(position));
+		textView.setHint(textViewItems.get(position));
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+		switch (Integer.parseInt((String) textView.getHint())) {
+		case 4:
+			textView.setBackgroundResource(R.drawable.dice_4);
+			break;
+		case 6:
+			textView.setBackgroundResource(R.drawable.dice_6);
+			break;
+		case 8:
+			textView.setBackgroundResource(R.drawable.dice_8);
+			break;
+		case 10:
+			textView.setBackgroundResource(R.drawable.dice_10);
+			break;
+		case 12:
+			textView.setBackgroundResource(R.drawable.dice_12);
+			break;
+		case 20:
+			textView.setBackgroundResource(R.drawable.dice_20);
+			break;
+		default:
+			textView.setBackgroundResource(R.color.background_green);
+		}
+
+		return convertView;
+	}
+
+	@Override
+	public int getCount() {
+		return textViewItems.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return textViewItems.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
 
 }
-  
