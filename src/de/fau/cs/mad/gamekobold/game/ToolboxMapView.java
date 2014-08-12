@@ -46,10 +46,10 @@ public class ToolboxMapView extends View {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		//canvasBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
-		canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+		int id = getContext().getResources().getIdentifier("forest", "drawable", getContext().getPackageName());
+		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
+		canvasBitmap =  canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		drawCanvas = new Canvas(canvasBitmap);
-		canvasBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.forest);
 	}
 
 	@Override
@@ -86,12 +86,14 @@ public class ToolboxMapView extends View {
 		drawPaint.setColor(paintColor);
 	}
 	
-	public void setBackground(String foo) {
+	public void setBackground(String image) {
 		invalidate();
 		Context context = getContext();
-		int id = context.getResources().getIdentifier(foo, "drawable", context.getPackageName());
+		Bitmap bmp;
+		int id = context.getResources().getIdentifier(image, "drawable", context.getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
-		drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+		canvasBitmap =  canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		drawCanvas.setBitmap(canvasBitmap);
 		invalidate();
 	}
 
