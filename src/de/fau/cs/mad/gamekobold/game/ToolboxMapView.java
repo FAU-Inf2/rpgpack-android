@@ -17,6 +17,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.view.MotionEvent;
 
 import android.widget.ImageButton;
@@ -37,6 +39,7 @@ public class ToolboxMapView extends View {
 	private ArrayList<Path> undonePaths = new ArrayList<Path>();
 	private float mX, mY;
 	private static final float TOUCH_TOLERANCE = 4;
+	private boolean erase = false;
 
 	public ToolboxMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -73,7 +76,6 @@ public class ToolboxMapView extends View {
 		for (Path p : paths) {
 			drawPaint.setColor(colorMap.get(p));
 			canvas.drawPath(p, drawPaint);
-			// Log.i("Color", get)
 		}
 		drawPaint.setColor(paintColor);
 		canvas.drawPath(drawPath, drawPaint);
@@ -132,6 +134,8 @@ public class ToolboxMapView extends View {
 
 		paintColor = Color.parseColor(newColor);
 		drawPaint.setColor(paintColor);
+		setErase(false);
+		drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 		invalidate();
 	}
 
@@ -174,5 +178,17 @@ public class ToolboxMapView extends View {
 				"drawable", getContext().getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
+	}
+
+	public void setErase(boolean isErase) {
+		erase = isErase;
+		if (erase) {
+			paintColor = getResources().getColor(android.R.color.transparent);
+			drawPaint.setColor(getResources().getColor(android.R.color.transparent));
+			drawPaint
+					.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		} else {
+			drawPaint.setXfermode(null);
+		}
 	}
 }

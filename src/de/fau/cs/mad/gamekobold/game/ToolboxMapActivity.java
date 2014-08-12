@@ -40,7 +40,7 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_toolbox_map);
 		mapView = (ToolboxMapView) findViewById(R.id.map);
-		//createGrid();
+		// createGrid();
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
@@ -166,39 +166,38 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 			layout.addView(img_view);
 		}
 	}
-/*
-	public void createGrid() {
-		ToolboxMapView mapView = (ToolboxMapView) findViewById(R.id.map_layout);
 
-		int height = mapView.getH();
-		int width = mapView.getW();
-		
-		int num_row = height / (dot_size + (((height / dot_size) +1)*5)) ;
-		Log.i("Row", num_row + "");
-		int num_column = width / (dot_size + (((width / dot_size) +1)*5));
-		Log.i("Column", num_column + "");
-		int grid_size = num_column * num_row;
-		GridView grid = new GridView(ToolboxMapActivity.this);
-		for (int i = 0; i < grid_size; i++) {
-			dots_array.add("" + i);
-		}
-		Log.i("Size", dots_array.size()+ "");
+	/*
+	 * public void createGrid() { ToolboxMapView mapView = (ToolboxMapView)
+	 * findViewById(R.id.map_layout);
+	 * 
+	 * int height = mapView.getH(); int width = mapView.getW();
+	 * 
+	 * int num_row = height / (dot_size + (((height / dot_size) +1)*5)) ;
+	 * Log.i("Row", num_row + ""); int num_column = width / (dot_size + (((width
+	 * / dot_size) +1)*5)); Log.i("Column", num_column + ""); int grid_size =
+	 * num_column * num_row; GridView grid = new
+	 * GridView(ToolboxMapActivity.this); for (int i = 0; i < grid_size; i++) {
+	 * dots_array.add("" + i); } Log.i("Size", dots_array.size()+ "");
+	 * 
+	 * ToolboxMapElementAdapter adp = new ToolboxMapElementAdapter(
+	 * ToolboxMapActivity.this, num_row, num_column, dots_array);
+	 * grid.setNumColumns(num_column); grid.setAdapter(adp);
+	 * mapView.addView(grid); setContentView(linearLayout);
+	 * 
+	 * }
+	 */
 
-		ToolboxMapElementAdapter adp = new ToolboxMapElementAdapter(
-				ToolboxMapActivity.this, num_row, num_column, dots_array);
-		grid.setNumColumns(num_column);
-		grid.setAdapter(adp);
-		mapView.addView(grid);
-		setContentView(linearLayout);
-
-	}
-	*/
-	
-	public void undo(View v){
+	public void undo(View v) {
 		mapView.undoLastStep();
 	}
-	
-	public void redo(View v){
+
+	public void redo(View v) {
 		mapView.redoLastUndo();
+	}
+
+	public void activateErase(View v) {
+		Log.i("Button Pressed", "true");
+		mapView.setErase(true);
 	}
 }
