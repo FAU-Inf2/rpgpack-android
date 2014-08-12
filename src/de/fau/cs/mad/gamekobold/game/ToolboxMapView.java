@@ -1,6 +1,8 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
@@ -24,12 +26,13 @@ public class ToolboxMapView extends View {
 
 	private Path drawPath;
 	private Paint drawPaint, canvasPaint;
-	private int paintColor = 0xFF660000;
+	private int paintColor = 0xFF000000;
 	private Canvas drawCanvas;
 	private Bitmap canvasBitmap;
 	private int height;
 	private int width;
 	private String background = "forest";
+	private Map<Path, Integer> colorMap = new HashMap<Path, Integer>();
 	private ArrayList<Path> paths = new ArrayList<Path>();
 	private ArrayList<Path> undonePaths = new ArrayList<Path>();
 	private float mX, mY;
@@ -45,7 +48,7 @@ public class ToolboxMapView extends View {
 		drawPaint = new Paint();
 		drawPaint.setColor(paintColor);
 		drawPaint.setAntiAlias(true);
-		drawPaint.setStrokeWidth(20);
+		drawPaint.setStrokeWidth(10);
 		drawPaint.setStyle(Paint.Style.STROKE);
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -67,8 +70,12 @@ public class ToolboxMapView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-		for (Path p : paths)
+		for (Path p : paths) {
+			drawPaint.setColor(colorMap.get(p));
 			canvas.drawPath(p, drawPaint);
+			// Log.i("Color", get)
+		}
+		drawPaint.setColor(paintColor);
 		canvas.drawPath(drawPath, drawPaint);
 
 	}
@@ -115,16 +122,17 @@ public class ToolboxMapView extends View {
 
 	private void touch_up() {
 		drawPath.lineTo(mX, mY);
-		drawCanvas.drawPath(drawPath, drawPaint);// commit the path to our
-													// offscreen
+		drawCanvas.drawPath(drawPath, drawPaint);
+		colorMap.put(drawPath, paintColor);
 		paths.add(drawPath);
 		drawPath = new Path();
 	}
 
 	public void setColor(String newColor) {
-		invalidate();
+
 		paintColor = Color.parseColor(newColor);
 		drawPaint.setColor(paintColor);
+		invalidate();
 	}
 
 	public void setBackground(String image) {
@@ -160,8 +168,8 @@ public class ToolboxMapView extends View {
 			invalidate();
 		}
 	}
-	
-	private void resetBitmap(){
+
+	private void resetBitmap() {
 		int id = getContext().getResources().getIdentifier(background,
 				"drawable", getContext().getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
