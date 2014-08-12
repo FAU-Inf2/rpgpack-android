@@ -9,7 +9,7 @@
         android:id="@+id/grid_item"
         android:layout_gravity="center"
         android:text="Test"
-        android:background="@drawable/d6_128x128"
+        android:background="@drawable/dice_6"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/white" 
         android:textSize="20sp"

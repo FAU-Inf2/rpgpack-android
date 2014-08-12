@@ -35,17 +35,17 @@ public class ToolboxDiceElementAdapter extends BaseAdapter {
         textView.setHint(textViewItems.get(position));
         
         switch (Integer.parseInt((String) textView.getHint())){
-        case 4: 	textView.setBackgroundResource(R.drawable.d4_128x128);
+        case 4: 	textView.setBackgroundResource(R.drawable.dice_4);
         			break;
-        case 6: 	textView.setBackgroundResource(R.drawable.d6_128x128);
+        case 6: 	textView.setBackgroundResource(R.drawable.dice_6);
         			break;
-        case 8: 	textView.setBackgroundResource(R.drawable.d8_128x128);
+        case 8: 	textView.setBackgroundResource(R.drawable.dice_8);
         			break;
-        case 10: 	textView.setBackgroundResource(R.drawable.d10_128x128);
+        case 10: 	textView.setBackgroundResource(R.drawable.dice_10);
         			break;
-        case 12: 	textView.setBackgroundResource(R.drawable.d12_128x128);
+        case 12: 	textView.setBackgroundResource(R.drawable.dice_12);
         			break;
-        case 20: 	textView.setBackgroundResource(R.drawable.d20_128x128);
+        case 20: 	textView.setBackgroundResource(R.drawable.dice_20);
         			break;
         default: 	textView.setBackgroundResource(R.color.background_green);   
         }
