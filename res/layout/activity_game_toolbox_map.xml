@@ -54,7 +54,7 @@
             android:onClick="iconClicked"
             android:src="@drawable/paint_unpressed"
             android:tag="#FF0000" />
-        
+
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -70,7 +70,13 @@
             android:layout_height="30dp"
             android:layout_margin="10dp"
             android:src="@drawable/red_dot" />
-        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/paint_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
     </LinearLayout>
 
 </LinearLayout>

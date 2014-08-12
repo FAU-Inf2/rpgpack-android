@@ -11,7 +11,9 @@ import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -19,6 +21,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		OnDragListener {
 
+	private String[] dots = { "red", "green", "blue", "black", "orange" };
 	private ImageButton currPaint;
 	private ToolboxMapView mapView;
 	private LinearLayout paintLayout;
@@ -33,9 +36,11 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
 				R.drawable.paint_pressed));
+		createDots();
 		findViewById(R.id.red_dot).setOnTouchListener(this);
 		findViewById(R.id.map).setOnDragListener(this);
 		findViewById(R.id.paint_colors).setOnDragListener(this);
+		findViewById(R.id.paint_dots).setOnDragListener(this);
 	}
 
 	@Override
@@ -113,5 +118,46 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 			}
 		});
 		popup.show();
+	}
+
+	public void createDots() {
+		LinearLayout layout = (LinearLayout) findViewById(R.id.paint_dots);
+		
+		
+		
+		for (String item : dots) {
+			ImageView img_view = (ImageView) new ImageView(this);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(40,40);
+			
+			if (item.equals("red")) {
+				img_view.setTag(item);
+				img_view.setImageDrawable(getResources().getDrawable(
+						R.drawable.red_dot));
+			}
+			if (item.equals("blue")) {
+				img_view.setTag(item);
+				img_view.setImageDrawable(getResources().getDrawable(
+						R.drawable.blue_dot));
+			}
+			if (item.equals("black")) {
+				img_view.setTag(item);
+				img_view.setImageDrawable(getResources().getDrawable(
+						R.drawable.black_dot));
+			}
+			if (item.equals("green")) {
+				img_view.setTag(item);
+				img_view.setImageDrawable(getResources().getDrawable(
+						R.drawable.black_dot));
+			}
+			if (item.equals("orange")) {
+				img_view.setTag(item);
+				img_view.setImageDrawable(getResources().getDrawable(
+						R.drawable.black_dot));
+			}
+			img_view.setLayoutParams(params);
+			img_view.setOnTouchListener(this);
+			layout.addView(img_view);
+			
+		}
 	}
 }
