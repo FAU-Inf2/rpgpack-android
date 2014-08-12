@@ -46,7 +46,6 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		currPaint.setImageDrawable(getResources().getDrawable(
 				R.drawable.paint_pressed));
 		createDots();
-		findViewById(R.id.red_dot).setOnTouchListener(this);
 		findViewById(R.id.map).setOnDragListener(this);
 		findViewById(R.id.paint_colors).setOnDragListener(this);
 		findViewById(R.id.paint_dots).setOnDragListener(this);
@@ -155,12 +154,12 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 			if (item.equals("green")) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.black_dot));
+						R.drawable.green_dot));
 			}
 			if (item.equals("orange")) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.black_dot));
+						R.drawable.orange_dot));
 			}
 			img_view.setLayoutParams(params);
 			img_view.setOnTouchListener(this);
