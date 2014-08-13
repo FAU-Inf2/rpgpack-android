@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
@@ -38,17 +39,20 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	
 	
 	ArrayList<FolderElementData> allData;
+	//can we edit the names of the folders/tables/matrices?
+	boolean editable = true;
 	
 
-	public FolderElementAdapter(Activity context, int textViewResourceId, ArrayList<FolderElementData> objects) {
+	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
+        this.editable = editable;
     }
 
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
 	static class ViewHolder {
-		EditText elementName;
+		TextView elementName;
 		protected View row;
 		TextWatcher jacksonTableNameChangeWatcher = null;
 	}
@@ -157,9 +161,15 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         if (convertView == null) {
             // If it hasn't, set up everything:
             LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
-            view = inflator.inflate(R.layout.initialrow, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
             final ViewHolder holder = new ViewHolder();
-            holder.elementName = (EditText) view.findViewById(R.id.text);
+            if(editable){
+            	view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                holder.elementName = (EditText) view.findViewById(R.id.text);
+            }
+            else{
+                view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                holder.elementName = (TextView) view.findViewById(R.id.text);
+            }
             holder.row = view;
             view.setTag(holder);
         } else {
