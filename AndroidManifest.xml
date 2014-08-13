@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.fau.cs.mad.gamekobold"
+<manifest package="de.fau.cs.mad.gamekobold"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -19,7 +18,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo2"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -98,8 +97,14 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
-        <activity android:name=".templatestore.TemplateStoreMainActivity"></activity>
-        <activity android:name=".templatebrowser.CreateNewCharacterActivity"></activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity" >
+        </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity" >
+        </activity>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.LogoActivity"
+            android:label="@string/title_activity_logo" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

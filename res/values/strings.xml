@@ -225,5 +225,6 @@
     <string name="warning_set_gamename">Dein Spiel braucht einen Namen!</string>
     <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
     <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
+    <string name="title_activity_logo">LogoActivity</string>
 
 </resources>

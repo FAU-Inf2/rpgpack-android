@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 
 	public void manageCharackter(View view) {
 		// Charakter short overview
-		Intent intent = new Intent(MainActivity.this, MatrixViewActivity.class);
+		Intent intent = new Intent(MainActivity.this, LogoActivity.class);
 		startActivity(intent);
 
 	}
