@@ -326,9 +326,9 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     /**
      * toggles visibilty of the checkboxes
      */
-    public void toggleCheckboxVisibility(){
+    public void toggleCheckboxVisibility(boolean visible){
     	for(FolderElementData oneDatum: allData){
-			 oneDatum.checkBoxVisible = !oneDatum.checkBoxVisible;
+			 oneDatum.checkBoxVisible = visible;
 		 }
 		 notifyDataSetChanged();
     }
