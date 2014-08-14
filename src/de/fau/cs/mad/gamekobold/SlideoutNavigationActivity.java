@@ -148,8 +148,9 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			 }
 
 			 public void onDrawerOpened(View drawerView) {
-				 super.onDrawerOpened(drawerView);
+				 Log.d("SlideoutNavigationActivity", "invalidateOptionsMenu!");
 				 invalidateOptionsMenu();
+				 super.onDrawerOpened(drawerView);
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(mDrawerToggle);
