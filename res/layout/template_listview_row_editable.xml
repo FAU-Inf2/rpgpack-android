@@ -10,7 +10,8 @@
             android:layout_height="40dp"
             android:background="@null"
             android:gravity="left"/>
-    <EditText
+
+	<EditText
         android:inputType="text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:id="@+id/text"

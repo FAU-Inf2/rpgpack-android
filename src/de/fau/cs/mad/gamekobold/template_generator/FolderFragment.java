@@ -41,8 +41,8 @@ public class FolderFragment extends GeneralFragment {
 	 */
 	
 	View view;
-	ListView lView;
-	protected ArrayList<FolderElementData> allData;
+	public ListView lView;
+	public ArrayList<FolderElementData> allData;
 	
 	Button buttonAdd;
 	View mainView;

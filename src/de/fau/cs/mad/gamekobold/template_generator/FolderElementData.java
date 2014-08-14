@@ -25,6 +25,8 @@ public class FolderElementData{
 	protected TextView text;
 	public GeneralFragment childFragment;
 	protected element_type type;
+	protected boolean checked = true;
+	public boolean checkBoxVisible = false;
 	
 	enum element_type{
 		table, matrix, folder;

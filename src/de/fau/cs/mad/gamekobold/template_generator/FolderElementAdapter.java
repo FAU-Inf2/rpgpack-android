@@ -21,6 +21,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,28 +41,44 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	 */
 	
 	
-	ArrayList<FolderElementData> allData;
+	public ArrayList<FolderElementData> allData;
 	//can we edit the names of the folders/tables/matrices?
 	boolean editable = true;
-	
+//	public boolean allowCheckingItems = false;
+//	public boolean allowCheckingBefore = false;
 
 	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
         this.editable = editable;
+//        if(textViewResourceId == R.layout.template_listview_row_checking){
+//        	allowCheckingItems = true;
+//        }
     }
 
+	
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
 	static class ViewHolder {
 		TextView elementName;
 		protected View row;
 		TextWatcher jacksonTableNameChangeWatcher = null;
+		CheckBox box;
 	}
 	
 	@Override
 	public int getCount() {
 	    return allData.size();
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+	    return getItem(position).checkBoxVisible?1:0;     
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+	    return 2;
 	}
 
 	@Override
@@ -151,32 +170,95 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				}
     		}
     	});
+		if(holder.box != null){
+			holder.box.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					data.checked = isChecked;
+					//TODO: jackson store disabling this category
+				}
+			});
+		}
     }
 
     @Override
     public View getView(int viewPosition, View convertView, ViewGroup parent) {
     	final FolderElementData data = this.getItem(viewPosition);
+		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
         if (convertView == null) {
+    		Log.d("FolderElementAdapter", "convertview == NULL!!!");
             // If it hasn't, set up everything:
             LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
-            final ViewHolder holder = new ViewHolder();
+            ViewHolder holder = new ViewHolder();
+            //distinguish slightly between how an inflated row should looke like
+//    		Log.d("FolderElementAdapter", "getView; editable: " + editable + "; checking: " + allowCheckingItems);
             if(editable){
-            	view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
-                holder.elementName = (EditText) view.findViewById(R.id.text);
+            		view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (EditText) view.findViewById(R.id.text);
             }
             else{
-                view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
-                holder.elementName = (TextView) view.findViewById(R.id.text);
+            	//checking items should only be allowed if they are not editable
+            	if(getItemViewType(viewPosition) == 1){
+            		view = inflator.inflate(R.layout.template_listview_row_checking, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (TextView) view.findViewById(R.id.text);
+                	CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
+                	holder.box = cb;
+                	if(data.checked){
+                		holder.box.setChecked(true);
+                	}
+                	else{
+                		holder.box.setChecked(false);
+                	}
+            	}
+            	else{
+            		view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (TextView) view.findViewById(R.id.text);
+            	}
             }
             holder.row = view;
             view.setTag(holder);
         } else {
-            view = convertView;
+//    		Log.d("FolderElementAdapter", "convertView != null; needsReinflate: " + needsReinflate);
+//            	if(data.needsReinflate){
+//            		data.needsReinflate = false;
+////            		Log.d("FolderElementAdapter", "gets reinflated");
+////            		Log.d("FolderElementAdapter", "allowCheckingItems: " + allowCheckingItems + "; allowCheckingBefore: " + allowCheckingBefore);
+//                    ViewHolder holder = new ViewHolder();
+////            		Log.d("FolderElementAdapter", "reinflating! editable: " + editable + "; checking: " + allowCheckingItems);
+//            		holder = new ViewHolder();
+//                    LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
+//            		if(getItemViewType(viewPosition) == 1){
+//                		Log.d("FolderElementAdapter", "inflate checking allowed!");
+//            			view = inflator.inflate(R.layout.template_listview_row_checking, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+//            			CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
+//                        cb.setChecked(true);
+//            		}
+//            		else{
+//                		Log.d("FolderElementAdapter", "inflate w/o checking!");
+//            			view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+//            		}
+//            		holder.elementName = (TextView) view.findViewById(R.id.text);
+//            		holder.row = view;
+//                    
+//                    view.setTag(holder);
+//            	}
+//            	else{
+            		view = convertView;
+//            	}
         }
+        
+        
+      
+    	
         //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
-        final ViewHolder holder = (ViewHolder) view.getTag();
+        ViewHolder holder = (ViewHolder) view.getTag();
+        //if now allowed and not before (or vice versa) -> reinflate
+        
+    	
+//    	final ViewHolder holder = holderTemp;
+        
         setOnClickListener(holder, data);
         /*
          * JACKSON START
@@ -186,6 +268,10 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         	// if so we need to remove the old TextWatcher
         	holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
         	//Log.d("TableNameChangeWatcher", "convert View");
+        }
+        //if checkboxes are activated, set them
+        if(holder.box != null){
+        	holder.box.setChecked(data.checked);
         }
         // set view.elementName according to data
         holder.elementName.setText(data.text.getText());
@@ -236,5 +322,32 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         }
         return view;
     }
+    
+    /**
+     * toggles visibilty of the checkboxes
+     */
+    public void toggleCheckboxVisibility(){
+    	for(FolderElementData oneDatum: allData){
+			 oneDatum.checkBoxVisible = !oneDatum.checkBoxVisible;
+		 }
+		 notifyDataSetChanged();
+    }
+    
+    
+    @Override
+	public void notifyDataSetChanged(){
+    	super.notifyDataSetChanged();
+    }
+    
+    
+//    @Override
+//	public void notifyDataSetChanged(){
+//    	needsReinflate = (allowCheckingItems!=allowCheckingBefore)?true:false;
+//		Log.d("FolderElementAdapter", "notifyDataSetChanged; needsReinflate: " + needsReinflate);
+//    	super.notifyDataSetChanged();
+//    	allowCheckingBefore = allowCheckingItems;
+//    	needsReinflate = false;
+//		Log.d("FolderElementAdapter", "reset needsReinflate");
+//    }
     
 }
