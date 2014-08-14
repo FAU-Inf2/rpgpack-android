@@ -152,6 +152,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     				fragmentTransaction.addToBackStack(null);
     				fragmentTransaction.commit();
     				data.childFragment = newFragment;
+    				SlideoutNavigationActivity.getAc().setCurrentFragment(newFragment);
     				//next line now done in GeneralFragment.onAttach
     				//    			((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).currentFragment = newFragment;
     				//set old Fragment to be the parent IF NOT from slideout menu
@@ -161,6 +162,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     					newFragment.isATopFragment = true;
     					newFragment.fragment_parent = oldFragment;
     				}
+    				Log.d("FolderElementAdapter", "invalidateOptionsMenu!");
     				SlideoutNavigationActivity.getAc().invalidateOptionsMenu();
     				newFragment.elementName = holder.elementName.getText().toString();
     			}
