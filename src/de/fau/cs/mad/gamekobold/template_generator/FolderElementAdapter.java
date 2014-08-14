@@ -42,19 +42,18 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	
 	
 	public ArrayList<FolderElementData> allData;
-	//can we edit the names of the folders/tables/matrices?
-	boolean editable = true;
-//	public boolean allowCheckingItems = false;
-//	public boolean allowCheckingBefore = false;
+	/**
+	 * can we edit the names of the folders/tables/matrices?
+	 * if editable -> EditText-field
+	 * else -> TextView
+	 */
+	private boolean editable = true;
 
 	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
         this.editable = editable;
-//        if(textViewResourceId == R.layout.template_listview_row_checking){
-//        	allowCheckingItems = true;
-//        }
     }
 
 	
@@ -97,7 +96,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		return true;
 	}
 	
-	private void setOnClickListener(final ViewHolder holder, final FolderElementData data){
+	private void setListeners(final ViewHolder holder, final FolderElementData data){
 		holder.row.setOnClickListener(new OnClickListener() {
     		@Override
     		public void onClick(View v) {
@@ -175,7 +174,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					data.checked = isChecked;
-					//TODO: jackson store disabling this category
+					//TODO: jackson store: enabling(check)/disabling(uncheck) this category
 				}
 			});
 		}
@@ -220,46 +219,11 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
             holder.row = view;
             view.setTag(holder);
         } else {
-//    		Log.d("FolderElementAdapter", "convertView != null; needsReinflate: " + needsReinflate);
-//            	if(data.needsReinflate){
-//            		data.needsReinflate = false;
-////            		Log.d("FolderElementAdapter", "gets reinflated");
-////            		Log.d("FolderElementAdapter", "allowCheckingItems: " + allowCheckingItems + "; allowCheckingBefore: " + allowCheckingBefore);
-//                    ViewHolder holder = new ViewHolder();
-////            		Log.d("FolderElementAdapter", "reinflating! editable: " + editable + "; checking: " + allowCheckingItems);
-//            		holder = new ViewHolder();
-//                    LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
-//            		if(getItemViewType(viewPosition) == 1){
-//                		Log.d("FolderElementAdapter", "inflate checking allowed!");
-//            			view = inflator.inflate(R.layout.template_listview_row_checking, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
-//            			CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
-//                        cb.setChecked(true);
-//            		}
-//            		else{
-//                		Log.d("FolderElementAdapter", "inflate w/o checking!");
-//            			view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
-//            		}
-//            		holder.elementName = (TextView) view.findViewById(R.id.text);
-//            		holder.row = view;
-//                    
-//                    view.setTag(holder);
-//            	}
-//            	else{
-            		view = convertView;
-//            	}
+        	view = convertView;
         }
-        
-        
-      
     	
-        //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
         ViewHolder holder = (ViewHolder) view.getTag();
-        //if now allowed and not before (or vice versa) -> reinflate
-        
-    	
-//    	final ViewHolder holder = holderTemp;
-        
-        setOnClickListener(holder, data);
+        setListeners(holder, data);
         /*
          * JACKSON START
          */
@@ -324,30 +288,13 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     }
     
     /**
-     * toggles visibilty of the checkboxes
+     * set visibilty of the checkboxes (all data items handled by this adapter)
      */
-    public void toggleCheckboxVisibility(boolean visible){
+    public void setCheckboxVisibility(boolean visible){
     	for(FolderElementData oneDatum: allData){
 			 oneDatum.checkBoxVisible = visible;
 		 }
 		 notifyDataSetChanged();
     }
-    
-    
-    @Override
-	public void notifyDataSetChanged(){
-    	super.notifyDataSetChanged();
-    }
-    
-    
-//    @Override
-//	public void notifyDataSetChanged(){
-//    	needsReinflate = (allowCheckingItems!=allowCheckingBefore)?true:false;
-//		Log.d("FolderElementAdapter", "notifyDataSetChanged; needsReinflate: " + needsReinflate);
-//    	super.notifyDataSetChanged();
-//    	allowCheckingBefore = allowCheckingItems;
-//    	needsReinflate = false;
-//		Log.d("FolderElementAdapter", "reset needsReinflate");
-//    }
     
 }

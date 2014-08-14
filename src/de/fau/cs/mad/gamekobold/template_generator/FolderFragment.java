@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -110,6 +109,42 @@ public class FolderFragment extends GeneralFragment {
 		});
         dialogCreateElement = alertDialogBuilder.create();
     }
+	
+//	public void setAllCheckboxesVisibility(boolean visible){
+//		for(FolderElementData datum : allData){
+//			datum.checkBoxVisible = visible;
+//		}
+//	 }
+	
+	/**
+	 * sets visibilty of all folder-element checkboxes below the one it is called on
+	 * @param visible
+	 */
+	public void setCheckboxVisibilityBelow(boolean visible){
+		//check if allData exists (== items in folder)
+		if(allData != null){
+			for(FolderElementData datum : allData){
+				if(datum.childFragment instanceof FolderFragment){
+					((FolderFragment) datum.childFragment).setCheckboxVisibility(visible);
+					((FolderFragment) datum.childFragment).setCheckboxVisibilityBelow(visible);
+				}
+			}
+		}
+	 }
+	
+	/**
+	 * sets the visibilty of checkboxes for this
+	 * @param visible
+	 */
+	public void setCheckboxVisibility(boolean visible){
+		//dataAdapter might not be set -> no subitems
+		if(dataAdapter != null){
+			//but if: set checkboxes of items visible
+			dataAdapter.setCheckboxVisibility(visible);
+		}
+	 }
+	
+	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
