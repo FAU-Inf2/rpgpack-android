@@ -44,12 +44,6 @@ public abstract class GeneralFragment extends Fragment {
 	}
 	
 	@Override
-	public void onAttach(Activity activity) {
-		SlideoutNavigationActivity.getAc().setCurrentFragment(this);
-		super.onAttach(activity);
-	}
-	
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		if(backStackElement!=null){
 			getFragmentManager().putFragment(outState,"backStackElement",backStackElement);
