@@ -351,9 +351,25 @@ public abstract class JacksonInterface {
 		return builder.toString();
 	}
 	
+	public static void saveGame(Game game, Context context) throws JsonGenerationException, JsonMappingException, IOException {
+		if(game == null || context == null) {
+			return;
+		}
+		if(game.getFileAbsolutePath().isEmpty()) {
+			final File gameFolder = JacksonInterface.getGameRootDirectory(context);
+			String fileName = JacksonInterface.getSanitizedFileName(game.getGameName());
+			if(gameFolder != null) {
+				game.setFileAbsolutePath(gameFolder.getAbsolutePath() + File.separatorChar + fileName);
+			}
+		}
+		File gameFile = new File(game.getFileAbsolutePath());
+		saveGame(gameFile, game);
+	}
+	
 	public static void saveGame(File gameFile, Game game) throws JsonGenerationException, JsonMappingException, IOException {
 		FileOutputStream outStream = new FileOutputStream(gameFile);
 		saveGame(outStream, game);
+		game.setFileTimeStamp(gameFile.lastModified());
 	}
 	
 	private static void saveGame(FileOutputStream outStream, Game game) throws JsonGenerationException, JsonMappingException, IOException {
