@@ -71,6 +71,7 @@ public class CreateNewGameFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// templates we want to display
+		// TODO move to onResume?
 		templates = TemplateLab.get(getActivity()).getTemplates();
 		newGame = new Game();
 		setHasOptionsMenu(true);
