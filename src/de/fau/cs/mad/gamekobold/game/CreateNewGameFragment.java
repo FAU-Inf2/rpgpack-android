@@ -39,6 +39,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
@@ -256,7 +257,12 @@ public class CreateNewGameFragment extends Fragment {
 				Toast.makeText(getActivity(), "Dein Game wird erstellt!",
 						Toast.LENGTH_SHORT).show();
 				// TODO create newGame object speichern!!!
-
+				try {
+					JacksonInterface.saveGame(newGame, getActivity());
+				}
+				catch(Throwable e) {
+					e.printStackTrace();
+				}
 			}
 		});
 

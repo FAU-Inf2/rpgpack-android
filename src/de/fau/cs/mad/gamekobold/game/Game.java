@@ -23,7 +23,7 @@ public class Game implements Serializable {
 	private String fileAbsolutePath;
 	@JsonIgnore
 	private long fileTimeStamp;
-	private List<String> characterFileAbsPathList;
+//	private List<String> characterFileAbsPathList;
 
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
@@ -35,7 +35,7 @@ public class Game implements Serializable {
 		this.setCharakterList(characterList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-		this.characterFileAbsPathList = new ArrayList<String>();
+//		this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
 	public Game(String gameName, Template template, String date) {
@@ -55,7 +55,7 @@ public class Game implements Serializable {
 		this.characterList = new ArrayList<GameCharacter>();
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-		this.characterFileAbsPathList = new ArrayList<String>();
+//		this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
 	public boolean addCharacter(GameCharacter character) {
