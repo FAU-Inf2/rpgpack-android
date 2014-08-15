@@ -18,14 +18,24 @@
         android:scaleType="fitXY"
         android:src="@drawable/shape_circle_green" />
 
-    <TextView
-        android:id="@+id/textItemTitle"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
         android:layout_below="@+id/character_icon_circle"
-        android:gravity="center"
-        android:text="name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="10sp" >
+        </TextView>
+    </RelativeLayout>
 
 </RelativeLayout>

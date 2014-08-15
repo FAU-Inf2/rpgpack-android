@@ -14,7 +14,7 @@
         android:layout_toRightOf="@+id/iconView"
         android:text="GameName"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textViewWorldName"
@@ -23,7 +23,8 @@
         android:layout_alignLeft="@+id/textViewGameName"
         android:layout_below="@+id/textViewGameName"
         android:text="Template"
-        android:textColor="@color/light_grey" />
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"  />
 
     <TextView
         android:id="@+id/textViewDate"
@@ -32,7 +33,8 @@
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_below="@+id/textViewWorldName"
         android:text="Date"
-        android:textColor="@color/light_grey" />
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"  />
 
     <ImageView
         android:id="@+id/bracket_grey1_small_image"

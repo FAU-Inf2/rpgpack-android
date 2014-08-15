@@ -88,6 +88,8 @@ public class CreateNewGameFragment extends Fragment {
 		// for back-button
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
+		expandableTemplateList = (ExpandableListView) view
+				.findViewById(R.id.expandableTemplateList);
 		gameName = (EditText) view.findViewById(R.id.gameNameText);
 		worldName = (EditText) view.findViewById(R.id.worldNameText);
 		gameDate = (EditText) view.findViewById(R.id.gameDateText);
@@ -95,8 +97,6 @@ public class CreateNewGameFragment extends Fragment {
 		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
 		pickedCharacterGridView = (GridView) view
 				.findViewById(R.id.pickedCharacterGridView);
-		expandableTemplateList = (ExpandableListView) view
-				.findViewById(R.id.expandableTemplateList);
 
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
@@ -212,7 +212,6 @@ public class CreateNewGameFragment extends Fragment {
 											int which) {
 										// remove picked character from the new
 										// game
-
 										if ((getActivity().getIntent()
 												.hasExtra(EXTRA_GAME_TO_EDIT))) {
 											gameToEdit
@@ -222,6 +221,16 @@ public class CreateNewGameFragment extends Fragment {
 										} else {
 											newGame.removeCharacter(curGameCharacter);
 											pickedCharacterGridAdapter
+													.notifyDataSetChanged();
+										}
+
+										// remove highlighting
+										ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) expandableListAdapter.adapter).selectedCharacters;
+										if (selectedCharacters
+												.contains(curGameCharacter)) {
+											selectedCharacters
+													.remove(curGameCharacter);
+											expandableListAdapter.adapter
 													.notifyDataSetChanged();
 										}
 									}
