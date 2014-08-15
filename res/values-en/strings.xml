@@ -230,5 +230,6 @@
     <string name="msg_yes_to_delete_character">Click Yes to delete this character.</string>
     
     <string name="title_activity_logo">LogoActivity</string>
+    <string name ="warning_set_character_name">Please choose a name for your character!</string>
     
 </resources>

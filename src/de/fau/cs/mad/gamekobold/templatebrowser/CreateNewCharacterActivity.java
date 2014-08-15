@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
@@ -208,6 +209,10 @@ import de.fau.cs.mad.gamekobold.jackson.Template;
 			characterEditButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					if(characterName.getEditableText().toString().isEmpty()) {
+						Toast.makeText(CreateNewCharacterActivity.this, getString(R.string.warning_set_character_name), Toast.LENGTH_LONG).show();
+						return;
+					}
 					Intent intent = new Intent(CreateNewCharacterActivity.this, CharacterEditActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					// flag to distinguish between editing and creating
