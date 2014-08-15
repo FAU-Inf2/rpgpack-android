@@ -85,9 +85,6 @@ public class GameCharacter implements Serializable{
 	}
 	
 	public boolean isFilePathValid() {
-		if("".equals(fileAbsPath)) {
-			return false;
-		}
-		return true;
+		return !fileAbsPath.isEmpty();
 	}
 }
