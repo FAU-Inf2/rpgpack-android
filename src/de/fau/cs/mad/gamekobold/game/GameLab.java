@@ -65,6 +65,7 @@ public class GameLab {
 	 * @return true if the game list has been reloaded, false otherwise.
 	 */
 	private boolean checkForGameDirectoryChange() {
+		Log.d(LOG_TAG, "Checking for directory changes.");
 		// get game root directory
 		final File gameDir = JacksonInterface.getGameRootDirectory(appContext);
 		if(gameDir != null) {
@@ -110,6 +111,7 @@ public class GameLab {
 	 * Checks every game if it has been changed. If so it will be reloaded.
 	 */
 	private void checkEveryGameForChanges() {
+		Log.d(LOG_TAG, "Checking every game for changes");
 		// for every game
 		for(Game game : games) {
 			// get file for game
