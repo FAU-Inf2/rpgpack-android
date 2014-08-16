@@ -34,14 +34,12 @@ public class TemplateLab {
 	}
 
 	public ArrayList<Template> getTemplates() {
-		// checks if a template has been created or deleted
-		if(!checkForTemplateDirectoryChange()) {
-			// only check every template for a change when not reloading the whole list
-		}
+		assureListIsUpToDate();
 		return templates;
 	}
 
 	public Template getGame(String templateName) {
+		assureListIsUpToDate();
 		for (Template t : templates) {
 			if (t.getTemplateName().equals(templateName))
 				return t;
@@ -49,9 +47,17 @@ public class TemplateLab {
 		return null;
 	}
 
+	private void assureListIsUpToDate() {
+		// checks if a template has been created or deleted
+		if(!checkForTemplateDirectoryChange()) {
+			// only check every template for a change when not reloading the whole list
+			checkEveryTemplateForChanges();
+		}
+	}
+
 	/**
 	 * Checks the template directory for a change. Its time stamp is updated
-	 * when a file is created or deleted.
+	 * when a file is created or deleted. Only loads metadata for templates.
 	 * @return true if the template list has been reloaded, false otherwise.
 	 */
 	private boolean checkForTemplateDirectoryChange() {
@@ -108,12 +114,49 @@ public class TemplateLab {
 	}
 
 	/**
+	 * Checks every template if it has been changed. If so it and its characters will be reloaded.
+	 */
+	private void checkEveryTemplateForChanges() {
+		for(Template template : templates) {
+			final File templateFile = template.getTemplateFile();
+			if(templateFile != null) {
+				if(template.hasFileTimeStampChanged()) {
+					// template file has been changed
+					try {
+						de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface.loadTemplate(templateFile, true);
+						if (loadedTemplate != null) {
+							// take over changes
+							template.setTemplateName(loadedTemplate.templateName);
+							template.setWorldName(loadedTemplate.gameName);
+							template.setAuthor(loadedTemplate.author);
+							template.setDate(loadedTemplate.date);
+							template.setIconID(loadedTemplate.iconID);
+							template.setDescription(loadedTemplate.description);
+							// update time stamp
+							template.setFileTimeStamp(templateFile.lastModified());
+							// load characters again
+							loadCharacters(template);
+						}					
+					}
+					catch(Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Loads and adds the characters for the given template.
 	 * @param template
 	 */
 	private void loadCharacters(Template template) {
 		final File characterDir = JacksonInterface.getDirectoryForCharacters(template, appContext, false);
+		// nullpointer check
 		if(characterDir != null) {
+			// remove all old characters
+			template.clearCharacters();
+			
 			final File[] characters = characterDir.listFiles();
 			for(final File characterFile : characters) {
 				try {

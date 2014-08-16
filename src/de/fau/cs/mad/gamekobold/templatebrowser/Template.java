@@ -129,6 +129,10 @@ public class Template implements Serializable {
 	public void setCharacters(List<GameCharacter> characters) {
 		this.characters = characters;
 	}
+	
+	public void clearCharacters() {
+		this.characters.clear();
+	}
 
 	public void takeOverValues(final Template otherTemplate) {
 		this.description = otherTemplate.description;
