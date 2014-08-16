@@ -61,7 +61,6 @@ public class GameDetailsFragment extends Fragment {
 		//TODO change it!!!
 		game = GameLab.get(getActivity()).getGame(gName);
 
-		// TODO HIER
 		getActivity().setTitle(game.getGameName());
 
 		gameName = (TextView) view.findViewById(R.id.gameName);

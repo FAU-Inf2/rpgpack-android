@@ -39,6 +39,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
@@ -53,6 +54,9 @@ public class CreateNewGameFragment extends Fragment {
 	private Uri imageUri;
 	private ArrayList<Template> templates;
 	// TODO refactor !!!! too many checks whether it is a newGame or gameToEdit
+	// maybe just use one private Game myGame. check in onCreate if a template is in extras,
+	// if so set myGame to it. otherwise create new empty game and set myGame to it. Don't
+	// know right now if we have to explicitly distinguish between new and edit state.
 	private Game newGame;
 	private Game gameToEdit;
 	private EditText gameName;
@@ -284,13 +288,23 @@ public class CreateNewGameFragment extends Fragment {
 							+ (newGame.getGameName() == null));
 					Log.i("newGame name is: ", "" + newGame.getGameName());
 
-					Intent i = new Intent(getActivity(),
-							GameDetailsActivity.class);
-					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-							newGame.getGameName());
-					startActivity(i);
+					// temp. code: try the saving stuff
+					try {
+						// save game
+						// do not save right now. we do not know what game.template is
+						// right now we are saving null and get null pointer exceptions 
+//						JacksonInterface.saveGame(newGame, getActivity());
+						// only start if saving was successful
+						Intent i = new Intent(getActivity(),
+								GameDetailsActivity.class);
+						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+								newGame.getGameName());
+						startActivity(i);
+					}
+					catch(Throwable e) {
+						e.printStackTrace();
+					}
 				}
-
 			}
 		});
 
