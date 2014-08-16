@@ -47,6 +47,10 @@ public class TemplateLab {
 		return null;
 	}
 
+	/**
+	 * Assures that the template list is up to date. If any thing changed
+	 * the list will be updated.
+	 */
 	private void assureListIsUpToDate() {
 		// checks if a template has been created or deleted
 		if(!checkForTemplateDirectoryChange()) {
