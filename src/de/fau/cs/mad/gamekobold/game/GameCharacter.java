@@ -12,6 +12,7 @@ public class GameCharacter implements Serializable{
 	private List<String> tagList;
 	private String description;
 	private Template template;
+	private String fileAbsPath;
 
 	public GameCharacter(String characterName, String date,
 			List<String> tagList, String description, Template template) {
@@ -20,16 +21,19 @@ public class GameCharacter implements Serializable{
 		this.tagList = tagList;
 		this.description = description;
 		this.template = template;
+		this.fileAbsPath = "";
 	}
 
 	public GameCharacter(String characterName, String date, Template template) {
 		this.characterName = characterName;
 		this.date = date;
 		this.template = template;
+		this.fileAbsPath = "";
 	}
 	//fake item -> createNewCharacter
 	public GameCharacter(String characterName) {
 		this.characterName = characterName;
+		this.fileAbsPath = "";
 	}
 	
 	public String getCharacterName() {
@@ -72,4 +76,15 @@ public class GameCharacter implements Serializable{
 		this.template = template;
 	}
 
+	public String getFileAbsPath() {
+		return fileAbsPath;
+	}
+
+	public void setFileAbsPath(String fileAbsPath) {
+		this.fileAbsPath = fileAbsPath;
+	}
+	
+	public boolean isFilePathValid() {
+		return !fileAbsPath.isEmpty();
+	}
 }

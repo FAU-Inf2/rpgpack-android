@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
@@ -21,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,26 +40,28 @@ public class FolderFragment extends GeneralFragment {
 	 */
 	
 	View view;
-	ListView lView;
-	protected ArrayList<FolderElementData> allData;
+	public ListView lView;
+	public ArrayList<FolderElementData> allData;
 	
 	Button buttonAdd;
 	View mainView;
 	public FolderElementAdapter dataAdapter;
 	AlertDialog dialogCreateElement;
 	View dialogViewCreateElement;
+    boolean editable = true;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		Log.d("FolderFragment","onCreate called");
+        editable = (getActivity() instanceof CharacterEditActivity? false:true);
+		Log.d("FolderFragment","onCreate; editable set to: " + editable);
         // nullcheck needed for jackson inflation. creates allData before onCreate is called
         if(allData == null) {
         	allData = new ArrayList<FolderElementData>();
         }
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
         if(dataAdapter == null) {
-        	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), R.layout.initialrow, allData);
+        	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), editable, R.layout.template_listview_row, allData);
             /*
              * JACKSON START
              */
@@ -79,10 +81,10 @@ public class FolderFragment extends GeneralFragment {
         ImageButton createCollection= (ImageButton) dialogViewCreateElement.findViewById(R.id.create_collection);
         ImageButton createFolder = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_folder);
         createTable.setOnClickListener(new View.OnClickListener() {
-        //	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
+       	//	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.table, nameInput.getText().toString());
+				addItemList(editable, element_type.table, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
 			}
@@ -91,7 +93,7 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.matrix, nameInput.getText().toString());
+				addItemList(editable, element_type.matrix, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
 			}
@@ -100,13 +102,49 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
-				addItemList(element_type.folder, nameInput.getText().toString());
+				addItemList(editable, element_type.folder, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
 			}
 		});
         dialogCreateElement = alertDialogBuilder.create();
     }
+	
+//	public void setAllCheckboxesVisibility(boolean visible){
+//		for(FolderElementData datum : allData){
+//			datum.checkBoxVisible = visible;
+//		}
+//	 }
+	
+	/**
+	 * sets visibilty of all folder-element checkboxes below the one it is called on
+	 * @param visible
+	 */
+	public void setCheckboxVisibilityBelow(boolean visible){
+		//check if allData exists (== items in folder)
+		if(allData != null){
+			for(FolderElementData datum : allData){
+				if(datum.childFragment instanceof FolderFragment){
+					((FolderFragment) datum.childFragment).setCheckboxVisibility(visible);
+					((FolderFragment) datum.childFragment).setCheckboxVisibilityBelow(visible);
+				}
+			}
+		}
+	 }
+	
+	/**
+	 * sets the visibilty of checkboxes for this
+	 * @param visible
+	 */
+	public void setCheckboxVisibility(boolean visible){
+		//dataAdapter might not be set -> no subitems
+		if(dataAdapter != null){
+			//but if: set checkboxes of items visible
+			dataAdapter.setCheckboxVisibility(visible);
+		}
+	 }
+	
+	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
@@ -152,11 +190,16 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void addItemList() {
-		addItemList(element_type.folder, "");
+		addItemList(true, element_type.folder, "");
 	}
 	
-	public void addItemList(element_type selected, String name) {
-		FolderElementData newDataItem = new FolderElementData((SlideoutNavigationActivity)getActivity(), selected);
+	public void addItemList(boolean editable) {
+		addItemList(editable, element_type.folder, "");
+	}
+	
+	public void addItemList(boolean editable, element_type selected, String name) {
+		FolderElementData newDataItem = new FolderElementData(
+				(SlideoutNavigationActivity)getActivity(), editable, selected);
 		newDataItem.text.setText(name);
 		Toast.makeText(getActivity(), "selected: " + selected ,Toast.LENGTH_LONG).show();
 		/*
@@ -205,6 +248,12 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
+		//default: not given if editable; take value from class variable
+		inflateWithJacksonData(myTable, activity, editable);
+	}
+	
+	public void inflateWithJacksonData(ContainerTable myTable, Activity activity, boolean editable) {
+		Log.d("FolderFragment","inflating jackson data; editable: " + editable);
 		// set jackson table for this fragment
 		jacksonTable = myTable;
 		// check if there are any sub tables in this folder
@@ -216,7 +265,7 @@ public class FolderFragment extends GeneralFragment {
 			allData = new ArrayList<FolderElementData>();
 		}
 		if(dataAdapter == null) {
-			dataAdapter = new FolderElementAdapter(activity, R.layout.initialrow, allData);
+			dataAdapter = new FolderElementAdapter(activity, editable, R.layout.template_listview_row, allData);
 			dataAdapter.jacksonTable = jacksonTable;
 		}
 		// add data
@@ -225,7 +274,7 @@ public class FolderFragment extends GeneralFragment {
 			// switch type if sub table
 			if(subTable instanceof ContainerTable) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, element_type.folder);
+				newDataItem = new FolderElementData(activity, editable, element_type.folder);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	
@@ -243,11 +292,13 @@ public class FolderFragment extends GeneralFragment {
 				newDataItem.childFragment.fragment_parent = this;
 				//((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
 				// call recursive
-				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
+				//note: editable must be given because the onCreate was not yet called
+				//and therefore variable "editable" not yet initialized
+				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity, editable);
 			}
 			else if(subTable instanceof Table) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, element_type.table);
+				newDataItem = new FolderElementData(activity, editable, element_type.table);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	
@@ -267,7 +318,7 @@ public class FolderFragment extends GeneralFragment {
 			}
 			else if(subTable instanceof MatrixTable) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, element_type.matrix);
+				newDataItem = new FolderElementData(activity, editable, element_type.matrix);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	

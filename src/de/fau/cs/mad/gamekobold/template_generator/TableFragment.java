@@ -5,9 +5,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
@@ -22,24 +20,17 @@ import de.fau.cs.mad.gamekobold.jackson.StringClass;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
-import de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText.OnEditSessionCompleteListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.widget.SearchViewCompat;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -282,43 +273,19 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			itemValues[rowIndex] = new String[jacksonTableColumnNumber];
 			contentList[rowIndex] = new content_type[jacksonTableColumnNumber];
 			for(int columnIndex=0; columnIndex<jacksonTableColumnNumber; columnIndex++){
-//				View firstRowView = null;
-				//TODO: get saved table type from jackson here
-				//now just assume it is edittext
-//				TableRow firstRow = (TableRow) table.getChildAt(0);
 				IEditableContent jacksonEntry = null;
 				jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
 				
 				final ColumnHeader header = jacksonTable.getColumnHeader(columnIndex);
-				View linkedElement = null;
-//				if(header.isString()) {
-//					linkedElement = initEditText(null, jacksonTable.getEntry(columnIndex, rowIndex));
-//				}
 				if(header.isCheckBox()) {
 					contentList[rowIndex][columnIndex] = content_type.checkbox;
-//					linkedElement = initCheckBox(jacksonTable.getEntry(columnIndex, rowIndex));
 				}
 				else if(header.isPopup()){
 					contentList[rowIndex][columnIndex] = content_type.popup;
-//					linkedElement = initPopup(null, jacksonTable.getEntry(columnIndex, rowIndex), columnIndex, rowIndex);
 				}
 				else{
 					contentList[rowIndex][columnIndex] = content_type.editText;
 				}
-//				if(firstRow != null){
-//					firstRowView = firstRow.getChildAt(columnIndex);
-//				}
-//				if(firstRowView instanceof EditText){
-//					jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
-//				}
-//				else if(firstRowView instanceof LinearLayout){
-//					if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
-//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
-//					}
-//					else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
-//						jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
-//					}
-//				}
 				if(jacksonEntry != null) {
 					String content = jacksonEntry.getContent();
 					itemValues[rowIndex][columnIndex] = content;
@@ -328,7 +295,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		ExpandableListView expListView = (ExpandableListView) mainView.findViewById(R.id.exp_table_list_view);
         final ExpandableListAdapter expListAdapter = new CustomExpandableListAdapter(
                 getActivity(), jacksonTable, this, headlines, contentList, groupList, itemValues);
-        //TODO: set expandable listview adapter to show popup/checkbox change when clicked
         expListView.setAdapter(expListAdapter);
 	}
 	
@@ -1074,7 +1040,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 							popupReferences.dismiss();
 						}
 					});
-                	//XXX:maybe reference-item needs other style?!
                 	setTableStyle(oneLine);
 //                	setAddButtonStyle(oneLine);
 //                	oneLine.setBackground(R.drawable.cell_shape_white_borders);

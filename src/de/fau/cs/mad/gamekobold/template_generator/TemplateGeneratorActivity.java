@@ -1,36 +1,15 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
-import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
-
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.jackson.TemplateSaverTask;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 
@@ -90,7 +69,7 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_edit_mode) {
-        	//TODO: changes to apply in edit mode
+        	//TODO: changes to apply in edit mode -> allow switching table elements
         }
         else if (id == R.id.action_go_above) {
         	goAbove();

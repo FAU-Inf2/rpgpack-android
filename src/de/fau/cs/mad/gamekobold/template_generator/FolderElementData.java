@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 //atm not needed parcelable -> don't know if needed to hold data
 //public class DataHolder implements Parcelable{
@@ -21,17 +22,25 @@ public class FolderElementData{
 	 * JACKSON END
 	 */
 	
-	protected EditText text;
+	protected TextView text;
 	public GeneralFragment childFragment;
 	protected element_type type;
+	protected boolean checked = true;
+	public boolean checkBoxVisible = false;
 	
 	enum element_type{
 		table, matrix, folder;
 	}
 	
-	public FolderElementData(Context parent, element_type typeOfElement) {
+	public FolderElementData(Context parent, boolean editable, element_type typeOfElement) {
 		type = typeOfElement;
-        text = new EditText(SlideoutNavigationActivity.theActiveActivity);
+		if(editable){
+			Log.d("NOTICE", "editable is TRUE!");
+			text = new EditText(SlideoutNavigationActivity.theActiveActivity);
+		}
+		else{
+			text = new TextView(SlideoutNavigationActivity.theActiveActivity);
+		}
         // create new TextWatcher for this data element.
         // it is added to the view representing this element
         // if the name is changed by the user we set the data element name and jackson table name

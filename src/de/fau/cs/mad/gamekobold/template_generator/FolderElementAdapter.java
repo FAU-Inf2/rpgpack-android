@@ -21,9 +21,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
@@ -37,25 +41,43 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	 */
 	
 	
-	ArrayList<FolderElementData> allData;
-	
+	public ArrayList<FolderElementData> allData;
+	/**
+	 * can we edit the names of the folders/tables/matrices?
+	 * if editable -> EditText-field
+	 * else -> TextView
+	 */
+	private boolean editable = true;
 
-	public FolderElementAdapter(Activity context, int textViewResourceId, ArrayList<FolderElementData> objects) {
+	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
+        this.editable = editable;
     }
 
+	
     // We keep this ViewHolder object to save time. It's quicker than findViewById() when repainting.
 	static class ViewHolder {
-		EditText elementName;
+		TextView elementName;
 		protected View row;
 		TextWatcher jacksonTableNameChangeWatcher = null;
+		CheckBox box;
 	}
 	
 	@Override
 	public int getCount() {
 	    return allData.size();
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+	    return getItem(position).checkBoxVisible?1:0;     
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+	    return 2;
 	}
 
 	@Override
@@ -74,7 +96,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		return true;
 	}
 	
-	private void setOnClickListener(final ViewHolder holder, final FolderElementData data){
+	private void setListeners(final ViewHolder holder, final FolderElementData data){
 		holder.row.setOnClickListener(new OnClickListener() {
     		@Override
     		public void onClick(View v) {
@@ -149,27 +171,61 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				}
     		}
     	});
+		if(holder.box != null){
+			holder.box.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					data.checked = isChecked;
+					//TODO: jackson store: enabling(check)/disabling(uncheck) this category
+				}
+			});
+		}
     }
 
     @Override
     public View getView(int viewPosition, View convertView, ViewGroup parent) {
     	final FolderElementData data = this.getItem(viewPosition);
+		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
         if (convertView == null) {
+    		Log.d("FolderElementAdapter", "convertview == NULL!!!");
             // If it hasn't, set up everything:
             LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
-            view = inflator.inflate(R.layout.initialrow, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
-            final ViewHolder holder = new ViewHolder();
-            holder.elementName = (EditText) view.findViewById(R.id.text);
+            ViewHolder holder = new ViewHolder();
+            //distinguish slightly between how an inflated row should looke like
+//    		Log.d("FolderElementAdapter", "getView; editable: " + editable + "; checking: " + allowCheckingItems);
+            if(editable){
+            		view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (EditText) view.findViewById(R.id.text);
+            }
+            else{
+            	//checking items should only be allowed if they are not editable
+            	if(getItemViewType(viewPosition) == 1){
+            		view = inflator.inflate(R.layout.template_listview_row_checking, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (TextView) view.findViewById(R.id.text);
+                	CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
+                	holder.box = cb;
+                	if(data.checked){
+                		holder.box.setChecked(true);
+                	}
+                	else{
+                		holder.box.setChecked(false);
+                	}
+            	}
+            	else{
+            		view = inflator.inflate(R.layout.template_listview_row, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
+                	holder.elementName = (TextView) view.findViewById(R.id.text);
+            	}
+            }
             holder.row = view;
             view.setTag(holder);
         } else {
-            view = convertView;
+        	view = convertView;
         }
-        //setting of onItemSelectedListener or other adapters needs to be done here! (because recycling of views in android)
-        final ViewHolder holder = (ViewHolder) view.getTag();
-        setOnClickListener(holder, data);
+    	
+        ViewHolder holder = (ViewHolder) view.getTag();
+        setListeners(holder, data);
         /*
          * JACKSON START
          */
@@ -178,6 +234,10 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         	// if so we need to remove the old TextWatcher
         	holder.elementName.removeTextChangedListener(holder.jacksonTableNameChangeWatcher);
         	//Log.d("TableNameChangeWatcher", "convert View");
+        }
+        //if checkboxes are activated, set them
+        if(holder.box != null){
+        	holder.box.setChecked(data.checked);
         }
         // set view.elementName according to data
         holder.elementName.setText(data.text.getText());
@@ -227,6 +287,16 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         	break;
         }
         return view;
+    }
+    
+    /**
+     * set visibilty of the checkboxes (all data items handled by this adapter)
+     */
+    public void setCheckboxVisibility(boolean visible){
+    	for(FolderElementData oneDatum: allData){
+			 oneDatum.checkBoxVisible = visible;
+		 }
+		 notifyDataSetChanged();
     }
     
 }
