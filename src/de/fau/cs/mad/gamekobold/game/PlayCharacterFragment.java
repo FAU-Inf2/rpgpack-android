@@ -44,17 +44,18 @@ public class PlayCharacterFragment extends Fragment {
 
 		Log.i("playedCharacter is null?", "" + (playedCharacter == null));
 
+		// TODO not working! null pointer exeption!
 		// check if a game name is set or not
-		if (playedGame.getGameName() == null) {
-			// set default name -> NewGame
-			getActivity().setTitle(
-					getResources().getString(R.string.titel_create_game)
-							+ " > " + playedCharacter.getCharacterName());
-		} else {
-			getActivity().setTitle(
-					playedGame.getGameName() + " > "
-							+ playedCharacter.getCharacterName());
-		}
+		// if (playedGame.getGameName() == null) {
+		// // set default name -> NewGame
+		// getActivity().setTitle(
+		// getResources().getString(R.string.titel_create_game)
+		// + " > " + playedCharacter.getCharacterName());
+		// } else {
+		// getActivity().setTitle(
+		// playedGame.getGameName() + " > "
+		// + playedCharacter.getCharacterName());
+		// }
 		characterName = (TextView) view.findViewById(R.id.textCharacterName);
 		characterName
 				.setText("PlayCharacterFragment! Du wirst jetzt mit dem Charakter: "

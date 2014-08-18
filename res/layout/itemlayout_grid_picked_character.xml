@@ -12,11 +12,12 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:adjustViewBounds="true"
+        android:background="@drawable/shape_template_browser_circle_green"
         android:gravity="center"
         android:maxWidth="40dip"
-        android:padding="2dp"
+        android:padding="6dp"
         android:scaleType="fitXY"
-        android:src="@drawable/shape_circle_green" />
+        android:src="@drawable/figure1head" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

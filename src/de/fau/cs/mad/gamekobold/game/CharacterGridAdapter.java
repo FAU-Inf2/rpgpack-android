@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
@@ -37,6 +39,10 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+
+		Bitmap bitmap = null;
+		String path = "";
+
 		// last item -> create new Character
 		if (position == characters.size() - 1) {
 			Log.d("position", "" + String.valueOf(position));
@@ -89,6 +95,19 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
+				if (curCharacter.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.figure1head);
+				} else {
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					// set game icon
+					characterIconImageView.setImageBitmap(bitmap);
+				}
+
 				highlightingImageView = (ImageView) convertView
 						.findViewById(R.id.character_highlighting_circle);
 
@@ -125,6 +144,20 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
+
+				if (curCharacter.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.figure1head);
+				} else {
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					// set game icon
+					characterIconImageView.setImageBitmap(bitmap);
+				}
+
 				highlightingImageView = (ImageView) convertView
 						.findViewById(R.id.character_highlighting_circle);
 

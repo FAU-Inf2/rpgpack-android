@@ -5,14 +5,14 @@
     android:thicknessRatio="1.9"
     android:useLevel="false" >
 
-    <solid android:color="@color/background_green" />
+    <solid android:color="@color/background" />
 
     <size
-        android:height="90dp"
-        android:width="90dp" />
+        android:height="85dp"
+        android:width="85dp" />
 
     <stroke
         android:width="2dp"
-        android:color="@android:color/transparent" />
+        android:color="@color/background_green" />
 
 </shape>
