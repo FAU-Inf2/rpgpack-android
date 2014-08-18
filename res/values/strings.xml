@@ -227,5 +227,7 @@
     <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Wähle bitte einen Namen für deinen Charakter!</string>
+    <string name="msg_want_to_delete_game">Moechtest du dieses Spiel wirklich loeschen?</string>
+    <string name="msg_yes_to_delete_game">Klicke auf JA um das Spiel zu loeschen.</string>
 
 </resources>

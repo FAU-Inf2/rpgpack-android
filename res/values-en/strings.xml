@@ -232,4 +232,6 @@
     <string name="title_activity_logo">LogoActivity</string>
     <string name ="warning_set_character_name">Please choose a name for your character!</string>
     
+    <string name="msg_want_to_delete_game">Do you really want to delete this game?</string>
+    <string name="msg_yes_to_delete_game">Click Yes to delete this game.</string>
 </resources>

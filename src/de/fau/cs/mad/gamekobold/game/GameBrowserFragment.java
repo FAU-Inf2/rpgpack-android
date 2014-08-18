@@ -3,15 +3,22 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 
 public class GameBrowserFragment extends ListFragment {
 	private ArrayList<Game> games;
@@ -28,6 +35,52 @@ public class GameBrowserFragment extends ListFragment {
 		setListAdapter(adapter);
 		setHasOptionsMenu(true);
 //		gameFolderTimeStamp = 0;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				Log.d("GameBrowserFragment", "position >>"+position);
+				final Game longClickedGame = games.get(position);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle(getResources().getString(
+						R.string.msg_want_to_delete_game));
+				builder.setMessage(getResources().getString(
+						R.string.msg_yes_to_delete_game));
+				builder.setNegativeButton(
+						getResources().getString(R.string.no),
+
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+							}
+						});
+				builder.setPositiveButton(
+						getResources().getString(R.string.yes),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(
+									DialogInterface dialog,
+									int which) {
+								File file = new File(longClickedGame.getFileAbsolutePath());
+								if (file != null) {
+									if (file.delete()) {
+										adapter.remove(longClickedGame);
+										adapter.notifyDataSetChanged();
+									}
+								}
+							}
+						});
+				builder.create().show();
+				return true;
+			}
+		});
 	}
 	
 	@Override
