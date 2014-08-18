@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	// the list of objects we want to display
 	private List<GameCharacter> characters;
 	private ImageView characterIconImageView;
+	private ImageView highlightingImageView;
 	private TextView characterNameTextView;
 
 	public CharacterGridAdapter(Context context, Template template) {
@@ -86,20 +89,30 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
+				highlightingImageView = (ImageView) convertView
+						.findViewById(R.id.character_highlighting_circle);
+
 				Log.d("characterIconImageView is null?", ""
 						+ (characterIconImageView == null));
 
 				Log.d("selectedCharacters.contains(position)?", ""
 						+ (selectedCharacters.contains(position)));
 
-				// characterIconImageView.setBackgroundResource(selectedCharacters
-				// .contains(curCharacter) ? (R.drawable.background)
-				// : (R.drawable.clickdummy_background));
+				GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+						.getDrawable();
 
-				characterIconImageView.setBackgroundColor(selectedCharacters
+				Log.d("highlightingShape is null?", ""
+						+ (highlightingShape == null));
+
+				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
 						.getColor(R.color.blue) : context.getResources()
 						.getColor(android.R.color.transparent));
+
+				// characterIconImageView.setBackgroundColor(selectedCharacters
+				// .contains(curCharacter) ? context.getResources()
+				// .getColor(R.color.blue) : context.getResources()
+				// .getColor(android.R.color.transparent));
 			}
 			// or reuse
 			else {
@@ -112,12 +125,25 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
+				highlightingImageView = (ImageView) convertView
+						.findViewById(R.id.character_highlighting_circle);
 
 				// characterIconImageView.setBackgroundResource(selectedCharacters
 				// .contains(curCharacter) ? (R.drawable.background)
 				// : (R.drawable.clickdummy_background));
 
-				characterIconImageView.setBackgroundColor(selectedCharacters
+				// characterIconImageView.setBackgroundColor(selectedCharacters
+				// .contains(curCharacter) ? context.getResources()
+				// .getColor(R.color.blue) : context.getResources()
+				// .getColor(android.R.color.transparent));
+				//
+				GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+						.getDrawable();
+
+				Log.d("highlightingShape is null?", ""
+						+ (highlightingShape == null));
+
+				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
 						.getColor(R.color.blue) : context.getResources()
 						.getColor(android.R.color.transparent));
