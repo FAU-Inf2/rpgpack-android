@@ -39,7 +39,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
@@ -53,8 +52,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
-	// private Game newGame;
-	// private Game gameToEdit;
+
 	private Game curGame;
 	private EditText gameName;
 	private EditText worldName;
