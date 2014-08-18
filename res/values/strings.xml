@@ -181,10 +181,10 @@
     <string name="game_browser_title">Deine Spiele</string>
 
     <!-- fragment_create_new_game -->
-    <string name="hint_game_name">Spielname...</string>
-    <string name="hint_1">Hint1...</string>
-    <string name="hint_2">Hint2...</string>
-    <string name="hint_3">Hint3...</string>
+    <string name="hint_game_name">Spielname&#8230;</string>
+    <string name="hint_1">Hint1&#8230;</string>
+    <string name="hint_2">Hint2&#8230;</string>
+    <string name="hint_3">Hint3&#8230;</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>

@@ -5,37 +5,43 @@ import java.util.List;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class GameCharacter implements Serializable{
+public class GameCharacter implements Serializable {
 	// TODO CharakterInfo
 	private String characterName;
 	private String date;
 	private List<String> tagList;
 	private String description;
 	private Template template;
+	private String iconPath;
 	private String fileAbsPath;
 
 	public GameCharacter(String characterName, String date,
-			List<String> tagList, String description, Template template) {
+			List<String> tagList, String description, String iconPath,
+			Template template) {
 		this.characterName = characterName;
 		this.date = date;
 		this.tagList = tagList;
 		this.description = description;
 		this.template = template;
+		this.iconPath = iconPath;
 		this.fileAbsPath = "";
 	}
 
-	public GameCharacter(String characterName, String date, Template template) {
+	public GameCharacter(String characterName, String date, Template template,
+			String iconPath) {
 		this.characterName = characterName;
 		this.date = date;
 		this.template = template;
+		this.iconPath = iconPath;
 		this.fileAbsPath = "";
 	}
-	//fake item -> createNewCharacter
+
+	// fake item -> createNewCharacter
 	public GameCharacter(String characterName) {
 		this.characterName = characterName;
 		this.fileAbsPath = "";
 	}
-	
+
 	public String getCharacterName() {
 		return characterName;
 	}
@@ -76,6 +82,14 @@ public class GameCharacter implements Serializable{
 		this.template = template;
 	}
 
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
+	}
+
 	public String getFileAbsPath() {
 		return fileAbsPath;
 	}
@@ -83,7 +97,7 @@ public class GameCharacter implements Serializable{
 	public void setFileAbsPath(String fileAbsPath) {
 		this.fileAbsPath = fileAbsPath;
 	}
-	
+
 	public boolean isFilePathValid() {
 		return !fileAbsPath.isEmpty();
 	}
