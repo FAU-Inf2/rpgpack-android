@@ -190,6 +190,7 @@
     <string name="text_change_game">Spiel anpassen</string>
     <string name="text_remove_character_from_game">Charakter aus diesem Spiel löschen?</string>
     <string name="text_click_to_remove_character_from_game">Klicke auf JA um diesen Charakter aus dem Spiel zu löschen.</string>
+    <string name="msg_edit_game_mode">Nun kann Du das Spiel bearbeiten!</string>
 
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
@@ -218,13 +219,14 @@
     <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">Willst Du den Charakter ansehen und ggf. ändern?</string>
     <string name="click_to_redirect_to_edit_character">Klicke auf JA um zu Charakter-Editor zu gelangen.</string>
+    <string name="msg_added_to_game">wird zum Spiel hinzugefügt!</string>
 
     <!-- CreateNewGameFragment -->
     <string name="popup_create_game_info_titel">Spielnotizen</string>
     <string name="titel_create_game">Neues Spiel</string>
     <string name="warning_set_gamename">Dein Spiel braucht einen Namen!</string>
-    <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
-    <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
+    <string name="msg_ask_character_deletion">Möchtest du diesen Charakter wirklich löschen?</string>
+    <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu löschen.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Wähle bitte einen Namen für deinen Charakter!</string>
     <string name="create_new_game_last_item">Neues Spiel erstellen&#8230;</string>

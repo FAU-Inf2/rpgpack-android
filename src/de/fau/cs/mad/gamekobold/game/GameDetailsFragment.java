@@ -170,9 +170,12 @@ public class GameDetailsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// go into edit game mode
-				Toast.makeText(getActivity(),
-						"Nun kann Du das Spiel bearbeiten!", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(
+						getActivity(),
+
+						getActivity().getResources().getString(
+								R.string.msg_edit_game_mode),
+						Toast.LENGTH_SHORT).show();
 				// TODO
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
