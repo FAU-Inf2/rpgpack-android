@@ -3,6 +3,10 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class GameCharacter implements Serializable{
@@ -13,6 +17,28 @@ public class GameCharacter implements Serializable{
 	private String description;
 	private Template template;
 	private String fileAbsPath;
+	
+	/**
+	 * Constructor for jackson.
+	 * @param characterName
+	 * @param date
+	 * @param tagList
+	 * @param description
+	 * @param fileAbsPath
+	 */
+	@JsonCreator
+	public GameCharacter( @JsonProperty("characterName") String characterName,
+						@JsonProperty("date")String date,
+						@JsonProperty("tagList") List<String> tagList,
+						@JsonProperty("description") String description,
+						@JsonProperty("fileAbsPath") String fileAbsPath) {
+		this.template = null;
+		this.characterName = characterName;
+		this.date = date;
+		this.tagList = tagList;
+		this.description = description;
+		this.fileAbsPath = fileAbsPath;
+	}
 
 	public GameCharacter(String characterName, String date,
 			List<String> tagList, String description, Template template) {
@@ -68,6 +94,7 @@ public class GameCharacter implements Serializable{
 		this.description = description;
 	}
 
+	@JsonIgnore
 	public Template getTemplate() {
 		return template;
 	}
@@ -83,7 +110,8 @@ public class GameCharacter implements Serializable{
 	public void setFileAbsPath(String fileAbsPath) {
 		this.fileAbsPath = fileAbsPath;
 	}
-	
+
+	@JsonIgnore
 	public boolean isFilePathValid() {
 		return !fileAbsPath.isEmpty();
 	}

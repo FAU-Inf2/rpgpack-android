@@ -15,13 +15,14 @@ public class Game implements Serializable {
 	private String date;
 	private List<String> tagList;
 	private String description;
+
 	private Template template;
-	@JsonIgnore
+
 	private List<GameCharacter> characterList;
 	private String iconPath;
-	@JsonIgnore
+
 	private String fileAbsolutePath;
-	@JsonIgnore
+
 	private long fileTimeStamp;
 //	private List<String> characterFileAbsPathList;
 
@@ -113,7 +114,8 @@ public class Game implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@JsonIgnore
 	public Template getTemplate() {
 		return template;
 	}
@@ -138,7 +140,8 @@ public class Game implements Serializable {
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
-
+	
+	@JsonIgnore
 	public String getFileAbsolutePath() {
 		return fileAbsolutePath;
 	}
@@ -146,7 +149,8 @@ public class Game implements Serializable {
 	public void setFileAbsolutePath(String fileAbsolutePath) {
 		this.fileAbsolutePath = fileAbsolutePath;
 	}
-
+	
+	@JsonIgnore
 	public long getFileTimeStamp() {
 		return fileTimeStamp;
 	}

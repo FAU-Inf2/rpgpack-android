@@ -59,6 +59,7 @@ public class GameDetailsFragment extends Fragment {
 				EXTRA_GAME_NAME);
 		
 		//TODO change it!!!
+		Log.d("GameDetailsFragment", "getGame >>"+gName);
 		game = GameLab.get(getActivity()).getGame(gName);
 
 		getActivity().setTitle(game.getGameName());

@@ -1,7 +1,9 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -109,7 +111,10 @@ public class CreateNewGameFragment extends Fragment {
 					EXTRA_GAME_TO_EDIT);
 
 			gameName.setText(gameToEdit.getGameName());
-			worldName.setText(gameToEdit.getTemplate().getWorldName());
+			final Template template = gameToEdit.getTemplate();
+			if(template != null) {
+				worldName.setText(template.getWorldName());
+			}
 			gameDate.setText(gameToEdit.getDate());
 			// addImageButton.setImageBitmap(gameToEdit.getBitmap);
 			getActivity().setTitle(gameToEdit.getGameName());
@@ -284,18 +289,29 @@ public class CreateNewGameFragment extends Fragment {
 
 				// we've got a game for edit
 				if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-					Intent i = new Intent(getActivity(),
-							GameDetailsActivity.class);
-					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-							gameToEdit.getGameName());
-					startActivity(i);
+					try {
+						// save game
+						JacksonInterface.saveGame(gameToEdit, getActivity());
+						// only start if saving was successful
+						Intent i = new Intent(getActivity(),
+								GameDetailsActivity.class);
+						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+								gameToEdit.getGameName());
+						startActivity(i);
+					}
+					catch(Throwable e) {
+						e.printStackTrace();
+					}
 				} else {
 					Log.i("newGame name is null?", ""
 							+ (newGame.getGameName() == null));
 					Log.i("newGame name is: ", "" + newGame.getGameName());
 
-					// temp. code: try the saving stuff
 					try {
+						// set creation date
+						final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+						final Date date = new Date();
+						newGame.setDate(format.format(date));
 						// save game
 						JacksonInterface.saveGame(newGame, getActivity());
 						// only start if saving was successful
