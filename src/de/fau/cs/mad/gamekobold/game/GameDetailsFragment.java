@@ -66,7 +66,13 @@ public class GameDetailsFragment extends Fragment {
 		// TODO change it!!!
 		game = GameLab.get(getActivity()).getGame(gName);
 
-		getActivity().setTitle(game.getGameName());
+		if (!(game == null)) {
+			getActivity().setTitle(game.getGameName());
+
+		} else {
+			getActivity().setTitle("Default");
+
+		}
 
 		gameName = (TextView) view.findViewById(R.id.gameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);

@@ -197,16 +197,14 @@
     <!-- play_character_fragment -->
     <string name="played_character_title">Current character for play</string>
 
-        <!-- Toolbox -->
+    <!-- Toolbox -->
     <string name="open_dice">Dice Tool</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Tactical Map</string>
     <string name="open_randomlist">Random List</string>
-    
     <string name="btn_start">Start</string>
     <string name="btn_pause">Pause</string>
     <string name="set_time">Set Time</string>
- 
     <string name="add_d4">Add d4</string>
     <string name="add_d6">Add d6</string>
     <string name="add_d8">Add d8</string>
@@ -225,11 +223,12 @@
     <string name="popup_create_game_info_titel">Game notices</string>
     <string name="titel_create_game">New Game</string>
     <string name="warning_set_gamename">Your new game should have a name!</string>
-    
     <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
     <string name="msg_yes_to_delete_character">Click Yes to delete this character.</string>
-    
     <string name="title_activity_logo">LogoActivity</string>
-    <string name ="warning_set_character_name">Please choose a name for your character!</string>
-    
+    <string name="warning_set_character_name">Please choose a name for your character!</string>
+    <string name="create_new_game_last_item">Create New Game&#8230;</string>
+    <string name="msg_creating_new_game_p1">Your new game</string>
+    <string name="msg_creating_new_game_p2">is created!</string>
+
 </resources>

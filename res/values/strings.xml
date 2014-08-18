@@ -227,5 +227,8 @@
     <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Wähle bitte einen Namen für deinen Charakter!</string>
+    <string name="create_new_game_last_item">Neues Spiel erstellen&#8230;</string>
+    <string name="msg_creating_new_game_p1">Dein neues Spiel</string>
+    <string name="msg_creating_new_game_p2">wird erstellt!</string>
 
 </resources>

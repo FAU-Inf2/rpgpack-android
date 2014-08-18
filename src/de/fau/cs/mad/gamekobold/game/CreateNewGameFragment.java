@@ -261,8 +261,17 @@ public class CreateNewGameFragment extends Fragment {
 					return;
 				}
 
-				Toast.makeText(getActivity(), "Dein Game wird erstellt!",
+				Toast.makeText(
+						getActivity(),
+						getActivity().getResources().getString(
+								R.string.warning_set_gamename)
+								+ " "
+								+ gameName.getEditableText().toString()
+								+ " "
+								+ getActivity().getResources().getString(
+										R.string.warning_set_gamename),
 						Toast.LENGTH_SHORT).show();
+				
 				// TODO create newGame object speichern!!!
 
 				// now it goes to GameDetailsFragment

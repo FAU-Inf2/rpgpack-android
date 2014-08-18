@@ -63,7 +63,8 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 				TextView gName = (TextView) rowView
 						.findViewById(R.id.textViewNewGame);
-				gName.setText("Create New Game...");
+				gName.setText(context.getResources().getString(
+						R.string.create_new_game_last_item));
 
 			} else {
 				Log.e("er", "position: " + position);
