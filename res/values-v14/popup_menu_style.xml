@@ -13,9 +13,10 @@
         <item name="android:popupMenuStyle">@style/toolbox_popup</item>
     </style>
     
-     <style name="toolbox_popup" parent="@android:style/Widget.Holo.PopupMenu">
+     <style name="toolbox_popup" parent="@android:style/Widget.PopupMenu">
          <item name="android:popupBackground">@color/background_green</item>
          </style>
+         
 
 
 </resources>

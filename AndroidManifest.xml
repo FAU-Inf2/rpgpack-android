@@ -94,6 +94,8 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.CirclesActivity" >
+        </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.ToolboxDiceActivity"
             android:theme="@style/PopupStyle" >

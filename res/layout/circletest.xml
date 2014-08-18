@@ -1,0 +1,9 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/scroller">
+    <de.fau.cs.mad.gamekobold.game.CirclesDrawingView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
