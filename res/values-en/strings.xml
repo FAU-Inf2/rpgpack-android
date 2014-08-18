@@ -137,7 +137,7 @@
     <string name="hint_your_description">Your description</string>
     <string name="back">Back</string>
     <string name="msg_want_to_delete">Do you really want to delete this template?</string>
-    <string name="msg_yes_to_delete">Click Yes to delete this template.</string>
+    <string name="msg_yes_to_delete">Click Yes to delete this template and all associated characters.</string>
     <string name="edit_character">Edit Character</string>
 
     <!-- alertdialog_template_generator_add_new_element -->
