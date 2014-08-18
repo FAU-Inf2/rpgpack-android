@@ -11,22 +11,27 @@
  
     <item
         android:id="@+id/item_d6"
+        android:icon="@drawable/dice_6"
         android:title="@string/add_d6"/>
  
     <item
         android:id="@+id/item_d8"
+        android:icon="@drawable/dice_8"
         android:title="@string/add_d8"/>
     
 	<item
         android:id="@+id/item_d10"
+        android:icon="@drawable/dice_10"
         android:title="@string/add_d10"/>
         
 	<item
         android:id="@+id/item_d12"
+        android:icon="@drawable/dice_12"
         android:title="@string/add_d12"/>
 	
 	<item
         android:id="@+id/item_d20"
+        android:icon="@drawable/dice_20"
         android:title="@string/add_d20"/>
  
 </menu>
