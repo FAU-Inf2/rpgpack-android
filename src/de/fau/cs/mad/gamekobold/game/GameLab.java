@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
@@ -33,11 +34,22 @@ public class GameLab {
 		return sGameLab;
 	}
 
+	/**
+	 * Returns the list of available games on this device. Assures that the list is up to date,
+	 * and reloads it if necessary. The games in the list DO NOT have a fake character element
+	 * for adding a new character!
+	 * @return The list of available games on this device.
+	 */
 	public ArrayList<Game> getGames() {
 		assureListIsUpToDate();
 		return games;
 	}
 
+	/**
+	 * The game DOES NOT have a fake character element for adding a new character!
+	 * @param gameName The name of the game.
+	 * @return The game with the given name or null if there is no such game.
+	 */
 	public Game getGame(String gameName) {
 		assureListIsUpToDate();
 		for (Game g : games) {
@@ -93,6 +105,7 @@ public class GameLab {
 							loadedGame = JacksonInterface.loadGame(file);
 							// check if successful
 							if (loadedGame != null) {
+								// TODO LOAD CHARACTERS
 								// add game to list
 								games.add(loadedGame);
 							}
@@ -144,10 +157,15 @@ public class GameLab {
 		Game game2 = new Game("The Best Game", templates.get(1), "20.05.2014");
 		Game game3 = new Game("Schwarze Auge Game", templates.get(2),
 				"21.05.2014");
-
-		game1.setCharakterList(templates.get(0).getCharacters());
-		game2.setCharakterList(templates.get(1).getCharacters());
-		game3.setCharakterList(templates.get(2).getCharacters());
+		List<GameCharacter> charList = templates.get(0).getCharacters();
+		// remove fake item
+		game1.setCharakterList(charList.subList(0, charList.size()-1));
+		charList = templates.get(1).getCharacters();
+		// remove fake item
+		game2.setCharakterList(charList.subList(0, charList.size()-1));
+		charList = templates.get(2).getCharacters();
+		// remove fake item
+		game3.setCharakterList(charList.subList(0, charList.size()-1));
 
 		games.add(game1);
 		games.add(game2);

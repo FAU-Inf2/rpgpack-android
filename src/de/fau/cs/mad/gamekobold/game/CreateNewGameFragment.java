@@ -108,9 +108,6 @@ public class CreateNewGameFragment extends Fragment {
 			gameToEdit = (Game) getActivity().getIntent().getSerializableExtra(
 					EXTRA_GAME_TO_EDIT);
 
-			// remove last fake item
-			gameToEdit.removeCharacter(gameToEdit.getCharakterList().get(
-					gameToEdit.getCharakterList().size() - 1));
 			gameName.setText(gameToEdit.getGameName());
 			worldName.setText(gameToEdit.getTemplate().getWorldName());
 			gameDate.setText(gameToEdit.getDate());
@@ -300,9 +297,7 @@ public class CreateNewGameFragment extends Fragment {
 					// temp. code: try the saving stuff
 					try {
 						// save game
-						// do not save right now. we do not know what game.template is
-						// right now we are saving null and get null pointer exceptions 
-//						JacksonInterface.saveGame(newGame, getActivity());
+						JacksonInterface.saveGame(newGame, getActivity());
 						// only start if saving was successful
 						Intent i = new Intent(getActivity(),
 								GameDetailsActivity.class);

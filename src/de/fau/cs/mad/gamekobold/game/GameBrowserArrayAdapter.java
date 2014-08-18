@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.game;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -86,11 +87,13 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				Log.e("curGame is null?", "" + (curGame == null));
 
 				gName.setText(curGame.getGameName());
-				gWorld.setText(curGame.getTemplate().getWorldName());
+				// quick fix for null template
+				final Template template = curGame.getTemplate();
+				if(template != null) {
+					gWorld.setText(template.getWorldName());	
+				}
 				gDate.setText(curGame.getDate());
-				// size-1 as last item is fake!(for creating new character)
-				gCounter.setText(String.valueOf(curGame.getCharakterList()
-						.size() - 1));
+				gCounter.setText(String.valueOf(curGame.getCharakterList().size()));
 
 				Log.e("getIconPath is null?", ""
 						+ (curGame.getIconPath() == null));
@@ -139,11 +142,13 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				Game curGame = objects.get(position);
 
 				gName.setText(curGame.getGameName());
-				gWorld.setText(curGame.getTemplate().getWorldName());
+				// quick fix for null template
+				final Template template = curGame.getTemplate();
+				if(template != null) {
+					gWorld.setText(template.getWorldName());	
+				}
 				gDate.setText(curGame.getDate());
-				// size-1 as last item is fake!(for creating new character)
-				gCounter.setText(String.valueOf(curGame.getCharakterList()
-						.size() - 1));
+				gCounter.setText(String.valueOf(curGame.getCharakterList().size()));
 
 				if (curGame.getIconPath() == null) {
 					// set some default game icon

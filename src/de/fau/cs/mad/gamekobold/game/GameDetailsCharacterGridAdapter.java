@@ -69,8 +69,7 @@ public class GameDetailsCharacterGridAdapter extends
 
 	@Override
 	public int getCount() {
-		// as we don't want to show last fake item
-		return (characters.size() - 1);
+		return characters.size();
 	}
 
 }
