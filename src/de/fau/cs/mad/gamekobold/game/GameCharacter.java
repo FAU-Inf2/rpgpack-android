@@ -18,22 +18,21 @@ public class GameCharacter implements Serializable {
 	public GameCharacter(String characterName, String date,
 			List<String> tagList, String description, String iconPath,
 			Template template) {
-		this.characterName = characterName;
-		this.date = date;
+		this(characterName, date, template, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-		this.template = template;
-		this.iconPath = iconPath;
-		this.fileAbsPath = "";
 	}
 
 	public GameCharacter(String characterName, String date, Template template,
 			String iconPath) {
-		this.characterName = characterName;
+		this(characterName, date, template);
+		this.iconPath = iconPath;
+	}
+
+	public GameCharacter(String characterName, String date, Template template) {
+		this(characterName);
 		this.date = date;
 		this.template = template;
-		this.iconPath = iconPath;
-		this.fileAbsPath = "";
 	}
 
 	// fake item -> createNewCharacter
