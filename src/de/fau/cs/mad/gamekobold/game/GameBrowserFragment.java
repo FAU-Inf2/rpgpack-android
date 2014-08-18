@@ -55,6 +55,7 @@ public class GameBrowserFragment extends ListFragment {
 			Log.d("GAME", games.size() + " was clicked");
 			// Start NewGameActivity
 			Intent i = new Intent(getActivity(), CreateNewGameActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(i);
 		} else {
 			// Start GameDetailsActivity
