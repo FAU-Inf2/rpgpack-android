@@ -25,10 +25,10 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="12dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_template_browser_circle_green"
+        android:background="@drawable/shape_game_details_char_border"
         android:gravity="center"
         android:maxWidth="80dip"
-        android:padding="6dp"
+        android:padding="18dp"
         android:scaleType="fitXY"
         android:src="@drawable/game_default_white" />
 

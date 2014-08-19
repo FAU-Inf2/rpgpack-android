@@ -119,7 +119,9 @@ public class CreateNewGameFragment extends Fragment {
 			gameName.setText(curGame.getGameName());
 			worldName.setText(curGame.getTemplate().getWorldName());
 			gameDate.setText(curGame.getDate());
-			// addImageButton.setImageBitmap(curGame.getBitmap);
+			
+			//addImageButton.setImageBitmap(curGame.getIconPath());
+			
 			getActivity().setTitle(curGame.getGameName());
 
 		}
@@ -282,12 +284,12 @@ public class CreateNewGameFragment extends Fragment {
 
 					try {
 						// save game
-						JacksonInterface.saveGame(gameToEdit, getActivity());
+						JacksonInterface.saveGame(curGame, getActivity());
 						// only start if saving was successful
 						Intent i = new Intent(getActivity(),
 								GameDetailsActivity.class);
 						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								gameToEdit.getGameName());
+								curGame.getGameName());
 						startActivity(i);
 					}
 					catch(Throwable e) {
@@ -297,9 +299,9 @@ public class CreateNewGameFragment extends Fragment {
 						// set creation date
 						final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 						final Date date = new Date();
-						newGame.setDate(format.format(date));
+						curGame.setDate(format.format(date));
 					// save game
-						JacksonInterface.saveGame(newGame, getActivity());
+						JacksonInterface.saveGame(curGame, getActivity());
 					
 					// JacksonInterface.saveGame(newGame, getActivity());
 					// only start if saving was successful
