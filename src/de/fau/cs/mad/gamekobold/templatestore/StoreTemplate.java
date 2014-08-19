@@ -1,8 +1,13 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -102,8 +107,18 @@ public class StoreTemplate {
 	
 	@JsonProperty("insert_timestamp")
 	public String getDate() {
-		// TODO Auto-generated method stub
+
+		// TODO after much trial and error, this works, but does not look right.. 
+		// Maybe use JodaTime like suggested on StackOverflow
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.GERMANY);
+		try {
+			return sdf.format(sdf.parse(this.inserted_at));
+		} catch (ParseException e) {
+			Log.e("template_store", "Could not parse date");
+		}
+			
 		return this.inserted_at;
+		
 	}
 	
 	@JsonProperty("insert_timestamp")
