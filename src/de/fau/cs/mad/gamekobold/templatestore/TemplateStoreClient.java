@@ -8,8 +8,8 @@ import android.util.Log;
 
 public class TemplateStoreClient extends HttpClient {
 
-	private final String apiUrl = "http://192.168.2.110:8080/templates";
-	
+	//private final String apiUrl = "http://192.168.2.110:8080/templates";
+	private final String apiUrl = "http://kobold-devel.cloudapp.net:8080/templates";
 	
 	public TemplateStoreClient() {
 		
