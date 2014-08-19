@@ -26,7 +26,7 @@
         android:layout_marginTop="14dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        android:maxWidth="200dip"
+        android:maxWidth="70dip"
         android:padding="2dp"
         android:scaleType="fitXY"
         android:src="@drawable/shape_circle_green" />
@@ -41,6 +41,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

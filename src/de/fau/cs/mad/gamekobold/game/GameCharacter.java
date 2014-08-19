@@ -9,13 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class GameCharacter implements Serializable{
+public class GameCharacter implements Serializable {
 	// TODO CharakterInfo
 	private String characterName;
 	private String date;
 	private List<String> tagList;
 	private String description;
 	private Template template;
+	private String iconPath;
 	private String fileAbsPath;
 	
 	/**
@@ -41,27 +42,31 @@ public class GameCharacter implements Serializable{
 	}
 
 	public GameCharacter(String characterName, String date,
-			List<String> tagList, String description, Template template) {
-		this.characterName = characterName;
-		this.date = date;
+			List<String> tagList, String description, String iconPath,
+			Template template) {
+		this(characterName, date, template, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-		this.template = template;
-		this.fileAbsPath = "";
+	}
+
+	public GameCharacter(String characterName, String date, Template template,
+			String iconPath) {
+		this(characterName, date, template);
+		this.iconPath = iconPath;
 	}
 
 	public GameCharacter(String characterName, String date, Template template) {
-		this.characterName = characterName;
+		this(characterName);
 		this.date = date;
 		this.template = template;
-		this.fileAbsPath = "";
 	}
-	//fake item -> createNewCharacter
+
+	// fake item -> createNewCharacter
 	public GameCharacter(String characterName) {
 		this.characterName = characterName;
 		this.fileAbsPath = "";
 	}
-	
+
 	public String getCharacterName() {
 		return characterName;
 	}
@@ -101,6 +106,14 @@ public class GameCharacter implements Serializable{
 
 	public void setTemplate(Template template) {
 		this.template = template;
+	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
 	}
 
 	public String getFileAbsPath() {

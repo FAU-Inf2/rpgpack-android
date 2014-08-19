@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,7 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	// the list of objects we want to display
 	private List<GameCharacter> characters;
 	private ImageView characterIconImageView;
+	private ImageView highlightingImageView;
 	private TextView characterNameTextView;
 
 	public CharacterGridAdapter(Context context, Template template) {
@@ -34,6 +39,10 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+
+		Bitmap bitmap = null;
+		String path = "";
+
 		// last item -> create new Character
 		if (position == characters.size() - 1) {
 			Log.d("position", "" + String.valueOf(position));
@@ -86,20 +95,43 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
+				if (curCharacter.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(), R.drawable.person_without_plus);
+				} else {
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					// set game icon
+					characterIconImageView.setImageBitmap(bitmap);
+				}
+
+				highlightingImageView = (ImageView) convertView
+						.findViewById(R.id.character_highlighting_circle);
+
 				Log.d("characterIconImageView is null?", ""
 						+ (characterIconImageView == null));
 
 				Log.d("selectedCharacters.contains(position)?", ""
 						+ (selectedCharacters.contains(position)));
 
-				// characterIconImageView.setBackgroundResource(selectedCharacters
-				// .contains(curCharacter) ? (R.drawable.background)
-				// : (R.drawable.clickdummy_background));
+				GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+						.getDrawable();
 
-				characterIconImageView.setBackgroundColor(selectedCharacters
+				Log.d("highlightingShape is null?", ""
+						+ (highlightingShape == null));
+
+				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
-						.getColor(R.color.blue) : context.getResources()
-						.getColor(android.R.color.transparent));
+						.getColor(R.color.background_green) : context
+						.getResources().getColor(android.R.color.transparent));
+
+				// characterIconImageView.setBackgroundColor(selectedCharacters
+				// .contains(curCharacter) ? context.getResources()
+				// .getColor(R.color.blue) : context.getResources()
+				// .getColor(android.R.color.transparent));
 			}
 			// or reuse
 			else {
@@ -113,14 +145,42 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
+				if (curCharacter.getIconPath() == null) {
+					// set some default game icon
+					bitmap = BitmapFactory.decodeResource(
+							context.getResources(),
+							R.drawable.person_without_plus);
+				} else {
+					bitmap = BitmapFactory.decodeFile(path);
+				}
+
+				if (bitmap != null) {
+					// set game icon
+					characterIconImageView.setImageBitmap(bitmap);
+				}
+
+				highlightingImageView = (ImageView) convertView
+						.findViewById(R.id.character_highlighting_circle);
+
 				// characterIconImageView.setBackgroundResource(selectedCharacters
 				// .contains(curCharacter) ? (R.drawable.background)
 				// : (R.drawable.clickdummy_background));
 
-				characterIconImageView.setBackgroundColor(selectedCharacters
+				// characterIconImageView.setBackgroundColor(selectedCharacters
+				// .contains(curCharacter) ? context.getResources()
+				// .getColor(R.color.blue) : context.getResources()
+				// .getColor(android.R.color.transparent));
+				//
+				GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+						.getDrawable();
+
+				Log.d("highlightingShape is null?", ""
+						+ (highlightingShape == null));
+
+				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
-						.getColor(R.color.blue) : context.getResources()
-						.getColor(android.R.color.transparent));
+						.getColor(R.color.background_green) : context
+						.getResources().getColor(android.R.color.transparent));
 			}
 
 		}
