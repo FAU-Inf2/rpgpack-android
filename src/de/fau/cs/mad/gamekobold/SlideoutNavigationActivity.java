@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold;
 
 import java.util.concurrent.CountDownLatch;
 
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
@@ -33,6 +34,8 @@ import android.widget.Toast;
 public class SlideoutNavigationActivity extends FragmentActivity {
 
 	public static Template myTemplate = null;
+	// for distinguishing between template creation/editing and character
+	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
 	public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
 	public static final String AUTO_SAVE_TEMPLATE_ON_EXIT = "AUTO_SAVE_TEMPLATE_ON_EXIT";
@@ -61,29 +64,32 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		 Log.d("Saved instance state", ""+savedInstanceState);
 		 if(savedInstanceState == null) {
 			 Intent intent = getIntent();
-			 creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
-			 // is a new template created?
-			 if(creationMode) {
-				 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
-				 if(template != null) {
-					 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
-					 // template.print();
-					 myTemplate = template;
+			 //check if we are in template mode
+			 if(intent.getBooleanExtra(MODE_TEMPLATE, true)) {
+				 creationMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE, true);
+				 // is a new template created?
+				 if(creationMode) {
+					 Template template = (Template)intent.getParcelableExtra(Template.PARCELABLE_STRING);
+					 if(template != null) {
+						 Log.d("MainTemplateGenerator", "Got template meta data in intent!");
+						 // template.print();
+						 myTemplate = template;
+					 }
+					 else {
+						 //TODO show error?!
+					 }
+				 } else {
+					 Log.d("MainTemplateGenerator", "Edit mode!");
+					 // we are editing an old one, so load it
+					 // get file name
+					 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+					 // create new async task
+					 jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
+					 // do the setup
+					 countDownLatch = task.doSetup(this);
+					 // start
+					 task.execute(templateFileName);
 				 }
-				 else {
-					 //TODO show error?!
-				 }
-			 } else {
-				 Log.d("MainTemplateGenerator", "Edit mode!");
-				 // we are editing an old one, so load it
-				 // get file name
-				 String templateFileName = intent.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-				 // create new async task
-				 jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
-				 // do the setup
-				 countDownLatch = task.doSetup(this);
-				 // start
-				 task.execute(templateFileName);
 			 }
 		 }
 		 else {
@@ -100,11 +106,13 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			 /*
 			  * JACKSON START
 			  */
-			 // if we are creating a new one, a template has been already created.
-			 // So we set the jackson table
-			 // if we are editing a template, the async task will set the table and start inflation
-			 if(creationMode) {
-				 ((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
+			 if(getIntent().getBooleanExtra(MODE_TEMPLATE, true)) {
+				 // if we are creating a new one, a template has been already created.
+				 // So we set the jackson table
+				 // if we are editing a template, the async task will set the table and start inflation
+				 if(creationMode) {
+					 ((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
+				 }
 			 }
 			 /*
 			  * JACKSON END
@@ -274,9 +282,11 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		super();
 	}
 
-	public void inflate() {
-		((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
-	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.getRootTable(), this);
+	public void inflate(ContainerTable table) {
+//		((FolderFragment)rootFragment).setJacksonTable(myTemplate.characterSheet.getRootTable());
+//	 	((FolderFragment)rootFragment).inflateWithJacksonData(myTemplate.characterSheet.getRootTable(), this);
+		((FolderFragment)rootFragment).setJacksonTable(table);
+	 	((FolderFragment)rootFragment).inflateWithJacksonData(table, this);
 	}
 	
 	@Override
@@ -369,7 +379,8 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				}
 				return;
 			}
-			myActivity.inflate();
+//			myActivity.inflate();
+			myActivity.inflate(myTemplate.characterSheet.getRootTable());
 			if(pd != null){
 				pd.dismiss();
 			}

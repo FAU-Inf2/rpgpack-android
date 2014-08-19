@@ -234,5 +234,10 @@
     <string name="msg_creating_new_game_p2">wird erstellt!</string>
     <string name="msg_want_to_delete_game">Moechtest du dieses Spiel wirklich loeschen?</string>
     <string name="msg_yes_to_delete_game">Klicke auf JA um das Spiel zu loeschen.</string>
+   
+    <!-- Template Store -->
+    <string name="template_store_title">Template Store</string>
+    <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
+    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> more features coming soon....</br></string>
 
 </resources>

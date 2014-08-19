@@ -1,5 +1,14 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,8 +30,19 @@ public class StoreTemplate {
 	private int num_ratings = 0;
 	@JsonProperty("rating")
 	private float rating = 0F;
-
+	@JsonProperty("insert_timestamp")
+	private String inserted_at;
+	@JsonProperty("image_data")
+	private String image_data = null;
 	
+	public String getImage_data() {
+		return image_data;
+	}
+
+	public void setImage_data(String image_data) {
+		this.image_data = image_data;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -32,7 +52,9 @@ public class StoreTemplate {
 	}
 
 	StoreTemplate() {
-		
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("d.M.y", Locale.GERMANY);
+		this.inserted_at = format.format(date);
 	}
 
 	public String getWorldname() {
@@ -83,5 +105,29 @@ public class StoreTemplate {
 		this.rating = rating;
 	}
 	
+	@JsonProperty("insert_timestamp")
+	public String getDate() {
 
+		// TODO after much trial and error, this works, but does not look right.. 
+		// Maybe use JodaTime like suggested on StackOverflow
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.GERMANY);
+		try {
+			return sdf.format(sdf.parse(this.inserted_at));
+		} catch (ParseException e) {
+			Log.e("template_store", "Could not parse date");
+		}
+			
+		return this.inserted_at;
+		
+	}
+	
+	@JsonProperty("insert_timestamp")
+	public void setDate(String inserted_at) {
+		this.inserted_at = inserted_at;
+	}
+	
+
+	public boolean hasImage() {
+		return this.image_data == null ?  false : true;
+	}
 }

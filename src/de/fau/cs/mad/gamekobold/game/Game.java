@@ -12,7 +12,7 @@ import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 public class Game implements Serializable {
 	private String gameName;
 	private String author;
-	private String date;
+	private String date = null;
 	private List<String> tagList;
 	private String description;
 
