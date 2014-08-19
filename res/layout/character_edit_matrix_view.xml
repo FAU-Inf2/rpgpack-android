@@ -6,12 +6,20 @@
     tools:context="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity"
     tools:ignore="MergeRootFrame" >
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="186dp"
+        android:layout_height="162dp"
+        android:text="EDIT CHARCTER!!!!!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/red" />
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         android:numColumns="3" >
-
     </GridView>
 
 </FrameLayout>

@@ -76,7 +76,7 @@ public class CreateNewGameFragment extends Fragment {
 		// TODO move to onResume?
 		templates = TemplateLab.get(getActivity()).getTemplates();
 
-				setHasOptionsMenu(true);
+		setHasOptionsMenu(true);
 		getActivity().setTitle(
 				getResources().getString(R.string.titel_create_game));
 
@@ -113,15 +113,18 @@ public class CreateNewGameFragment extends Fragment {
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getSerializableExtra(
 					EXTRA_GAME_TO_EDIT);
+			Log.i("curGame is null?", "" + (curGame == null));
+			Log.i("worldName is null?", "" + (worldName == null));
 
 			curGame.removeCharacter(curGame.getCharakterList().get(
 					curGame.getCharakterList().size() - 1));
 			gameName.setText(curGame.getGameName());
-			worldName.setText(curGame.getTemplate().getWorldName());
+			// FIXME Null Pointer Exception!
+			// worldName.setText(curGame.getTemplate().getWorldName());
 			gameDate.setText(curGame.getDate());
-			
-			//addImageButton.setImageBitmap(curGame.getIconPath());
-			
+
+			// addImageButton.setImageBitmap(curGame.getIconPath());
+
 			getActivity().setTitle(curGame.getGameName());
 
 		}
@@ -276,33 +279,33 @@ public class CreateNewGameFragment extends Fragment {
 								+ getActivity().getResources().getString(
 										R.string.warning_set_gamename),
 						Toast.LENGTH_SHORT).show();
-				
+
 				// TODO create newGame object speichern!!!
 
 				// now it goes to GameDetailsFragment
 				// Start GameDetailsActivity
 
-					try {
-						// save game
-						JacksonInterface.saveGame(curGame, getActivity());
-						// only start if saving was successful
-						Intent i = new Intent(getActivity(),
-								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								curGame.getGameName());
-						startActivity(i);
-					}
-					catch(Throwable e) {
-						e.printStackTrace();
-					}
 				try {
-						// set creation date
-						final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-						final Date date = new Date();
-						curGame.setDate(format.format(date));
 					// save game
-						JacksonInterface.saveGame(curGame, getActivity());
-					
+					JacksonInterface.saveGame(curGame, getActivity());
+					// only start if saving was successful
+					Intent i = new Intent(getActivity(),
+							GameDetailsActivity.class);
+					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+							curGame.getGameName());
+					startActivity(i);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+				try {
+					// set creation date
+					final SimpleDateFormat format = new SimpleDateFormat(
+							"dd.MM.yyyy");
+					final Date date = new Date();
+					curGame.setDate(format.format(date));
+					// save game
+					JacksonInterface.saveGame(curGame, getActivity());
+
 					// JacksonInterface.saveGame(newGame, getActivity());
 					// only start if saving was successful
 					Intent i = new Intent(getActivity(),

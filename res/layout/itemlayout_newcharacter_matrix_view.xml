@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/character_icon_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="14dp"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:maxWidth="200dip"
+        android:padding="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/shape_circle_matrix_grey" />
+
+    <TextView
+        android:id="@+id/textModificator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/textRangeFromTo"
+        android:layout_below="@+id/textRangeFromTo"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/grey" />
+
+    <TextView
+        android:id="@+id/textRangeFromTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_below="@+id/textValue"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/grey" />
+
+    <TextView
+        android:id="@+id/textItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_below="@+id/character_icon_circle"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/grey" />
+
+    <TextView
+        android:id="@+id/textValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_alignTop="@+id/character_icon_circle"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey" />
+
+</RelativeLayout>

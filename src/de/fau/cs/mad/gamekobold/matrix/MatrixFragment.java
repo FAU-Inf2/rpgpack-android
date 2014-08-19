@@ -1,6 +1,5 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,18 +18,25 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
 	public List<MatrixItem> itemsList = null;
-	MatrixViewArrayAdapter adapter;
 
+	// check adapter type!
+	MatrixViewArrayAdapter adapter;
+	View rootView;
 	/*
 	 * JACKSON START
 	 */
@@ -43,91 +48,192 @@ public class MatrixFragment extends GeneralFragment {
 	 */
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
+		LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		if (SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity) {
+			Log.d("MatrixFragment", "inflated for TemplateGenerator");
+			rootView = inflater.inflate(R.layout.fragment_matrix_view,
+					new LinearLayout(getActivity()), false);
+			Toast.makeText(getActivity(), "TEMPLATE GENERATOR",
+					Toast.LENGTH_LONG).show();
+		}
+
+		else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
+			Log.d("MatrixFragment", "inflated for CharacterEditActivity");
+			rootView = (FrameLayout) inflater.inflate(
+					R.layout.character_edit_matrix_view, new LinearLayout(
+							getActivity()), false);
+			Toast.makeText(getActivity(), "CHARACTER GENERATOR",
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		Log.d("MatrixFragment", "ON_CREATE_VIEW_MATRIX");
-		View rootView = inflater.inflate(R.layout.fragment_matrix_view,
-				container, false);
 
-		gridView = (GridView) rootView.findViewById(R.id.gridView);
-		// check needed for jackson data loading
-		if (itemsList == null) {
-			itemsList = getDataForGridView();
-			
-			
-			jacksonTable.entries = itemsList;
-		}
-		if (adapter == null) {
-			adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
-			// adapter.jacksonTable = jacksonTable;
-		}
+		if (SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity) {
+			Log.d("TableFragment", "inflated for TemplateGenerator");
 
-		gridView.setAdapter(adapter);
+			Log.d("MatrixFragment", "ON_CREATE_VIEW_MATRIX");
+			// rootView = inflater.inflate(R.layout.fragment_matrix_view,
+			// container, false);
 
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
+			gridView = (GridView) rootView.findViewById(R.id.gridView);
+			// check needed for jackson data loading
+			if (itemsList == null) {
+				itemsList = getDataForGridView();
 
-				Toast.makeText(
-						getActivity(),
-						((TextView) view.findViewById(R.id.textItemTitle))
-								.getText(), Toast.LENGTH_SHORT).show();
-
-				// is it last item?
-				if (position == adapter.getCount() - 1) {
-
-					Log.e("am", "position: " + position);
-					Log.e("am", "Position, getCount: " + adapter.getCount());
-
-					showPopup();
-
-				} else {
-					// click on item
-					Log.e("er", "position: " + position);
-					showPopupForEditing(adapter.getItem(position));
-				}
-
+				jacksonTable.entries = itemsList;
 			}
-		});
+			if (adapter == null) {
+				adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
+				// adapter.jacksonTable = jacksonTable;
+			}
 
-		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> adapterView,
-					View view, final int position, long id) {
-				Log.d("LONG CLICK", "pos:" + position);
-				if (position == adapter.getCount() - 1) {
+			gridView.setAdapter(adapter);
+
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> adapterView, View view,
+						int position, long id) {
+
+					Toast.makeText(
+							getActivity(),
+							((TextView) view.findViewById(R.id.textItemTitle))
+									.getText(), Toast.LENGTH_SHORT).show();
+
+					// is it last item?
+					if (position == adapter.getCount() - 1) {
+
+						Log.e("am", "position: " + position);
+						Log.e("am", "Position, getCount: " + adapter.getCount());
+
+						showPopup();
+
+					} else {
+						// click on item
+						Log.e("er", "position: " + position);
+						showPopupForEditing(adapter.getItem(position));
+					}
+
+				}
+			});
+
+			gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapterView,
+						View view, final int position, long id) {
+					Log.d("LONG CLICK", "pos:" + position);
+					if (position == adapter.getCount() - 1) {
+						return true;
+					}
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setTitle(getResources().getString(
+							R.string.msg_delete_item));
+					builder.setMessage(getResources().getString(
+							R.string.msg_yes_to_item_delete));
+					builder.setNegativeButton(
+							getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
+					builder.setPositiveButton(
+							getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									removeMatrixItem(position);
+								}
+							});
+					builder.create().show();
 					return true;
 				}
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
-				builder.setTitle(getResources().getString(
-						R.string.msg_delete_item));
-				builder.setMessage(getResources().getString(
-						R.string.msg_yes_to_item_delete));
-				builder.setNegativeButton(
-						getResources().getString(R.string.no),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						});
-				builder.setPositiveButton(getResources()
-						.getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								removeMatrixItem(position);
-							}
-						});
-				builder.create().show();
-				return true;
-			}
-		});
+			});
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
+			Toast.makeText(getActivity(), "CHARACTER GENERATOR!!!!!!!",
+					Toast.LENGTH_SHORT).show();
+			NewCharacterMatrixViewArrayAdapter a = null;
 
+			gridView = (GridView) rootView.findViewById(R.id.gridView);
+			// check needed for jackson data loading
+			if (itemsList == null) {
+				itemsList = getDataForGridView();
+				jacksonTable.entries = itemsList;
+			}
+
+			itemsList.remove(itemsList.size() - 1);
+
+			if (a == null) {
+				a = new NewCharacterMatrixViewArrayAdapter(getActivity(),
+						itemsList);
+				// adapter.jacksonTable = jacksonTable;
+			}
+
+			gridView.setAdapter(a);
+
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> adapterView, View view,
+						int position, long id) {
+
+					Toast.makeText(
+							getActivity(),
+							((TextView) view.findViewById(R.id.textItemTitle))
+									.getText()
+									+ "-Attribut wird zu dem Charakter hinzugefügt",
+							Toast.LENGTH_SHORT).show();
+
+				}
+			});
+
+			gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapterView,
+						View view, final int position, long id) {
+					Log.d("LONG CLICK", "pos:" + position);
+					if (position == adapter.getCount() - 1) {
+						return true;
+					}
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setTitle(getResources().getString(
+							R.string.msg_delete_item));
+					builder.setMessage(getResources().getString(
+							R.string.msg_yes_to_item_delete));
+					builder.setNegativeButton(
+							getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
+					builder.setPositiveButton(
+							getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									removeMatrixItem(position);
+								}
+							});
+					builder.create().show();
+					return true;
+				}
+			});
+
+		}
 		return rootView;
 
 	}
@@ -170,10 +276,9 @@ public class MatrixFragment extends GeneralFragment {
 		itemsList.add(item2);
 		itemsList.add(item3);
 
-		 // set create new item to the end
-		 MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+",
-		 null);
-		 itemsList.add(addNewMatrixItem);
+		// set create new item to the end
+		MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
+		itemsList.add(addNewMatrixItem);
 
 		return itemsList;
 	}
@@ -257,13 +362,16 @@ public class MatrixFragment extends GeneralFragment {
 							final String defValue = defaultVal
 									.getEditableText().toString();
 							int min = 0;
-							if(!rangeMin.getEditableText().toString().isEmpty()) {
+							if (!rangeMin.getEditableText().toString()
+									.isEmpty()) {
 								min = Integer.parseInt(rangeMin
 										.getEditableText().toString());
 							}
 							int max = 0;
-							if(!rangeMax.getEditableText().toString().isEmpty()) {
-								max = Integer.parseInt(rangeMax.getEditableText().toString());
+							if (!rangeMax.getEditableText().toString()
+									.isEmpty()) {
+								max = Integer.parseInt(rangeMax
+										.getEditableText().toString());
 							}
 							final String mod = modificator.getEditableText()
 									.toString();
@@ -312,7 +420,8 @@ public class MatrixFragment extends GeneralFragment {
 					positiveButton.invalidate();
 				}
 			});
-	        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+			dialog.getWindow().setSoftInputMode(
+					WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 			return dialog;
 		}
 	}
