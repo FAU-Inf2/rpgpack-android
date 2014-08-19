@@ -185,7 +185,7 @@ public class GameDetailsFragment extends Fragment {
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
-
+				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
 
 				startActivity(i);
