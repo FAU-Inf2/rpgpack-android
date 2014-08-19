@@ -213,24 +213,30 @@ import de.fau.cs.mad.gamekobold.jackson.Template;
 						Toast.makeText(CreateNewCharacterActivity.this, getString(R.string.warning_set_character_name), Toast.LENGTH_LONG).show();
 						return;
 					}
+					// save sheet because we need the file path
+					// we will not double save becaus of alteration flag
+					saveCharacterSheet();
 					Intent intent = new Intent(CreateNewCharacterActivity.this, CharacterEditActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// flag to distinguish between editing and creating
+					// set flag so we do not use template mode
 					intent.putExtra(
-							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							SlideoutNavigationActivity.MODE_TEMPLATE,
 							false);
 					intent.putExtra(
-							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-							templateFileName);
+							CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
+							sheet.fileAbsolutePath);
 					startActivity(intent);
 				}
 			});
-
 		}
 
 		@Override
 		public void onPause() {
-			// TODO maybe save async. Don't know right now.
+			saveCharacterSheet();
+			super.onPause();
+		}
+
+		private void saveCharacterSheet() {
 			// check if character has been altered
 			Log.d("Trying to save sheet", "sheet:"+sheet);
 			Log.d("Trying to save sheet", "altered:"+characterAltered);
@@ -265,9 +271,7 @@ import de.fau.cs.mad.gamekobold.jackson.Template;
 					}
 				}
 			}
-			super.onPause();
 		}
-
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			int id = item.getItemId();

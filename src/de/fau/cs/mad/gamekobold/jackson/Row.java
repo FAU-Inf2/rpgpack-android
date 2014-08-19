@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import android.util.Log;
 
 public class Row {
+	// TODO save value to json
 	private boolean isSelected;
 	private ArrayList<AbstractColumnEntry> entries;
 

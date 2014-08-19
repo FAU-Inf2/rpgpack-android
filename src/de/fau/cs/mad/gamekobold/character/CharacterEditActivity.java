@@ -1,27 +1,48 @@
 package de.fau.cs.mad.gamekobold.character;
 
 
+import java.io.File;
+
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 
 public class CharacterEditActivity extends SlideoutNavigationActivity {
-
+	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 	/**
 	 * in editMode -> checkboxes in slideout-menu are shown -> set with setCheckboxVisibilityInSlideoutmenu(boolean)
 	 */
 	private boolean editMode = false;
+	private CharacterSheet characterSheet;
 
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 setContentView(R.layout.activity_template_generator_welcome2);
 		 super.onCreate(savedInstanceState);
+		 Intent intent = getIntent();
+		 characterSheet = null;
+		 final String characterAbsPath = intent.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
+		 if(characterAbsPath != null) {
+			 try {
+				 characterSheet = JacksonInterface.loadCharacterSheet(new File(characterAbsPath), false);
+			 }
+			 catch(Throwable e) {
+				 e.printStackTrace();
+			 }
+		 }
+		 if(characterSheet != null) {
+			 super.inflate(characterSheet.getRootTable());
+		 }
 		 //enable all checkboxes exept in slideout-menu
 		 //use an asynctask to allow inflation of folders/tables/matrices
 		 //by superclass before
@@ -47,6 +68,23 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 };
 		 mDrawerLayout.setDrawerListener(newToggler);
 
+	 }
+	 
+	 @Override
+	 public void onPause() {
+		 if(characterSheet != null) {
+			 try {
+				Log.d("Trying to save sheet", "path:"+characterSheet.fileAbsolutePath);
+				// open file
+				final File jsonFile = new File(characterSheet.fileAbsolutePath);
+				// save
+				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
+			}
+			catch(Throwable e) {
+				e.printStackTrace();
+			}
+		 }
+		 super.onPause();
 	 }
 	 
 	 /**

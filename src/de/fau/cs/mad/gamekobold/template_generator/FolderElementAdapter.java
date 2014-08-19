@@ -4,6 +4,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
@@ -173,10 +174,12 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
     	});
 		if(holder.box != null){
 			holder.box.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//				final AbstractTable jacksonTable = data.jacksonTable;
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					data.checked = isChecked;
-					//TODO: jackson store: enabling(check)/disabling(uncheck) this category
+					// TODO: jackson store: enabling(check)/disabling(uncheck) this category
+					data.jacksonTable.isSelected = isChecked;
 				}
 			});
 		}
