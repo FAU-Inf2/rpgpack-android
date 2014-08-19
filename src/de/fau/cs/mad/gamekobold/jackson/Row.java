@@ -4,18 +4,25 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import android.util.Log;
 
 public class Row {
+	private boolean isSelected;
 	private ArrayList<AbstractColumnEntry> entries;
 
-
-	public Row( ArrayList<AbstractColumnEntry> entries) {
+	@JsonCreator
+	public Row(@JsonProperty("entries") ArrayList<AbstractColumnEntry> entries,
+				@JsonProperty("selected") boolean isSelected) {
 		this.entries = entries;
+		this.isSelected = isSelected;
 	}
 
 	public Row() {
 		entries = new ArrayList<AbstractColumnEntry>();
+		isSelected = true;
 	}
 
 	/**
@@ -101,4 +108,14 @@ public class Row {
 		 }
 		 entries.set(index, newEntry);
 	 }
+
+	@JsonProperty("selected")
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	@JsonProperty("selected")
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
 }

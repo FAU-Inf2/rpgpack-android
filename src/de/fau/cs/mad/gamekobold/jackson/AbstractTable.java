@@ -20,10 +20,13 @@ public abstract class AbstractTable {
 	
 	@JsonProperty(value="name")
 	public String tableName;
+	@JsonProperty(value="selected")
+	public boolean isSelected;
 	
 	public abstract void print();
 	
 	public AbstractTable() {
 		tableName = "";
+		isSelected = true;
 	}
 }
