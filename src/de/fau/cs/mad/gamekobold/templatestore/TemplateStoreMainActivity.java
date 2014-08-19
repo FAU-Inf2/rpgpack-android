@@ -147,7 +147,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 	  @Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
-	    String item = (String) getListAdapter().getItem(position);
-	    Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+	    StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
+	    Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
 	  }
 }
