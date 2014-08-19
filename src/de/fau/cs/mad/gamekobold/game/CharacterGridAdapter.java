@@ -98,7 +98,7 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				if (curCharacter.getIconPath() == null) {
 					// set some default game icon
 					bitmap = BitmapFactory.decodeResource(
-							context.getResources(), R.drawable.figure1head);
+							context.getResources(), R.drawable.person_without_plus);
 				} else {
 					bitmap = BitmapFactory.decodeFile(path);
 				}
@@ -125,8 +125,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
-						.getColor(R.color.blue) : context.getResources()
-						.getColor(android.R.color.transparent));
+						.getColor(R.color.background_green) : context
+						.getResources().getColor(android.R.color.transparent));
 
 				// characterIconImageView.setBackgroundColor(selectedCharacters
 				// .contains(curCharacter) ? context.getResources()
@@ -148,7 +148,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				if (curCharacter.getIconPath() == null) {
 					// set some default game icon
 					bitmap = BitmapFactory.decodeResource(
-							context.getResources(), R.drawable.figure1head);
+							context.getResources(),
+							R.drawable.person_without_plus);
 				} else {
 					bitmap = BitmapFactory.decodeFile(path);
 				}
@@ -178,8 +179,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 				highlightingShape.setColor(selectedCharacters
 						.contains(curCharacter) ? context.getResources()
-						.getColor(R.color.blue) : context.getResources()
-						.getColor(android.R.color.transparent));
+						.getColor(R.color.background_green) : context
+						.getResources().getColor(android.R.color.transparent));
 			}
 
 		}

@@ -15,9 +15,9 @@
         android:background="@drawable/shape_template_browser_circle_green"
         android:gravity="center"
         android:maxWidth="40dip"
-        android:padding="6dp"
+        android:padding="9dp"
         android:scaleType="fitXY"
-        android:src="@drawable/figure1head" />
+        android:src="@drawable/person_without_plus" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -32,10 +32,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="2dp"
             android:gravity="center"
             android:text="name"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="10sp" >
+            android:textColor="@color/white"
+            android:textSize="12sp" >
         </TextView>
     </RelativeLayout>
 

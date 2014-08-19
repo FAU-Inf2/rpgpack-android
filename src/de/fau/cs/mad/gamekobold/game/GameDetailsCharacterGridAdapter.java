@@ -66,7 +66,7 @@ public class GameDetailsCharacterGridAdapter extends
 			if (curCharacter.getIconPath() == null) {
 				// set some default game icon
 				bitmap = BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.figure1head);
+						R.drawable.person_without_plus);
 			} else {
 				bitmap = BitmapFactory.decodeFile(path);
 			}
@@ -91,7 +91,7 @@ public class GameDetailsCharacterGridAdapter extends
 			if (curCharacter.getIconPath() == null) {
 				// set some default game icon
 				bitmap = BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.figure1head);
+						R.drawable.person_without_plus);
 			} else {
 				bitmap = BitmapFactory.decodeFile(path);
 			}
