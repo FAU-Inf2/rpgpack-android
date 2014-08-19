@@ -45,7 +45,11 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			name.setText(curr.getName());
 			
 			RatingBar bar = (RatingBar) rowView.findViewById(R.id.ratingBarStore);
-			bar.setRating(curr.getRating());
+			
+			// in small screen sizes the bar is removed from the list view...
+			if(bar != null) {
+				bar.setRating(curr.getRating());
+			}
 			
 			if(curr.hasImage()) {
 				ImageView img = (ImageView)  rowView.findViewById(R.id.templateStoreImg);
