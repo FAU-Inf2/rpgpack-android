@@ -11,13 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/iconView"
+        android:layout_toRightOf="@+id/templateStoreImg"
         android:text="Template Name"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/iconView"
+        android:id="@+id/templateStoreImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -25,7 +25,7 @@
         android:layout_marginLeft="6dp"
    
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_template_browser_circle_green"
+        android:contentDescription="Template Image"
         android:gravity="center"
         android:maxWidth="50dip"
         android:padding="4dp"

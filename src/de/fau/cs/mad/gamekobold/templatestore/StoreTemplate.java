@@ -27,7 +27,17 @@ public class StoreTemplate {
 	private float rating = 0F;
 	@JsonProperty("insert_timestamp")
 	private String inserted_at;
+	@JsonProperty("image_data")
+	private String image_data = null;
 	
+	public String getImage_data() {
+		return image_data;
+	}
+
+	public void setImage_data(String image_data) {
+		this.image_data = image_data;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -102,4 +112,7 @@ public class StoreTemplate {
 	}
 	
 
+	public boolean hasImage() {
+		return this.image_data == null ?  false : true;
+	}
 }

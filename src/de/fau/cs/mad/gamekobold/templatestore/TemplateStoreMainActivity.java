@@ -77,7 +77,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 				}
 	    		 
 	  	   		 for(StoreTemplate tmpl : templates) {
-	    			 alertMessage(tmpl.toString());
+	    			// alertMessage(tmpl.toString());
 	    			 adapter.add(tmpl);
 	    		 }
 	  	   		 

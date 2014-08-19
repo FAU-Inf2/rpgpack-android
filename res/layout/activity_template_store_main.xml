@@ -24,12 +24,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/template_store_main_desc"
-        android:textColor="@color/belize_hole" />
+        android:textColor="@color/white" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="24dp" >

@@ -4,10 +4,14 @@ import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -42,6 +46,13 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			
 			RatingBar bar = (RatingBar) rowView.findViewById(R.id.ratingBarStore);
 			bar.setRating(curr.getRating());
+			
+			if(curr.hasImage()) {
+				ImageView img = (ImageView)  rowView.findViewById(R.id.templateStoreImg);
+				byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
+				Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+				img.setImageBitmap(decodedByte);
+			}
 			
 		} else {
 			return convertView;		
