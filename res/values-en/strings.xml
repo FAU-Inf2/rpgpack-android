@@ -235,4 +235,10 @@
 
     <string name="msg_want_to_delete_game">Do you really want to delete this game?</string>
     <string name="msg_yes_to_delete_game">Click Yes to delete this game.</string>
+    
+    <!-- Template Store -->
+     <string name="template_store_title">Template Store</string>
+         <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
+    <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
+     
 </resources>
