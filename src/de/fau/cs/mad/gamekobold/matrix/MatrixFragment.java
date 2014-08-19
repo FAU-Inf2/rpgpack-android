@@ -265,7 +265,6 @@ public class MatrixFragment extends GeneralFragment {
 
 		}
 		return rootView;
-
 	}
 
 	@Override
