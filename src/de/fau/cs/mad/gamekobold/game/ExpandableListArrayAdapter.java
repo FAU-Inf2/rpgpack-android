@@ -88,10 +88,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
-					// selected characters should be highlighted and added into
+					// selected characters will be highlighted and added into
 					// pickedCharactersGrid
-					// TODO remove highlighting if character was remove in
-					// pickedCharacterGridView
 					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
 					if (selectedCharacters.contains(curGameCharacter)) {
 						selectedCharacters.remove(curGameCharacter);

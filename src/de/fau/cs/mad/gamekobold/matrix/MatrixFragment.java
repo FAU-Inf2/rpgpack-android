@@ -26,6 +26,8 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterGridAdapter;
+import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -34,9 +36,12 @@ public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
 	public List<MatrixItem> itemsList = null;
 
-	// check adapter type!
+	// dte check adapter type!
 	MatrixViewArrayAdapter adapter;
+	NewCharacterMatrixViewArrayAdapter a;
+
 	View rootView;
+
 	/*
 	 * JACKSON START
 	 */
@@ -160,10 +165,11 @@ public class MatrixFragment extends GeneralFragment {
 					return true;
 				}
 			});
+
+			// Character generator mode
 		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
 			Toast.makeText(getActivity(), "CHARACTER GENERATOR!!!!!!!",
 					Toast.LENGTH_SHORT).show();
-			NewCharacterMatrixViewArrayAdapter a = null;
 
 			gridView = (GridView) rootView.findViewById(R.id.gridView);
 			// check needed for jackson data loading
@@ -179,6 +185,7 @@ public class MatrixFragment extends GeneralFragment {
 						itemsList);
 				// adapter.jacksonTable = jacksonTable;
 			}
+			final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) a).selectedItems;
 
 			gridView.setAdapter(a);
 
@@ -187,12 +194,35 @@ public class MatrixFragment extends GeneralFragment {
 				public void onItemClick(AdapterView<?> adapterView, View view,
 						int position, long id) {
 
-					Toast.makeText(
-							getActivity(),
-							((TextView) view.findViewById(R.id.textItemTitle))
-									.getText()
-									+ "-Attribut wird zu dem Charakter hinzugefügt",
-							Toast.LENGTH_SHORT).show();
+					MatrixItem curMatrixItem = itemsList.get(position);
+
+					// selected characters will be highlighted and added into
+					// pickedCharactersGrid
+
+					if (selectedItems.contains(curMatrixItem)) {
+						selectedItems.remove(curMatrixItem);
+
+						// newCharacter.removeMatrixItem(curMatrixItem);
+						Log.d("setOnItemClickListener", "pos:" + position);
+						Log.d("remove", "remove");
+						a.notifyDataSetChanged();
+
+					} else {
+						selectedItems.add(curMatrixItem);
+
+						Toast.makeText(
+								getActivity(),
+								((TextView) view
+										.findViewById(R.id.textItemTitle))
+										.getText()
+										+ "-Attribut wird zu dem Charakter hinzugefügt",
+								Toast.LENGTH_SHORT).show();
+
+						Log.d("add", "add");
+						a.notifyDataSetChanged();
+
+						// newCharacter.addMatrixItem(curMatrixItem);
+					}
 
 				}
 			});

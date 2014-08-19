@@ -17,15 +17,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class TemplateStoreMainActivity extends Activity {
-	
+public class TemplateStoreMainActivity extends ListActivity {
+	private ArrayList<StoreTemplate> templates = new ArrayList<StoreTemplate>();
+    private TemplateStoreArrayAdapter adapter;
+    
 	 private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
 		 TemplateStoreClient client = new TemplateStoreClient();
 		 
@@ -71,6 +78,7 @@ public class TemplateStoreMainActivity extends Activity {
 	    		 
 	  	   		 for(StoreTemplate tmpl : templates) {
 	    			 alertMessage(tmpl.toString());
+	    			 adapter.add(tmpl);
 	    		 }
 	  	   		 
 	 	  	 } else {
@@ -97,7 +105,14 @@ public class TemplateStoreMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_store_main);
+		setTitle(R.string.template_store_title);
 		
+		this.templates = new ArrayList<StoreTemplate>();
+		this.adapter = new TemplateStoreArrayAdapter(this, templates);
+  
+	    setListAdapter(adapter);
+	       
+	        
 		ApiTask task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		/*
@@ -129,4 +144,10 @@ public class TemplateStoreMainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	  @Override
+	  protected void onListItemClick(ListView l, View v, int position, long id) {
+	    String item = (String) getListAdapter().getItem(position);
+	    Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+	  }
 }

@@ -1,5 +1,9 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +25,8 @@ public class StoreTemplate {
 	private int num_ratings = 0;
 	@JsonProperty("rating")
 	private float rating = 0F;
-
+	@JsonProperty("insert_timestamp")
+	private String inserted_at;
 	
 	public String getDescription() {
 		return description;
@@ -32,7 +37,9 @@ public class StoreTemplate {
 	}
 
 	StoreTemplate() {
-		
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("d.M.y", Locale.GERMANY);
+		this.inserted_at = format.format(date);
 	}
 
 	public String getWorldname() {
@@ -81,6 +88,17 @@ public class StoreTemplate {
 
 	public void setRating(float rating) {
 		this.rating = rating;
+	}
+	
+	@JsonProperty("insert_timestamp")
+	public String getDate() {
+		// TODO Auto-generated method stub
+		return this.inserted_at;
+	}
+	
+	@JsonProperty("insert_timestamp")
+	public void setDate(String inserted_at) {
+		this.inserted_at = inserted_at;
 	}
 	
 

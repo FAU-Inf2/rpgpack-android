@@ -8,8 +8,8 @@
     <solid android:color="@color/background" />
 
     <size
-        android:height="30dp"
-        android:width="30dp" />
+        android:height="80dp"
+        android:width="80dp" />
 
     <stroke
         android:width="2dp"

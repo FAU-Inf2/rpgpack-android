@@ -1,15 +1,19 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.game.GameCharacter;
 
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> {
@@ -21,7 +25,11 @@ public class NewCharacterMatrixViewArrayAdapter extends
 	/*
 	 * JACKSON END
 	 */
-	Context context;
+	private Context context;
+	private ImageView highlightingImageView;
+
+	// list of highlighted matrix items assigned to character
+	public ArrayList<MatrixItem> selectedItems = new ArrayList<MatrixItem>();
 
 	// the list of objects we want to display
 	private List<MatrixItem> items;
@@ -65,6 +73,46 @@ public class NewCharacterMatrixViewArrayAdapter extends
 			itemRange.setText(curItem.getRangeMin() + " - "
 					+ curItem.getRangeMax());
 			itemModificator.setText(curItem.getModificator());
+
+			// ///////////
+			highlightingImageView = (ImageView) convertView
+					.findViewById(R.id.item_highlighting_circle);
+
+			Log.e("selectedItems.contains(position)?",
+					"" + (selectedItems.contains(position)));
+
+			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+					.getDrawable();
+
+			Log.e("highlightingShape is null?", ""
+					+ (highlightingShape == null));
+
+			if (selectedItems.contains(curItem)) {
+				itemName.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemValue.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemRange.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemModificator.setTextColor(context.getResources().getColor(
+						R.color.white));
+
+			} else {
+				itemName.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemValue.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemRange.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemModificator.setTextColor(context.getResources().getColor(
+						R.color.grey));
+			}
+
+			highlightingShape
+					.setColor(selectedItems.contains(curItem) ? context
+							.getResources().getColor(R.color.background_green)
+							: context.getResources().getColor(
+									android.R.color.transparent));
 
 		}
 		// or reuse
@@ -112,6 +160,46 @@ public class NewCharacterMatrixViewArrayAdapter extends
 			// .getColor(R.color.a_grey));
 			//
 			// }
+
+			highlightingImageView = (ImageView) convertView
+					.findViewById(R.id.item_highlighting_circle);
+
+			Log.e("selectedItems.contains(position)?",
+					"" + (selectedItems.contains(position)));
+
+			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+					.getDrawable();
+
+			Log.e("highlightingShape is null?", ""
+					+ (highlightingShape == null));
+
+			if (selectedItems.contains(curItem)) {
+				itemName.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemValue.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemRange.setTextColor(context.getResources().getColor(
+						R.color.white));
+				itemModificator.setTextColor(context.getResources().getColor(
+						R.color.white));
+
+			} else {
+				itemName.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemValue.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemRange.setTextColor(context.getResources().getColor(
+						R.color.grey));
+				itemModificator.setTextColor(context.getResources().getColor(
+						R.color.grey));
+			}
+
+			highlightingShape
+					.setColor(selectedItems.contains(curItem) ? context
+							.getResources().getColor(R.color.background_green)
+							: context.getResources().getColor(
+									android.R.color.transparent));
+
 		}
 
 		return convertView;

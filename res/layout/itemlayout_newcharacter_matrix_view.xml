@@ -4,63 +4,93 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/character_icon_circle"
+        android:id="@+id/item_highlighting_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="14dp"
+        android:layout_alignBottom="@+id/relativeLayout1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        android:maxWidth="200dip"
-        android:padding="2dp"
+        android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/shape_circle_matrix_grey" />
+        android:src="@drawable/shape_circle_highlightig" />
 
-    <TextView
-        android:id="@+id/textModificator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/textRangeFromTo"
-        android:layout_below="@+id/textRangeFromTo"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/grey" />
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignRight="@+id/item_highlighting_circle"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:padding="8dp" >
 
-    <TextView
-        android:id="@+id/textRangeFromTo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/character_icon_circle"
-        android:layout_below="@+id/textValue"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/grey" />
+        <ImageView
+            android:id="@+id/matrix_item_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:background="@drawable/shape_circle_matrix_item_grey"
+            android:cropToPadding="false"
+            android:gravity="center"
+            android:maxWidth="80dip"
+            android:scaleType="fitXY"
+           />
 
-    <TextView
-        android:id="@+id/textItemTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/character_icon_circle"
-        android:layout_below="@+id/character_icon_circle"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/grey" />
+        <TextView
+            android:id="@+id/textModificator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/matrix_item_circle"
+            android:layout_alignRight="@+id/textRangeFromTo"
+            android:layout_below="@+id/textRangeFromTo"
+            android:gravity="center"
+            android:text="mod"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey" />
 
-    <TextView
-        android:id="@+id/textValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/character_icon_circle"
-        android:layout_alignTop="@+id/character_icon_circle"
-        android:layout_marginTop="14dp"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/grey" />
+        <TextView
+            android:id="@+id/textRangeFromTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/matrix_item_circle"
+            android:layout_alignRight="@+id/matrix_item_circle"
+            android:layout_below="@+id/textValue"
+            android:gravity="center"
+            android:text="range"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/textValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/matrix_item_circle"
+            android:layout_alignRight="@+id/matrix_item_circle"
+            android:layout_alignTop="@+id/matrix_item_circle"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="value"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/textItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/matrix_item_circle"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
