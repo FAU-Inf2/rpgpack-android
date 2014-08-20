@@ -13,6 +13,6 @@
 
     <stroke
         android:width="2dp"
-        android:color="@color/grey" />
+        android:color="@color/background_green" />
 
 </shape>

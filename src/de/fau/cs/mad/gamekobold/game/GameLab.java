@@ -19,7 +19,7 @@ public class GameLab {
 	private ArrayList<Template> templates;
 	// time stamp for the games folder
 	private long folderTimeStamp;
-	
+
 	GameLab(Context appContext) {
 		this.appContext = appContext;
 		this.games = new ArrayList<Game>();
@@ -35,9 +35,10 @@ public class GameLab {
 	}
 
 	/**
-	 * Returns the list of available games on this device. Assures that the list is up to date,
-	 * and reloads it if necessary. The games in the list DO NOT have a fake character element
-	 * for adding a new character!
+	 * Returns the list of available games on this device. Assures that the list
+	 * is up to date, and reloads it if necessary. The games in the list DO NOT
+	 * have a fake character element for adding a new character!
+	 * 
 	 * @return The list of available games on this device.
 	 */
 	public ArrayList<Game> getGames() {
@@ -46,8 +47,11 @@ public class GameLab {
 	}
 
 	/**
-	 * The game DOES NOT have a fake character element for adding a new character!
-	 * @param gameName The name of the game.
+	 * The game DOES NOT have a fake character element for adding a new
+	 * character!
+	 * 
+	 * @param gameName
+	 *            The name of the game.
 	 * @return The game with the given name or null if there is no such game.
 	 */
 	public Game getGame(String gameName) {
@@ -60,34 +64,39 @@ public class GameLab {
 	}
 
 	/**
-	 * Assures that the game list is up to date. If any thing changed
-	 * the list will be updated.
+	 * Assures that the game list is up to date. If any thing changed the list
+	 * will be updated.
 	 */
 	private void assureListIsUpToDate() {
 		// checks if a game has been created or deleted
-		if(!checkForGameDirectoryChange()) {
-			// only check every game for a change when not reloading the whole list
+		if (!checkForGameDirectoryChange()) {
+			// only check every game for a change when not reloading the whole
+			// list
 			checkEveryGameForChanges();
 		}
 	}
 
 	/**
-	 * Checks the game directory for a change. Its time stamp is updated
-	 * when a file is created or deleted.
+	 * Checks the game directory for a change. Its time stamp is updated when a
+	 * file is created or deleted.
+	 * 
 	 * @return true if the game list has been reloaded, false otherwise.
 	 */
 	private boolean checkForGameDirectoryChange() {
 		Log.d(LOG_TAG, "Checking for directory changes.");
 		// get game root directory
 		final File gameDir = JacksonInterface.getGameRootDirectory(appContext);
-		if(gameDir != null) {
+		if (gameDir != null) {
 			final long newTimeStamp = gameDir.lastModified();
 			// check time stamps
-			if(folderTimeStamp < newTimeStamp) {
+			if (folderTimeStamp < newTimeStamp) {
 				// remove all old games
 				games.clear();
 				// add default test data
-				addDefaultData();
+
+				// FIXME remove as not using!
+				// addDefaultData();
+
 				// update time stamp
 				folderTimeStamp = newTimeStamp;
 				// reload template list
@@ -126,13 +135,13 @@ public class GameLab {
 	private void checkEveryGameForChanges() {
 		Log.d(LOG_TAG, "Checking every game for changes");
 		// for every game
-		for(Game game : games) {
+		for (Game game : games) {
 			// get file for game
 			final File gameFile = new File(game.getFileAbsolutePath());
 			// check nullpointer
-			if(gameFile != null) {
+			if (gameFile != null) {
 				// check time stamp
-				if(gameFile.lastModified() > game.getFileTimeStamp()) {
+				if (gameFile.lastModified() > game.getFileTimeStamp()) {
 					// update time stamp
 					game.setFileTimeStamp(gameFile.lastModified());
 					// game file has been changed
@@ -142,9 +151,8 @@ public class GameLab {
 						if (loadedGame != null) {
 							// take over changes
 							game.takeOverValues(loadedGame);
-						}					
-					}
-					catch(Throwable e) {
+						}
+					} catch (Throwable e) {
 						e.printStackTrace();
 					}
 				}
@@ -152,23 +160,24 @@ public class GameLab {
 		}
 	}
 
-	private void addDefaultData() {
-		Game game1 = new Game("My First Game", templates.get(0), "20.05.2014");
-		Game game2 = new Game("The Best Game", templates.get(1), "20.05.2014");
-		Game game3 = new Game("Schwarze Auge Game", templates.get(2),
-				"21.05.2014");
-		List<GameCharacter> charList = templates.get(0).getCharacters();
-		// remove fake item
-		game1.setCharakterList(charList.subList(0, charList.size()-1));
-		charList = templates.get(1).getCharacters();
-		// remove fake item
-		game2.setCharakterList(charList.subList(0, charList.size()-1));
-		charList = templates.get(2).getCharacters();
-		// remove fake item
-		game3.setCharakterList(charList.subList(0, charList.size()-1));
-
-		games.add(game1);
-		games.add(game2);
-		games.add(game3);
-	}
+	// FIXME remove as not using
+	// private void addDefaultData() {
+	// Game game1 = new Game("My First Game", templates.get(0), "20.05.2014");
+	// Game game2 = new Game("The Best Game", templates.get(1), "20.05.2014");
+	// Game game3 = new Game("Schwarze Auge Game", templates.get(2),
+	// "21.05.2014");
+	// List<GameCharacter> charList = templates.get(0).getCharacters();
+	// // remove fake item
+	// game1.setCharakterList(charList.subList(0, charList.size() - 1));
+	// charList = templates.get(1).getCharacters();
+	// // remove fake item
+	// game2.setCharakterList(charList.subList(0, charList.size() - 1));
+	// charList = templates.get(2).getCharacters();
+	// // remove fake item
+	// game3.setCharakterList(charList.subList(0, charList.size() - 1));
+	//
+	// games.add(game1);
+	// games.add(game2);
+	// games.add(game3);
+	// }
 }
