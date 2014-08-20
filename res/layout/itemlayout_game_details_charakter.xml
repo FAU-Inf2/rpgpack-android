@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/character_icon_circle"
+        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_below="@+id/character_icon_circle"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/character_icon_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/shape_game_details_char_border"
+        android:gravity="center"
+        android:maxWidth="80dip"
+        android:padding="18dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/game_default_white" />
+
+</RelativeLayout>

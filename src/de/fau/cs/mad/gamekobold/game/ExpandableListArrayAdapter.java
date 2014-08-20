@@ -32,9 +32,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	private Game newGame;
 	private GameCharacter curGameCharacter;
 	private GridView gridView;
-	//to delete highlighting on logcklicked items
+	// to delete highlighting on logcklicked items
 	public CharacterGridAdapter adapter;
-
 
 	// TODO check if it is necessary to set new Adapter every time
 	// now i cache adapter to keep selected characters highlighted
@@ -67,8 +66,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
 		gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
-		
-//		final CharacterGridAdapter adapter;
+
+		// final CharacterGridAdapter adapter;
 		if (this.adapterCache.containsKey(templatePosition)) {
 			adapter = this.adapterCache.get(templatePosition);
 		} else {
@@ -89,10 +88,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 
-					// selected characters should be highlighted and added into
+					// selected characters will be highlighted and added into
 					// pickedCharactersGrid
-					// TODO remove highlighting if character was remove in
-					// pickedCharacterGridView
 					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
 					if (selectedCharacters.contains(curGameCharacter)) {
 						selectedCharacters.remove(curGameCharacter);
@@ -104,7 +101,9 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 						Toast.makeText(
 								context,
 								curGameCharacter.getCharacterName()
-										+ " wird zum Spiel hinzugefuegt!",
+										+ " "
+										+ context.getResources().getString(
+												R.string.msg_added_to_game),
 								Toast.LENGTH_SHORT).show();
 						// FIXME set Template not here!
 						newGame.setTemplate(curGameCharacter.getTemplate());

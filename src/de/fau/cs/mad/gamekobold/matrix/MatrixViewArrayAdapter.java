@@ -16,7 +16,7 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 	/*
 	 * JACKSON START
 	 */
-	//public MatrixTable jacksonTable;
+	// public MatrixTable jacksonTable;
 	/*
 	 * JACKSON END
 	 */
@@ -30,13 +30,14 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 		this.context = context;
 		this.items = items;
 	}
-	
-	// needed for viewConvertion so that the system knows that there are different layouts in the adapter
+
+	// needed for viewConvertion so that the system knows that there are
+	// different layouts in the adapter
 	// 0 for normal item. 1 for "new item" item
 	@Override
 	public int getItemViewType(int position) {
 		// if it is the last element
-		if(position == getCount()-1) {
+		if (position == getCount() - 1) {
 			// return 1
 			return 1;
 		}
@@ -47,9 +48,9 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 	// we got 2 types: normal items and the last one
 	@Override
 	public int getViewTypeCount() {
-	    return 2; // Count of different layouts
+		return 2; // Count of different layouts
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -68,83 +69,80 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 
 				MatrixItem curItem = items.get(position);
 
-				TextView iName = (TextView) convertView
+				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				TextView iValue = (TextView) convertView
+				TextView itemValue = (TextView) convertView
 						.findViewById(R.id.textItemAdd);
 
-				iName.setText(curItem.getItemName());
-				iValue.setText(curItem.getValue());
-
-				Log.e("1", "1");
+				itemName.setText(curItem.getItemName());
+				itemValue.setText(curItem.getValue());
 
 			} else {
 				convertView = inflater.inflate(
 						R.layout.itemlayout2_matrix_view, parent, false);
 				MatrixItem curItem = items.get(position);
-				TextView iName = (TextView) convertView
+				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				TextView iValue = (TextView) convertView
+				TextView itemValue = (TextView) convertView
 						.findViewById(R.id.textValue);
 
 				// combine min and max
-				TextView iRange = (TextView) convertView
+				TextView itemRange = (TextView) convertView
 						.findViewById(R.id.textRangeFromTo);
 
 				TextView iModificator = (TextView) convertView
 						.findViewById(R.id.textModificator);
 
-				iName.setText(curItem.getItemName());
-				iValue.setText(curItem.getValue());
-				iRange.setText(curItem.getRangeMin() + " - "
+				itemName.setText(curItem.getItemName());
+				itemValue.setText(curItem.getValue());
+				itemRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 				iModificator.setText(curItem.getModificator());
-				Log.e("2", "2");
 			}
 			// or reuse
 		} else {
 			// if it is the last row -> create new template
 			if (position == getCount() - 1) {
 
-				TextView iName = (TextView) convertView
+				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 
-				TextView iValue = (TextView) convertView
+				TextView itemValue = (TextView) convertView
 						.findViewById(R.id.textItemAdd);
 				MatrixItem curItem = items.get(position);
 
-				iName.setText(curItem.getItemName());
-				iValue.setText(curItem.getValue());
-				Log.e("3", "3");
+				itemName.setText(curItem.getItemName());
+				itemValue.setText(curItem.getValue());
 
 			} else {
 				// itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
 				// parent, false);
-				TextView iName = (TextView) convertView
+				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				TextView iValue = (TextView) convertView
+				TextView itemValue = (TextView) convertView
 						.findViewById(R.id.textValue);
 				// combine min and max
-				TextView iRange = (TextView) convertView
+				TextView itemRange = (TextView) convertView
 						.findViewById(R.id.textRangeFromTo);
 
-				TextView iModificator = (TextView) convertView
+				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.textModificator);
 
 				MatrixItem curItem = items.get(position);
 
-				iName.setText(curItem.getItemName());
-				iValue.setText(curItem.getValue());
-				/*Log.d("ADAPTER", "pos:"+position);
-				Log.d("ADAPTER", "iRange:"+iRange);
-				Log.d("ADAPTER", "curItem:"+curItem);
-				Log.d("ADAPTER", "min:"+curItem.getRangeMin());
-				Log.d("ADAPTER", "max:"+curItem.getRangeMax());*/
-				iRange.setText(curItem.getRangeMin() + " - "
+				itemName.setText(curItem.getItemName());
+				itemValue.setText(curItem.getValue());
+				/*
+				 * Log.d("ADAPTER", "pos:"+position); Log.d("ADAPTER",
+				 * "iRange:"+iRange); Log.d("ADAPTER", "curItem:"+curItem);
+				 * Log.d("ADAPTER", "min:"+curItem.getRangeMin());
+				 * Log.d("ADAPTER", "max:"+curItem.getRangeMax());
+				 */
+				itemRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 
-				iModificator.setText(curItem.getModificator());
-				Log.e("4", "4");
+				itemModificator.setText(curItem.getModificator());
+
 				// // set modificator text color: blue for positive red for
 				// // negative
 				// // TODO make this check smarter

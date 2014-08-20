@@ -15,6 +15,6 @@ public interface AlljoynInterface {
     
     @BusMethod
     String count() throws BusException;
-    
+
 }
 

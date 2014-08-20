@@ -55,12 +55,8 @@ public class CreateNewGameFragment extends Fragment {
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
-	// TODO refactor !!!! too many checks whether it is a newGame or gameToEdit
-	// maybe just use one private Game myGame. check in onCreate if a template is in extras,
-	// if so set myGame to it. otherwise create new empty game and set myGame to it. Don't
-	// know right now if we have to explicitly distinguish between new and edit state.
-	private Game newGame;
-	private Game gameToEdit;
+
+	private Game curGame;
 	private EditText gameName;
 	private EditText worldName;
 	private EditText gameDate;
@@ -79,10 +75,18 @@ public class CreateNewGameFragment extends Fragment {
 		// templates we want to display
 		// TODO move to onResume?
 		templates = TemplateLab.get(getActivity()).getTemplates();
-		newGame = new Game();
+
 		setHasOptionsMenu(true);
 		getActivity().setTitle(
 				getResources().getString(R.string.titel_create_game));
+
+		// check if we have to deal with newGame or dameToEdit
+		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
+			curGame = (Game) getActivity().getIntent().getSerializableExtra(
+					EXTRA_GAME_TO_EDIT);
+		} else {
+			curGame = new Game();
+		}
 
 	}
 
@@ -107,33 +111,29 @@ public class CreateNewGameFragment extends Fragment {
 
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-			gameToEdit = (Game) getActivity().getIntent().getSerializableExtra(
+			curGame = (Game) getActivity().getIntent().getSerializableExtra(
 					EXTRA_GAME_TO_EDIT);
+			Log.i("curGame is null?", "" + (curGame == null));
+			Log.i("worldName is null?", "" + (worldName == null));
 
-			gameName.setText(gameToEdit.getGameName());
-			final Template template = gameToEdit.getTemplate();
-			if(template != null) {
-				worldName.setText(template.getWorldName());
-			}
-			gameDate.setText(gameToEdit.getDate());
-			// addImageButton.setImageBitmap(gameToEdit.getBitmap);
-			getActivity().setTitle(gameToEdit.getGameName());
+//			curGame.removeCharacter(curGame.getCharakterList().get(
+//					curGame.getCharakterList().size() - 1));
+			gameName.setText(curGame.getGameName());
+			// FIXME Null Pointer Exception!
+			// worldName.setText(curGame.getTemplate().getWorldName());
+			gameDate.setText(curGame.getDate());
+
+			// addImageButton.setImageBitmap(curGame.getIconPath());
+
+			getActivity().setTitle(curGame.getGameName());
 
 		}
 
-		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-			expandableListAdapter = new ExpandableListArrayAdapter(
-					getActivity(), templates, gameToEdit);
-			pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
-					getActivity(), R.layout.itemlayout_grid_picked_character,
-					gameToEdit);
-		} else {
-			expandableListAdapter = new ExpandableListArrayAdapter(
-					getActivity(), templates, newGame);
-			pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
-					getActivity(), R.layout.itemlayout_grid_picked_character,
-					newGame);
-		}
+		expandableListAdapter = new ExpandableListArrayAdapter(getActivity(),
+				templates, curGame);
+		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
+				getActivity(), R.layout.itemlayout_grid_picked_character,
+				curGame);
 
 		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
@@ -175,12 +175,8 @@ public class CreateNewGameFragment extends Fragment {
 						if ((getActivity().getIntent()
 								.hasExtra(EXTRA_GAME_TO_EDIT))) {
 							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
-									gameToEdit);
-						} else {
-							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
-									newGame);
+									curGame);
 						}
-
 						startActivity(i);
 					}
 				});
@@ -219,17 +215,10 @@ public class CreateNewGameFragment extends Fragment {
 											int which) {
 										// remove picked character from the new
 										// game
-										if ((getActivity().getIntent()
-												.hasExtra(EXTRA_GAME_TO_EDIT))) {
-											gameToEdit
-													.removeCharacter(curGameCharacter);
-											pickedCharacterGridAdapter
-													.notifyDataSetChanged();
-										} else {
-											newGame.removeCharacter(curGameCharacter);
-											pickedCharacterGridAdapter
-													.notifyDataSetChanged();
-										}
+
+										curGame.removeCharacter(curGameCharacter);
+										pickedCharacterGridAdapter
+												.notifyDataSetChanged();
 
 										// remove highlighting
 										ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) expandableListAdapter.adapter).selectedCharacters;
@@ -251,7 +240,7 @@ public class CreateNewGameFragment extends Fragment {
 			public void onTextChanged(CharSequence c, int start, int before,
 					int count) {
 				// TODO speichern in objekt
-				newGame.setGameName(c.toString());
+				curGame.setGameName(c.toString());
 
 			}
 
@@ -280,50 +269,39 @@ public class CreateNewGameFragment extends Fragment {
 					return;
 				}
 
-				Toast.makeText(getActivity(), "Dein Game wird erstellt!",
+				Toast.makeText(
+						getActivity(),
+						getActivity().getResources().getString(
+								R.string.warning_set_gamename)
+								+ " "
+								+ gameName.getEditableText().toString()
+								+ " "
+								+ getActivity().getResources().getString(
+										R.string.warning_set_gamename),
 						Toast.LENGTH_SHORT).show();
-				// TODO create newGame object speichern!!!
 
 				// now it goes to GameDetailsFragment
-				// Start GameDetailsActivity
+				// Save and start GameDetailsActivity
 
-				// we've got a game for edit
-				if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-					try {
-						// save game
-						JacksonInterface.saveGame(gameToEdit, getActivity());
-						// only start if saving was successful
-						Intent i = new Intent(getActivity(),
-								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								gameToEdit.getGameName());
-						startActivity(i);
-					}
-					catch(Throwable e) {
-						e.printStackTrace();
-					}
-				} else {
-					Log.i("newGame name is null?", ""
-							+ (newGame.getGameName() == null));
-					Log.i("newGame name is: ", "" + newGame.getGameName());
-
-					try {
+				try {
+					if(curGame.getDate() == null) {
 						// set creation date
-						final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+						final SimpleDateFormat format = new SimpleDateFormat(
+								"dd.MM.yyyy");
 						final Date date = new Date();
-						newGame.setDate(format.format(date));
-						// save game
-						JacksonInterface.saveGame(newGame, getActivity());
-						// only start if saving was successful
-						Intent i = new Intent(getActivity(),
-								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								newGame.getGameName());
-						startActivity(i);
+						curGame.setDate(format.format(date));
 					}
-					catch(Throwable e) {
-						e.printStackTrace();
-					}
+					// save game
+					JacksonInterface.saveGame(curGame, getActivity());
+
+					// only start if saving was successful
+					Intent i = new Intent(getActivity(),
+							GameDetailsActivity.class);
+					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+							curGame.getGameName());
+					startActivity(i);
+				} catch (Throwable e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -401,10 +379,8 @@ public class CreateNewGameFragment extends Fragment {
 			public void onClick(View v) {
 				// show popup with some space for Game Info
 
-				if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-					showPopup(gameToEdit);
-				} else
-					showPopup(newGame);
+				showPopup(curGame);
+
 			}
 		});
 
@@ -454,12 +430,12 @@ public class CreateNewGameFragment extends Fragment {
 
 	public static class GameInfoDialogFragment extends DialogFragment {
 		private EditText editTextInfo;
-		private Game curGame;
+		private Game cGame;
 
 		// due to avoiding of using non-default constructor in fragment
 		public static GameInfoDialogFragment newInstance(Game game) {
 			GameInfoDialogFragment fragment = new GameInfoDialogFragment();
-			fragment.curGame = game;
+			fragment.cGame = game;
 			return fragment;
 		}
 
@@ -479,7 +455,7 @@ public class CreateNewGameFragment extends Fragment {
 			// get all EditTexts
 			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
-			Log.d("curGame is null?", "" + (curGame == null));
+			Log.d("curGame is null?", "" + (cGame == null));
 			// TODO Check it!!!!
 			// if (!curGame.getDescription().isEmpty()) {
 			// editTextInfo.setText(curGame.getDescription());
@@ -496,8 +472,8 @@ public class CreateNewGameFragment extends Fragment {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							// save new game notices
-							curGame.setDescription(editTextInfo
-									.getEditableText().toString());
+							cGame.setDescription(editTextInfo.getEditableText()
+									.toString());
 							// game changed!!!
 							// TODO check it!! newGame vs myGame
 						}
@@ -588,10 +564,7 @@ public class CreateNewGameFragment extends Fragment {
 		}
 
 		// store image path for later use
-		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-			gameToEdit.setIconPath(path);
-		} else
-			newGame.setIconPath(path);
+		curGame.setIconPath(path);
 	}
 
 	// TODO refactoring?

@@ -63,6 +63,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="6dp"
+   
         android:adjustViewBounds="true"
         android:background="@drawable/shape_template_browser_circle_green"
         android:gravity="center"

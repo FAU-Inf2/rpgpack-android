@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +52,9 @@ public class GameDetailsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
+		Bitmap bitmap = null;
+		String path = "";
+
 		View view = inflater.inflate(R.layout.fragment_game_details, parent,
 				false);
 		// for back-button
@@ -57,12 +62,18 @@ public class GameDetailsFragment extends Fragment {
 
 		String gName = (String) getActivity().getIntent().getSerializableExtra(
 				EXTRA_GAME_NAME);
-		
-		//TODO change it!!!
+
+		// TODO change it!!!
 		Log.d("GameDetailsFragment", "getGame >>"+gName);
 		game = GameLab.get(getActivity()).getGame(gName);
 
-		getActivity().setTitle(game.getGameName());
+		if (!(game == null)) {
+			getActivity().setTitle(game.getGameName());
+
+		} else {
+			getActivity().setTitle("Default");
+
+		}
 
 		gameName = (TextView) view.findViewById(R.id.gameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);
@@ -81,8 +92,7 @@ public class GameDetailsFragment extends Fragment {
 		date.setText(game.getDate());
 
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
-				getActivity(), R.layout.itemlayout_expandablelist_charakter,
-				game);
+				getActivity(), R.layout.itemlayout_game_details_charakter, game);
 		gameCharacterGridView.setAdapter(gameDetailsCharacterGridAdapter);
 
 		gameCharacterGridView.setOnItemClickListener(new OnItemClickListener() {
@@ -165,19 +175,38 @@ public class GameDetailsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// go into edit game mode
-				Toast.makeText(getActivity(),
-						"Nun kann Du das Spiel bearbeiten!", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(
+						getActivity(),
+
+						getActivity().getResources().getString(
+								R.string.msg_edit_game_mode),
+						Toast.LENGTH_SHORT).show();
 				// TODO
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
-
+				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
 
 				startActivity(i);
 			}
 		});
+
+		// TODO Check it! is it necessary?
+		Log.e("getIconPath is null?", "" + (game.getIconPath() == null));
+
+		if (game.getIconPath() == null) {
+			// set some default game icon
+			bitmap = BitmapFactory.decodeResource(getActivity().getResources(),
+					R.drawable.game_default_white);
+		} else {
+			bitmap = BitmapFactory.decodeFile(path);
+		}
+
+		if (bitmap != null) {
+			// set game icon
+			gameIcon.setImageBitmap(bitmap);
+		}
 
 		return view;
 	}

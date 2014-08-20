@@ -15,7 +15,7 @@
         android:maxWidth="200dip"
         android:scaleType="fitXY"
         android:padding="2dp"
-        android:src="@drawable/shape_circle_green" />
+        android:src="@drawable/shape_circle_matrix_green" />
 
     <TextView
         android:id="@+id/textModificator"

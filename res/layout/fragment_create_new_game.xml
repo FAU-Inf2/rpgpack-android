@@ -37,21 +37,6 @@
     </ExpandableListView>
 
     <EditText
-        android:id="@+id/worldNameText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/gameNameText"
-        android:layout_below="@+id/gameNameText"
-        android:ems="10"
-        android:hint="@string/hint_1"
-        android:lines="1"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <EditText
         android:id="@+id/gameDateText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -102,5 +87,20 @@
         android:background="@drawable/character_grid_border"
         android:numColumns="4" >
     </GridView>
+
+    <EditText
+        android:id="@+id/worldNameText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/gameNameText"
+        android:layout_below="@+id/gameNameText"
+        android:ems="10"
+        android:hint="@string/hint_1"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 </RelativeLayout>
