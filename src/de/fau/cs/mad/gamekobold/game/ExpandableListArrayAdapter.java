@@ -22,7 +22,9 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
@@ -93,9 +95,9 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
 					if (selectedCharacters.contains(curGameCharacter)) {
 						selectedCharacters.remove(curGameCharacter);
-						newGame.setTemplate(curGameCharacter.getTemplate());
+						// newGame.setTemplate(curGameCharacter.getTemplate());
 						newGame.removeCharacter(curGameCharacter);
-
+						notifyDataSetChanged();
 					} else {
 						selectedCharacters.add(curGameCharacter);
 						Toast.makeText(
@@ -106,8 +108,9 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 												R.string.msg_added_to_game),
 								Toast.LENGTH_SHORT).show();
 						// FIXME set Template not here!
-						newGame.setTemplate(curGameCharacter.getTemplate());
+						// newGame.setTemplate(curGameCharacter.getTemplate());
 						newGame.addCharacter(curGameCharacter);
+						notifyDataSetChanged();
 					}
 
 					// if
@@ -132,20 +135,31 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 				}
 				// create new character from template
 				else {
-					// TODO Check it. now it is just dummy template -> not able
-					// to create character!
-					// FIXME change it to real data!
+
+					Template curClickedTemplate = templates
+							.get(templatePosition);
+
 					Intent intent = new Intent(context,
-							CharacterEditActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// flag to distinguish between editing and creating
-					intent.putExtra(
-							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-							false);
-					intent.putExtra(
-							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-							templates.get(templatePosition).getTemplateName());
+							CreateNewCharacterActivity.class);
+					// TODO bei den anderen auch curTemplate.getFileName()
+					// don't add the activity to the history
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+					intent.putExtra("templateFileName",
+							curClickedTemplate.getFileName());
 					context.startActivity(intent);
+
+					// Intent intent = new Intent(context,
+					// CharacterEditActivity.class);
+					// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					// // flag to distinguish between editing and creating
+					// intent.putExtra(
+					// SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+					// false);
+					// intent.putExtra(
+					// SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+					// templates.get(templatePosition).getTemplateName());
+					// context.startActivity(intent);
 				}
 
 			}
