@@ -82,6 +82,7 @@ public class MatrixFragment extends GeneralFragment {
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 
+		// template creation mode
 		if (SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity) {
 			Log.d("TableFragment", "inflated for TemplateGenerator");
 
@@ -89,18 +90,30 @@ public class MatrixFragment extends GeneralFragment {
 			// rootView = inflater.inflate(R.layout.fragment_matrix_view,
 			// container, false);
 
-			gridView = (GridView) rootView.findViewById(R.id.gridView);
+			gridView = (GridView) rootView
+					.findViewById(R.id.gridViewMatrixItem);
 			// check needed for jackson data loading
 			if (itemsList == null) {
-				itemsList = getDataForGridView();
+
+				// FIXME remove
+				// itemsList = getDataForGridView();
+
+				itemsList = new ArrayList<MatrixItem>();
+
+				// set create new item to the end
+				MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
+						"+", null);
+				itemsList.add(addNewMatrixItem);
 
 				jacksonTable.entries = itemsList;
+
 			}
 			if (adapter == null) {
 				adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
 				// adapter.jacksonTable = jacksonTable;
 			}
-
+			Log.d("gridView is null?", "" + (gridView == null));
+			Log.d("adapter is null?", "" + (adapter == null));
 			gridView.setAdapter(adapter);
 
 			gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -174,11 +187,20 @@ public class MatrixFragment extends GeneralFragment {
 			gridView = (GridView) rootView.findViewById(R.id.gridView);
 			// check needed for jackson data loading
 			if (itemsList == null) {
-				itemsList = getDataForGridView();
-				jacksonTable.entries = itemsList;
-			}
 
-			itemsList.remove(itemsList.size() - 1);
+				// FIXME remove
+				// itemsList = getDataForGridView();
+
+				itemsList = new ArrayList<MatrixItem>();
+
+				// set create new item to the end
+				MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
+						"+", null);
+				itemsList.add(addNewMatrixItem);
+
+				jacksonTable.entries = itemsList;
+
+			}
 
 			if (a == null) {
 				a = new NewCharacterMatrixViewArrayAdapter(getActivity(),
@@ -292,25 +314,24 @@ public class MatrixFragment extends GeneralFragment {
 		adapter.notifyDataSetChanged();
 	}
 
-	// TODO replace with real data, now it is just stub for real data from DB or
-	// json file?
-	public static List<MatrixItem> getDataForGridView() {
-		List<MatrixItem> itemsList = new ArrayList<MatrixItem>();
-
-		MatrixItem item1 = new MatrixItem("Mut", "34", 0, 100, "+1");
-		MatrixItem item2 = new MatrixItem("Ausdauer", "45", 20, 500, "-2");
-		MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 50, "+3");
-
-		itemsList.add(item1);
-		itemsList.add(item2);
-		itemsList.add(item3);
-
-		// set create new item to the end
-		MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
-		itemsList.add(addNewMatrixItem);
-
-		return itemsList;
-	}
+	// FIXME remove as not using
+	// public static List<MatrixItem> getDataForGridView() {
+	// List<MatrixItem> itemsList = new ArrayList<MatrixItem>();
+	//
+	// MatrixItem item1 = new MatrixItem("Mut", "34", 0, 100, "+1");
+	// MatrixItem item2 = new MatrixItem("Ausdauer", "45", 20, 500, "-2");
+	// MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 50, "+3");
+	//
+	// itemsList.add(item1);
+	// itemsList.add(item2);
+	// itemsList.add(item3);
+	//
+	// // set create new item to the end
+	// MatrixItem addNewMatrixItem = new MatrixItem("Neues Element", "+", null);
+	// itemsList.add(addNewMatrixItem);
+	//
+	// return itemsList;
+	// }
 
 	private void showPopup() {
 		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment

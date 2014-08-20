@@ -136,17 +136,23 @@ public class TemplateBrowserActivity extends ListActivity {
 										public void onClick(
 												DialogInterface dialog,
 												int which) {
-											File file = longClickedTemplate.getTemplateFile();
+											File file = longClickedTemplate
+													.getTemplateFile();
 											if (file != null) {
 												Log.d("TempalteBrowser",
 														"delete template:"
 																+ longClickedTemplate);
 												// delete characters
-												final File characterDir = JacksonInterface.getDirectoryForCharacters(longClickedTemplate, TemplateBrowserActivity.this, false); 
-												if(characterDir != null) {
+												final File characterDir = JacksonInterface
+														.getDirectoryForCharacters(
+																longClickedTemplate,
+																TemplateBrowserActivity.this,
+																false);
+												if (characterDir != null) {
 													// delete characters
-													final File[] characterFiles = characterDir.listFiles();
-													for(final File character : characterFiles) {
+													final File[] characterFiles = characterDir
+															.listFiles();
+													for (final File character : characterFiles) {
 														character.delete();
 													}
 													// delete dircetory
@@ -194,7 +200,7 @@ public class TemplateBrowserActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		Log.d("d", "On resume!!!");
-		if(!checkForTemplateDirectoryChange()) {
+		if (!checkForTemplateDirectoryChange()) {
 			// we only check for single template changes if we are not
 			// reloading the whole list
 			checkForTemplateChanges();
@@ -256,42 +262,46 @@ public class TemplateBrowserActivity extends ListActivity {
 		adapter.notifyDataSetChanged();
 	}
 
-//	private void startEditingOfTemplate(Template template) {
-//		String fileName = template.getFileName();
-//		if (!fileName.isEmpty()) {
-//			startEditingOfTemplate(fileName);
-//		}
-//	}
+	// private void startEditingOfTemplate(Template template) {
+	// String fileName = template.getFileName();
+	// if (!fileName.isEmpty()) {
+	// startEditingOfTemplate(fileName);
+	// }
+	// }
 
 	/**
-	 * Checks every template for file changes.
-	 * If a file has been changed the template will be reloaded.
+	 * Checks every template for file changes. If a file has been changed the
+	 * template will be reloaded.
 	 */
 	private void checkForTemplateChanges() {
 		boolean templateListChanged = false;
 		// iterate over all loaded templates
-		for(int i = 0; i < templateList.size(); i++) {
+		for (int i = 0; i < templateList.size(); i++) {
 			Template templateToCheck;
 			// check for change
-			templateToCheck = templateList.get(i); 
-			if(templateToCheck.hasFileTimeStampChanged()) {
+			templateToCheck = templateList.get(i);
+			if (templateToCheck.hasFileTimeStampChanged()) {
 				// file changed so reload it
 				try {
 					// file for template
 					final File templateFile = templateToCheck.getTemplateFile();
 					// load template
-					final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface.loadTemplate(templateFile, true);
+					final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface
+							.loadTemplate(templateFile, true);
 					// check
 					if (loadedTemplate != null) {
 						// take over changes
-						templateToCheck.setTemplateName(loadedTemplate.templateName);
+						templateToCheck
+								.setTemplateName(loadedTemplate.templateName);
 						templateToCheck.setWorldName(loadedTemplate.gameName);
 						templateToCheck.setAuthor(loadedTemplate.author);
 						templateToCheck.setDate(loadedTemplate.date);
 						templateToCheck.setIconID(loadedTemplate.iconID);
-						templateToCheck.setDescription(loadedTemplate.description);
+						templateToCheck
+								.setDescription(loadedTemplate.description);
 						// update time stamp
-						templateToCheck.setFileTimeStamp(templateFile.lastModified());
+						templateToCheck.setFileTimeStamp(templateFile
+								.lastModified());
 						templateListChanged = true;
 					}
 				} catch (Throwable e) {
@@ -300,7 +310,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			}
 		}
 		// if a tempalte changed
-		if(templateListChanged) {
+		if (templateListChanged) {
 			// notify adapter that a change occured
 			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
 			adapter.notifyDataSetChanged();
@@ -310,12 +320,14 @@ public class TemplateBrowserActivity extends ListActivity {
 	/**
 	 * Checks the template directory for a change. Its time stamp is updated
 	 * when a file is created or deleted.
+	 * 
 	 * @return true if the template list will be reloaded, false otherwise.
 	 */
 	private boolean checkForTemplateDirectoryChange() {
-		final File templateDir = JacksonInterface.getTemplateRootDirectory(this);
+		final File templateDir = JacksonInterface
+				.getTemplateRootDirectory(this);
 		final long newTimeStamp = templateDir.lastModified();
-		if(templateFolderTimeStamp < newTimeStamp) {
+		if (templateFolderTimeStamp < newTimeStamp) {
 			templateFolderTimeStamp = newTimeStamp;
 			// reload template list
 			TemplateListLoaderTask loaderTask = new TemplateListLoaderTask();
@@ -358,26 +370,31 @@ public class TemplateBrowserActivity extends ListActivity {
 		@Override
 		protected List<Template> doInBackground(Void... params) {
 			List<Template> templateList = new ArrayList<Template>();
-			Template template1 = new Template(
-					"My First Template",
-					"Dungeons and Dragons",
-					"Anna",
-					"20.05.2014",
-					2,
-					"This is my first try to make my own template! D&D departs from traditional wargaming and assigns each player a specific character to play instead of a military formation. These characters embark upon imaginary adventures within a fantasy setting.");
-			Template template2 = new Template("The Best Template",
-					"Vampire the Masquerade", "Anna", "20.05.2014", 3);
-			Template template3 = new Template("Schwarze Auge Template",
-					"Das Schwarze Auge", "Anna", "21.05.2014", 4);
-
-			templateList.add(template1);
-			templateList.add(template2);
-			templateList.add(template3);
+			
+			// FIXME remove as not using!
+			// Template template1 = new Template(
+			// "My First Template",
+			// "Dungeons and Dragons",
+			// "Anna",
+			// "20.05.2014",
+			// 2,
+			// "This is my first try to make my own template! D&D departs from traditional wargaming and assigns each player a specific character to play instead of a military formation. These characters embark upon imaginary adventures within a fantasy setting.");
+			// Template template2 = new Template("The Best Template",
+			// "Vampire the Masquerade", "Anna", "20.05.2014", 3);
+			// Template template3 = new Template("Schwarze Auge Template",
+			// "Das Schwarze Auge", "Anna", "21.05.2014", 4);
+			//
+			// templateList.add(template1);
+			// templateList.add(template2);
+			// templateList.add(template3);
+			
+			
 			/*
 			 * JACKSON START We iterate over all files in the template directory
 			 * and load the data into the list
 			 */
-			File templateDir = JacksonInterface.getTemplateRootDirectory(myActivity);
+			File templateDir = JacksonInterface
+					.getTemplateRootDirectory(myActivity);
 			if (templateDir != null) {
 				Log.d("TemplateBrowser",
 						"templateDir:" + templateDir.getAbsolutePath());
@@ -386,12 +403,14 @@ public class TemplateBrowserActivity extends ListActivity {
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 					for (final File file : fileList) {
 						try {
-							loadedTemplate = JacksonInterface.loadTemplate(file, true); 
+							loadedTemplate = JacksonInterface.loadTemplate(
+									file, true);
 							if (loadedTemplate != null) {
 								Template temp = new Template(
 										loadedTemplate.templateName,
 										loadedTemplate.gameName,
-										loadedTemplate.author, loadedTemplate.date,
+										loadedTemplate.author,
+										loadedTemplate.date,
 										loadedTemplate.iconID,
 										loadedTemplate.description);
 								if (temp.getTemplateName().equals("")) {
