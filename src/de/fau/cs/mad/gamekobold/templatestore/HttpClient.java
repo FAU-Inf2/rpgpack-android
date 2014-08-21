@@ -19,11 +19,15 @@ import android.util.Log;
 public class HttpClient {
 
 	private InputStream content;
-	private DefaultHttpClient client;
+    protected  DefaultHttpClient client;
 	
 	protected int statusCode;
 	protected String reasonPhrase;
 	protected String responseBody;
+	
+	private HttpGet httpGet;
+	private HttpPost httpPost;
+	private HttpPut httpPut;
 	
 	public HttpClient() {
 		this.client = new DefaultHttpClient();
@@ -37,12 +41,13 @@ public class HttpClient {
 	 * @throws Exception 
 	 */
 	public void get(String url) throws Exception {
-		HttpGet httpGet = new HttpGet(url);
+		this.httpGet = new HttpGet(url);
 		
 		try {
 			HttpResponse execute = client.execute(httpGet);
+			
 			content = execute.getEntity().getContent();
-
+			
 			this.statusCode = execute.getStatusLine().getStatusCode();
 			this.reasonPhrase = execute.getStatusLine().getReasonPhrase();			
 			
@@ -63,7 +68,7 @@ public class HttpClient {
 	 * @throws Exception
 	 */
 	public void post(String url, ArrayList<NameValuePair> nameValuePairs , Boolean json) throws Exception {
-		HttpPost httpPost = new HttpPost(url);
+		this.httpPost = new HttpPost(url);
 		
 		try {
 			
@@ -108,7 +113,7 @@ public class HttpClient {
 	 * @return
 	 */
 	public String put(String url, ArrayList<NameValuePair> nameValuePairs ) {
-		HttpPut httpPut = new HttpPut(url);
+		this.httpPut = new HttpPut(url);
 		
 		try {
 			httpPut.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -144,6 +149,11 @@ public class HttpClient {
 		}
 		
 		return response;
+	}
+	
+	protected void cancel() {
+		if(this.httpGet != null)
+			this.httpGet.abort();
 	}
 }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -32,9 +33,10 @@ import android.widget.Toast;
 public class TemplateStoreMainActivity extends ListActivity {
 	private ArrayList<StoreTemplate> templates = new ArrayList<StoreTemplate>();
     private TemplateStoreArrayAdapter adapter;
-    
+    private ApiTask task;
+    private TemplateStoreClient client = new TemplateStoreClient();
 	 private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
-		 TemplateStoreClient client = new TemplateStoreClient();
+		 
 		 
 		 @Override
 	     protected ApiResponse doInBackground(ApiTaskParams... params) {
@@ -61,6 +63,11 @@ public class TemplateStoreMainActivity extends ListActivity {
 //	         setProgressPercent(progress[0]);
 	     }
 
+	     protected void onCancelled() {
+	    	 //alertMessage("cancelled");
+	     }
+	     
+	     
 	     protected void onPostExecute(ApiResponse response) {
 //	         showDialog("Downloaded " + result + " bytes");
 	    	 
@@ -113,7 +120,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    setListAdapter(adapter);
 	       
 	        
-		ApiTask task = new ApiTask();
+		this.task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		/*
 		apiParams.setMethod("postTemplate");
@@ -123,7 +130,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 		*/
 		
 		apiParams.setMethod("getTemplates");
-		task.execute(apiParams);
+		this.task.execute(apiParams);
+		
 	}
 
 	@Override
@@ -149,5 +157,14 @@ public class TemplateStoreMainActivity extends ListActivity {
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 	    StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
 	    Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
+	  }
+	  
+	  @Override
+	  public void onBackPressed() {
+		  if(this.task.getStatus() == AsyncTask.Status.RUNNING) {
+		      this.task.cancel(true);
+		      this.client.cancel();
+		  }
+	      finish();
 	  }
 }
