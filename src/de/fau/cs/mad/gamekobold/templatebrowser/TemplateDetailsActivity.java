@@ -14,7 +14,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -360,17 +359,13 @@ public class TemplateDetailsActivity extends Activity {
 		@Override
 		protected List<CharacterSheet> doInBackground(Template... params) {
 			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
-			// testing data
-
-			CharacterSheet sheet = new CharacterSheet("Finn");
-			sheet.color = Color.parseColor("#2980b9");
-			characterList.add(sheet);
 			//
 			File dir = JacksonInterface.getDirectoryForCharacters(params[0], myActivity, false); 
 			if (dir != null) {
 				Log.d("TemplateDetails",
 						"character Folder:" + dir.getAbsolutePath());
 				if (dir.isDirectory()) {
+					CharacterSheet sheet = null;
 					final File[] characters = dir.listFiles();
 					for (final File character : characters) {
 						if (character.isFile()) {
