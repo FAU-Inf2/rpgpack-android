@@ -15,17 +15,21 @@ public class MatrixItem {
 	//@JsonProperty("mod")
 	private String modificator;
 	
+	private boolean isSelected;
+	
 	@JsonCreator
 	public MatrixItem(@JsonProperty("itemName") String itemName,
 						@JsonProperty("value") String value,
 						@JsonProperty("rangeMin") int rangeMin,
 						@JsonProperty("rangeMax") int rangeMax,
-						@JsonProperty("modificator") String modificator) {
+						@JsonProperty("modificator") String modificator,
+						@JsonProperty("selected") boolean selected) {
 		this.itemName = itemName;
 		this.value = value;
 		this.rangeMin = rangeMin;
 		this.rangeMax = rangeMax;
 		this.modificator = modificator;
+		this.isSelected = selected;
 	}
 	
 	public MatrixItem(String itemName, String value, String modificator){
@@ -34,6 +38,7 @@ public class MatrixItem {
 		this.rangeMin = Integer.MIN_VALUE;
 		this.rangeMax = Integer.MAX_VALUE;
 		this.modificator = modificator;
+		this.isSelected = true;
 	}
 	
 	//@JsonProperty("name")
@@ -85,4 +90,12 @@ public class MatrixItem {
 		this.modificator = modificator;
 	}
 	
+	@JsonProperty("selected")
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
 }
