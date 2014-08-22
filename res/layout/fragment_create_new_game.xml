@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonCreateGame"
         android:layout_alignParentLeft="true"
+        android:focusable="false"
         android:layout_below="@+id/pickedCharacterGridView" >
     </ExpandableListView>
 

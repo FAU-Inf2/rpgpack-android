@@ -32,11 +32,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -137,21 +139,10 @@ public class CreateNewGameFragment extends Fragment {
 		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_grid_picked_character,
 				curGame);
-
+		expandableListAdapter
+				.passAdapterForPickedGrid(pickedCharacterGridAdapter);
 		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-
-		expandableTemplateList
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapterView,
-							View view, int position, long id) {
-						pickedCharacterGridAdapter.notifyDataSetChanged();
-						Log.e("notifyDataSetChanged?",
-								"!!!!!!!!!!!!!!!!!!!!!!!!!!");
-						return;
-					}
-				});
 
 		pickedCharacterGridView
 				.setOnItemClickListener(new OnItemClickListener() {
@@ -178,28 +169,32 @@ public class CreateNewGameFragment extends Fragment {
 										.findViewById(R.id.textItemTitle))
 										.getText(), Toast.LENGTH_SHORT).show();
 
-						// Start show/editCharactedActivity associated with the template
-						Template curTemplate = curCharacter.getTemplate();
-						//TODO Character laden!!! jetzt ist es eine leere Form!
-						Intent i = new Intent(getActivity(),
-								CharacterDetailsActivity.class);
-						i.putExtra("CharacterSheet", curCharacter);
-						i.putExtra("templateFileName", curTemplate.getFileName());
-						startActivity(i);
-
-						// // Start playCharactedActivity
+						// // Start show/editCharactedActivity associated with
+						// the
+						// // template
+						// Template curTemplate = curCharacter.getTemplate();
+						// // TODO Character laden!!! jetzt ist es eine leere
+						// Form!
 						// Intent i = new Intent(getActivity(),
-						// PlayCharacterActivity.class);
-						// i.putExtra(
-						// PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
-						// curCharacter);
-						//
-						// if ((getActivity().getIntent()
-						// .hasExtra(EXTRA_GAME_TO_EDIT))) {
-						// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
-						// curGame);
-						// }
+						// CharacterDetailsActivity.class);
+						// i.putExtra("CharacterSheet", curCharacter);
+						// i.putExtra("templateFileName",
+						// curTemplate.getFileName());
 						// startActivity(i);
+
+						// Start playCharactedActivity
+						Intent i = new Intent(getActivity(),
+								PlayCharacterActivity.class);
+						i.putExtra(
+								PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
+								curCharacter);
+
+						if ((getActivity().getIntent()
+								.hasExtra(EXTRA_GAME_TO_EDIT))) {
+							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+									curGame);
+						}
+						startActivity(i);
 					}
 				});
 

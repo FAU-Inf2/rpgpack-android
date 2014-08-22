@@ -15,16 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 
@@ -36,6 +34,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	private GridView gridView;
 	// to delete highlighting on logcklicked items
 	public CharacterGridAdapter adapter;
+	protected ArrayAdapter pickedAdapter;
 
 	// TODO check if it is necessary to set new Adapter every time
 	// now i cache adapter to keep selected characters highlighted
@@ -48,6 +47,10 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		this.templates = templates;
 		this.newGame = game;
 		this.adapterCache = new HashMap<Integer, CharacterGridAdapter>();
+	}
+
+	public void passAdapterForPickedGrid(ArrayAdapter pickedAdapter) {
+		this.pickedAdapter = pickedAdapter;
 	}
 
 	public void setInflater(LayoutInflater inflater, Context context) {
@@ -69,7 +72,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
 
-		// final CharacterGridAdapter adapter;
+		//CharacterGridAdapter adapter;
 		if (this.adapterCache.containsKey(templatePosition)) {
 			adapter = this.adapterCache.get(templatePosition);
 		} else {
@@ -84,6 +87,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
+				// Log.e("Position in gridview", ""+position);
 				// add to picked character
 				if (position != adapterView.getChildCount() - 1) {
 
@@ -96,14 +100,8 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					if (selectedCharacters.contains(curGameCharacter)) {
 						selectedCharacters.remove(curGameCharacter);
 						// newGame.setTemplate(curGameCharacter.getTemplate());
+
 						newGame.removeCharacter(curGameCharacter);
-
-						Log.e("remove(curGameCharacter",
-								"" + curGameCharacter.getCharacterName());
-
-						notifyDataSetChanged();
-						// have to notify pickedCharacterGridAdapter that
-						// DataSetChanged!
 
 					} else {
 						selectedCharacters.add(curGameCharacter);
@@ -115,18 +113,13 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 												R.string.msg_added_to_game),
 								Toast.LENGTH_SHORT).show();
 
-						Log.e("add(curGameCharacter",
-								"" + curGameCharacter.getCharacterName());
-
 						// FIXME set Template not here!
 						// newGame.setTemplate(curGameCharacter.getTemplate());
-						newGame.addCharacter(curGameCharacter);
-						notifyDataSetChanged();
 
-						// have to notify pickedCharacterGridAdapter that
-						// DataSetChanged!
+						newGame.addCharacter(curGameCharacter);
 
 					}
+					pickedAdapter.notifyDataSetChanged();
 					adapter.notifyDataSetChanged();
 
 				}

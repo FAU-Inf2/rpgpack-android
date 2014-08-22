@@ -181,15 +181,17 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemRange.setTextColor(context.getResources().getColor(
 						R.color.white));
 
-				if (Integer.valueOf(curItem.getModificator()) > 0) {
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.blue));
-				} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.red));
-				} else
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.white));
+				if (!curItem.getModificator().equals("")) {
+					if (Integer.valueOf(curItem.getModificator()) > 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.blue));
+					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.red));
+					} else
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.white));
+				}
 
 			} else {
 				itemName.setTextColor(context.getResources().getColor(

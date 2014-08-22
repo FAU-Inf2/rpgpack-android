@@ -18,13 +18,15 @@ public class Game implements Serializable {
 
 	private Template template;
 
-	private List<GameCharacter> characterList;
+	//TODO dte check this! because of notifydatasetchanged()
+	public List<GameCharacter> characterList;
 	private String iconPath;
 
 	private String fileAbsolutePath;
 
 	private long fileTimeStamp;
-//	private List<String> characterFileAbsPathList;
+
+	// private List<String> characterFileAbsPathList;
 
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description, Template template,
@@ -36,7 +38,7 @@ public class Game implements Serializable {
 		this.setCharakterList(characterList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-//		this.characterFileAbsPathList = new ArrayList<String>();
+		// this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
 	public Game(String gameName, Template template, String date, String iconPath) {
@@ -60,7 +62,7 @@ public class Game implements Serializable {
 		this.characterList = new ArrayList<GameCharacter>();
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-//		this.characterFileAbsPathList = new ArrayList<String>();
+		// this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
 	public boolean addCharacter(GameCharacter character) {
@@ -114,7 +116,7 @@ public class Game implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@JsonIgnore
 	public Template getTemplate() {
 		return template;
@@ -128,9 +130,12 @@ public class Game implements Serializable {
 		return characterList;
 	}
 
+	//TODO dte check this!!!!
 	public void setCharakterList(List<GameCharacter> charakterList) {
-		Log.e("CharacterList", "Setting CharacterList to " + charakterList);
-		this.characterList = charakterList;
+		Log.e("CharacterList", "Setting CharacterList to " + charakterList.size());
+		this.characterList.clear();
+		this.characterList.addAll(characterList);
+		return; 
 	}
 
 	public String getIconPath() {
@@ -140,7 +145,7 @@ public class Game implements Serializable {
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
-	
+
 	@JsonIgnore
 	public String getFileAbsolutePath() {
 		return fileAbsolutePath;
@@ -149,7 +154,7 @@ public class Game implements Serializable {
 	public void setFileAbsolutePath(String fileAbsolutePath) {
 		this.fileAbsolutePath = fileAbsolutePath;
 	}
-	
+
 	@JsonIgnore
 	public long getFileTimeStamp() {
 		return fileTimeStamp;

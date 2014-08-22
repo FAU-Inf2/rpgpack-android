@@ -18,12 +18,11 @@ import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	Context context;
-//	// list of highlighted characters
-//	public ArrayList<GameCharacter> selectedCharacters = new ArrayList<GameCharacter>();
 
 	// the list of objects we want to display
 	private List<GameCharacter> characters;
 	private int layoutID;
+	private Game curGame;
 
 	public PickedCharacterGridAdapter(Context context, int layoutID,
 			Template template) {
@@ -40,14 +39,18 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 		this.context = context;
 		this.characters = game.getCharakterList();
 		this.layoutID = layoutID;
-//		this.selectedCharacters = (ArrayList<GameCharacter>) game
-//				.getCharakterList();
+		this.curGame = game;
 
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		Log.e("Position in getView picked", "" + position);
+
+		characters = curGame.getCharakterList();
+
+		Log.e("Size of character list", "" + characters.size());
 		Bitmap bitmap = null;
 		String path = "";
 
@@ -56,60 +59,67 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
+
+			int i = 0;
+			for (GameCharacter g : characters) {
+				i++;
+				Log.e("PickedCharcterAdapter-first use",
+						i + " - " + g.getCharacterName());
+			}
+
 			convertView = inflater.inflate(layoutID, parent, false);
 
 			GameCharacter curCharacter = characters.get(position);
 
-//			if (selectedCharacters.contains(curCharacter)) {
-				TextView characterName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				characterName.setText(curCharacter.getCharacterName());
-				ImageView characterIconView = (ImageView) convertView
-						.findViewById(R.id.character_icon_circle);
+			TextView characterName = (TextView) convertView
+					.findViewById(R.id.textItemTitle);
+			characterName.setText(curCharacter.getCharacterName());
+			ImageView characterIconView = (ImageView) convertView
+					.findViewById(R.id.character_icon_circle);
 
-				if (curCharacter.getIconPath() == null) {
-					// set some default game icon
-					bitmap = BitmapFactory.decodeResource(
-							context.getResources(),
-							R.drawable.person_without_plus);
-				} else {
-					bitmap = BitmapFactory.decodeFile(path);
-				}
-				if (bitmap != null) {
-					// set game icon
-					characterIconView.setImageBitmap(bitmap);
-				}
+			if (curCharacter.getIconPath() == null) {
+				// set some default game icon
+				bitmap = BitmapFactory.decodeResource(context.getResources(),
+						R.drawable.person_without_plus);
+			} else {
+				bitmap = BitmapFactory.decodeFile(path);
 			}
+			if (bitmap != null) {
+				// set game icon
+				characterIconView.setImageBitmap(bitmap);
+			}
+		}
 
-//		}
 		// or reuse
 		// TODO check!!!!
 		else {
-
+			characters = curGame.getCharakterList();
+			int i = 0;
+			for (GameCharacter g : curGame.characterList) {
+				i++;
+				Log.e("PickedCharcterAdapter-reuse",
+						i + " - " + g.getCharacterName());
+			}
 			GameCharacter curCharacter = characters.get(position);
 
-//			if (selectedCharacters.contains(curCharacter)) {
-				TextView characterName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				characterName.setText(curCharacter.getCharacterName());
-				ImageView characterIconView = (ImageView) convertView
-						.findViewById(R.id.character_icon_circle);
+			TextView characterName = (TextView) convertView
+					.findViewById(R.id.textItemTitle);
+			characterName.setText(curCharacter.getCharacterName());
+			ImageView characterIconView = (ImageView) convertView
+					.findViewById(R.id.character_icon_circle);
 
-				if (curCharacter.getIconPath() == null) {
-					// set some default game icon
-					bitmap = BitmapFactory.decodeResource(
-							context.getResources(),
-							R.drawable.person_without_plus);
-				} else {
-					bitmap = BitmapFactory.decodeFile(path);
-				}
-				if (bitmap != null) {
-					// set game icon
-					characterIconView.setImageBitmap(bitmap);
-				}
+			if (curCharacter.getIconPath() == null) {
+				// set some default game icon
+				bitmap = BitmapFactory.decodeResource(context.getResources(),
+						R.drawable.person_without_plus);
+			} else {
+				bitmap = BitmapFactory.decodeFile(path);
 			}
-
-//		}
+			if (bitmap != null) {
+				// set game icon
+				characterIconView.setImageBitmap(bitmap);
+			}
+		}
 
 		return convertView;
 	}
