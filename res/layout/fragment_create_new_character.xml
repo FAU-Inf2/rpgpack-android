@@ -46,7 +46,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:ems="10"
-                    android:hint="Character Name"
+                    android:hint="@string/hint_character_name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
@@ -76,7 +76,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/textView2"
-                    android:hint="lvl"
+                    android:hint="@string/hint_character_lvl"
                     android:inputType="numberSigned"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />

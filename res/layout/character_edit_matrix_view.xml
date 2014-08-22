@@ -8,11 +8,13 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="186dp"
-        android:layout_height="162dp"
-        android:text="EDIT CHARCTER!!!!!"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_margin="5dp"
+        android:text="@string/hint_select_items"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/red" />
+        android:textColor="@color/background_green" />
 
     <GridView
         android:id="@+id/gridView"

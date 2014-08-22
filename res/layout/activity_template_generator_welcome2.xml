@@ -2,23 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view_empty"
     android:layout_width="match_parent"
-    android:background="@drawable/clickdummy_background"
+    android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".TemplateGeneratorActivity"
-    android:layout_height="match_parent" >
+    tools:context=".TemplateGeneratorActivity" >
 
     <!-- The main content view -->
 
     <LinearLayout
-        android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frame_layout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
         tools:ignore="MergeRootFrame" >
-<!--
+
+        <!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,12 +39,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-        </RelativeLayout>
+        </RelativeLayout>
         -->
     </LinearLayout>
     <!-- The navigation drawer -->
 
-<!-- 
+
+    <!--
 <ListView
         android:id="@+id/navigation_drawer"
         android:layout_width="240dp"
@@ -52,20 +54,18 @@
         android:background="@color/list_background"
         android:choiceMode="singleChoice"
         android:divider="@color/list_divider"
-        android:dividerHeight="1dp" />
-        -->
-        
-        
+        android:dividerHeight="1dp" />
+    -->
+
     <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="left"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-            android:background="@color/list_background"
-    
-    android:orientation="vertical"
-    android:id="@+id/navigation_drawer">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@color/list_background"
+        android:orientation="vertical" >
     </LinearLayout>
 
 </de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout>

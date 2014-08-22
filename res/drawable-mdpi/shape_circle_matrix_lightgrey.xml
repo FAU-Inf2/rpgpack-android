@@ -5,11 +5,11 @@
     android:thicknessRatio="1.9"
     android:useLevel="false" >
 
-    <solid android:color="@color/background" />
+    <solid android:color="@color/background_dark" />
 
     <size
-        android:height="84dp"
-        android:width="84dp" />
+        android:height="86dp"
+        android:width="86dp" />
 
     <stroke
         android:width="2dp"

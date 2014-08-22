@@ -34,7 +34,9 @@ public class MatrixTable extends AbstractTable{
 		if(entries.isEmpty()) {
 			return entries;
 		}
-		return entries.subList(0, entries.size()-1);
+		//TODO for matrix view in edit character mode we need all elements!!! real last item is getting lost!
+		//return entries.subList(0, entries.size()-1);
+		return entries;
 	}
 	
 	@Override

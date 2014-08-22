@@ -145,6 +145,19 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 
 				// // set modificator text color: blue for positive red for
 				// // negative
+				if (!curItem.getModificator().isEmpty()) {
+
+					if (Integer.valueOf(curItem.getModificator()) > 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_blue));
+					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_red));
+					} else
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.white));
+				}
+
 				// // TODO make this check smarter
 				// if (!curItem.getModificator().isEmpty()) {
 				//
@@ -158,7 +171,7 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				// iModificator.setTextColor(getContext().getResources()
 				// .getColor(R.color.a_grey));
 				//
-				// }
+
 			}
 		}
 		return convertView;

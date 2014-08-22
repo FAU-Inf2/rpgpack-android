@@ -100,14 +100,24 @@ public class MatrixFragment extends GeneralFragment {
 
 				itemsList = new ArrayList<MatrixItem>();
 
-				// set create new item to the end
-				 MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
-				 "+", null);
-				 itemsList.add(addNewMatrixItem);
-
 				jacksonTable.entries = itemsList;
 
+				// set create new item to the end, it will not appear in
+				// jacksonTable.entries
+				MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
+						"+", null);
+				itemsList.add(addNewMatrixItem);
+
 			}
+
+			// TODO check it !!!! now i have to remove last item because
+			// getEntries()
+			// returns n elements! (not (n-1) as it was before)
+
+			// Log.e("REMOVED", " !!! "
+			// + itemsList.get(itemsList.size() - 1).getItemName());
+			// itemsList.remove(itemsList.size() - 1);
+
 			if (adapter == null) {
 				adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
 				// adapter.jacksonTable = jacksonTable;
@@ -193,13 +203,41 @@ public class MatrixFragment extends GeneralFragment {
 
 				itemsList = new ArrayList<MatrixItem>();
 
-				// set create new item to the end
-				MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
-						"+", null);
-				itemsList.add(addNewMatrixItem);
+				// TODO find last item!!!!! now it is "create new item" don't
+				// know why!
+
+				// TODO check this! we don't wont to create new items in
+				// character creation mode! just select or deselect existed!
+
+				// TODO on new matrix element creation at edit template should
+				// update
+				// items here too!!!! now it is stale! shown only on new
+				// template
+				// loading!!!!
+
+				// // set create new item to the end
+				// MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
+				// "+", null);
+				// itemsList.add(addNewMatrixItem);
 
 				jacksonTable.entries = itemsList;
 
+			}
+
+			// TODO check it !!!! now i have to remove last item because
+			// getEntries()
+			// returns n elements! (not (n-1) as it was before)
+
+			Log.e("REMOVED", " !!! "
+					+ itemsList.get(itemsList.size() - 1).getItemName());
+			itemsList.remove(itemsList.size() - 1);
+			Log.e("REMOVED", " !!! "
+					+ itemsList.get(itemsList.size() - 1).getItemName());
+			itemsList.remove(itemsList.size() - 1);
+			int i = 0;
+			for (MatrixItem ma : itemsList) {
+				i++;
+				Log.e("MATRIX ITEM", i + " - " + ma.getItemName());
 			}
 
 			if (a == null) {
@@ -207,6 +245,13 @@ public class MatrixFragment extends GeneralFragment {
 						itemsList);
 				// adapter.jacksonTable = jacksonTable;
 			}
+
+			int ki = 0;
+			for (MatrixItem ma : itemsList) {
+				ki++;
+				Log.e("MATRIX ITEM", ki + " - " + ma.getItemName());
+			}
+
 			final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) a).selectedItems;
 
 			gridView.setAdapter(a);
@@ -486,6 +531,14 @@ public class MatrixFragment extends GeneralFragment {
 		// model
 		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
+
+		// FIXME getEntries() returns n-1 elements!!! we need all n!!!!
+		int i = 0;
+		for (MatrixItem ma : itemsList) {
+			i++;
+			Log.e("MATRIX ITEM", i + " j " + ma.getItemName());
+		}
+
 		// add the "new item" entry
 		itemsList.add(new MatrixItem(appContext.getResources().getString(
 				R.string.text_new_element), "+", null));

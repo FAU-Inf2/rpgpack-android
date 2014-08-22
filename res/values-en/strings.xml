@@ -240,9 +240,12 @@
     <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
     <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
 
-    <!-- character_favorite_items.xml -->
+    <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
-    <string name="hint_character_lvl"><h1>lvl</h1></string>
-    <string name="character_game_notices"><h1>Notice</h1></string>
+    <string name="hint_character_lvl">lvl</string>
+    <string name="character_game_notices">Notice</string>
+
+    <!-- character_edit_matrix_view -->
+    <string name="hint_select_items">Select attributes for your character!</string>
 
 </resources>
