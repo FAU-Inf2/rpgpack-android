@@ -32,9 +32,11 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 Intent intent = getIntent();
 		 characterSheet = null;
 		 final String characterAbsPath = intent.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
+		 Log.d("CharacterEditActivity", "onCreate absPath:"+ characterAbsPath);
 		 if(characterAbsPath != null) {
 			 try {
 				 characterSheet = JacksonInterface.loadCharacterSheet(new File(characterAbsPath), false);
+				 Log.d("CharacterEditActivity", "loaded sheet");
 			 }
 			 catch(Throwable e) {
 				 e.printStackTrace();
@@ -43,7 +45,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 if(characterSheet != null) {
 			 super.inflate(characterSheet.getRootTable());
 		 }
-		 //enable all checkboxes exept in slideout-menu
+		 //enable all checkboxes except in slideout-menu
 		 //use an asynctask to allow inflation of folders/tables/matrices
 		 //by superclass before
 		 SetCheckboxVisibilityTask task = new SetCheckboxVisibilityTask();
@@ -72,8 +74,11 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 
 	 @Override
 	 public void onPause() {
+		 Log.d("CharacterEditActivity", "onPause, sheet:"+characterSheet);
 		 if(characterSheet != null) {
+
 			 try {
+				// TODO add simple characterAltered Flag to prevent some unneeded saving
 				Log.d("Trying to save sheet", "path:"+characterSheet.fileAbsolutePath);
 				// open file
 				final File jsonFile = new File(characterSheet.fileAbsolutePath);
