@@ -40,18 +40,23 @@ public class Table extends AbstractTable{
 	@JsonCreator
 	public Table(@JsonProperty("name") String name,
 				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
-				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows) {
+				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
+				@JsonProperty("selection") ArrayList<Boolean> selection) {
 		tableName = name;
 		numberOfColumns = headers.size();
 		columnHeaders = headers;
 		writeOnly = false;
 		rows = new ArrayList<Row>();
 		// parse rows
-		for(final ArrayList<String> row : loadedRows) {
+		for(int i = 0; i < loadedRows.size(); ++i) {
+			final ArrayList<String> rawRow = loadedRows.get(i);
 			// create new row
 			Row newRow = new Row();
-			// infalte
-			newRow.inflate(headers, row);
+			// inflate
+			newRow.inflate(headers, rawRow);
+			if(selection != null) {
+				newRow.setSelected(selection.get(i));
+			}
 			// add
 			rows.add(newRow);
 		}
@@ -66,6 +71,19 @@ public class Table extends AbstractTable{
 		List<List<String>> ret = new LinkedList<List<String>>();
 		for(final Row row : rows) {
 			ret.add(row.getEntries());
+		}
+		return ret;
+	}
+	
+	/**
+	 * Used fir saving to json by jackson library.
+	 * @return
+	 */
+	@JsonProperty("selection")
+	public List<Boolean> getSelection() {
+		List<Boolean> ret = new LinkedList<Boolean>();
+		for(final Row row : rows) {
+			ret.add(row.isSelected());
 		}
 		return ret;
 	}
