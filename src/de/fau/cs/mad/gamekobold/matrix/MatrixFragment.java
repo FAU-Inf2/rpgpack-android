@@ -253,6 +253,12 @@ public class MatrixFragment extends GeneralFragment {
 			}
 
 			final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) a).selectedItems;
+			
+			for(final MatrixItem item : itemsList) {
+				if(item.isSelected()) {
+					selectedItems.add(item);
+				}
+			}
 
 			gridView.setAdapter(a);
 
@@ -260,13 +266,17 @@ public class MatrixFragment extends GeneralFragment {
 				@Override
 				public void onItemClick(AdapterView<?> adapterView, View view,
 						int position, long id) {
-
+					// selection of last item may not be toggled
+					if(position == itemsList.size()-1) {
+						return;
+					}
 					MatrixItem curMatrixItem = itemsList.get(position);
 
 					// selected characters will be highlighted and added into
 					// pickedCharactersGrid
 
 					if (selectedItems.contains(curMatrixItem)) {
+						curMatrixItem.setSelected(false);
 						selectedItems.remove(curMatrixItem);
 
 						// newCharacter.removeMatrixItem(curMatrixItem);
@@ -275,14 +285,14 @@ public class MatrixFragment extends GeneralFragment {
 						a.notifyDataSetChanged();
 
 					} else {
+						curMatrixItem.setSelected(true);
 						selectedItems.add(curMatrixItem);
-
 						Toast.makeText(
 								getActivity(),
 								((TextView) view
 										.findViewById(R.id.textItemTitle))
 										.getText()
-										+ "-Attribut wird zu dem Charakter hinzugefügt",
+										+ "-Attribut wird zu dem Charakter hinzugefuegt",
 								Toast.LENGTH_SHORT).show();
 
 						Log.d("add", "add");
@@ -477,7 +487,7 @@ public class MatrixFragment extends GeneralFragment {
 							 */
 							if (editItem == null) {
 								final MatrixItem newItem = new MatrixItem(name,
-										defValue, min, max, mod);
+										defValue, min, max, mod, true);
 								matrixFragment.addMatrixItem(newItem);
 							} else {
 								editItem.setItemName(name);
@@ -540,8 +550,10 @@ public class MatrixFragment extends GeneralFragment {
 		}
 
 		// add the "new item" entry
-		itemsList.add(new MatrixItem(appContext.getResources().getString(
-				R.string.text_new_element), "+", null));
+		final MatrixItem newElement =new MatrixItem(appContext.getResources().getString(
+				R.string.text_new_element), "+", null);
+		newElement.setSelected(false);
+		itemsList.add(newElement);
 	}
 
 	public void setJacksonTable(MatrixTable myTable) {

@@ -16,7 +16,7 @@ public class CharacterSheet implements Parcelable{
 	public String name;
 	public int level;
 	public String description;
-	public int color = Color.parseColor("#2980b9");
+	public int color = Color.WHITE;
 	@JsonIgnore
 	public String fileAbsolutePath = null;
 	@JsonIgnore
@@ -27,7 +27,7 @@ public class CharacterSheet implements Parcelable{
 
 	public CharacterSheet() {
 		name = "";
-		level = 3;
+		level = 0;
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
@@ -35,7 +35,7 @@ public class CharacterSheet implements Parcelable{
 
 	public CharacterSheet(String name) {
 		this.name = name;		
-		level = 3;
+		level = 0;
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
@@ -48,9 +48,10 @@ public class CharacterSheet implements Parcelable{
 							@JsonProperty("description") String description,
 							@JsonProperty("rootTable") ContainerTable table) {
 		this.name = name;
-		this.rootTable = table;
 		this.level = level;
+		this.color = color;
 		this.description = description;
+		this.rootTable = table;
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
 	}

@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.templatestore;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.conn.ClientConnectionManager;
 
 import android.util.Log;
 
@@ -39,5 +40,9 @@ public class TemplateStoreClient extends HttpClient {
 	
 	public String getApiUrl() {
 		return apiUrl;
+	}
+	
+	public void cancel() {
+		super.cancel();
 	}
 }

@@ -168,7 +168,7 @@ public class TemplateLab {
 	 */
 	private void loadCharacters(Template template) {
 		final File characterDir = JacksonInterface.getDirectoryForCharacters(
-				template, appContext, false);
+				template, appContext, true);
 		// nullpointer check
 		if (characterDir != null) {
 			// remove all old characters

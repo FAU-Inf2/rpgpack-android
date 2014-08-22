@@ -5,7 +5,6 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -52,19 +51,18 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<CharacterSheet>{
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			if(position == getCount()-1) {
 				itemView = inflater.inflate(R.layout.itemlayout_new_character_icon, parent, false);
-				// the following code sets the color for the circle shape
-				setColorForView(Color.WHITE, itemView);
 			}
 			else {
 				itemView = inflater.inflate(R.layout.itemlayout_character_icon, parent, false);
-				// the following code sets the color for the circle shape
-				final CharacterSheet sheet = getItem(position);
-				setColorForView(sheet.color, itemView);
 			}
 		} else {
 			itemView = convertView;
 		}
-		TextView name = (TextView)itemView.findViewById(R.id.textView1);
+		// the following code sets the color for the circle shape
+		final CharacterSheet sheet = getItem(position);
+		setColorForView(sheet.color, itemView);
+		// set the name
+		final TextView name = (TextView)itemView.findViewById(R.id.textView1);		
 		name.setText(items.get(position).name);
 		return itemView;
 	}

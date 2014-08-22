@@ -3,13 +3,11 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -42,7 +40,6 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private CharacterSheet sheet;
 	private Uri iconUri;
 	private ImageButton characterIconButton;
-	private String templateFileName;
 	private boolean characterAltered;
 
 	@Override
@@ -57,7 +54,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
 		final TextView characterName = (TextView)findViewById(R.id.textView1);
-		final TextView levelLabel = (TextView)findViewById(R.id.textView3);
+		final EditText levelEditText = (EditText)findViewById(R.id.EditText1);
 		characterIconButton = (ImageButton)findViewById(R.id.imageButton1);
 		
 		characterIconButton.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +142,22 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				}
 			}
 		});
+		
+		levelEditText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(!s.toString().isEmpty()) {
+					sheet.level = Integer.parseInt(s.toString());
+					characterAltered = true;
+				}
+			}
+		});
 
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();		
@@ -154,57 +167,29 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			if(sheet != null) {
 				setTitle(sheet.name);
 				characterName.setText(sheet.name);
-				levelLabel.setText(String.valueOf(sheet.level));
+				levelEditText.setText(String.valueOf(sheet.level));
 				description.setTag(sheet.description);
 				// set to character color
 				relLayout.setBackgroundColor(sheet.color);
 			}
-			templateFileName = (String)extras.getString("templateFileName");
 		}
 		
 		final Button characterEditButton = (Button)findViewById(R.id.button1);
 		characterEditButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(CharacterDetailsActivity.this, CharacterEditActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				// flag to distinguish between editing and creating
-				intent.putExtra(
-						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-						false);
-				intent.putExtra(
-						SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-						templateFileName);
+				// save sheet because we need the file path
+				// we will not double save becaus of alteration flag
+				saveCharacterSheet();
+				Intent intent = CharacterEditActivity.createIntentForStarting(CharacterDetailsActivity.this, sheet);
 				startActivity(intent);
 			}
 		});
-
 	}
 
 	@Override
 	public void onPause() {
-		// TODO maybe save async. Don't know right now.
-		// check if character has been altered
-		if(sheet != null && characterAltered) {
-			if(!sheet.fileAbsolutePath.isEmpty()) {
-				// load sheet. take over changes. save again
-				try {
-					// open file
-					final File jsonFile = new File(sheet.fileAbsolutePath);
-					// load sheet with all data
-					CharacterSheet loadedSheet = JacksonInterface.loadCharacterSheet(jsonFile, false);
-					// take over changes
-					loadedSheet.takeOverChanges(sheet);
-					// save back to the file
-					JacksonInterface.saveCharacterSheet(loadedSheet, jsonFile);
-					// clear flag
-					characterAltered = false;
-				}
-				catch(Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		saveCharacterSheet();
 		super.onPause();
 	}
 
@@ -238,6 +223,31 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		}
 	}
 
+	private void saveCharacterSheet() {
+		// TODO maybe save async. Don't know right now.
+		// check if character has been altered
+		if(sheet != null && characterAltered) {
+			if(!sheet.fileAbsolutePath.isEmpty()) {
+				// load sheet. take over changes. save again
+				try {
+					// open file
+					final File jsonFile = new File(sheet.fileAbsolutePath);
+					// load sheet with all data
+					CharacterSheet loadedSheet = JacksonInterface.loadCharacterSheet(jsonFile, false);
+					// take over changes
+					loadedSheet.takeOverChanges(sheet);
+					// save back to the file
+					JacksonInterface.saveCharacterSheet(loadedSheet, jsonFile);
+					// clear flag
+					characterAltered = false;
+				}
+				catch(Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	@Override
 	// to handle the selected image
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

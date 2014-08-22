@@ -6,6 +6,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
+import de.fau.cs.mad.gamekobold.jackson.Row;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
@@ -213,6 +214,17 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	    item.setPaintFlags(item.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 	    item.setText(mTitles[groupPosition]);
 //	    row.setTextSize(R.dimen.text_large);
+	    // TODO BENNI
+	    CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
+	    final Row jacksonRow = mJacksonTable.getRow(groupPosition);
+	    checkbox.setChecked(jacksonRow.isSelected());
+	    checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	    	final Row mRow = jacksonRow;
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mRow.setSelected(isChecked);
+			}
+		});
 	    return convertView;
 	  }
 
