@@ -28,7 +28,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
@@ -244,14 +243,7 @@ public class CreateNewCharacterActivity extends Activity implements
 				// save sheet because we need the file path
 				// we will not double save becaus of alteration flag
 				saveCharacterSheet();
-				Intent intent = new Intent(CreateNewCharacterActivity.this,
-						CharacterEditActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				// set flag so we do not use template mode
-				intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, false);
-
-				intent.putExtra(CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
-						sheet.fileAbsolutePath);
+				Intent intent = CharacterEditActivity.createIntentForStarting(CreateNewCharacterActivity.this, sheet);
 				startActivity(intent);
 			}
 		});

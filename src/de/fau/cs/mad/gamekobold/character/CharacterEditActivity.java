@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.character;
 
 import java.io.File;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -141,8 +142,25 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 					return Boolean.valueOf(true);
 				}
 				return params[0];
-			}
-			
-	    }
+			}		
+	 }
+	 
+	 /**
+	  * Creates and returns a new intent with which you can start the CharacterEditActivity.
+	  * The intent will already have all necessary flags and extras set.
+	  * @param packageContext Same as the first parameter when creating a new intent.
+	  * @param sheet The CharacterSheet to edit.
+	  * @return The created ready to use intent.
+	  */
+	 public static Intent createIntentForStarting(Context packageContext, CharacterSheet sheet) {
+		 	Intent intent = new Intent(packageContext, CharacterEditActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			// set flag so we do not use template mode
+			intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, false);
+
+			intent.putExtra(CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
+					sheet.fileAbsolutePath);
+			return intent;
+	 }
 
 }
