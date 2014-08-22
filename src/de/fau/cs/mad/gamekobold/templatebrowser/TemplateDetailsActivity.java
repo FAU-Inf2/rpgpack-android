@@ -158,7 +158,7 @@ public class TemplateDetailsActivity extends Activity {
 				}
 				setTitle(curTemplate.getTemplateName());
 				characterFolderTimeStamp = 0;
-				characterFolder = JacksonInterface.getDirectoryForCharacters(curTemplate, this, false); 
+				characterFolder = JacksonInterface.getDirectoryForCharacters(curTemplate, this, true); 
 			}
 		}
 
@@ -210,11 +210,14 @@ public class TemplateDetailsActivity extends Activity {
 	
 	@Override
 	public void onResume() {
+//		Log.d("TemplateDetailsActivity", "onResume()");
 		if(characterFolder != null) {
 //			Log.d("TemplateDetails", "onResume" );
 			// check to determine if there is a new character or one has been deleted
 			final long newFolderTimeStamp = characterFolder.lastModified();
+//			Log.d("TemplateDetailsActivity", "old stamp:"+characterFolderTimeStamp + " new:"+newFolderTimeStamp);
 			if(newFolderTimeStamp > characterFolderTimeStamp) {
+//				Log.d("TemplateDetailsActivity", "reloading character list");
 				// load all characters for this template
 				CharacterListLoaderTask loadingTask = new CharacterListLoaderTask();
 				loadingTask.execute(new Template[] { curTemplate });
