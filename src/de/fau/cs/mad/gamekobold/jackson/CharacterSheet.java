@@ -16,7 +16,7 @@ public class CharacterSheet implements Parcelable{
 	public String name;
 	public int level;
 	public String description;
-	public int color = Color.parseColor("#2980b9");
+	public int color = Color.WHITE;
 	@JsonIgnore
 	public String fileAbsolutePath = null;
 	@JsonIgnore

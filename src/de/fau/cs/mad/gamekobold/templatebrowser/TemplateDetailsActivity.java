@@ -226,9 +226,11 @@ public class TemplateDetailsActivity extends Activity {
 				for(int i = 0; i < adapter.getCount() - 1; i++) {
 					CharacterSheet sheet = adapter.getItem(i);
 					final File sheetFile = new File(sheet.fileAbsolutePath);
+					Log.d("TemplateDetailsActivity", "checking file:"+sheet.fileAbsolutePath);
 					if(sheetFile != null) {
 						final long newTimeStamp = sheetFile.lastModified();
 						if(newTimeStamp > sheet.fileTimeStamp) {
+							Log.d("TemplateDetailsActivity", "reloading file:"+sheet.fileAbsolutePath);
 							try {
 								adapter.remove(sheet);
 								sheet = JacksonInterface.loadCharacterSheet(sheetFile, true);
