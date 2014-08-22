@@ -232,13 +232,17 @@
     <string name="create_new_game_last_item">Create New Game&#8230;</string>
     <string name="msg_creating_new_game_p1">Your new game</string>
     <string name="msg_creating_new_game_p2">is created!</string>
-
     <string name="msg_want_to_delete_game">Do you really want to delete this game?</string>
     <string name="msg_yes_to_delete_game">Click Yes to delete this game.</string>
-    
+
     <!-- Template Store -->
-     <string name="template_store_title">Template Store</string>
-         <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
+    <string name="template_store_title">Template Store</string>
+    <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
     <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
-     
+
+    <!-- character_favorite_items.xml -->
+    <string name="hint_character_name">Character Name</string>
+    <string name="hint_character_lvl"><h1>lvl</h1></string>
+    <string name="character_game_notices"><h1>Notice</h1></string>
+
 </resources>

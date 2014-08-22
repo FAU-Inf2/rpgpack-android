@@ -101,9 +101,9 @@ public class MatrixFragment extends GeneralFragment {
 				itemsList = new ArrayList<MatrixItem>();
 
 				// set create new item to the end
-				MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
-						"+", null);
-				itemsList.add(addNewMatrixItem);
+				 MatrixItem addNewMatrixItem = new MatrixItem("Neues Element",
+				 "+", null);
+				 itemsList.add(addNewMatrixItem);
 
 				jacksonTable.entries = itemsList;
 

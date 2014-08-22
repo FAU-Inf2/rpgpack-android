@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/a_green" >
+
+        <ImageButton
+            android:id="@+id/imageButtonCharacterIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:maxHeight="80dp"
+            android:maxWidth="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/addphoto" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageButtonCharacterIcon"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/character_details_border"
+                android:paddingBottom="5dp" >
+
+                <EditText
+                    android:id="@+id/character_name_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:ems="10"
+                    android:hint="@string/hint_character_name"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white" />
+
+                <requestFocus />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp" >
+
+                <EditText
+                    android:id="@+id/character_level_edittext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/textViewLvl"
+                    android:hint="@string/hint_character_lvl"
+                    android:inputType="numberSigned"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/buttonNotices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/character_level_edittext"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:text="@string/character_game_notices"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/textViewLvl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/character_level_edittext"
+                    android:layout_alignBottom="@+id/character_level_edittext"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/lvl_label"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="379dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical" >
+
+        <GridView
+            android:id="@+id/gridViewFavMatrixItems"
+            android:layout_width="match_parent"
+            android:layout_height="146dp"
+            android:numColumns="3" >
+        </GridView>
+
+        <ListView
+            android:id="@+id/listViewFavTableItems"
+            android:layout_width="match_parent"
+            android:layout_height="122dp" >
+        </ListView>
+
+        <ExpandableListView
+            android:id="@+id/expandableListViewFavFolderItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
+    </LinearLayout>
+
+</FrameLayout>

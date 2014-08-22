@@ -67,7 +67,6 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 			}
 			// or reuse
 			else {
-				Log.e("Reusing", "true");
 				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 				GameCharacter curCharacter = characters.get(position);
@@ -135,7 +134,6 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 			}
 			// or reuse
 			else {
-				Log.e("Reusing", "true");
 				TextView iName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 				GameCharacter curCharacter = characters.get(position);

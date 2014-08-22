@@ -36,13 +36,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
@@ -116,8 +119,8 @@ public class CreateNewGameFragment extends Fragment {
 			Log.i("curGame is null?", "" + (curGame == null));
 			Log.i("worldName is null?", "" + (worldName == null));
 
-//			curGame.removeCharacter(curGame.getCharakterList().get(
-//					curGame.getCharakterList().size() - 1));
+			// curGame.removeCharacter(curGame.getCharakterList().get(
+			// curGame.getCharakterList().size() - 1));
 			gameName.setText(curGame.getGameName());
 			// FIXME Null Pointer Exception!
 			// worldName.setText(curGame.getTemplate().getWorldName());
@@ -138,6 +141,18 @@ public class CreateNewGameFragment extends Fragment {
 		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
+		expandableTemplateList
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapterView,
+							View view, int position, long id) {
+						pickedCharacterGridAdapter.notifyDataSetChanged();
+						Log.e("notifyDataSetChanged?",
+								"!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						return;
+					}
+				});
+
 		pickedCharacterGridView
 				.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -152,12 +167,10 @@ public class CreateNewGameFragment extends Fragment {
 										+ " Item " + position + " was clicked",
 								Toast.LENGTH_SHORT).show();
 
-						// it goes to character-view
+						// TODO check if it is good to go to edit view
+						// it goes to character-edit view
 						curCharacter = (GameCharacter) adapterView
 								.getItemAtPosition(position);
-
-						Log.i("curCharacter is null?", ""
-								+ (curCharacter == null));
 
 						Toast.makeText(
 								getActivity(),
@@ -165,19 +178,28 @@ public class CreateNewGameFragment extends Fragment {
 										.findViewById(R.id.textItemTitle))
 										.getText(), Toast.LENGTH_SHORT).show();
 
-						// Start playCharactedActivity
+						// Start show/editCharactedActivity associated with the template
+						Template curTemplate = curCharacter.getTemplate();
+						//TODO Character laden!!! jetzt ist es eine leere Form!
 						Intent i = new Intent(getActivity(),
-								PlayCharacterActivity.class);
-						i.putExtra(
-								PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
-								curCharacter);
-
-						if ((getActivity().getIntent()
-								.hasExtra(EXTRA_GAME_TO_EDIT))) {
-							i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
-									curGame);
-						}
+								CharacterDetailsActivity.class);
+						i.putExtra("CharacterSheet", curCharacter);
+						i.putExtra("templateFileName", curTemplate.getFileName());
 						startActivity(i);
+
+						// // Start playCharactedActivity
+						// Intent i = new Intent(getActivity(),
+						// PlayCharacterActivity.class);
+						// i.putExtra(
+						// PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
+						// curCharacter);
+						//
+						// if ((getActivity().getIntent()
+						// .hasExtra(EXTRA_GAME_TO_EDIT))) {
+						// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME,
+						// curGame);
+						// }
+						// startActivity(i);
 					}
 				});
 
@@ -186,7 +208,6 @@ public class CreateNewGameFragment extends Fragment {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> adapterView,
 							View view, final int position, long id) {
-						Log.d("LONG CLICK", "pos:" + position);
 
 						final GameCharacter curGameCharacter = (GameCharacter) adapterView
 								.getItemAtPosition(position);
@@ -215,7 +236,6 @@ public class CreateNewGameFragment extends Fragment {
 											int which) {
 										// remove picked character from the new
 										// game
-
 										curGame.removeCharacter(curGameCharacter);
 										pickedCharacterGridAdapter
 												.notifyDataSetChanged();
@@ -284,7 +304,7 @@ public class CreateNewGameFragment extends Fragment {
 				// Save and start GameDetailsActivity
 
 				try {
-					if(curGame.getDate() == null) {
+					if (curGame.getDate() == null) {
 						// set creation date
 						final SimpleDateFormat format = new SimpleDateFormat(
 								"dd.MM.yyyy");

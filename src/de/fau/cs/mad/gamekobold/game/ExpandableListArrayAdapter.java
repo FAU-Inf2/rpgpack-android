@@ -97,7 +97,14 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 						selectedCharacters.remove(curGameCharacter);
 						// newGame.setTemplate(curGameCharacter.getTemplate());
 						newGame.removeCharacter(curGameCharacter);
+
+						Log.e("remove(curGameCharacter",
+								"" + curGameCharacter.getCharacterName());
+
 						notifyDataSetChanged();
+						// have to notify pickedCharacterGridAdapter that
+						// DataSetChanged!
+
 					} else {
 						selectedCharacters.add(curGameCharacter);
 						Toast.makeText(
@@ -107,38 +114,26 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 										+ context.getResources().getString(
 												R.string.msg_added_to_game),
 								Toast.LENGTH_SHORT).show();
+
+						Log.e("add(curGameCharacter",
+								"" + curGameCharacter.getCharacterName());
+
 						// FIXME set Template not here!
 						// newGame.setTemplate(curGameCharacter.getTemplate());
 						newGame.addCharacter(curGameCharacter);
 						notifyDataSetChanged();
+
+						// have to notify pickedCharacterGridAdapter that
+						// DataSetChanged!
+
 					}
-
-					// if
-					// (!newGame.getCharakterList().contains(curGameCharacter))
-					// {
-					// Toast.makeText(
-					// context,
-					// curGameCharacter.getCharacterName()
-					// + " wird zum Spiel hinzugefuegt!",
-					// Toast.LENGTH_SHORT).show();
-					// // TODO pruefen ob es nur ein Template moeglich ist!!!!
-					// Log.d("newGame is null?", "" + (newGame == null));
-					// newGame.setTemplate(curGameCharacter.getTemplate());
-					// Log.d("Character is null?", ""
-					// + (curGameCharacter == null));
-					// newGame.addCharacter(curGameCharacter);
-					// // notifyDataSetChanged();
-					// }
-
 					adapter.notifyDataSetChanged();
 
 				}
 				// create new character from template
 				else {
-
 					Template curClickedTemplate = templates
 							.get(templatePosition);
-
 					Intent intent = new Intent(context,
 							CreateNewCharacterActivity.class);
 					// TODO bei den anderen auch curTemplate.getFileName()
@@ -148,18 +143,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					intent.putExtra("templateFileName",
 							curClickedTemplate.getFileName());
 					context.startActivity(intent);
-
-					// Intent intent = new Intent(context,
-					// CharacterEditActivity.class);
-					// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// // flag to distinguish between editing and creating
-					// intent.putExtra(
-					// SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-					// false);
-					// intent.putExtra(
-					// SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-					// templates.get(templatePosition).getTemplateName());
-					// context.startActivity(intent);
 				}
 
 			}
