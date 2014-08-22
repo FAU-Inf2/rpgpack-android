@@ -48,9 +48,10 @@ public class CharacterSheet implements Parcelable{
 							@JsonProperty("description") String description,
 							@JsonProperty("rootTable") ContainerTable table) {
 		this.name = name;
-		this.rootTable = table;
 		this.level = level;
+		this.color = color;
 		this.description = description;
+		this.rootTable = table;
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
 	}
