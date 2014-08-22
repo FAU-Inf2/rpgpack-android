@@ -54,7 +54,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
 		final TextView characterName = (TextView)findViewById(R.id.textView1);
-		final TextView levelLabel = (TextView)findViewById(R.id.textView3);
+		final EditText levelEditText = (EditText)findViewById(R.id.EditText1);
 		characterIconButton = (ImageButton)findViewById(R.id.imageButton1);
 		
 		characterIconButton.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +142,22 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				}
 			}
 		});
+		
+		levelEditText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(!s.toString().isEmpty()) {
+					sheet.level = Integer.parseInt(s.toString());
+					characterAltered = true;
+				}
+			}
+		});
 
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();		
@@ -151,7 +167,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			if(sheet != null) {
 				setTitle(sheet.name);
 				characterName.setText(sheet.name);
-				levelLabel.setText(String.valueOf(sheet.level));
+				levelEditText.setText(String.valueOf(sheet.level));
 				description.setTag(sheet.description);
 				// set to character color
 				relLayout.setBackgroundColor(sheet.color);
