@@ -27,7 +27,7 @@ public class CharacterSheet implements Parcelable{
 
 	public CharacterSheet() {
 		name = "";
-		level = 3;
+		level = 0;
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
@@ -35,7 +35,7 @@ public class CharacterSheet implements Parcelable{
 
 	public CharacterSheet(String name) {
 		this.name = name;		
-		level = 3;
+		level = 0;
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
