@@ -40,7 +40,7 @@ public class ToolboxActivity extends SingleFragmentActivity {
 
 	public void openTactical(View view) {
 		Intent intent = new Intent(ToolboxActivity.this,
-				CirclesActivity.class);
+				ToolboxMapActivity.class);
 		startActivity(intent);
 	}
 
