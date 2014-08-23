@@ -45,9 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
@@ -308,13 +306,20 @@ public class CreateNewGameFragment extends Fragment {
 					}
 					// save game
 					JacksonInterface.saveGame(curGame, getActivity());
+					//check if we are editing a game
+					if(getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
+						// if so we were already in the details fragment-> just go back
+						getActivity().onBackPressed();
+					}
+					else {
+						// if not we want to got to the details fragment -> start it
+						Intent i = new Intent(getActivity(),
+								GameDetailsActivity.class);
+						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+								curGame.getGameName());
+						startActivity(i);
+					}
 
-					// only start if saving was successful
-					Intent i = new Intent(getActivity(),
-							GameDetailsActivity.class);
-					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-							curGame.getGameName());
-					startActivity(i);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
