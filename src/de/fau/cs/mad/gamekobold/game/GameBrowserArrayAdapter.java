@@ -94,7 +94,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 					gWorld.setText(template.getWorldName());	
 				}
 				gDate.setText(curGame.getDate());
-				gCounter.setText(String.valueOf(curGame.getCharakterList().size()));
+				gCounter.setText(String.valueOf(curGame.getCharacterList().size()));
 
 				Log.e("getIconPath is null?", ""
 						+ (curGame.getIconPath() == null));
@@ -149,7 +149,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 					gWorld.setText(template.getWorldName());	
 				}
 				gDate.setText(curGame.getDate());
-				gCounter.setText(String.valueOf(curGame.getCharakterList().size()));
+				gCounter.setText(String.valueOf(curGame.getCharacterList().size()));
 
 				if (curGame.getIconPath() == null) {
 					// set some default game icon
