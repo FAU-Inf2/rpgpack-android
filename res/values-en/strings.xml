@@ -19,7 +19,8 @@
     <string name="action_go_above">..</string>
     <string name="action_showlists">Show List (1 categorie)</string>
     <string name="choice_prompt">Select a choice</string>
-
+    <string name="ok">OK</string>
+    
     <string-array name="choices">
         <item>Tabelle</item>
         <item>Matrix</item>
@@ -172,7 +173,7 @@
     <string name="text_press_to_add_new_row">Press to add new row</string>
 
     <!-- popup_template_details_info -->
-    <string name="hint_set_your_description_text">Your template notice&#8230;</string>
+    <string name="hint_set_your_description_text">Your notices&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
 
     <!-- game -->

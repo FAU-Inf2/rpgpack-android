@@ -213,7 +213,7 @@ public class GameDetailsFragment extends Fragment {
 
 	private void showPopup() {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(game);
+				.newInstance(game, true);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 

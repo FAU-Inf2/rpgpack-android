@@ -19,6 +19,7 @@
     <string name="action_go_above">..</string>
     <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
     <string name="choice_prompt">Select a choice</string>
+    <string name="ok">OK</string>
 
     <string-array name="choices">
         <item>Tabelle</item>

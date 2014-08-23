@@ -437,7 +437,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(game);
+				.newInstance(game, false);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 
@@ -446,11 +446,13 @@ public class CreateNewGameFragment extends Fragment {
 	public static class GameInfoDialogFragment extends DialogFragment {
 		private EditText editTextInfo;
 		private Game cGame;
+		private boolean infoMode;
 
 		// due to avoiding of using non-default constructor in fragment
-		public static GameInfoDialogFragment newInstance(Game game) {
+		public static GameInfoDialogFragment newInstance(Game game, boolean infoMode) {
 			GameInfoDialogFragment fragment = new GameInfoDialogFragment();
 			fragment.cGame = game;
+			fragment.infoMode = infoMode;
 			return fragment;
 		}
 
@@ -470,6 +472,10 @@ public class CreateNewGameFragment extends Fragment {
 			// get all EditTexts
 			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
+			// disable editing if in info mode
+			if(infoMode) {
+				editTextInfo.setEnabled(false);
+			}
 			Log.d("curGame is null?", "" + (cGame == null));
 			if(cGame != null) {
 				Log.d("cGame description", "" + cGame.getDescription());
@@ -481,15 +487,26 @@ public class CreateNewGameFragment extends Fragment {
 			builder.setView(view);
 
 			builder.setMessage(getString(R.string.popup_create_game_info_titel));
-			builder.setPositiveButton(getString(R.string.save_changes),
+			String posButtonString = null;
+			if(infoMode) {
+				posButtonString = getString(R.string.ok);
+			}
+			else {
+				posButtonString = getString(R.string.save_changes);
+			}
+			
+			builder.setPositiveButton(posButtonString,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// save new game notices
-							cGame.setDescription(editTextInfo.getEditableText()
-									.toString());
-							// game changed!!!
-							// TODO check it!! newGame vs myGame
+							// do not save in info mode
+							if(!infoMode) {
+								// save new game notices
+								cGame.setDescription(editTextInfo.getEditableText()
+										.toString());
+								// game changed!!!
+								// TODO check it!! newGame vs myGame
+							}
 						}
 					});
 
