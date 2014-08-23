@@ -18,8 +18,6 @@ public class Game implements Serializable {
 	private List<String> tagList;
 	private String description;
 
-	private Template template;
-
 	//TODO dte check this! because of notifydatasetchanged()
 	private List<GameCharacter> characterList;
 	private String iconPath;
@@ -34,26 +32,23 @@ public class Game implements Serializable {
 				@JsonProperty("date") String date,
 				@JsonProperty("tags") List<String> tagList,
 				@JsonProperty("description") String description,
-				@JsonProperty("template") Template template,
 				@JsonProperty("characters") List<GameCharacter> characterList,
 				@JsonProperty("iconPath") String iconPath) {
-		this(gameName, template, date, iconPath);
+		this(gameName, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-		this.template = template;
 		this.setCharakterList(characterList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 	}
 
-	public Game(String gameName, Template template, String date, String iconPath) {
-		this(gameName, template, date);
+	public Game(String gameName, String date, String iconPath) {
+		this(gameName, date);
 		this.iconPath = iconPath;
 	}
 
-	public Game(String gameName, Template template, String date) {
+	public Game(String gameName, String date) {
 		this(gameName);
-		this.template = template;
 		this.date = date;
 	}
 
@@ -128,14 +123,6 @@ public class Game implements Serializable {
 		this.description = description;
 	}
 
-	public Template getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(Template template) {
-		this.template = template;
-	}
-
 	@JsonProperty("characters")
 	public List<GameCharacter> getCharacterList() {
 		return characterList;
@@ -182,7 +169,6 @@ public class Game implements Serializable {
 		this.date = otherGame.date;
 		this.tagList = otherGame.tagList;
 		this.description = otherGame.description;
-		this.template = otherGame.template;
 		this.characterList = otherGame.characterList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
 		this.fileTimeStamp = otherGame.fileTimeStamp;

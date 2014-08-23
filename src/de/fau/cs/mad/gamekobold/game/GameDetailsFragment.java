@@ -84,11 +84,6 @@ public class GameDetailsFragment extends Fragment {
 				.findViewById(R.id.gridViewCharacters);
 
 		gameName.setText(game.getGameName());
-		// quick fix for null template
-		final Template template = game.getTemplate();
-		if(template != null) {
-			worldName.setText(template.getWorldName());	
-		}
 		date.setText(game.getDate());
 
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
