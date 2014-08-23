@@ -56,7 +56,7 @@ public class ToolboxActivity extends SingleFragmentActivity {
 		startActivity(intent);
 	}
 	
-	public void openTestDrag(View view) {
+	public void openTest(View view) {
 		Intent intent = new Intent(ToolboxActivity.this,
 				ToolboxTestActivity.class);
 		startActivity(intent);
