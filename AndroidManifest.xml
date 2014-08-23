@@ -94,7 +94,7 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.CirclesActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTestActivity" >
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.ToolboxDiceActivity"
