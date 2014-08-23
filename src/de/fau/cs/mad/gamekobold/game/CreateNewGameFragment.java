@@ -471,13 +471,12 @@ public class CreateNewGameFragment extends Fragment {
 			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
 			Log.d("curGame is null?", "" + (cGame == null));
-			// TODO Check it!!!!
-			// if (!curGame.getDescription().isEmpty()) {
-			// editTextInfo.setText(curGame.getDescription());
-			// } else {
-			// editTextInfo.setText(getActivity().getString(
-			// R.string.no_description_found));
-			// }
+			if(cGame != null) {
+				Log.d("cGame description", "" + cGame.getDescription());
+				if (!cGame.getDescription().isEmpty()) {
+					 editTextInfo.setText(cGame.getDescription());
+				}
+			}
 
 			builder.setView(view);
 
