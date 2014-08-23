@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.game.Game;
 
@@ -26,7 +27,7 @@ public abstract class JacksonInterface {
 	public static final String GAME_ROOT_FOLDER_NAME = "Games";
 
 	/**
-	 * If set to false, jackson will not intend or align anything. Uses less space if set to false.
+	 * If set to false, jackson will not intent or align anything. Uses less space if set to false.
 	 */
 	public static boolean use_pretty_writer = true;
 
@@ -91,18 +92,36 @@ public abstract class JacksonInterface {
 		if(context == null) {
 			return null;
 		}
-		File root;
+		// file for app root directory
+		File appRootDir = null;
+		// check if we can write on external storage
 		if(Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-			File externalStorage = Environment.getExternalStorageDirectory();
-			root = new File(externalStorage.getAbsolutePath() + File.separatorChar + subDir);
-			if(!root.exists()) {
-				root.mkdir();
-			}
+			// get external storage file
+			final File externalStorage = Environment.getExternalStorageDirectory();
+			// get file for a directory called $app_name on the external storage
+			appRootDir = new File(externalStorage, context.getString(string.app_name));
 		}
 		else {
-			root = context.getDir(subDir, Context.MODE_PRIVATE);
+			// use internal storage
+			appRootDir = context.getDir(subDir, Context.MODE_PRIVATE);
 		}
-		return root;
+		// nullpointer check
+		if(appRootDir == null) {
+			return null;
+		}
+		// check if directory exists
+		if(!appRootDir.exists()) {
+			// if not make it
+			appRootDir.mkdir();
+		}
+		// File for the requested sub directory
+		final File ret = new File(appRootDir, subDir);
+		// check if sub dir exists
+		if(!ret.exists()) {
+			// if not make it
+			ret.mkdir();
+		}
+		return ret;
 	}
 
 	/**
