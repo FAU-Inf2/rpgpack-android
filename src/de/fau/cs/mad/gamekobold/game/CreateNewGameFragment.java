@@ -398,9 +398,7 @@ public class CreateNewGameFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// show popup with some space for Game Info
-
 				showPopup(curGame);
-
 			}
 		});
 
@@ -423,9 +421,7 @@ public class CreateNewGameFragment extends Fragment {
 			// TODO check it!!!
 			// handling back-button
 		case android.R.id.home:
-			Intent intent = new Intent(getActivity(), GameBrowserActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			getActivity().onBackPressed();
 			// finish();
 			return true;
 		default:
