@@ -204,12 +204,16 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		View v = getActionBar().getCustomView();
 		TextView titleTxtView = (TextView) v.findViewById(R.id.actionbar_title);
 		titleTxtView.setText(currentFragment.elementName);
-		((View) titleTxtView).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				currentFragment.showDialog();
-			}
-		});
+		// check if we are in character or template mode
+		// only add click listener if we are editing a template
+		if(theActiveActivity instanceof TemplateGeneratorActivity) {
+			((View) titleTxtView).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					currentFragment.showDialog();
+				}
+			});
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 	

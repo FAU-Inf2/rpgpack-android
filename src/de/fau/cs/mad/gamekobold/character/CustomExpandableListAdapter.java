@@ -223,6 +223,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mRow.setSelected(isChecked);
+//				Log.d("CUSTOM EXP ADAPTER", "onCheckedChange:"+isChecked);
 			}
 		});
 	    return convertView;
@@ -254,9 +255,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	  int cursorLoc = 0;
 
 	  private LinearLayout initPopup(final String headline, final IEditableContent jacksonEntry, final int columnIndex, final int rowIndex){
-		  Log.d("TABLE_FRAGMENT", "init_popup");
+		  Log.d("CUSTOM_EXPANDABLE_LIST_ADAPTER", "init_popup");
 
-			final LinearLayout ll = new LinearLayout(mContext);
+		  final LinearLayout ll = new LinearLayout(mContext);
 		  final TextView newElement = new TextView(mContext);
 		  //
 		  // JACKSON START
@@ -285,7 +286,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 		  final TextView txt = (TextView) newElement;
 		  LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		  final View popupView = inflater.inflate(R.layout.table_view_popup, null);
-
 		  //	        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
 		  final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
 		  popupHeadline.setText(headline);
@@ -398,7 +398,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 
 			  } 
 		  });
-
 	        // TEST
 	        if(!jacksonEntry.getContent().isEmpty()) {
 	        	inputPopup.setText(jacksonEntry.getContent());
@@ -428,7 +427,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 //	                }
 //	            }
 //	        });
-	        
 	        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
 //	        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
 	        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -444,12 +442,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 			final ReattachingPopup popup = new ReattachingPopup(mBelongsTo, popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 			
 //			final ReattachingPopup popup = new ReattachingPopup(this, popupView, popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-	        popup.setBackgroundDrawable(new BitmapDrawable(mContext.getResources(),""));
+			popup.setBackgroundDrawable(new BitmapDrawable(mContext.getResources(),""));
 //			popup.setOutsideTouchable(false);
 	        popup.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 	        
-	        
-
 	        final Button addRefButton = (Button) popupView.findViewById(R.id.add_ref);
 	        final TableFragment tf = mBelongsTo; 
 	        addRefButton.setOnClickListener(new Button.OnClickListener() {
