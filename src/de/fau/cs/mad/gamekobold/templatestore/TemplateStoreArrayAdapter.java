@@ -31,7 +31,10 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		View rowView = null;
 		
 		if(convertView == null) {
+			
 			rowView = inflater.inflate(R.layout.template_store_rowlayout, parent, false);
+			if((position % 2) == 0) 
+				rowView.setBackgroundColor( context.getResources().getColor(R.color.background_green) );
 			
 			StoreTemplate curr = templates.get(position);
 			
@@ -63,6 +66,11 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		}
 		
 		return rowView;	
+	}
+
+	private Object getRessoureces() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void add(StoreTemplate tpl) {
