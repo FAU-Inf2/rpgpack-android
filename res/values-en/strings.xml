@@ -113,6 +113,7 @@
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>
+    <string name="new_matrix_item">New Element</string>
     <string name="msg_yes_to_item_delete">Click Yes to delete this element.</string>
     <string name="text_new_element">New Element</string>
 
