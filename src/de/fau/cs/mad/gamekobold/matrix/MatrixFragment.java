@@ -199,14 +199,11 @@ public class MatrixFragment extends GeneralFragment {
 			
 			//TODO refactor!!!!!!!!!
 			// check if last item is a fake one and delete
-			if (itemsList.get(itemsList.size() - 1).getItemName()
-					.equals(getResources().getString(R.string.new_matrix_item))) {
-				itemsList.remove(itemsList.size() - 1);
-			}
-			// check if last item is a fake one and delete
-			if (itemsList.get(itemsList.size() - 1).getItemName()
-					.equals(getResources().getString(R.string.new_matrix_item))) {
-				itemsList.remove(itemsList.size() - 1);
+			if(!itemsList.isEmpty()) {
+				if (itemsList.get(itemsList.size() - 1).getItemName()
+						.equals(getResources().getString(R.string.new_matrix_item))) {
+					itemsList.remove(itemsList.size() - 1);
+				}
 			}
 
 			if (a == null) {
