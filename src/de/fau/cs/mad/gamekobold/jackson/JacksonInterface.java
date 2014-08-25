@@ -103,7 +103,7 @@ public abstract class JacksonInterface {
 		}
 		else {
 			// use internal storage
-			appRootDir = context.getDir(subDir, Context.MODE_PRIVATE);
+			appRootDir = context.getDir("data", Context.MODE_PRIVATE);
 		}
 		// nullpointer check
 		if(appRootDir == null) {
