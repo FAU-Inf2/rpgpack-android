@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.templatestore;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,14 +69,18 @@ public class TemplateStoreMainActivity extends ListActivity {
 	         String method = apiParam.getMethod();
 	         
 
-	       //  ProgressDialog.show(TemplateStoreMainActivity.this , "Test", "test");
-
+	         ArrayList<NameValuePair> nameValuePairs;
+	         
 	         switch(method) {
 	         case "getTemplates":
 	         		response =  client.getTemplates();
 	         		break;
+	         case "searchTemplates":
+	        	 	nameValuePairs = apiParam.getParams();
+	        	 	response = client.searchTemplates(nameValuePairs);
+	        	 	break;
 	         case "postTemplate":
-	        	 ArrayList<NameValuePair> nameValuePairs = apiParam.getParams();
+	        	 nameValuePairs = apiParam.getParams();
 	        	 response = client.postTemplate(nameValuePairs);
 	        	 break;
 	         default:
@@ -110,6 +115,12 @@ public class TemplateStoreMainActivity extends ListActivity {
 					return;					
 				}
 	    		 
+	    		 if(templates.length == 0) {
+	    			 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    			 return;
+	    		 }
+	    		 
+	    		 adapter.clear();
 	  	   		 for(StoreTemplate tmpl : templates) {
 	    			// alertMessage(tmpl.toString());
 	    			 adapter.add(tmpl);
@@ -175,6 +186,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 	}
 	
 
+	
+	
 	@Override
 	protected void onNewIntent(Intent intent) {
 	    setIntent(intent);
@@ -185,6 +198,15 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	      String query = intent.getStringExtra(SearchManager.QUERY);
 	      this.alertMessage("Your search query was: " + query);
+			this.task = new ApiTask();
+			ApiTaskParams apiParams = new ApiTaskParams();
+	
+			// for testing just geht templates again
+			apiParams.setMethod("searchTemplates");
+			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+			httpParams.add(new BasicNameValuePair("worldname", query));
+			apiParams.setParams(httpParams);
+			this.task.execute(apiParams);
 	    }
 	}
 	

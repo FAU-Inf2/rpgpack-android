@@ -13,7 +13,7 @@ import org.apache.http.NameValuePair;
  */
 public class ApiTaskParams {
 	private String method;
-	private String[] allowedMethods = {"getTemplates", "postTemplate"};
+	private String[] allowedMethods = {"getTemplates", "postTemplate", "searchTemplates"};
 	
 	private ArrayList<NameValuePair> params;
 	

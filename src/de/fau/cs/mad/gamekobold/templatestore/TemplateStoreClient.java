@@ -28,6 +28,10 @@ public class TemplateStoreClient extends HttpClient {
 		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
 	}
 	
+	/**
+	 * gets all Templates from Store
+	 * @return
+	 */
 	public ApiResponse getTemplates() {
 		try {
 			this.get(this.apiUrl);
@@ -38,6 +42,18 @@ public class TemplateStoreClient extends HttpClient {
 		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
 	}
 	
+	public ApiResponse searchTemplates(ArrayList<NameValuePair> nameValuePairs) {
+		try {
+			this.get(this.apiUrl+"/search/custom", nameValuePairs);
+		} catch (Exception e) {
+			Log.e("store clients", e.getMessage());
+		}
+		
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
+	}
+	
+
+
 	public String getApiUrl() {
 		return apiUrl;
 	}

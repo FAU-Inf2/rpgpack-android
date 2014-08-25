@@ -11,8 +11,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 
 import android.util.Log;
 
@@ -41,11 +43,25 @@ public class HttpClient {
 	 * @throws Exception 
 	 */
 	public void get(String url) throws Exception {
+		this.get(url, null);
+	}
+	
+	/**
+	 * Executes GET-QUery with Params
+	 * @param apiUrl2
+	 * @param nameValuePairs
+	 * @throws Exception 
+	 */
+	protected void get(String url, ArrayList<NameValuePair> nameValuePairs) throws Exception {
+		// TODO Auto-generated method stub
+		if(nameValuePairs != null) {
+			String paramString = URLEncodedUtils.format(nameValuePairs, "utf-8");
+			url += "?"+paramString;
+		}
 		this.httpGet = new HttpGet(url);
 		
 		try {
 			HttpResponse execute = client.execute(httpGet);
-			
 			content = execute.getEntity().getContent();
 			
 			this.statusCode = execute.getStatusLine().getStatusCode();
