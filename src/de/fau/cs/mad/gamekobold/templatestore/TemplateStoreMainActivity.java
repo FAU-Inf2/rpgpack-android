@@ -16,6 +16,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -157,10 +158,6 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    // Get the intent, verify the action and get the query
 	    Intent intent = getIntent();
 	    handleIntent(intent);
-
-		
-        // To dismiss the dialog
-        progress = new ProgressDialog(this);
 		
 		// frame layout used for dimming....
 		layout_main = (FrameLayout) findViewById( R.id.template_main_layout);
@@ -186,7 +183,21 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 	
+	public void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
 
+//	    // Checks the orientation of the screen
+//	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//	        Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+//	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//	        Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+//	    }
+	}
 	
 	
 	@Override
@@ -266,7 +277,11 @@ public class TemplateStoreMainActivity extends ListActivity {
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 		  layout_main.getForeground().setAlpha( 180); // dim
 		  
-		  
+//		  InputMethodManager inputManager = (InputMethodManager)
+//                  getSystemService(Context.INPUT_METHOD_SERVICE); 
+//
+//		  inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                     InputMethodManager.HIDE_NOT_ALWAYS);
 		  searchView.clearFocus();
 		  
 		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
@@ -295,6 +310,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 					
 				}
 			});
+		    
 		    
 		    // populate popup with template values
 		    TextView worldname = (TextView) popupView.findViewById(R.id.txt_popup_worldname);

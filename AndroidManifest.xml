@@ -103,7 +103,10 @@
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity" 
-             android:launchMode="singleTop">
+             android:launchMode="singleTop"
+             android:configChanges="orientation|screenSize|keyboardHidden"
+             android:windowSoftInputMode="adjustResize"
+             >
                 <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

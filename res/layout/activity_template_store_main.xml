@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:foreground="@drawable/shape_window_dim"
     tools:context="de.fau.cs.mad.gamekobold.TemplateStoreMainActivity" 
+    android:foreground="@drawable/shape_window_dim"
     android:background="@color/background">
     
 <RelativeLayout
@@ -42,6 +42,7 @@
         android:layout_below="@+id/textView2"
         android:layout_marginTop="24dp" >
     </ListView>
+
 
 </RelativeLayout>
 </FrameLayout>
