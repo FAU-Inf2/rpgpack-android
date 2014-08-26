@@ -24,6 +24,7 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		TextView name;
 		RatingBar bar;
 		ImageView img;
+		Bitmap bm;
 	}
 	
 	Context context;
@@ -41,6 +42,7 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		ViewHolder holder;
 		
 		View rowView = null;
+		StoreTemplate curr = templates.get(position);
 		
 		if(convertView == null) {
 			convertView = inflater.inflate(R.layout.template_store_rowlayout, parent, false);
@@ -50,12 +52,15 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			holder.name = (TextView) convertView.findViewById(R.id.tv_store_name);
 			holder.bar = (RatingBar) convertView.findViewById(R.id.ratingBarStore);
 			holder.img = (ImageView) convertView.findViewById(R.id.templateStoreImg);
+			if(curr.hasImage()) {
+				curr.setBm(curr.getImage_data());
+			}
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 			
-			StoreTemplate curr = templates.get(position);
+			
 			holder.worldname.setText(curr.getWorldname());
 			holder.date_author.setText(curr.getDate()+" - " + curr.getAuthor());
 			holder.name.setText(curr.getName());
@@ -68,9 +73,17 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			}
 
 			if(curr.hasImage()) {
-				byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
-				Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
-				holder.img.setImageBitmap(decodedByte);
+				Log.e("store", "curr has image");
+				//byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
+				//Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+				if(curr.getBm() == null) {
+					Log.e("store", "getBm == null : ja ");
+					curr.setBm(curr.getImage_data());
+				}
+				else {
+					Log.e("store", "getBm == null : nein");
+				}
+				holder.img.setImageBitmap(curr.getBm());
 			}
 		
 			return convertView;	
