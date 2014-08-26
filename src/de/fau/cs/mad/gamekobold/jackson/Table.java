@@ -116,6 +116,7 @@ public class Table extends AbstractTable{
 	 * Returns the number of selected rows.
 	 * @return Number of selected rows.
 	 */
+	@JsonIgnore
 	public int getNumberOfSelectedRows() {
 		int counter = 0;
 		for(final Row row : rows) {
@@ -130,6 +131,7 @@ public class Table extends AbstractTable{
 	 * Returns a list containing only the currently selected rows.
 	 * @return A List containing only the selected rows.
 	 */
+	@JsonIgnore
 	public List<Row> getOnlySelectedRows() {
 		LinkedList<Row> selRows = new LinkedList<Row>();
 		for(final Row row : rows) {
