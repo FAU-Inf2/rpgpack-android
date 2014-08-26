@@ -35,9 +35,9 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	}
 
 	public PickedCharacterGridAdapter(Context context, int layoutID, Game game) {
-		super(context, layoutID, game.getCharakterList());
+		super(context, layoutID, game.getCharacterList());
 		this.context = context;
-		this.characters = game.getCharakterList();
+		this.characters = game.getCharacterList();
 		this.layoutID = layoutID;
 		this.curGame = game;
 
@@ -48,7 +48,7 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 		Log.e("Position in getView picked", "" + position);
 
-		characters = curGame.getCharakterList();
+		characters = curGame.getCharacterList();
 
 		Log.e("Size of character list", "" + characters.size());
 		Bitmap bitmap = null;
@@ -93,9 +93,9 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 		// or reuse
 		// TODO check!!!!
 		else {
-			characters = curGame.getCharakterList();
+			characters = curGame.getCharacterList();
 			int i = 0;
-			for (GameCharacter g : curGame.characterList) {
+			for (GameCharacter g : curGame.getCharacterList()) {
 				i++;
 				Log.e("PickedCharcterAdapter-reuse",
 						i + " - " + g.getCharacterName());

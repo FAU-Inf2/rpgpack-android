@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import android.util.Log;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
@@ -16,39 +18,37 @@ public class Game implements Serializable {
 	private List<String> tagList;
 	private String description;
 
-	private Template template;
-
 	//TODO dte check this! because of notifydatasetchanged()
-	public List<GameCharacter> characterList;
+	private List<GameCharacter> characterList;
 	private String iconPath;
 
 	private String fileAbsolutePath;
 
 	private long fileTimeStamp;
-
-	// private List<String> characterFileAbsPathList;
-
-	public Game(String gameName, String author, String date,
-			List<String> tagList, String description, Template template,
-			List<GameCharacter> characterList, String iconPath) {
-		this(gameName, template, date, iconPath);
+	
+	@JsonCreator
+	public Game(@JsonProperty("name") String gameName,
+				@JsonProperty("author") String author,
+				@JsonProperty("date") String date,
+				@JsonProperty("tags") List<String> tagList,
+				@JsonProperty("description") String description,
+				@JsonProperty("characters") List<GameCharacter> characterList,
+				@JsonProperty("iconPath") String iconPath) {
+		this(gameName, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-		this.template = template;
 		this.setCharakterList(characterList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-		// this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
-	public Game(String gameName, Template template, String date, String iconPath) {
-		this(gameName, template, date);
+	public Game(String gameName, String date, String iconPath) {
+		this(gameName, date);
 		this.iconPath = iconPath;
 	}
 
-	public Game(String gameName, Template template, String date) {
+	public Game(String gameName, String date) {
 		this(gameName);
-		this.template = template;
 		this.date = date;
 	}
 
@@ -62,7 +62,6 @@ public class Game implements Serializable {
 		this.characterList = new ArrayList<GameCharacter>();
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
-		// this.characterFileAbsPathList = new ArrayList<String>();
 	}
 
 	public boolean addCharacter(GameCharacter character) {
@@ -77,10 +76,12 @@ public class Game implements Serializable {
 		return true;
 	}
 
+	@JsonProperty("name")
 	public String getGameName() {
 		return gameName;
 	}
 
+	@JsonProperty("name")
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
@@ -101,15 +102,20 @@ public class Game implements Serializable {
 		this.date = date;
 	}
 
+	@JsonProperty("tags")
 	public List<String> getTagList() {
 		return tagList;
 	}
 
+	@JsonProperty("tags")
 	public void setTagList(List<String> tagList) {
 		this.tagList = tagList;
 	}
 
 	public String getDescription() {
+		if(description == null) {
+			description = "";
+		}
 		return description;
 	}
 
@@ -117,22 +123,15 @@ public class Game implements Serializable {
 		this.description = description;
 	}
 
-	@JsonIgnore
-	public Template getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(Template template) {
-		this.template = template;
-	}
-
-	public List<GameCharacter> getCharakterList() {
+	@JsonProperty("characters")
+	public List<GameCharacter> getCharacterList() {
 		return characterList;
 	}
 
 	//TODO dte check this!!!!
-	public void setCharakterList(List<GameCharacter> charakterList) {
-		Log.e("CharacterList", "Setting CharacterList to " + charakterList.size());
+	@JsonProperty("characters")
+	public void setCharakterList(List<GameCharacter> characterList) {
+		Log.e("CharacterList", "Setting CharacterList to " + characterList.size());
 		this.characterList.clear();
 		this.characterList.addAll(characterList);
 		return; 
@@ -170,11 +169,9 @@ public class Game implements Serializable {
 		this.date = otherGame.date;
 		this.tagList = otherGame.tagList;
 		this.description = otherGame.description;
-		this.template = otherGame.template;
 		this.characterList = otherGame.characterList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
 		this.fileTimeStamp = otherGame.fileTimeStamp;
 		this.iconPath = otherGame.iconPath;
 	}
-
 }

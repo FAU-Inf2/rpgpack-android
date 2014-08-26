@@ -38,7 +38,7 @@ public class TemplateLab {
 		return templates;
 	}
 
-	public Template getGame(String templateName) {
+	public Template getTemplate(String templateName) {
 		assureListIsUpToDate();
 		for (Template t : templates) {
 			if (t.getTemplateName().equals(templateName))

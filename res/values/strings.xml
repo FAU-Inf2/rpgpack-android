@@ -19,6 +19,7 @@
     <string name="action_go_above">..</string>
     <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
     <string name="choice_prompt">Select a choice</string>
+    <string name="ok">OK</string>
 
     <string-array name="choices">
         <item>Tabelle</item>
@@ -113,6 +114,7 @@
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Element löschen?</string>
+    <string name="new_matrix_item">Neues Element</string>
     <string name="msg_yes_to_item_delete">Klicke auf JA um dieses Element zu löschen</string>
     <string name="text_new_element">Neues Element</string>
 
@@ -240,12 +242,30 @@
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
     <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> more features coming soon....</br></string>
 
+	<string name="search_title">Templates suchen</string>
+	<string name="hint_search">Store durchsuchen</string>
+	<string name="store_actions">Actions</string>
+	<string name="store_reload">Neu laden</string>
+	<string name="store_tags">Tags</string>
+	<string name="tag_horror">Horror</string>
+    <string name="tag_fantasy">Fantasy</string>
+    <string name="tag_future">Zukunft</string>
+    
+
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
     <string name="hint_character_lvl">lvl</string>
     <string name="character_game_notices">Notizen</string>
 
     <!-- character_edit_matrix_view -->
+
     <string name="hint_select_items">Wähle Attribute für Deinen Charakter!</string>
+
+    <!-- activity_character_generator_welcome -->
+    <string name="character_generator_welcome">Willkommen im Charakter-Generator! \n \n Um Deinen eigenen Charakter zu erstellen öffne einfach das Menü und wähle die Elemente, die Deinem Charakter zugeordnet sind!</string>
+
+    <!-- activity_play_character_welcome -->
+    <string name="play_character_welcome">Willkommen im Charakter-Spielmodus! \n \n Um die aktuelle Werte von Deinem Charakter anzusehen oder sie zu modifizieren einfach das Menü lege los!</string>
+
 
 </resources>

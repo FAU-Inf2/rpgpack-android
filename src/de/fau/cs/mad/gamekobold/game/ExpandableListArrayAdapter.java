@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
@@ -69,10 +70,43 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					R.layout.rowlayout_expandablelist_character, null);
 		}
 
+	
+		// initialize values assigned to the items in the grid.
+		final int spacingDp = 10;
+		final int colWidthDp = 100;
+		final int rowHeightDp = 120;
+
+		// convert the dp values to pixels
+		final float COL_WIDTH = context.getResources().getDisplayMetrics().density
+				* colWidthDp;
+		final float ROW_HEIGHT = context.getResources().getDisplayMetrics().density
+				* rowHeightDp;
+		final float SPACING = context.getResources().getDisplayMetrics().density
+				* spacingDp;
+
+		// calculate the column and row counts based on display
+		final int colCount = (int) Math
+				.floor((parent.getWidth() - (2 * SPACING))
+						/ (COL_WIDTH + SPACING));
+		
+		final int rowCount = (int) Math.ceil((templates.get(templatePosition)
+				.getCharacters().size() + 0d)
+				/ colCount);
+		Log.d("templates.get(templatePosition)getCharacters().size()", ""
+				+ templates.get(templatePosition).getCharacters().size());
+
+		Log.d("COL COUNT", "" + colCount);
+		Log.d("ROW COUNT", "" + rowCount);
+
+		// calculate the height for the current grid
+		final int GRID_HEIGHT = Math.round(rowCount * (ROW_HEIGHT + SPACING));
+
 		gridView = (GridView) convertView
 				.findViewById(R.id.gridViewCharacterItem);
+		// set the height of the current grid
+		gridView.getLayoutParams().height = GRID_HEIGHT;
 
-		//CharacterGridAdapter adapter;
+		// CharacterGridAdapter adapter;
 		if (this.adapterCache.containsKey(templatePosition)) {
 			adapter = this.adapterCache.get(templatePosition);
 		} else {
@@ -99,8 +133,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
 					if (selectedCharacters.contains(curGameCharacter)) {
 						selectedCharacters.remove(curGameCharacter);
-						// newGame.setTemplate(curGameCharacter.getTemplate());
-
 						newGame.removeCharacter(curGameCharacter);
 
 					} else {
@@ -112,12 +144,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 										+ context.getResources().getString(
 												R.string.msg_added_to_game),
 								Toast.LENGTH_SHORT).show();
-
-						// FIXME set Template not here!
-						// newGame.setTemplate(curGameCharacter.getTemplate());
-
 						newGame.addCharacter(curGameCharacter);
-
 					}
 					pickedAdapter.notifyDataSetChanged();
 					adapter.notifyDataSetChanged();
@@ -202,6 +229,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		return 1; // this.templates.get(groupPosition).getCharacters().size();
+
 	}
 
 	@Override

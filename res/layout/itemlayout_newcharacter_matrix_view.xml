@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_centerHorizontal="true"
-    android:layout_centerInParent="true"
-    android:padding="2dp" >
+    android:layout_height="fill_parent" >
 
     <ImageView
-        android:id="@+id/item_highlighting_circle"
+        android:id="@+id/m_item_highlighting_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,7 +16,7 @@
         android:src="@drawable/shape_circle_highlightig" />
 
     <ImageView
-        android:id="@+id/character_icon_circle"
+        android:id="@+id/m_character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -31,10 +28,10 @@
         android:src="@drawable/shape_circle_matrix_lightgrey" />
 
     <TextView
-        android:id="@+id/textItemTitle"
+        android:id="@+id/m_textItemTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_highlighting_circle"
+        android:layout_below="@id/m_item_highlighting_circle"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="title"
@@ -42,34 +39,36 @@
         android:textColor="@color/grey" />
 
     <TextView
-        android:id="@+id/textModificator"
+        android:id="@+id/m_textValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textValue"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:gravity="center"
-        android:text="mod"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="value"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey" />
 
     <TextView
-        android:id="@+id/textRangeFromTo"
+        android:id="@+id/m_textRangeFromTo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textModificator"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/m_textValue"
         android:gravity="center"
         android:text="range"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/grey" />
 
     <TextView
-        android:id="@+id/textValue"
+        android:id="@+id/m_textModificator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/character_icon_circle"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/m_textRangeFromTo"
         android:gravity="center"
-        android:text="value"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="mod"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/grey" />
 
 </RelativeLayout>

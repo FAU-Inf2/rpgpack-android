@@ -21,8 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
+import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class GameDetailsFragment extends Fragment {
 	public static final String EXTRA_GAME_NAME = "de.fau.cs.mad.gamekobold.game.gamename";
@@ -64,7 +67,7 @@ public class GameDetailsFragment extends Fragment {
 				EXTRA_GAME_NAME);
 
 		// TODO change it!!!
-		Log.d("GameDetailsFragment", "getGame >>"+gName);
+		Log.d("GameDetailsFragment", "getGame >>" + gName);
 		game = GameLab.get(getActivity()).getGame(gName);
 
 		if (!(game == null)) {
@@ -84,11 +87,6 @@ public class GameDetailsFragment extends Fragment {
 				.findViewById(R.id.gridViewCharacters);
 
 		gameName.setText(game.getGameName());
-		// quick fix for null template
-		final Template template = game.getTemplate();
-		if(template != null) {
-			worldName.setText(template.getWorldName());	
-		}
 		date.setText(game.getDate());
 
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
@@ -108,14 +106,43 @@ public class GameDetailsFragment extends Fragment {
 						((TextView) view.findViewById(R.id.textItemTitle))
 								.getText(), Toast.LENGTH_SHORT).show();
 
-				// Start playCharactedActivity
-				Intent i = new Intent(getActivity(),
-						PlayCharacterActivity.class);
-				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
-						curCharacter);
-				i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME, game);
-				startActivity(i);
+				// // Start PlayCharacterActivity
+				// Intent i = new Intent(getActivity(),
+				// PlayCharacterActivity.class);
+				// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
+				// curCharacter);
+				// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME, game);
+				// startActivity(i);
 
+				// Start CharacterPlayActivity
+
+				Log.d("curCharacter",
+						"" + curCharacter.getCharacterName());
+				Log.d("curCharacter.getTemplate()", ""
+						+ curCharacter.getTemplate().getTemplateName());
+				Log.d("curCharacter.getTemplate().fileAbsolutePath",
+						"" + curCharacter.getTemplate().fileAbsolutePath);
+
+				if (curCharacter.getTemplate().fileAbsolutePath != null) {
+
+					String fileName = getFileName();
+
+					Intent intent = new Intent(getActivity(),
+							TemplateGeneratorActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					// flag to distinguish between editing and creating
+					intent.putExtra(
+							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							false);
+					intent.putExtra(
+							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+							fileName);
+					intent.putExtra(
+							SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
+							true);
+
+					startActivity(intent);
+				}
 			}
 		});
 
@@ -185,7 +212,6 @@ public class GameDetailsFragment extends Fragment {
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
 
 				startActivity(i);
@@ -213,7 +239,7 @@ public class GameDetailsFragment extends Fragment {
 
 	private void showPopup() {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(game);
+				.newInstance(game, true);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 
@@ -232,5 +258,17 @@ public class GameDetailsFragment extends Fragment {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	protected String getFileName() {
+		int lastSlashPos = curCharacter.getTemplate().fileAbsolutePath
+				.lastIndexOf("/");
+		if (lastSlashPos == -1) {
+			return curCharacter.getTemplate().fileAbsolutePath;
+		} else {
+			return curCharacter.getTemplate().fileAbsolutePath
+					.substring(lastSlashPos + 1);
+		}
+
 	}
 }

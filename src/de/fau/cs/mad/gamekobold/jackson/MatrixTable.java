@@ -6,13 +6,17 @@ import java.util.List;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 
 @JsonTypeName("matrix")
 public class MatrixTable extends AbstractTable{
+	@JsonIgnore
 	public List<MatrixItem> entries;
 	
 	public MatrixTable() {
@@ -24,18 +28,24 @@ public class MatrixTable extends AbstractTable{
 		this.entries = entries;
 	}
 	
+	public List<MatrixItem> getEntries() {
+		return entries;
+	}
+
 	/**
-	 * Used for jackson serialization. Excludes the "add new item" entry
+	 * DO NOT USE! Used for jackson serialization. Excludes the "add new item" entry
 	 * @return
 	 */
 	@JsonProperty("entries")
-	public List<MatrixItem> getEntries() {
-		// need this check if a matrix table is created but never visited.
+	@Deprecated
+	public List<MatrixItem> getEntriesForJackson() {
 		if(entries.isEmpty()) {
 			return entries;
 		}
-		//TODO for matrix view in edit character mode we need all elements!!! real last item is getting lost!
-		//return entries.subList(0, entries.size()-1);
+		if (entries.get(entries.size() - 1).getItemName().equals(
+				SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.new_matrix_item))) {
+			return entries.subList(0, entries.size()-1);	
+		}
 		return entries;
 	}
 	

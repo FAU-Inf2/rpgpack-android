@@ -784,7 +784,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	
     private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry, int columnIndex, int rowIndex){
 		Log.d("TABLE_FRAGMENT", "init_popup");
-
 		final LinearLayout ll = new LinearLayout(getActivity());
 		final TextView newElement = new TextView(getActivity());
 		//
@@ -825,7 +824,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		});
         LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, null);
-
 //        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getCurrentFragment().elementName);

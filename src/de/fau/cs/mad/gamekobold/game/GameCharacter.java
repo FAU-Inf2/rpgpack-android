@@ -18,9 +18,10 @@ public class GameCharacter implements Serializable {
 	private Template template;
 	private String iconPath;
 	private String fileAbsPath;
-	
+
 	/**
 	 * Constructor for jackson.
+	 * 
 	 * @param characterName
 	 * @param date
 	 * @param tagList
@@ -28,11 +29,11 @@ public class GameCharacter implements Serializable {
 	 * @param fileAbsPath
 	 */
 	@JsonCreator
-	public GameCharacter( @JsonProperty("characterName") String characterName,
-						@JsonProperty("date")String date,
-						@JsonProperty("tagList") List<String> tagList,
-						@JsonProperty("description") String description,
-						@JsonProperty("fileAbsPath") String fileAbsPath) {
+	public GameCharacter(@JsonProperty("characterName") String characterName,
+			@JsonProperty("date") String date,
+			@JsonProperty("tagList") List<String> tagList,
+			@JsonProperty("description") String description,
+			@JsonProperty("fileAbsPath") String fileAbsPath) {
 		this.template = null;
 		this.characterName = characterName;
 		this.date = date;

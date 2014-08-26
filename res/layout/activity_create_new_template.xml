@@ -20,15 +20,15 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/textAddIcon"
             android:layout_gravity="fill_horizontal|top"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="5dip"
             android:ems="10"
             android:gravity="top|left"
             android:hint="@string/hint_description_text"
             android:inputType="textMultiLine"
             android:lines="8"
             android:maxLines="20"
-            android:layout_marginTop="5dip"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
             android:minLines="4"
             android:scrollbars="vertical"
             android:textColor="@color/white"
@@ -37,7 +37,6 @@
             <requestFocus
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </EditText>
 
         <Button
@@ -56,9 +55,9 @@
             android:layout_height="88dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
-            android:layout_marginTop="5dip"
             android:layout_marginLeft="5dip"
+            android:layout_marginTop="5dip"
+            android:adjustViewBounds="true"
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/addphoto_grey" />
@@ -70,17 +69,22 @@
             android:layout_alignLeft="@+id/worldName"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:ems="10"
             android:layout_marginTop="9dip"
+            android:ems="10"
             android:hint="@string/hint_template_name"
-            android:textColor="@color/white" />
+            android:textColor="@color/white" >
+
+            <requestFocus
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </EditText>
 
         <EditText
             android:id="@+id/worldName"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
             android:layout_below="@+id/templateName"
+            android:layout_marginTop="5dip"
             android:layout_toLeftOf="@+id/buttonInfo"
             android:layout_toRightOf="@+id/imageButtonTemplateIcon"
             android:ems="10"
@@ -92,11 +96,11 @@
             android:id="@+id/buttonInfo"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginRight="5dip"
-            android:layout_marginLeft="5dip"
             android:layout_alignBaseline="@+id/worldName"
             android:layout_alignBottom="@+id/worldName"
             android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:background="@drawable/info2_white"
             android:scaleType="fitXY" />
 
@@ -104,14 +108,13 @@
             android:id="@+id/textAddIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:layout_marginLeft="10dip"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/imageButtonTemplateIcon"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="2dip"
             android:text="@string/text_add_icon"
             android:textColor="@color/white"
             android:textSize="9sp" />
-
     </RelativeLayout>
 
 </FrameLayout>

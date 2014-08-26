@@ -14,7 +14,7 @@
         android:layout_toRightOf="@+id/templateStoreImg"
         android:text="Template Name"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="9sp" />
 
     <ImageView
         android:id="@+id/templateStoreImg"
@@ -27,8 +27,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="Template Image"
         android:gravity="center"
-        android:maxWidth="50dip"
-        android:maxHeight="50dip"
+        android:maxWidth="25dip"
         android:padding="4dp"
         android:scaleType="fitXY"
         android:src="@drawable/game_default_white" />
@@ -40,7 +39,8 @@
         android:layout_alignLeft="@+id/tv_store_name"
         android:layout_below="@+id/tv_store_name"
         android:text="Weltname"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="8sp" />
 
     <TextView
         android:id="@+id/tv_store_date_author"
@@ -49,16 +49,7 @@
         android:layout_alignLeft="@+id/tv_store_worldname"
         android:layout_below="@+id/tv_store_worldname"
         android:text="Added:"
-        android:textColor="@color/white" />
-
-    <RatingBar
-        android:id="@+id/ratingBarStore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:rating="3.5"
-        android:stepSize="0.01"
-        android:layout_alignBottom="@+id/tv_store_date_author"
-        android:layout_alignParentRight="true" />
+        android:textColor="@color/white"
+        android:textSize="8sp" />
 
 </RelativeLayout>

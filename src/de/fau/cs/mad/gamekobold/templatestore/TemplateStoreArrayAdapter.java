@@ -5,8 +5,6 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
+	
+	static class ViewHolder {
+		TextView worldname;
+		TextView date_author;
+		TextView name;
+		RatingBar bar;
+		ImageView img;
+		Bitmap bm;
+	}
+	
 	Context context;
 	List<StoreTemplate> templates;
 	
@@ -28,41 +36,48 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 	public View getView(int position, View convertView, ViewGroup parent)  {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View rowView = null;
+		ViewHolder holder;
+		
+		StoreTemplate curr = templates.get(position);
 		
 		if(convertView == null) {
-			rowView = inflater.inflate(R.layout.template_store_rowlayout, parent, false);
-			
-			StoreTemplate curr = templates.get(position);
-			
-			TextView worldname = (TextView) rowView.findViewById(R.id.tv_store_worldname);
-			worldname.setText(curr.getWorldname());
-			
-			TextView date_author = (TextView) rowView.findViewById(R.id.tv_store_date_author);
-			date_author.setText(curr.getDate()+" - " + curr.getAuthor());
-			
-			TextView name = (TextView) rowView.findViewById(R.id.tv_store_name);
-			name.setText(curr.getName());
-			
-			RatingBar bar = (RatingBar) rowView.findViewById(R.id.ratingBarStore);
-			
-			// in small screen sizes the bar is removed from the list view...
-			if(bar != null) {
-				bar.setRating(curr.getRating());
-			}
-			
+			convertView = inflater.inflate(R.layout.template_store_rowlayout, parent, false);
+			holder = new ViewHolder();
+			holder.worldname = (TextView) convertView.findViewById(R.id.tv_store_worldname);
+			holder.date_author = (TextView) convertView.findViewById(R.id.tv_store_date_author);
+			holder.name = (TextView) convertView.findViewById(R.id.tv_store_name);
+			holder.bar = (RatingBar) convertView.findViewById(R.id.ratingBarStore);
+			holder.img = (ImageView) convertView.findViewById(R.id.templateStoreImg);
 			if(curr.hasImage()) {
-				ImageView img = (ImageView)  rowView.findViewById(R.id.templateStoreImg);
-				byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
-				Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
-				img.setImageBitmap(decodedByte);
+				curr.setBm(curr.getImage_data());
+			}
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+			
+			
+			holder.worldname.setText(curr.getWorldname());
+			holder.date_author.setText(curr.getDate()+" - " + curr.getAuthor());
+			holder.name.setText(curr.getName());
+			if(holder.bar != null) {
+				holder.bar.setRating(curr.getRating());
 			}
 			
-		} else {
-			return convertView;		
-		}
+			if((position % 2) == 0) {
+				convertView.setBackgroundColor( context.getResources().getColor(R.color.background_green) );
+			}
+
+			if(curr.hasImage()) {
+				//byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
+				//Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+				if(curr.getBm() == null) {
+					curr.setBm(curr.getImage_data());
+				}
+				holder.img.setImageBitmap(curr.getBm());
+			}
 		
-		return rowView;	
+			return convertView;	
 	}
 
 	public void add(StoreTemplate tpl) {

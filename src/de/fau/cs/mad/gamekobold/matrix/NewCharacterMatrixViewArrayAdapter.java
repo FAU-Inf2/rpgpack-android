@@ -29,7 +29,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 	private ImageView highlightingImageView;
 
 	// list of highlighted matrix items assigned to character
-	public ArrayList<MatrixItem> selectedItems = new ArrayList<MatrixItem>();
+	public ArrayList<MatrixItem> selectedMatrixItems;
 
 	// the list of objects we want to display
 	private List<MatrixItem> items;
@@ -39,6 +39,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 		super(context, R.layout.itemlayout_newcharacter_matrix_view, items);
 		this.context = context;
 		this.items = items;
+		this.selectedMatrixItems = new ArrayList<MatrixItem>();
 	}
 
 	@Override
@@ -47,172 +48,87 @@ public class NewCharacterMatrixViewArrayAdapter extends
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// View itemView;
-
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
-
 			convertView = inflater
 					.inflate(R.layout.itemlayout_newcharacter_matrix_view,
 							parent, false);
-			MatrixItem curItem = items.get(position);
-			TextView itemName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			TextView itemValue = (TextView) convertView
-					.findViewById(R.id.textValue);
-
-			// combine min and max
-			TextView itemRange = (TextView) convertView
-					.findViewById(R.id.textRangeFromTo);
-
-			TextView itemModificator = (TextView) convertView
-					.findViewById(R.id.textModificator);
-
-			itemName.setText(curItem.getItemName());
-			itemValue.setText(curItem.getValue());
-			itemRange.setText(curItem.getRangeMin() + " - "
-					+ curItem.getRangeMax());
-			itemModificator.setText(curItem.getModificator());
-
-			// ///////////
-			highlightingImageView = (ImageView) convertView
-					.findViewById(R.id.item_highlighting_circle);
-
-			Log.e("selectedItems.contains(position)?",
-					"" + (selectedItems.contains(position)));
-
-			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
-					.getDrawable();
-
-			Log.e("highlightingShape is null?", ""
-					+ (highlightingShape == null));
-
-			if (selectedItems.contains(curItem)) {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemModificator.setTextColor(context.getResources().getColor(
-						R.color.white));
-
-			} else {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemModificator.setTextColor(context.getResources().getColor(
-						R.color.grey));
-			}
-
-			highlightingShape
-					.setColor(selectedItems.contains(curItem) ? context
-							.getResources().getColor(R.color.background_green)
-							: context.getResources().getColor(
-									android.R.color.transparent));
-
 		}
+
 		// or reuse
-		else {
+		TextView itemName = (TextView) convertView
+				.findViewById(R.id.m_textItemTitle);
+		TextView itemValue = (TextView) convertView
+				.findViewById(R.id.m_textValue);
+		// combine min and max
+		TextView itemRange = (TextView) convertView
+				.findViewById(R.id.m_textRangeFromTo);
 
-			TextView itemName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			TextView itemValue = (TextView) convertView
-					.findViewById(R.id.textValue);
-			// combine min and max
-			TextView itemRange = (TextView) convertView
-					.findViewById(R.id.textRangeFromTo);
+		TextView itemModificator = (TextView) convertView
+				.findViewById(R.id.m_textModificator);
 
-			TextView itemModificator = (TextView) convertView
-					.findViewById(R.id.textModificator);
+		MatrixItem curItem = items.get(position);
 
-			MatrixItem curItem = items.get(position);
+		itemName.setText(curItem.getItemName());
+		itemValue.setText(curItem.getValue());
+		/*
+		 * Log.d("ADAPTER", "pos:"+position); Log.d("ADAPTER",
+		 * "iRange:"+iRange); Log.d("ADAPTER", "curItem:"+curItem);
+		 * Log.d("ADAPTER", "min:"+curItem.getRangeMin()); Log.d("ADAPTER",
+		 * "max:"+curItem.getRangeMax());
+		 */
+		itemRange
+				.setText(curItem.getRangeMin() + " - " + curItem.getRangeMax());
 
-			itemName.setText(curItem.getItemName());
-			itemValue.setText(curItem.getValue());
-			/*
-			 * Log.d("ADAPTER", "pos:"+position); Log.d("ADAPTER",
-			 * "iRange:"+iRange); Log.d("ADAPTER", "curItem:"+curItem);
-			 * Log.d("ADAPTER", "min:"+curItem.getRangeMin()); Log.d("ADAPTER",
-			 * "max:"+curItem.getRangeMax());
-			 */
-			itemRange.setText(curItem.getRangeMin() + " - "
-					+ curItem.getRangeMax());
+		itemModificator.setText(curItem.getModificator());
 
-			itemModificator.setText(curItem.getModificator());
+		highlightingImageView = (ImageView) convertView
+				.findViewById(R.id.m_item_highlighting_circle);
 
-			// // set modificator text color: blue for positive red for
-			// // negative
-			// // TODO make this check smarter
-			// if (!curItem.getModificator().isEmpty()) {
-			//
-			// if (curItem.getModificator().charAt(0) == '+')
-			// iModificator.setTextColor(getContext().getResources()
-			// .getColor(R.color.a_blue));
-			// else if (curItem.getModificator().charAt(0) == '-')
-			// iModificator.setTextColor(getContext().getResources()
-			// .getColor(R.color.a_red));
-			// else
-			// iModificator.setTextColor(getContext().getResources()
-			// .getColor(R.color.a_grey));
-			//
-			// }
+		Log.i("selectedMatrixItems.contains(curItem) - "
+				+ curItem.getItemName(),
+				"" + (selectedMatrixItems.contains(curItem)));
 
-			highlightingImageView = (ImageView) convertView
-					.findViewById(R.id.item_highlighting_circle);
+		GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+				.getDrawable();
 
-			Log.e("selectedItems.contains(position)?",
-					"" + (selectedItems.contains(position)));
+		if (selectedMatrixItems.contains(curItem)) {
+			itemName.setTextColor(context.getResources()
+					.getColor(R.color.white));
+			itemValue.setTextColor(context.getResources().getColor(
+					R.color.white));
+			itemRange.setTextColor(context.getResources().getColor(
+					R.color.white));
 
-			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
-					.getDrawable();
-
-			Log.e("highlightingShape is null?", ""
-					+ (highlightingShape == null));
-
-			if (selectedItems.contains(curItem)) {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.white));
-
-				if (!curItem.getModificator().equals("")) {
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
-
-			} else {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemModificator.setTextColor(context.getResources().getColor(
-						R.color.grey));
+			if ((!(curItem.getModificator() == null))
+					&& !curItem.getModificator().equals("")) {
+				if (Integer.valueOf(curItem.getModificator()) > 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.blue));
+				} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.red));
+				} else
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.white));
 			}
 
-			highlightingShape
-					.setColor(selectedItems.contains(curItem) ? context
-							.getResources().getColor(R.color.background_green)
-							: context.getResources().getColor(
-									android.R.color.transparent));
-
+		} else {
+			itemName.setTextColor(context.getResources().getColor(R.color.grey));
+			itemValue.setTextColor(context.getResources()
+					.getColor(R.color.grey));
+			itemRange.setTextColor(context.getResources()
+					.getColor(R.color.grey));
+			itemModificator.setTextColor(context.getResources().getColor(
+					R.color.grey));
 		}
+
+		highlightingShape
+				.setColor(selectedMatrixItems.contains(curItem) ? context
+						.getResources().getColor(R.color.background_green)
+						: context.getResources().getColor(
+								android.R.color.transparent));
 
 		return convertView;
 	}
-
 }

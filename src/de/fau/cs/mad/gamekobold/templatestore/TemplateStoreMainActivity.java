@@ -1,33 +1,45 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.fau.cs.mad.gamekobold.R;
-import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RatingBar;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TemplateStoreMainActivity extends ListActivity {
@@ -35,8 +47,22 @@ public class TemplateStoreMainActivity extends ListActivity {
     private TemplateStoreArrayAdapter adapter;
     private ApiTask task;
     private TemplateStoreClient client = new TemplateStoreClient();
-	 private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
+    private FrameLayout layout_main;
+    PopupWindow popupWindow = null;
+    ProgressDialog progress = null;
+    SearchView searchView;
+    
+	  private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
 		 
+		  protected void onPreExecute() {
+			  super.onPreExecute();
+			  	 progress = new ProgressDialog(TemplateStoreMainActivity.this);
+		         progress.setTitle("Loading");
+		         progress.setMessage("Wait while loading...");
+		         progress.setCanceledOnTouchOutside(false);
+		         progress.show();
+			 // ProgressDialog.show(TemplateStoreMainActivity.this , "Test", "test");
+		  }
 		 
 		 @Override
 	     protected ApiResponse doInBackground(ApiTaskParams... params) {
@@ -45,14 +71,24 @@ public class TemplateStoreMainActivity extends ListActivity {
 	         
 	         String method = apiParam.getMethod();
 	         
+
+	         ArrayList<NameValuePair> nameValuePairs;
+	         
 	         switch(method) {
 	         case "getTemplates":
 	         		response =  client.getTemplates();
 	         		break;
+	         case "searchTemplates":
+	        	 	nameValuePairs = apiParam.getParams();
+	        	 	response = client.searchTemplates(nameValuePairs);
+	        	 	break;
 	         case "postTemplate":
-	        	 ArrayList<NameValuePair> nameValuePairs = apiParam.getParams();
+	        	 nameValuePairs = apiParam.getParams();
 	        	 response = client.postTemplate(nameValuePairs);
 	        	 break;
+	         case "searchByTag":
+	        	 nameValuePairs = apiParam.getParams();
+	        	 response = client.searchByTag(nameValuePairs);
 	         default:
 	        	 break;
 	         }
@@ -70,7 +106,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	     
 	     protected void onPostExecute(ApiResponse response) {
 //	         showDialog("Downloaded " + result + " bytes");
-	    	 
+	         // To dismiss the dialog
+	         progress.dismiss();
+	         
 	    	 // make sure response is ok
 	    	 if(response.resultCode == 200) {
 	    		 ObjectMapper mapper = new ObjectMapper();
@@ -83,6 +121,12 @@ public class TemplateStoreMainActivity extends ListActivity {
 					return;					
 				}
 	    		 
+	    		 if(templates.length == 0) {
+	    			 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    			 return;
+	    		 }
+	    		 
+	    		 adapter.clear();
 	  	   		 for(StoreTemplate tmpl : templates) {
 	    			// alertMessage(tmpl.toString());
 	    			 adapter.add(tmpl);
@@ -111,15 +155,23 @@ public class TemplateStoreMainActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_template_store_main);
 		setTitle(R.string.template_store_title);
+		
+	    // Get the intent, verify the action and get the query
+	    Intent intent = getIntent();
+	    handleIntent(intent);
+		
+		// frame layout used for dimming....
+		layout_main = (FrameLayout) findViewById( R.id.template_main_layout);
+		layout_main.getForeground().setAlpha( 0);
 		
 		this.templates = new ArrayList<StoreTemplate>();
 		this.adapter = new TemplateStoreArrayAdapter(this, templates);
   
 	    setListAdapter(adapter);
-	       
-	        
+	      
 		this.task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		/*
@@ -133,37 +185,198 @@ public class TemplateStoreMainActivity extends ListActivity {
 		this.task.execute(apiParams);
 		
 	}
+	
+	public void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
 
+//	    // Checks the orientation of the screen
+//	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//	        Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+//	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//	        Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+//	    }
+	}
+	
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+	    setIntent(intent);
+	    handleIntent(intent);
+	}
+	
+	private void handleIntent(Intent intent) {
+	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+	      String query = intent.getStringExtra(SearchManager.QUERY);
+	     // this.alertMessage("Your search query was: " + query);
+			this.task = new ApiTask();
+			ApiTaskParams apiParams = new ApiTaskParams();
+	
+			// for testing just geht templates again
+			apiParams.setMethod("searchTemplates");
+			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+			httpParams.add(new BasicNameValuePair("worldname", query));
+			apiParams.setParams(httpParams);
+			this.task.execute(apiParams);
+	    }
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_store_main, menu);
+		
+		
+	    // Get the SearchView and set the searchable configuration
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    searchView = (SearchView) menu.findItem(R.id.search_template).getActionView();
+	    // Assumes current activity is the searchable activity
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+	    searchView.setSubmitButtonEnabled(true);
+	    
+	    // Get the changes immediately.
+	    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+	        @Override
+	        public boolean onQueryTextChange(String newText) {
+	        	// TODO maybe live search? 
+	            return true;
+	        }
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+	    });
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		ApiTaskParams apiParams = new ApiTaskParams();
+		boolean is_task = true;
+		switch(id) {
+			case R.id.action_restore :
+	    		apiParams.setMethod("getTemplates");
+				break;			
+			case R.id.tag_fantasy:
+			case R.id.tag_horror:
+			case R.id.tag_future:
+				ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+				String tag = (String) item.getTitle();
+				httpParams.add(new BasicNameValuePair("tagname", tag));
+				apiParams.setParams(httpParams);
+				apiParams.setMethod("searchByTag");
+				break;
+			default:
+				is_task = false;
+				break;
 		}
+		
+		if(is_task) {
+			task = new ApiTask();
+			task.execute(apiParams);
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 	
 	  @Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
-	    StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
-	    Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
+		  layout_main.getForeground().setAlpha( 180); // dim
+		  
+//		  InputMethodManager inputManager = (InputMethodManager)
+//                  getSystemService(Context.INPUT_METHOD_SERVICE); 
+//
+//		  inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                     InputMethodManager.HIDE_NOT_ALWAYS);
+		  searchView.clearFocus();
+		  
+		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
+		 // Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
+	    
+		    LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
+		    
+		    View popupView = layoutInflater.inflate(R.layout.popup_templatestore_details, null);  
+		    popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);  
+		    
+		    popupWindow.setOutsideTouchable(false);
+		    popupWindow.setTouchable(true);
+		    
+		    //this is needed to close on back button... 
+		    // had to remove this because it conflicted with other settings (outside touchable e.g)
+		    //popupWindow.setBackgroundDrawable(new ColorDrawable());
+		    
+		    /* close image on right corner */
+		    ImageView imgDismiss = (ImageView)popupView.findViewById(R.id.dismissImg);
+		    imgDismiss.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					layout_main.getForeground().setAlpha(0);
+					popupWindow.dismiss();
+					
+				}
+			});
+		    
+		    
+		    // populate popup with template values
+		    TextView worldname = (TextView) popupView.findViewById(R.id.txt_popup_worldname);
+		    TextView templatename = (TextView) popupView.findViewById(R.id.txt_popup_templatename);
+		    TextView date_author = (TextView) popupView.findViewById(R.id.txt_popup_date_author);
+		    TextView description = (TextView) popupView.findViewById(R.id.txt_popup_description);
+		    ImageView image = (ImageView) popupView.findViewById(R.id.img_popup);
+		    RatingBar bar = (RatingBar) popupView.findViewById(R.id.ratingbar_popup);
+		    
+		    worldname.setText(tmpl.getWorldname());
+		    templatename.setText(tmpl.getName());;
+		    description.setText(tmpl.getDescription());
+		    date_author.setText( ((TextView) v.findViewById(R.id.tv_store_date_author)).getText());
+		    
+		    /*
+		     *  if(tmpl.hasImage()) {
+				byte[] decodedString = Base64.decode(tmpl.getImage_data(), Base64.DEFAULT);
+				Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+				image.setImageBitmap(decodedByte);
+			}
+		     */
+		    ImageView img = (ImageView) v.findViewById(R.id.templateStoreImg);
+		    image.setImageDrawable(img.getDrawable());
+		    
+		    bar.setRating(tmpl.getRating());
+		    
+		    //popupWindow.showAsDropDown(l, 50, -30);
+		    popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+		    popupWindow.showAtLocation(l, Gravity.CENTER, 0, 0);
+		    popupWindow.update();
+		         
 	  }
 	  
 	  @Override
 	  public void onBackPressed() {
+		  if(this.popupWindow != null) {
+			  this.popupWindow.dismiss();
+			  this.popupWindow = null;
+		  }
+		  
 		  if(this.task.getStatus() == AsyncTask.Status.RUNNING) {
 		      this.task.cancel(true);
 		      this.client.cancel();
+		      if(progress.isShowing()) {
+		    	  progress.dismiss();
+		      }
 		  }
 	      finish();
 	  }

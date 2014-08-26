@@ -35,9 +35,9 @@ public class GameDetailsCharacterGridAdapter extends
 
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
 			Game game) {
-		super(context, layoutID, game.getCharakterList());
+		super(context, layoutID, game.getCharacterList());
 		this.context = context;
-		this.characters = game.getCharakterList();
+		this.characters = game.getCharacterList();
 		this.layoutID = layoutID;
 	}
 

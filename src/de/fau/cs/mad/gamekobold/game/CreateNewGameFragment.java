@@ -45,9 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
@@ -112,8 +110,8 @@ public class CreateNewGameFragment extends Fragment {
 		addImageButton = (ImageButton) view.findViewById(R.id.buttonAddIcon);
 		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
 		pickedCharacterGridView = (GridView) view
-				.findViewById(R.id.pickedCharacterGridView);
-
+				.findViewById(R.id.pickedCharacterGridView);		
+		
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getSerializableExtra(
@@ -308,13 +306,20 @@ public class CreateNewGameFragment extends Fragment {
 					}
 					// save game
 					JacksonInterface.saveGame(curGame, getActivity());
+					//check if we are editing a game
+					if(getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
+						// if so we were already in the details fragment-> just go back
+						getActivity().onBackPressed();
+					}
+					else {
+						// if not we want to got to the details fragment -> start it
+						Intent i = new Intent(getActivity(),
+								GameDetailsActivity.class);
+						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+								curGame.getGameName());
+						startActivity(i);
+					}
 
-					// only start if saving was successful
-					Intent i = new Intent(getActivity(),
-							GameDetailsActivity.class);
-					i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-							curGame.getGameName());
-					startActivity(i);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
@@ -393,9 +398,7 @@ public class CreateNewGameFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// show popup with some space for Game Info
-
 				showPopup(curGame);
-
 			}
 		});
 
@@ -418,9 +421,7 @@ public class CreateNewGameFragment extends Fragment {
 			// TODO check it!!!
 			// handling back-button
 		case android.R.id.home:
-			Intent intent = new Intent(getActivity(), GameBrowserActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			getActivity().onBackPressed();
 			// finish();
 			return true;
 		default:
@@ -437,7 +438,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(game);
+				.newInstance(game, false);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 
@@ -446,11 +447,13 @@ public class CreateNewGameFragment extends Fragment {
 	public static class GameInfoDialogFragment extends DialogFragment {
 		private EditText editTextInfo;
 		private Game cGame;
+		private boolean infoMode;
 
 		// due to avoiding of using non-default constructor in fragment
-		public static GameInfoDialogFragment newInstance(Game game) {
+		public static GameInfoDialogFragment newInstance(Game game, boolean infoMode) {
 			GameInfoDialogFragment fragment = new GameInfoDialogFragment();
 			fragment.cGame = game;
+			fragment.infoMode = infoMode;
 			return fragment;
 		}
 
@@ -470,27 +473,41 @@ public class CreateNewGameFragment extends Fragment {
 			// get all EditTexts
 			editTextInfo = (EditText) view
 					.findViewById(R.id.editTextAdditionalInformation);
+			// disable editing if in info mode
+			if(infoMode) {
+				editTextInfo.setEnabled(false);
+			}
 			Log.d("curGame is null?", "" + (cGame == null));
-			// TODO Check it!!!!
-			// if (!curGame.getDescription().isEmpty()) {
-			// editTextInfo.setText(curGame.getDescription());
-			// } else {
-			// editTextInfo.setText(getActivity().getString(
-			// R.string.no_description_found));
-			// }
+			if(cGame != null) {
+				Log.d("cGame description", "" + cGame.getDescription());
+				if (!cGame.getDescription().isEmpty()) {
+					 editTextInfo.setText(cGame.getDescription());
+				}
+			}
 
 			builder.setView(view);
 
 			builder.setMessage(getString(R.string.popup_create_game_info_titel));
-			builder.setPositiveButton(getString(R.string.save_changes),
+			String posButtonString = null;
+			if(infoMode) {
+				posButtonString = getString(R.string.ok);
+			}
+			else {
+				posButtonString = getString(R.string.save_changes);
+			}
+			
+			builder.setPositiveButton(posButtonString,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// save new game notices
-							cGame.setDescription(editTextInfo.getEditableText()
-									.toString());
-							// game changed!!!
-							// TODO check it!! newGame vs myGame
+							// do not save in info mode
+							if(!infoMode) {
+								// save new game notices
+								cGame.setDescription(editTextInfo.getEditableText()
+										.toString());
+								// game changed!!!
+								// TODO check it!! newGame vs myGame
+							}
 						}
 					});
 

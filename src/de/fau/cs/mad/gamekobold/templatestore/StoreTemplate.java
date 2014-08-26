@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +28,7 @@ public class StoreTemplate {
 	private String worldname;
 	@JsonProperty("id")
 	private int id;
+	@JsonProperty("description")
 	private String description = "no description available";;
 	@JsonProperty("num_ratings")
 	private int num_ratings = 0;
@@ -35,6 +39,9 @@ public class StoreTemplate {
 	@JsonProperty("image_data")
 	private String image_data = null;
 	
+	@JsonIgnore
+	private Bitmap bm;
+	
 	public String getImage_data() {
 		return image_data;
 	}
@@ -42,8 +49,25 @@ public class StoreTemplate {
 	public void setImage_data(String image_data) {
 		this.image_data = image_data;
 	}
-
+	
+	@JsonIgnore
+	public Bitmap getBm() {
+		return this.bm;
+	}
+	
+	@JsonIgnore
+	public void setBm(String image_data) {
+		byte[] decodedString = Base64.decode(this.getImage_data(), Base64.DEFAULT);
+		Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+		this.bm = decodedByte;
+	}
+	
+	
+	
 	public String getDescription() {
+		if(description == null) {
+			return "no description available";
+		}
 		return description;
 	}
 

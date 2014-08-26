@@ -76,7 +76,7 @@ public class Table extends AbstractTable{
 	}
 	
 	/**
-	 * Used fir saving to json by jackson library.
+	 * Used for saving to json by jackson library.
 	 * @return
 	 */
 	@JsonProperty("selection")
@@ -110,6 +110,36 @@ public class Table extends AbstractTable{
 	@JsonIgnore
 	public int getNumberOfColumns() {
 		return numberOfColumns;
+	}
+	
+	/**
+	 * Returns the number of selected rows.
+	 * @return Number of selected rows.
+	 */
+	@JsonIgnore
+	public int getNumberOfSelectedRows() {
+		int counter = 0;
+		for(final Row row : rows) {
+			if(row.isSelected()) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
+	/**
+	 * Returns a list containing only the currently selected rows.
+	 * @return A List containing only the selected rows.
+	 */
+	@JsonIgnore
+	public List<Row> getOnlySelectedRows() {
+		LinkedList<Row> selRows = new LinkedList<Row>();
+		for(final Row row : rows) {
+			if(row.isSelected()) {
+				selRows.add(row);
+			}
+		}
+		return selRows;
 	}
 	
 	public void print() {
