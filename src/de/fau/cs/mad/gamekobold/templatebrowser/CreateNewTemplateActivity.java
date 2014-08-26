@@ -197,6 +197,8 @@ public class CreateNewTemplateActivity extends Activity {
 				intent.putExtra(
 						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 						true);
+				intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
+
 				// create template for data transfer
 		//		final de.fau.cs.mad.gamekobold.jackson.Template jTemplate = new Template();
 				// set data

@@ -52,7 +52,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 	public void passAdapterForPickedGrid(ArrayAdapter pickedAdapter) {
 		this.pickedAdapter = pickedAdapter;
 	}
-
+	
 	public void setInflater(LayoutInflater inflater, Context context) {
 		this.inflater = inflater;
 		this.context = context;
