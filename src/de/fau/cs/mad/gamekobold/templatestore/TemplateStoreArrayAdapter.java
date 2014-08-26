@@ -5,9 +5,6 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +38,6 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 
 		ViewHolder holder;
 		
-		View rowView = null;
 		StoreTemplate curr = templates.get(position);
 		
 		if(convertView == null) {
@@ -73,15 +69,10 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			}
 
 			if(curr.hasImage()) {
-				Log.e("store", "curr has image");
 				//byte[] decodedString = Base64.decode(curr.getImage_data(), Base64.DEFAULT);
 				//Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
 				if(curr.getBm() == null) {
-					Log.e("store", "getBm == null : ja ");
 					curr.setBm(curr.getImage_data());
-				}
-				else {
-					Log.e("store", "getBm == null : nein");
 				}
 				holder.img.setImageBitmap(curr.getBm());
 			}

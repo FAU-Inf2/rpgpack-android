@@ -52,8 +52,17 @@ public class TemplateStoreClient extends HttpClient {
 		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
 	}
 	
+	public ApiResponse searchByTag(ArrayList<NameValuePair> nameValuePairs) {
+		try {
+			this.get(this.apiUrl+"/search/tag", nameValuePairs);
+		} catch (Exception e) {
+			Log.e("store clients", e.getMessage());
+		}
+		
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
+	}
 
-
+	
 	public String getApiUrl() {
 		return apiUrl;
 	}
@@ -61,4 +70,5 @@ public class TemplateStoreClient extends HttpClient {
 	public void cancel() {
 		super.cancel();
 	}
+
 }
