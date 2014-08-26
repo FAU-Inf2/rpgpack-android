@@ -116,35 +116,34 @@ public class GameDetailsFragment extends Fragment {
 
 				// Start CharacterPlayActivity
 
-				// Log.d("!!!!!!!!!!curCharacter", "" +
-				// curCharacter.getCharacterName());
-				// Log.d("!!!!!!!!!curCharacter.getTemplate()", "" +
-				// curCharacter.getTemplate().getTemplateName());
-				// Log.d("!!!!!!!!!!!curCharacter.getTemplate().fileAbsolutePath",
-				// "" + curCharacter.getTemplate().fileAbsolutePath);
-				//
-				// if (curCharacter.getTemplate().fileAbsolutePath != null) {
+				Log.d("curCharacter",
+						"" + curCharacter.getCharacterName());
+				Log.d("curCharacter.getTemplate()", ""
+						+ curCharacter.getTemplate().getTemplateName());
+				Log.d("curCharacter.getTemplate().fileAbsolutePath",
+						"" + curCharacter.getTemplate().fileAbsolutePath);
 
-				// String fileName = getFileName();
+				if (curCharacter.getTemplate().fileAbsolutePath != null) {
 
-				String fileName = "/storage/emulated/0/RPG Pack/Characters/annatest-26.08.2014/anna1/";
-				Intent intent = new Intent(getActivity(),
-						TemplateGeneratorActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				// flag to distinguish between editing and creating
-				intent.putExtra(
-						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-						false);
-				intent.putExtra(
-						SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-						fileName);
-				intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER, true);
+					String fileName = getFileName();
 
+					Intent intent = new Intent(getActivity(),
+							TemplateGeneratorActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					// flag to distinguish between editing and creating
+					intent.putExtra(
+							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							false);
+					intent.putExtra(
+							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+							fileName);
+					intent.putExtra(
+							SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
+							true);
 
-				startActivity(intent);
+					startActivity(intent);
+				}
 			}
-
-			// }
 		});
 
 		gameCharacterGridView

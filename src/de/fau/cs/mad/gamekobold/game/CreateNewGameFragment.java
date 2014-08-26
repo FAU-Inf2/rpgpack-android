@@ -110,8 +110,8 @@ public class CreateNewGameFragment extends Fragment {
 		addImageButton = (ImageButton) view.findViewById(R.id.buttonAddIcon);
 		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
 		pickedCharacterGridView = (GridView) view
-				.findViewById(R.id.pickedCharacterGridView);
-
+				.findViewById(R.id.pickedCharacterGridView);		
+		
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getSerializableExtra(
