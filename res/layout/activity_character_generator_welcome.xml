@@ -29,7 +29,7 @@
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="120dp"
                 android:gravity="center"
-                android:text="Willkommen im Charakter-Generator! \n \n Um Deinen eigenen Charakter zu erstellen öffne einfach das Menü und wähle die Elemente, die Deinem Charakter zugeordnet sind!"
+                android:text="@string/character_generator_welcome"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

@@ -253,5 +253,12 @@
 
     <!-- character_edit_matrix_view -->
     <string name="hint_select_items">Select attributes for your character!</string>
+    
+      <!-- activity_character_generator_welcome -->
+    <string name="character_generator_welcome">Welcome in Character-Generator!\n \n To create your own character just open the menu and choose the elements!</string>
+
+    <!-- activity_play_character_welcome -->
+    <string name="play_character_welcome">Welcome in Character-Play-Mode!\n \n To view your character current values or to modify them just open the menu!</string>
+    
 
 </resources>
