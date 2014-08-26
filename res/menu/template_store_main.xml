@@ -3,10 +3,10 @@
     tools:context="de.fau.cs.mad.gamekobold.TemplateStoreMainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_restore"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/action_settings"/>
+        android:title="@string/store_reload"/>
     
         <item android:id="@+id/search_template"
           android:title="@string/search_title"

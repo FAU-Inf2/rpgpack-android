@@ -242,13 +242,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 
 	        @Override
 	        public boolean onQueryTextChange(String newText) {
-	        	if(newText.equals("")) {
-	        		task = new ApiTask();
-	        		ApiTaskParams apiParams = new ApiTaskParams();
-	        		apiParams.setMethod("getTemplates");
-	        		// show the original list, when search field is cleared
-	        		task.execute(apiParams);
-	        	}
+	        	// TODO maybe live search? 
 	            return true;
 	        }
 
@@ -267,7 +261,12 @@ public class TemplateStoreMainActivity extends ListActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_restore) {
+    		task = new ApiTask();
+    		ApiTaskParams apiParams = new ApiTaskParams();
+    		apiParams.setMethod("getTemplates");
+    		// show the original list, when search field is cleared
+    		task.execute(apiParams);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -243,7 +243,9 @@
     <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
 	<string name="search_title">search templates</string>
 	<string name="hint_search">search store</string>
-    
+	<string name="store_actions">Actions</string>
+	    <string name="store_reload">reload</string>    
+
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
     <string name="hint_character_lvl">lvl</string>
