@@ -28,6 +28,7 @@ public class StoreTemplate {
 	private String worldname;
 	@JsonProperty("id")
 	private int id;
+	@JsonProperty("description")
 	private String description = "no description available";;
 	@JsonProperty("num_ratings")
 	private int num_ratings = 0;
@@ -64,6 +65,9 @@ public class StoreTemplate {
 	
 	
 	public String getDescription() {
+		if(description == null) {
+			return "no description available";
+		}
 		return description;
 	}
 
