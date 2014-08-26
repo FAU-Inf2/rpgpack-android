@@ -244,7 +244,11 @@
 	<string name="search_title">search templates</string>
 	<string name="hint_search">search store</string>
 	<string name="store_actions">Actions</string>
-	    <string name="store_reload">reload</string>    
+	<string name="store_reload">reload</string>
+	<string name="store_tags">Tags</string>  
+	<string name="tag_horror">Horror</string>
+	<string name="tag_fantasy">Fantasy</string>
+	<string name="tag_future">Future</string>  
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>

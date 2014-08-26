@@ -27,6 +27,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -85,6 +86,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	        	 nameValuePairs = apiParam.getParams();
 	        	 response = client.postTemplate(nameValuePairs);
 	        	 break;
+	         case "searchByTag":
+	        	 nameValuePairs = apiParam.getParams();
+	        	 response = client.searchByTag(nameValuePairs);
 	         default:
 	        	 break;
 	         }
@@ -167,8 +171,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		this.adapter = new TemplateStoreArrayAdapter(this, templates);
   
 	    setListAdapter(adapter);
-	       
-	        
+	      
 		this.task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		/*
@@ -228,6 +231,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_store_main, menu);
 		
+		
 	    // Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 	    searchView = (SearchView) menu.findItem(R.id.search_template).getActionView();
@@ -261,14 +265,31 @@ public class TemplateStoreMainActivity extends ListActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_restore) {
-    		task = new ApiTask();
-    		ApiTaskParams apiParams = new ApiTaskParams();
-    		apiParams.setMethod("getTemplates");
-    		// show the original list, when search field is cleared
-    		task.execute(apiParams);
-			return true;
+		ApiTaskParams apiParams = new ApiTaskParams();
+		boolean is_task = true;
+		switch(id) {
+			case R.id.action_restore :
+	    		apiParams.setMethod("getTemplates");
+				break;			
+			case R.id.tag_fantasy:
+			case R.id.tag_horror:
+			case R.id.tag_future:
+				ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+				String tag = (String) item.getTitle();
+				httpParams.add(new BasicNameValuePair("tagname", tag));
+				apiParams.setParams(httpParams);
+				apiParams.setMethod("searchByTag");
+				break;
+			default:
+				is_task = false;
+				break;
 		}
+		
+		if(is_task) {
+			task = new ApiTask();
+			task.execute(apiParams);
+		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 	
