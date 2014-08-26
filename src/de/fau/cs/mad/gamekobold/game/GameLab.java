@@ -160,24 +160,4 @@ public class GameLab {
 		}
 	}
 
-	// FIXME remove as not using
-	// private void addDefaultData() {
-	// Game game1 = new Game("My First Game", templates.get(0), "20.05.2014");
-	// Game game2 = new Game("The Best Game", templates.get(1), "20.05.2014");
-	// Game game3 = new Game("Schwarze Auge Game", templates.get(2),
-	// "21.05.2014");
-	// List<GameCharacter> charList = templates.get(0).getCharacters();
-	// // remove fake item
-	// game1.setCharakterList(charList.subList(0, charList.size() - 1));
-	// charList = templates.get(1).getCharacters();
-	// // remove fake item
-	// game2.setCharakterList(charList.subList(0, charList.size() - 1));
-	// charList = templates.get(2).getCharacters();
-	// // remove fake item
-	// game3.setCharakterList(charList.subList(0, charList.size() - 1));
-	//
-	// games.add(game1);
-	// games.add(game2);
-	// games.add(game3);
-	// }
 }

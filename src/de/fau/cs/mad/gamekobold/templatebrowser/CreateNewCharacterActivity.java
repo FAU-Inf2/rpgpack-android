@@ -262,6 +262,7 @@ public class CreateNewCharacterActivity extends Activity implements
 		if (sheet != null && characterAltered) {
 			if (!sheet.name.isEmpty()) {
 				Log.d("Trying to save sheet", "name not empty!");
+				
 				if (sheet.fileAbsolutePath.isEmpty()) {
 					Log.d("Trying to save sheet", "path is empty");
 					// create file
