@@ -30,7 +30,7 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 
 		View rowView = null;
 		
-		if(convertView == null) {
+		//if(convertView == null) {
 			
 			rowView = inflater.inflate(R.layout.template_store_rowlayout, parent, false);
 			if((position % 2) == 0) 
@@ -61,9 +61,9 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 				img.setImageBitmap(decodedByte);
 			}
 			
-		} else {
-			return convertView;		
-		}
+		//} else {
+		//	return convertView;		
+		//}
 		
 		return rowView;	
 	}

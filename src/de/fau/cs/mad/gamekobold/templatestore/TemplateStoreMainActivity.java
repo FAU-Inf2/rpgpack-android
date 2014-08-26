@@ -48,6 +48,7 @@ public class TemplateStoreMainActivity extends ListActivity {
     private FrameLayout layout_main;
     PopupWindow popupWindow = null;
     ProgressDialog progress = null;
+    SearchView searchView;
     
 	  private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
 		 
@@ -197,7 +198,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	private void handleIntent(Intent intent) {
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	      String query = intent.getStringExtra(SearchManager.QUERY);
-	      this.alertMessage("Your search query was: " + query);
+	     // this.alertMessage("Your search query was: " + query);
 			this.task = new ApiTask();
 			ApiTaskParams apiParams = new ApiTaskParams();
 	
@@ -218,11 +219,34 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	    // Get the SearchView and set the searchable configuration
 	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	    SearchView searchView = (SearchView) menu.findItem(R.id.search_template).getActionView();
+	    searchView = (SearchView) menu.findItem(R.id.search_template).getActionView();
 	    // Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 	    searchView.setSubmitButtonEnabled(true);
+	    
+	    // Get the changes immediately.
+	    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+	        @Override
+	        public boolean onQueryTextChange(String newText) {
+	        	if(newText.equals("")) {
+	        		task = new ApiTask();
+	        		ApiTaskParams apiParams = new ApiTaskParams();
+	        		apiParams.setMethod("getTemplates");
+	        		// show the original list, when search field is cleared
+	        		task.execute(apiParams);
+	        	}
+	            return true;
+	        }
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+	    });
 		return true;
 	}
 	
@@ -241,6 +265,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	  @Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 		  layout_main.getForeground().setAlpha( 180); // dim
+		  
+		  
+		  searchView.clearFocus();
 		  
 		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
 		 // Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
@@ -282,6 +309,13 @@ public class TemplateStoreMainActivity extends ListActivity {
 		    description.setText(tmpl.getDescription());
 		    date_author.setText( ((TextView) v.findViewById(R.id.tv_store_date_author)).getText());
 		    
+		    /*
+		     *  if(tmpl.hasImage()) {
+				byte[] decodedString = Base64.decode(tmpl.getImage_data(), Base64.DEFAULT);
+				Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); 
+				image.setImageBitmap(decodedByte);
+			}
+		     */
 		    ImageView img = (ImageView) v.findViewById(R.id.templateStoreImg);
 		    image.setImageDrawable(img.getDrawable());
 		    
