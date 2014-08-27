@@ -169,7 +169,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 						final ColumnHeader header = jacksonTable.getColumnHeader(i);
 						View newElement = null;
 						if(header.isString()) {
-							newElement = initEditText(row, jacksonTable.getEntry(i, rowIndex));
+							newElement = initTextField(row, jacksonTable.getEntry(i, rowIndex));
 						}
 						else if(header.isCheckBox()) {
 							newElement = initCheckBox(jacksonTable.getEntry(i, rowIndex));
@@ -346,7 +346,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof EditText)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initEditText(tableRow, jacksonTable.getEntry(indexOfTable, k));
+						newElement = initTextField(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
@@ -493,7 +493,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	            }
 	        });
 	        for(int i=0; i<((TableRow) headerTable.getChildAt(0)).getChildCount(); i++){
-	        	setHeaderTableStyle((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i));
+	        	setHeaderTableStyle((TextView) ((TableRow) headerTable.getChildAt(0)).getChildAt(i));
 	        }
 	}
 
@@ -682,9 +682,21 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 	}
 	
-	private EditText initEditText(final TableRow row, final IEditableContent jacksonEntry){
+	private TextView initTextField(final TableRow row, final IEditableContent jacksonEntry){
+		//standard: use edittext
+		return initTextField(row, jacksonEntry, true);
+	}
+	
+	private TextView initTextField(final TableRow row, final IEditableContent jacksonEntry, boolean editable){
 //		Log.d("initEditText", "jacksonEntry:"+jacksonEntry.hashCode());
-		final EditText newElement = new EditText(getActivity());
+		TextView tv;
+		if(editable){
+			tv = new EditText(getActivity());
+		}
+		else{
+			tv = new TextView(getActivity());
+		}
+		final TextView newElement = tv;
 		newElement.setGravity(Gravity.CENTER);
 			newElement.addTextChangedListener(new TextWatcher(){
 				public void afterTextChanged(Editable s) {
@@ -699,7 +711,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			});
 		if(row !=null){
 			if(row == headerTable.getChildAt(0)) {
-				setHeaderTableStyle((EditText) newElement);
+				setHeaderTableStyle((TextView) newElement);
 			}
 			else {
 				setTableStyle(newElement);
@@ -741,7 +753,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 									.getChildCount()+1));
 				}	
 				else {
-					((EditText) newElement).setText(getResources().getString(R.string.blank));
+					((TextView) newElement).setText(getResources().getString(R.string.blank));
 				}
 			}
 		}
@@ -992,9 +1004,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //        			SpannableStringBuilder highlightedText = (SpannableStringBuilder) s;
         			Editable text = inputPopup.getText();
 ////        			position++;
-        			if(text.toString().charAt(text.length()) != ' '){
-            			text.append(" ");
-        			}
+//        			if(text.toString().charAt(text.length()) != ' '){
+//            			text.append(" ");
+//        			}
         			Log.d("textstyle", "text to style: " + text.toString());
         			SpannableStringBuilder highlightedText = (SpannableStringBuilder) text;
 //            		Log.d("textstyle", "position == "+ position + "; styleStart == " + styleStart
@@ -1240,7 +1252,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			@Override
 			public void onClick(View v) {
 				View headlineView = ((TableRow) headerTable.getChildAt(0)).getChildAt(getColumnIndex(ll));
-				String headline = ((EditText) headlineView).getText().toString();
+				String headline = ((TextView) headlineView).getText().toString();
 				popupHeadline.setText(headline);
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
@@ -1329,7 +1341,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	firstRowView = firstRow.getChildAt(columnIndex);
         }
         if(firstRowView instanceof EditText){
-        	newElement = initEditText(row, jacksonTable.getEntry(columnIndex, rowIndex));
+        	newElement = initTextField(row, jacksonTable.getEntry(columnIndex, rowIndex));
         }
         else if(firstRowView instanceof LinearLayout){
         	if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
@@ -1345,11 +1357,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	// quick temp fix
         	if(row == headerTable.getChildAt(0)) {
 //        		Log.d("row==headerTable", "col:"+columnIndex+ " row:"+rowIndex);
-        		newElement = initEditText(row, jacksonTable.getColumnHeader(columnIndex));
+        		newElement = initTextField(row, jacksonTable.getColumnHeader(columnIndex), false);
         	}
         	else {
 //        		Log.d("row==ChildTable", "col:"+columnIndex+ " row:"+rowIndex);
-        		newElement = initEditText(row, jacksonTable.getEntry(columnIndex, rowIndex));
+        		newElement = initTextField(row, jacksonTable.getEntry(columnIndex, rowIndex), true);
         	}
         }
 		row.addView(newElement);
@@ -1393,6 +1405,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//  JACKSON END
 		//
         addColumnToRow(row);
+        //XXX: check if works
+        ((View) row).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				showDialog();
+			}
+		});
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
 
@@ -1572,25 +1591,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //		dialog.show();
 	}
 	
-	@SuppressWarnings("deprecation")
-	protected void setTableStyle(View view){
-		String uri = "@drawable/cell_shape";
-		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
-		Drawable res = getResources().getDrawable(imageResource);
-		if (android.os.Build.VERSION.SDK_INT >= 16){
-			view.setBackground(res);
-		}
-		else{
-			view.setBackgroundDrawable(res);
-		}
-		if(view instanceof TextView){
-//			Log.d("setTableStyle", "now changed!");
-			TextView text = (TextView) view;
-			text.setTextColor(getResources().getColor(R.color.background));
-			text.setSingleLine();
-//			text.setGravity(Gravity.CENTER);
-		}
-	}
+	
 	
 	class DialogSpinnerAdapter<T> extends ArrayAdapter<T>
 	{
@@ -1644,9 +1645,33 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	}
 	
 	@SuppressWarnings("deprecation")
-	protected void setHeaderTableStyle(EditText text){
+	protected void setTableStyle(View view){
+		String uri = "@drawable/cell_shape";
+		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+		if (android.os.Build.VERSION.SDK_INT >= 16){
+			view.setBackground(res);
+		}
+		else{
+			view.setBackgroundDrawable(res);
+		}
+		if(view instanceof TextView){
+//			Log.d("setTableStyle", "now changed!");
+			TextView text = (TextView) view;
+			text.setTextColor(getResources().getColor(R.color.background));
+			text.setSingleLine();
+//			text.setGravity(Gravity.CENTER);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	protected void setHeaderTableStyle(TextView text){
 //		Log.d("setHeaderTableStyle", "setHeaderTableStyle!");
-		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
+		text.setTextAppearance(getActivity(), android.R.style.TextAppearance_DeviceDefault);
+		text.setPadding((int) getResources().getDimension(R.dimen.padding_textview_side),
+				(int) getResources().getDimension(R.dimen.padding_below_small),
+				(int) getResources().getDimension(R.dimen.padding_textview_side),
+				(int) getResources().getDimension(R.dimen.padding_below_small));
 		String uri = "@drawable/cell_shape_green";
 		int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
