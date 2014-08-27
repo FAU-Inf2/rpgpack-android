@@ -29,8 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Selection;
-import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -50,7 +49,6 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -782,9 +780,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         return results;
     }
 	
+    boolean alreadyChangingText = false;
+    
     private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry, int columnIndex, int rowIndex){
 		Log.d("TABLE_FRAGMENT", "init_popup");
 		final LinearLayout ll = new LinearLayout(getActivity());
+		ll.setFocusable(true);
+		ll.setFocusableInTouchMode(true);
 		final TextView newElement = new TextView(getActivity());
 		//
 		// JACKSON START
@@ -834,52 +836,122 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
         toggleBold.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
-        		int selectionStart = inputPopup.getSelectionStart();
-        		styleStart = selectionStart;
-        		// following code might be needed if they fix this bug: 
-        		// http://code.google.com/p/android/issues/detail?id=62508
-        		//but atm text marking in popupwindow doesnt work so we don't need to deal with 
-        		//selectionEnd != selectionStart
-        		/*
-                int selectionEnd = inputPopup.getSelectionEnd();
-                if (selectionStart > selectionEnd){
-                    int temp = selectionEnd;
-                    selectionEnd = selectionStart;
-                    selectionStart = temp;
-                }
-                if (selectionEnd > selectionStart)
-                {
-                    Spannable str = inputPopup.getText();
-                    StyleSpan[] ss = str.getSpans(selectionStart, selectionEnd, StyleSpan.class);
+//        		int selectionStart = inputPopup.getSelectionStart();
+//        		styleStart = selectionStart;
+                int selectionStart = inputPopup.getSelectionEnd();
 
-                    boolean exists = false;
-                    for (int i = 0; i < ss.length; i++) {
-                        if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
-                            str.removeSpan(ss[i]);
-                            exists = true;
-                        }
-                    }
-                    if (!exists){
-                        str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    toggleBold.setChecked(false);
-                }
-        		 */
+                styleStart = selectionStart;
+
+//                int selectionEnd = inputPopup.getSelectionEnd();
+//
+//                if (selectionStart > selectionEnd){
+//                    int temp = selectionEnd;
+//                    selectionEnd = selectionStart;
+//                    selectionStart = temp;
+//                }
+//
+//
+//                if (selectionEnd > selectionStart)
+//                {
+//                    Spannable str = inputPopup.getText();
+//                    StyleSpan[] ss = str.getSpans(selectionStart, selectionEnd, StyleSpan.class);
+//
+//                    boolean exists = false;
+//                    for (int i = 0; i < ss.length; i++) {
+//                        if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+//                            str.removeSpan(ss[i]);
+//                            exists = true;
+//                        }
+//                    }
+//
+//                    if (!exists){
+//                        str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            			Log.d("textstyle", "setSpan!!!");
+//                    }
+//
+//                    toggleBold.setChecked(false);
+//                }
         	}
         });
         final ToggleButton toggleItalic = (ToggleButton) popupView.findViewById(R.id.toggle_italic);
         toggleItalic.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
-        		int selectionStart = inputPopup.getSelectionStart();
-        		styleStart = selectionStart;
+//        		int selectionStart = inputPopup.getSelectionStart();
+//        		styleStart = selectionStart;
+        		int selectionStart = inputPopup.getSelectionEnd();
+
+                styleStart = selectionStart;
+
+//                int selectionEnd = inputPopup.getSelectionEnd();
+//
+//                if (selectionStart > selectionEnd){
+//                    int temp = selectionEnd;
+//                    selectionEnd = selectionStart;
+//                    selectionStart = temp;
+//                }
+//
+//
+//                if (selectionEnd > selectionStart)
+//                {
+//                    Spannable str = inputPopup.getText();
+//                    StyleSpan[] ss = str.getSpans(selectionStart, selectionEnd, StyleSpan.class);
+//
+//                    boolean exists = false;
+//                    for (int i = 0; i < ss.length; i++) {
+//                        if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+//                            str.removeSpan(ss[i]);
+//                            exists = true;
+//                        }
+//                    }
+//
+//                    if (!exists){
+//                        str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            			Log.d("textstyle", "setSpan!!!");
+//                    }
+//
+//                    toggleItalic.setChecked(false);
+//                }
         	}
         });
         final ToggleButton toggleUnderlined = (ToggleButton) popupView.findViewById(R.id.toggle_underline);
         toggleUnderlined.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         toggleUnderlined.setOnClickListener(new Button.OnClickListener() {
         	public void onClick(View v) {
-        		int selectionStart = inputPopup.getSelectionStart();
-        		styleStart = selectionStart;
+//        		int selectionStart = inputPopup.getSelectionStart();
+//        		styleStart = selectionStart;
+        		int selectionStart = inputPopup.getSelectionEnd();
+
+                styleStart = selectionStart;
+
+//                int selectionEnd = inputPopup.getSelectionEnd();
+//
+//                if (selectionStart > selectionEnd){
+//                    int temp = selectionEnd;
+//                    selectionEnd = selectionStart;
+//                    selectionStart = temp;
+//                }
+//
+//
+//                if (selectionEnd > selectionStart)
+//                {
+//                    Spannable str = inputPopup.getText();
+//                    StyleSpan[] ss = str.getSpans(selectionStart, selectionEnd, StyleSpan.class);
+//
+//                    boolean exists = false;
+//                    for (int i = 0; i < ss.length; i++) {
+//                        if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+//                            str.removeSpan(ss[i]);
+//                            exists = true;
+//                        }
+//                    }
+//
+//                    if (!exists){
+//                        str.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            			Log.d("textstyle", "setSpan!!!");
+//                    }
+//
+//                    toggleUnderlined.setChecked(false);
+//                }
         	}
         });
         
@@ -887,53 +959,145 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         inputPopup.addTextChangedListener(new TextWatcher() { 
         	final IEditableContent myJacksonEntry = jacksonEntry;
         	public void afterTextChanged(Editable s) { 
-        		int position = Selection.getSelectionStart(inputPopup.getText());
-        		if (position < 0){
-        			position = 0;
-        		}
-        		if (position > 0){
-        			if (styleStart > position || position > (cursorLoc + 1)){
-        				//user changed cursor location, reset
-        				styleStart = position - 1;
-        			}
-        			cursorLoc = position;
-//            		Log.d("textstyle", "styleStart == " + styleStart + ", position == " + position);
-        			if (toggleBold.isChecked()){
-                        StyleSpan[] ss = s.getSpans(styleStart, position, StyleSpan.class);
-                        for (int i = 0; i < ss.length; i++) {
-                            if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
-                                s.removeSpan(ss[i]);
-                            }
-                        }
-                        s.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    if (toggleItalic.isChecked()){
-                        StyleSpan[] ss = s.getSpans(styleStart, position, StyleSpan.class);
-                        for (int i = 0; i < ss.length; i++) {
-                            if (ss[i].getStyle() == android.graphics.Typeface.ITALIC){
-                                s.removeSpan(ss[i]);
-                            }
-                        }
-                        s.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    if (toggleUnderlined.isChecked()){
-                    	UnderlineSpan[] ss = s.getSpans(styleStart, position, UnderlineSpan.class);
-                        for (int i = 0; i < ss.length; i++) {
-                                s.removeSpan(ss[i]);
-                        }
-                        s.setSpan(new UnderlineSpan(), styleStart, position, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    inputPopup.setText(s);
-                    inputPopup.setSelection(position);
-                    myJacksonEntry.setContent(s.toString());
-        		}
-        			
         	}
         	public void beforeTextChanged(CharSequence s, int start, int count, int after) { 
         		//unused
         	} 
         	public void onTextChanged(CharSequence s, int start, int before, int count) { 
-        		
+        		if(alreadyChangingText){
+//            		Log.d("textstyle", "alreadChanging!");
+        			return;
+        		}
+        		else{
+        			alreadyChangingText = true;
+        		}
+//        		Log.d("textstyle", "CHANGE!!!");
+        		int position = inputPopup.getSelectionStart();
+        		if (position < 0){
+        			position = 0;
+        		}
+        		if (position > 0){
+        			if (styleStart > position){
+        				//user changed cursor location, reset
+//                		Log.d("textstyle", "RESET!!!\n" + "position == "+ position + "; styleStart == " + styleStart
+//                				+ "; cursorLoc == " + cursorLoc);
+                		Log.d("textstyle", "RESET!!!");
+        				styleStart = position - 1;
+        			}
+        			else if(position > (cursorLoc + 1)){
+                		Log.d("textstyle", "RESET!!!");
+        				styleStart = position - 1;
+        			}
+        			cursorLoc = position;
+//        			SpannableStringBuilder highlightedText = (SpannableStringBuilder) s;
+        			Editable text = inputPopup.getText();
+////        			position++;
+        			if(text.toString().charAt(text.length()) != ' '){
+            			text.append(" ");
+        			}
+        			Log.d("textstyle", "text to style: " + text.toString());
+        			SpannableStringBuilder highlightedText = (SpannableStringBuilder) text;
+//            		Log.d("textstyle", "position == "+ position + "; styleStart == " + styleStart
+//            				+ "; cursorLoc == " + cursorLoc);
+//            		Log.d("textstyle", "styleStart == " + styleStart + ", position == " + position);
+            		Object[] spans = highlightedText.getSpans(styleStart, position, Object.class);
+//        			highlightedText.clearSpans();
+//        			Log.d("textstyle", "before has " + spans.length + " spans!");
+//            		for(Object span : spans) {
+//            			highlightedText.removeSpan(span);
+////            			Log.d("textstyle", "remove from " + styleStart + " to " + position);
+//            		}
+            		spans = highlightedText.getSpans(styleStart, position, Object.class);
+        			Log.d("textstyle", "before has " + spans.length + " spans! (" + styleStart + " to " + position + ")");
+        			for (int i = 0; i < spans.length; i++) {
+//            			Log.d("textstyle", "new span: " + spans[i].getClass().toString());
+            			if(spans[i].getClass().toString().equals("class android.text.style.StyleSpan")){
+//                			Log.d("textstyle", "stylespan found!");
+            				StyleSpan ss = ((StyleSpan) spans[i]);
+                			Log.d("textstyle", "stylespan: " + ss.getStyle() );
+            			}
+        			}
+//        			boolean includeEnd = position==text.length();
+//        			boolean longerOne = (position-styleStart)>1;
+        			if (toggleUnderlined.isChecked()){
+                    	UnderlineSpan[] ss = highlightedText.getSpans(styleStart, position, UnderlineSpan.class);
+                        for (int i = 0; i < ss.length; i++) {
+                                highlightedText.removeSpan(ss[i]);
+                    			Log.d("textstyle", "removeSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
+                        }
+                        highlightedText.setSpan(new UnderlineSpan(), styleStart, position,  33);
+            			Log.d("textstyle", "setSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
+//            			Log.d("textstyle", "UNDERLINE from " + styleStart + " to " + position);
+                    }
+                    //XXX:note: i think recursive calls to listener are the problem
+            		spans = text.getSpans(styleStart, position, Object.class);
+        			Log.d("textstyle", "setting text with " + spans.length + " spans! (" + styleStart + " to " + position + ")");
+        			for (int i = 0; i < spans.length; i++) {
+//            			Log.d("textstyle", "new span: " + spans[i].getClass().toString());
+            			if(spans[i].getClass().toString().equals("class android.text.style.StyleSpan")){
+//                			Log.d("textstyle", "stylespan found!");
+            				StyleSpan ss = ((StyleSpan) spans[i]);
+                			Log.d("textstyle", "stylespan: " + ss.getStyle() );
+            			}
+        			}
+        			if (toggleBold.isChecked()){
+//        				if(!toggleItalic.isChecked()){
+        					StyleSpan[] ss = highlightedText.getSpans(styleStart, position, StyleSpan.class);
+        					for (int i = 0; i < ss.length; i++) {
+        						if (ss[i].getStyle() == android.graphics.Typeface.BOLD){
+        							highlightedText.removeSpan(ss[i]);
+                        			Log.d("textstyle", "removeSpan: BOLD!!! (" + styleStart + " to " + position + ")");
+        						}
+        					}
+        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position,  33);
+                			Log.d("textstyle", "setSpan: BOLD!!! (" + styleStart + " to " + position + ")");
+//        					Log.d("textstyle", "BOLD from " + styleStart + " to " + position);
+//        				}
+//        				else{
+//        					StyleSpan[] ss = highlightedText.getSpans(styleStart, position, StyleSpan.class);
+//        					for (int i = 0; i < ss.length; i++) {
+//        						if (ss[i].getStyle() == android.graphics.Typeface.BOLD_ITALIC){
+//        							highlightedText.removeSpan(ss[i]);
+//                        			Log.d("textstyle", "removeSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
+//        						}
+//        					}
+//        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position,  33);
+//                			Log.d("textstyle", "setSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
+//        					Log.d("textstyle", "BOLD_ITALIC from " + styleStart + " to " + position);
+//        				}
+                    }
+        			if (toggleItalic.isChecked()){
+                        StyleSpan[] ss = highlightedText.getSpans(styleStart, position, StyleSpan.class);
+                        for (int i = 0; i < ss.length; i++) {
+                            if (ss[i].getStyle() == android.graphics.Typeface.ITALIC){
+                                highlightedText.removeSpan(ss[i]);
+                    			Log.d("textstyle", "removeSpan: ITALIC (" + styleStart + " to " + position + ")");
+                            }
+                        }
+                        highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position,  33);
+            			Log.d("textstyle", "setSpan: ITALIC (" + styleStart + " to " + position + ")");
+//                        Log.d("textstyle", "ITALIC from " + styleStart + " to " + position);
+        			}
+            		
+//        			String str = text.toString().trim();
+//        			if(str.length()!=0){
+//        			str  = str.substring( 0, str.length() - 1 ); 
+////        			    yourEditText.setText ( str );
+//        			}
+//        			position--;
+//        			text.replace(position, position+1, "");
+        			inputPopup.setText(highlightedText);
+//                    inputPopup.setText((Spanned)inputPopup.getText().delete(position , position+1));
+                    myJacksonEntry.setContent(s.toString());
+                    
+                    inputPopup.setSelection(position);
+//                    inputPopup.clearFocus();
+//                    ll.requestFocus();
+//                    inputPopup.setSelection(position);
+//        			text.replace(position, position+1, "");
+//        			inputPopup.setText(text);
+        		}
+        		alreadyChangingText = false;
         	} 
         });
         
@@ -1081,9 +1245,10 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 				popup.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-				InputMethodManager inputMgr = (InputMethodManager)SlideoutNavigationActivity.theActiveActivity.
-						getSystemService(Context.INPUT_METHOD_SERVICE);
-					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
+				//XXX: might be needed?!
+//				InputMethodManager inputMgr = (InputMethodManager)SlideoutNavigationActivity.theActiveActivity.
+//						getSystemService(Context.INPUT_METHOD_SERVICE);
+//					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
 			}
 		});
 		popupView.setOnClickListener(new OnClickListener() {

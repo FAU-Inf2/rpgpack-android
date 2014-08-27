@@ -4,7 +4,6 @@ package de.fau.cs.mad.gamekobold.template_generator;
 import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.*;
-import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
@@ -64,6 +63,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		protected View row;
 		TextWatcher jacksonTableNameChangeWatcher = null;
 		CheckBox box;
+		CheckBox favorite;
 	}
 	
 	@Override
@@ -178,8 +178,24 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					data.checked = isChecked;
+					if(!isChecked){
+						holder.favorite.setChecked(false);
+					}
 					// TODO: jackson store: enabling(check)/disabling(uncheck) this category
 					data.jacksonTable.isSelected = isChecked;
+				}
+			});
+		}
+		if(holder.favorite != null){
+			holder.favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//				final AbstractTable jacksonTable = data.jacksonTable;
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					//TODO: benni: favorite in jackson speichern
+					data.favorite = isChecked;
+					if(isChecked){
+						holder.box.setChecked(true);
+					}
 				}
 			});
 		}
@@ -208,12 +224,21 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
             		view = inflator.inflate(R.layout.template_listview_row_checking, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
                 	holder.elementName = (TextView) view.findViewById(R.id.text);
                 	CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
+                	CheckBox favorite = (CheckBox) view.findViewById(R.id.favorite_checkbox);
                 	holder.box = cb;
+                	holder.favorite = favorite;
+                	//XXX: wahrs noetig: favorite setzen
                 	if(data.checked){
                 		holder.box.setChecked(true);
                 	}
                 	else{
                 		holder.box.setChecked(false);
+                	}
+                	if(data.favorite){
+                		holder.favorite.setChecked(true);
+                	}
+                	else{
+                		holder.favorite.setChecked(false);
                 	}
             	}
             	else{
@@ -241,6 +266,9 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
         //if checkboxes are activated, set them
         if(holder.box != null){
         	holder.box.setChecked(data.checked);
+        }
+        if(holder.favorite != null){
+        	holder.favorite.setChecked(data.favorite);
         }
         // set view.elementName according to data
         holder.elementName.setText(data.text.getText());

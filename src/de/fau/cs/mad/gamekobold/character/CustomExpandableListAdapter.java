@@ -214,7 +214,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	    item.setPaintFlags(item.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 	    item.setText(mTitles[groupPosition]);
 //	    row.setTextSize(R.dimen.text_large);
-	    CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
+	    final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
+	    final CheckBox favorite = (CheckBox) convertView.findViewById(R.id.favorite_checkbox);
 	    final Row jacksonRow = mJacksonTable.getRow(groupPosition);
 	    checkbox.setChecked(jacksonRow.isSelected());
 	    checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -222,7 +223,19 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mRow.setSelected(isChecked);
+				if(!isChecked){
+					favorite.setChecked(false);
+				}
 //				Log.d("CUSTOM EXP ADAPTER", "onCheckedChange:"+isChecked);
+			}
+		});
+	    favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		    //TODO: fuer Benni: Favorit in Jackson setzen
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked){
+					checkbox.setChecked(true);
+				}
 			}
 		});
 	    return convertView;

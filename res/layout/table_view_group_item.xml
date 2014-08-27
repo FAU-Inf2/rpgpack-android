@@ -10,16 +10,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:focusable="false"
-        android:checked="true" />
-    
+        android:checked="true"
+        android:focusable="false" />
+
+    <CheckBox
+        android:id="@+id/favorite_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/group_checkbox"
+        android:button="@android:drawable/btn_star"
+        android:focusable="false" />
+
     <TextView
         android:id="@+id/rowName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+        android:layout_alignParentLeft="true"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
-    
-    
 
 </RelativeLayout>
