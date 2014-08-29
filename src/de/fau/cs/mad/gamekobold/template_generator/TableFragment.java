@@ -100,6 +100,23 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	public Map<Pair<Integer,Integer>, ReattachingPopup> popupList = new ConcurrentHashMap<Pair<Integer,Integer>, ReattachingPopup>();
 	public List<ReattachingPopup> currentlyShownPopups = new ArrayList<ReattachingPopup>();
 
+	private final View.OnFocusChangeListener editTextFocusListener = new View.OnFocusChangeListener() {
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			Log.d("FOCUS", "focus changed:"+hasFocus);
+			final TextView tv = (TextView)v;
+			if(hasFocus) {
+				if(tv.getEditableText().toString().equals(getResources().getString(R.string.blank))) {
+					tv.setText("");
+				}
+			}
+			else {
+				if(tv.getEditableText().toString().isEmpty()) {
+					tv.setText(R.string.blank);
+				}
+			}
+		}
+	};
 
 	
 	@Override
@@ -742,6 +759,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//
 		// JACKSON END
 		//
+		newElement.setOnFocusChangeListener(editTextFocusListener);
 		// we can do it like this with a check, or we change the default value in jackson model
 		// check is needed, because we would otherwise overwrite the loaded value
 		if(newElement.getText().toString().isEmpty()) {
