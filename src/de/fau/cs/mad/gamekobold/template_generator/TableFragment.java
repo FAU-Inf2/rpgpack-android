@@ -103,7 +103,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	private final View.OnFocusChangeListener editTextFocusListener = new View.OnFocusChangeListener() {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			Log.d("FOCUS", "focus changed:"+hasFocus);
+//			Log.d("FOCUS", "focus changed:"+hasFocus);
 			final TextView tv = (TextView)v;
 			if(hasFocus) {
 				if(tv.getEditableText().toString().equals(getResources().getString(R.string.blank))) {
