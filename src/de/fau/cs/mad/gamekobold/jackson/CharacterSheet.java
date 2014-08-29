@@ -1,6 +1,5 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
-
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +15,7 @@ public class CharacterSheet implements Parcelable{
 	public String name;
 	public int level;
 	public String description;
-	public int color = Color.WHITE;
+	public int color = Color.RED;
 	@JsonIgnore
 	public String fileAbsolutePath = null;
 	@JsonIgnore

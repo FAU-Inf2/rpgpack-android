@@ -5,6 +5,7 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -23,7 +24,9 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<CharacterSheet>{
 	public CharacterGridArrayAdapter(Context context, List<CharacterSheet> items) {
 		super(context, R.layout.itemlayout_character_icon, items);
 		if (items != null) {
-			items.add(new CharacterSheet("Create Character"));
+			final CharacterSheet createNewCharacter = new CharacterSheet("Create Character");
+			createNewCharacter.color = Color.WHITE;
+			items.add(createNewCharacter);
 		}
 		this.context = context;
 		this.items = items;

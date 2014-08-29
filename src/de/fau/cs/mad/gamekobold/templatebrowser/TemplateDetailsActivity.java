@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -396,7 +397,9 @@ public class TemplateDetailsActivity extends Activity {
 				characterList = new ArrayList<CharacterSheet>();
 			}
 			// entry for creating a new character
-			characterList.add(new CharacterSheet("Create Character"));
+			final CharacterSheet createNewCharacter = new CharacterSheet("Create Character");
+			createNewCharacter.color = Color.WHITE;
+			characterList.add(createNewCharacter);
 			((TemplateDetailsActivity) myActivity)
 					.setCharacterList(characterList);
 			if (pd != null) {

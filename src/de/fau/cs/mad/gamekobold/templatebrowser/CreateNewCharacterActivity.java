@@ -77,6 +77,8 @@ public class CreateNewCharacterActivity extends Activity implements
 				characterDirectoryFile = JacksonInterface
 						.getDirectoryForCharacters(template, this, true);
 				sheet = template.characterSheet;
+				// change to default color
+				sheet.color = getResources().getColor(R.color.light_green);
 			} catch (Throwable e) {
 				e.printStackTrace();
 				// TODO correct error handling
