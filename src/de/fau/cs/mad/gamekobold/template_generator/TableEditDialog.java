@@ -227,7 +227,7 @@ public class TableEditDialog extends DialogFragment {
 		int amountRows = dialogTable.getChildCount()-1;
 		for(int i=1; i<amountRows+1; i++){
 			String otherString = ((EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1)).getText().toString();
-			EditText textToChange = ((EditText) ((TableRow) targetFragment.headerTable.getChildAt(0)).getChildAt(i-1));
+			TextView textToChange = ((TextView) ((TableRow) targetFragment.headerTable.getChildAt(0)).getChildAt(i-1));
 			if(!otherString.equals("")){
 				textToChange.setText(otherString);
 			}
@@ -246,7 +246,7 @@ public class TableEditDialog extends DialogFragment {
 		int oldColumnsToAdept = (firstRowToAdd<rowsNeeded? firstRowToAdd:rowsNeeded);
 		for(int i=1; i<oldColumnsToAdept; i++){
 			TableRow headerRow = (TableRow) targetFragment.headerTable.getChildAt(0);
-			EditText headerText = (EditText) headerRow.getChildAt(i-1);
+			TextView headerText = (TextView) headerRow.getChildAt(i-1);
 			EditText textToSet = (EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1);
 			if(headerText == null){
 				textToSet.setText("");
@@ -304,7 +304,7 @@ public class TableEditDialog extends DialogFragment {
 					} else if (k == 1) {
 						TableRow headerRow = (TableRow) targetFragment.headerTable
 								.getChildAt(0);
-						EditText headerText = (EditText) headerRow
+						TextView headerText = (TextView) headerRow
 								.getChildAt(i);
 						// Log.d("i,k", "i==" + ", k==" +k);
 						if (headerText == null) {

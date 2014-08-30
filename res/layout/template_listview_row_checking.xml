@@ -6,12 +6,20 @@
     android:layout_gravity="left"
     android:id="@+id/template_generated_element" >
     
-    <CheckBox 
+    <CheckBox
         android:id="@+id/element_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        />
+        android:layout_toRightOf="@id/favorite_checkbox" />
+    
+    <CheckBox
+        android:id="@+id/favorite_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@android:drawable/btn_star"
+        android:focusable="false"
+        android:gravity="left" />
+    
     <ImageView
             android:id="@+id/element_symbol"
             android:layout_width="40dp"

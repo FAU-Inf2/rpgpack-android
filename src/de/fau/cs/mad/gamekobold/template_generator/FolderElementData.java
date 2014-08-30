@@ -26,6 +26,7 @@ public class FolderElementData{
 	public GeneralFragment childFragment;
 	protected element_type type;
 	protected boolean checked = true;
+	protected boolean favorite = false;
 	public boolean checkBoxVisible = false;
 	
 	enum element_type{
