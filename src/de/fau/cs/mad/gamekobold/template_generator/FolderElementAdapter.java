@@ -180,6 +180,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 					data.checked = isChecked;
 					if(!isChecked){
 						holder.favorite.setChecked(false);
+						data.jacksonTable.setFavorite(false);
 					}
 					// TODO: jackson store: enabling(check)/disabling(uncheck) this category
 					data.jacksonTable.setSelected(isChecked);
@@ -195,7 +196,9 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 					data.favorite = isChecked;
 					if(isChecked){
 						holder.box.setChecked(true);
+						data.jacksonTable.setSelected(true);
 					}
+					data.jacksonTable.setFavorite(isChecked);
 				}
 			});
 		}

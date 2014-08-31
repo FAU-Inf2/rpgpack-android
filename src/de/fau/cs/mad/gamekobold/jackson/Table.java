@@ -41,7 +41,8 @@ public class Table extends AbstractTable{
 	public Table(@JsonProperty("name") String name,
 				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
 				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
-				@JsonProperty("selection") ArrayList<Boolean> selection) {
+				@JsonProperty("selection") ArrayList<Boolean> selection,
+				@JsonProperty("favlist") ArrayList<Integer> favlist) {
 		tableName = name;
 		numberOfColumns = headers.size();
 		columnHeaders = headers;
@@ -56,6 +57,12 @@ public class Table extends AbstractTable{
 			newRow.inflate(headers, rawRow);
 			if(selection != null) {
 				newRow.setSelected(selection.get(i));
+				if(favlist.get(i).intValue() == 0) {
+					newRow.setFavorite(false);	
+				}
+				else {
+					newRow.setFavorite(true);
+				}
 			}
 			// add
 			rows.add(newRow);
@@ -85,6 +92,20 @@ public class Table extends AbstractTable{
 		for(final Row row : rows) {
 			ret.add(row.isSelected());
 		}
+		return ret;
+	}
+	
+	@JsonProperty("favlist")
+	private List<Integer> getFavList() {
+		List<Integer> ret = new LinkedList<Integer>();
+		for(final Row row : rows) {
+			if(row.isFavorite()) {
+				ret.add(1);
+			}
+			else {
+				ret.add(0);
+			}
+		}				
 		return ret;
 	}
 	
