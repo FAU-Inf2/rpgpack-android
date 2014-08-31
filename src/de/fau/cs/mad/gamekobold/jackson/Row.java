@@ -6,14 +6,11 @@ import java.util.List;
 
 import android.util.Log;
 
-public class Row {
-	// TODO save value to json
-	private boolean isSelected;
+public class Row extends SelectAndFavorableItem {
 	private ArrayList<AbstractColumnEntry> entries;
 
-	public Row(ArrayList<AbstractColumnEntry> entries, boolean isSelected) {
+	public Row(ArrayList<AbstractColumnEntry> entries) {
 		this.entries = entries;
-		this.isSelected = isSelected;
 	}
 
 	public Row() {
@@ -104,12 +101,4 @@ public class Row {
 		 }
 		 entries.set(index, newEntry);
 	 }
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
 }

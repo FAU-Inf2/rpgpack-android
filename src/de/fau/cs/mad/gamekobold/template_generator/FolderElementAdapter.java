@@ -182,7 +182,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						holder.favorite.setChecked(false);
 					}
 					// TODO: jackson store: enabling(check)/disabling(uncheck) this category
-					data.jacksonTable.isSelected = isChecked;
+					data.jacksonTable.setSelected(isChecked);
 				}
 			});
 		}

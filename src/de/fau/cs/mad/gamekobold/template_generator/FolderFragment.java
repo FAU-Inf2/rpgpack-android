@@ -286,8 +286,8 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
 				// create fragment
 				newDataItem.childFragment = new FolderFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
@@ -312,8 +312,8 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
 				// create fragment
 				newDataItem.childFragment = new TableFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
@@ -334,8 +334,8 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
 				// create fragment
 				// TODO add matrix inflation
 				newDataItem.childFragment = new MatrixFragment();

@@ -16,17 +16,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 	@JsonSubTypes.Type(value=MatrixTable.class, name="matrix"),
 	@JsonSubTypes.Type(value=ContainerTable.class, name="folder")
 })
-public abstract class AbstractTable {
-	
+public abstract class AbstractTable extends SelectAndFavorableItem {	
 	@JsonProperty(value="name")
 	public String tableName;
-	@JsonProperty(value="selected")
-	public boolean isSelected;
 	
 	public abstract void print();
 	
 	public AbstractTable() {
 		tableName = "";
-		isSelected = true;
 	}
 }

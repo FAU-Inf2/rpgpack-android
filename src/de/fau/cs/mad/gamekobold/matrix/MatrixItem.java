@@ -3,7 +3,9 @@ package de.fau.cs.mad.gamekobold.matrix;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MatrixItem {
+import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
+
+public class MatrixItem extends SelectAndFavorableItem{
 	// @JsonProperty(value="name")
 	private String itemName;
 	// @JsonProperty("val")
@@ -15,21 +17,19 @@ public class MatrixItem {
 	// @JsonProperty("mod")
 	private String modificator;
 
-	private boolean isSelected;
 
 	@JsonCreator
 	public MatrixItem(@JsonProperty("itemName") String itemName,
 			@JsonProperty("value") String value,
 			@JsonProperty("rangeMin") int rangeMin,
 			@JsonProperty("rangeMax") int rangeMax,
-			@JsonProperty("modificator") String modificator,
-			@JsonProperty("selected") boolean selected) {
+			@JsonProperty("modificator") String modificator) {
 		this.itemName = itemName;
 		this.value = value;
 		this.rangeMin = rangeMin;
 		this.rangeMax = rangeMax;
 		this.modificator = modificator;
-		this.isSelected = selected;
+		this.isSelected = false;
 	}
 
 	public MatrixItem(String itemName, String value, String modificator) {
@@ -88,14 +88,5 @@ public class MatrixItem {
 	// @JsonProperty("mod")
 	public void setModificator(String modificator) {
 		this.modificator = modificator;
-	}
-
-	@JsonProperty("selected")
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
 	}
 }

@@ -427,7 +427,7 @@ public class MatrixFragment extends GeneralFragment {
 							 */
 							if (editItem == null) {
 								final MatrixItem newItem = new MatrixItem(name,
-										defValue, min, max, mod, false);
+										defValue, min, max, mod);
 								matrixFragment.addMatrixItem(newItem);
 							} else {
 								editItem.setItemName(name);
