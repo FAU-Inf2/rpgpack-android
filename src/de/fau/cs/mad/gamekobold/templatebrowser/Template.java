@@ -16,7 +16,9 @@ public class Template implements Serializable {
 	private String description;
 	public String fileAbsolutePath = null;
 	private long fileTimeStamp = 0;
-	
+	private String tagString = "";
+
+
 	//TODO pruefen in die andere richtung!!!
 	private List<GameCharacter> characters = new ArrayList<GameCharacter>();
 
@@ -133,10 +135,6 @@ public class Template implements Serializable {
 	public void clearCharacters() {
 		this.characters.clear();
 	}
-
-	public void takeOverValues(final Template otherTemplate) {
-		this.description = otherTemplate.description;
-	}
 	
 	/**
 	 * Checks whether the file for this template has changed by checking the time stamp of it.
@@ -158,15 +156,23 @@ public class Template implements Serializable {
 	public void setFileTimeStamp(final long timeStamp) {
 		fileTimeStamp = timeStamp;
 	}
-	
+
 	public long getFileTimeStamp() {
 		return fileTimeStamp;
 	}
-	
+
 	public File getTemplateFile() {
 		if(fileAbsolutePath == null) {
 			return null;
 		}
 		return new File(fileAbsolutePath);
+	}
+	
+	public String getTagString() {
+		return tagString;
+	}
+
+	public void setTagString(String tagString) {
+		this.tagString = tagString;
 	}
 }

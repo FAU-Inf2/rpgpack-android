@@ -299,6 +299,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						templateToCheck.setIconID(loadedTemplate.iconID);
 						templateToCheck
 								.setDescription(loadedTemplate.description);
+						templateToCheck.setTagString(loadedTemplate.getTagString());
 						// update time stamp
 						templateToCheck.setFileTimeStamp(templateFile
 								.lastModified());
@@ -415,6 +416,7 @@ public class TemplateBrowserActivity extends ListActivity {
 										loadedTemplate.date,
 										loadedTemplate.iconID,
 										loadedTemplate.description);
+								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {
 									temp.setTemplateName(file.getName());
 								}

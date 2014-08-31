@@ -99,6 +99,7 @@ public class TemplateLab {
 										loadedTemplate.date,
 										loadedTemplate.iconID,
 										loadedTemplate.description);
+								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {
 									temp.setTemplateName(file.getName());
 								}
@@ -147,6 +148,7 @@ public class TemplateLab {
 							template.setDate(loadedTemplate.date);
 							template.setIconID(loadedTemplate.iconID);
 							template.setDescription(loadedTemplate.description);
+							template.setTagString(loadedTemplate.getTagString());
 							// update time stamp
 							template.setFileTimeStamp(templateFile
 									.lastModified());

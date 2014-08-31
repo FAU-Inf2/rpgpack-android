@@ -25,6 +25,9 @@ public class Template implements Parcelable{
 	public String date = "";
 	public int iconID;
 	public String description = "";
+	private String tagString = "";
+
+
 	/* Character */
 	public CharacterSheet characterSheet = null;
 	
@@ -37,21 +40,7 @@ public class Template implements Parcelable{
 	public Template(@JsonProperty("characterSheet") CharacterSheet sheet) {
 		characterSheet = sheet;
 	}
-	
-//	public void print() {
-//		Log.d("TEMPLATE", "name:" + templateName);
-//		Log.d("TEMPLATE", "game:" + gameName);
-//		Log.d("TEMPLATE", "author:" + author);
-//		Log.d("TEMPLATE", "date:" + date);
-//		Log.d("TEMPLATE", "icon:" + iconID);
-//		Log.d("TEMPLATE", "description:" + description);
-//		if(characterSheet != null) {
-//			characterSheet.print();
-//		}
-//		else {
-//			Log.d("TEMPLATE", "characterSheet:null");
-//		}
-//	}
+
 
 	@SuppressLint("SimpleDateFormat")
 	@JsonIgnore
@@ -85,6 +74,7 @@ public class Template implements Parcelable{
 		date = otherTemplate.getDate();
 		iconID = otherTemplate.getIconID();
 		description = otherTemplate.getDescription();
+		tagString = otherTemplate.getTagString();
 	}
 
 	/**
@@ -99,6 +89,16 @@ public class Template implements Parcelable{
 		else {
 			return mapper.writer().writeValueAsString(this);
 		}
+	}
+	
+	@JsonProperty("tags")
+	public String getTagString() {
+		return tagString;
+	}
+
+	@JsonProperty("tags")
+	public void setTagString(String tagString) {
+		this.tagString = tagString;
 	}
 
 	//
@@ -121,6 +121,7 @@ public class Template implements Parcelable{
 		dest.writeString(date);
 		dest.writeInt(iconID);
 		dest.writeString(description);
+		dest.writeString(tagString);
 	}
 
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -139,6 +140,7 @@ public class Template implements Parcelable{
 			ret.date = source.readString();
 			ret.iconID = source.readInt();
 			ret.description = source.readString();
+			ret.tagString = source.readString();
 			return ret;
 		}
 	};
