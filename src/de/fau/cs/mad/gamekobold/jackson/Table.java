@@ -41,7 +41,7 @@ public class Table extends AbstractTable{
 	public Table(@JsonProperty("name") String name,
 				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
 				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
-				@JsonProperty("selection") ArrayList<Boolean> selection,
+				@JsonProperty("sellist") ArrayList<Integer> selection,
 				@JsonProperty("favlist") ArrayList<Integer> favlist) {
 		tableName = name;
 		numberOfColumns = headers.size();
@@ -56,7 +56,12 @@ public class Table extends AbstractTable{
 			// inflate
 			newRow.inflate(headers, rawRow);
 			if(selection != null) {
-				newRow.setSelected(selection.get(i));
+				if(selection.get(i).intValue() == 0) {
+					newRow.setSelected(false);
+				}
+				else {
+					newRow.setSelected(true);
+				}
 				if(favlist.get(i).intValue() == 0) {
 					newRow.setFavorite(false);	
 				}
@@ -86,11 +91,16 @@ public class Table extends AbstractTable{
 	 * Used for saving to json by jackson library.
 	 * @return
 	 */
-	@JsonProperty("selection")
-	public List<Boolean> getSelection() {
-		List<Boolean> ret = new LinkedList<Boolean>();
+	@JsonProperty("sellist")
+	private List<Integer> getSelection() {
+		List<Integer> ret = new LinkedList<Integer>();
 		for(final Row row : rows) {
-			ret.add(row.isSelected());
+			if(row.isSelected()) {
+				ret.add(1);
+			}
+			else {
+				ret.add(0);
+			}
 		}
 		return ret;
 	}
@@ -164,21 +174,21 @@ public class Table extends AbstractTable{
 	}
 	
 	public void print() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Table Name:"+tableName+"\n");
-		for(int i = 0; i < numberOfColumns; i++) {
-			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
-			if(columnHeaders.get(i).hidden) {
-				builder.append("[hidden]");
-			}
-			if( i < numberOfColumns-1) {
-				builder.append(" | ");
-			}
-		}
-		Log.d("TABLE-print", builder.toString());
-		for(int i = 0; i < rows.size(); i++) {
-			rows.get(i).print();
-		}
+//		StringBuilder builder = new StringBuilder();
+//		builder.append("Table Name:"+tableName+"\n");
+//		for(int i = 0; i < numberOfColumns; i++) {
+//			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
+//			if(columnHeaders.get(i).hidden) {
+//				builder.append("[hidden]");
+//			}
+//			if( i < numberOfColumns-1) {
+//				builder.append(" | ");
+//			}
+//		}
+//		Log.d("TABLE-print", builder.toString());
+//		for(int i = 0; i < rows.size(); i++) {
+//			rows.get(i).print();
+//		}
 	}
 
 	/**
@@ -307,7 +317,7 @@ public class Table extends AbstractTable{
 		 if(oldHeader.type.equals(newType)) {
 			 return;
 		 }
-		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.name, newType, oldHeader.hidden);
+		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.name, newType/*, oldHeader.hidden*/);
 		 columnHeaders.set(index, newHeader);
 		 // create new entry according to type
 		 // checkbox

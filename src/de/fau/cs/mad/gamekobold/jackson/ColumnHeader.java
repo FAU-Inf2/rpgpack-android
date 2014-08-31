@@ -9,23 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ColumnHeader implements IEditableContent{
 	public String name,type;
 
-	public boolean hidden;
+//	public boolean hidden;
 	
 	
-	public ColumnHeader(String name, String type) {
-		this.name = name;
-		this.type = type;
-		hidden = false;
-	}
+//	public ColumnHeader(String name, String type) {
+//		this.name = name;
+//		this.type = type;
+//		hidden = false;
+//	}
 	
 	@JsonCreator
 	public ColumnHeader(@JsonProperty("name") String name,
-						@JsonProperty("type") String type,
-						@JsonProperty("hidden") boolean hidden)
+						@JsonProperty("type") String type/*,
+						@JsonProperty("hidden") boolean hidden*/)
 	{
 		this.name = name;
 		this.type = type;
-		this.hidden = hidden;
+//		this.hidden = hidden;
 	}
 	
 	@JsonIgnore
