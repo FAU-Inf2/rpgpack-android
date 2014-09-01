@@ -215,6 +215,7 @@ public class MatrixFragment extends GeneralFragment {
 						int position, long id) {
 
 					if (position == itemsList.size() - 1) {
+						
 						Toast.makeText(
 								getActivity(),
 								"Neues Element wird in Deinem Character erstellt!",
@@ -240,7 +241,7 @@ public class MatrixFragment extends GeneralFragment {
 							Toast.makeText(
 									getActivity(),
 									((TextView) view
-											.findViewById(R.id.m_textItemTitle))
+											.findViewById(R.id.matrix_textItemTitle))
 											.getText()
 											+ "-Attribut wird zu dem Charakter hinzugefuegt",
 									Toast.LENGTH_SHORT).show();

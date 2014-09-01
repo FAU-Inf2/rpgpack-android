@@ -47,7 +47,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		// TODO ate refactor with view holder
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
 			if (position == getCount() - 1) {
@@ -57,9 +57,9 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				MatrixItem curItem = items.get(position);
 
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.mnew_textItemTitle);
+						.findViewById(R.id.matr_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.mnew_textValue);
+						.findViewById(R.id.matr_textValue);
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 
@@ -69,15 +69,15 @@ public class NewCharacterMatrixViewArrayAdapter extends
 						false);
 				// or reuse
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.m_textItemTitle);
+						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.m_textValue);
+						.findViewById(R.id.matrix_textValue);
 				// combine min and max
 				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.m_textRangeFromTo);
+						.findViewById(R.id.matrix_textRangeFromTo);
 
 				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.m_textModificator);
+						.findViewById(R.id.matrix_textModificator);
 
 				MatrixItem curItem = items.get(position);
 
@@ -95,7 +95,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemModificator.setText(curItem.getModificator());
 
 				highlightingImageView = (ImageView) convertView
-						.findViewById(R.id.m_item_highlighting_circle);
+						.findViewById(R.id.matrix_item_highlighting_circle);
 
 				Log.i("selectedMatrixItems.contains(curItem) - "
 						+ curItem.getItemName(),
@@ -148,22 +148,22 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				MatrixItem curItem = items.get(position);
 
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.mnew_textItemTitle);
+						.findViewById(R.id.matr_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.mnew_textValue);
+						.findViewById(R.id.matr_textValue);
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 			} else {
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.m_textItemTitle);
+						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.m_textValue);
+						.findViewById(R.id.matrix_textValue);
 				// combine min and max
 				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.m_textRangeFromTo);
+						.findViewById(R.id.matrix_textRangeFromTo);
 
 				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.m_textModificator);
+						.findViewById(R.id.matrix_textModificator);
 
 				MatrixItem curItem = items.get(position);
 
@@ -181,7 +181,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemModificator.setText(curItem.getModificator());
 
 				highlightingImageView = (ImageView) convertView
-						.findViewById(R.id.m_item_highlighting_circle);
+						.findViewById(R.id.matrix_item_highlighting_circle);
 
 				Log.i("selectedMatrixItems.contains(curItem) - "
 						+ curItem.getItemName(),

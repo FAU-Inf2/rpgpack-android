@@ -58,7 +58,7 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		// View itemView;
-
+		// TODO ate refactor with view holder
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
 			if (position == getCount() - 1) {

@@ -48,6 +48,7 @@
                     android:ems="10"
                     android:hint="@string/hint_matrix_item_name"
                     android:maxLength="24"
+                    android:singleLine="true"
                     android:textSize="16sp" >
 
                     <requestFocus />
@@ -238,8 +239,7 @@
             android:layout_height="30dp"
             android:layout_gravity="top|right"
             android:clickable="true"
-            android:src="@drawable/close_button_dred" />
-
+            android:src="@drawable/close_button_dred" />
         -->
     </FrameLayout>
 
