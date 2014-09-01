@@ -204,19 +204,19 @@ public class CreateNewTemplateActivity extends Activity {
 				// set data
 //				jTemplate.templateName = tvTemplateName.getText().toString();
 //				jTemplate.gameName = tvGameName.getText().toString();
-				newTemplate.templateName = tvTemplateName.getText().toString();
-				newTemplate.gameName = tvGameName.getText().toString();
+				newTemplate.setTemplateName(tvTemplateName.getText().toString());
+				newTemplate.setGameName(tvGameName.getText().toString());
 				// TODO author
 //				jTemplate.author = "Registered Author";
 //				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
-				newTemplate.author = "Registered Author";
-				newTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
-						.format(new Date());
+				newTemplate.setAuthor("Registered Author");
+				newTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
+						.format(new Date()));
 				// TODO icon id
 //				jTemplate.iconID = 0;
 //				jTemplate.description = tvDescription.getText().toString();
-				newTemplate.iconID = 0;
-				newTemplate.description = tvDescription.getText().toString();
+				newTemplate.setIconID(0);
+				newTemplate.setDescription(tvDescription.getText().toString());
 				// check to see if a file for this template already exists
 				if (JacksonInterface.doesTemplateFileExist(newTemplate, myActivity)) {
 					// if yes we show a dialog and ask whether to overwrite the
@@ -370,14 +370,14 @@ public class CreateNewTemplateActivity extends Activity {
 
 			positiveButtonText = getString(R.string.save_changes);
 			final EditText editText = (EditText)view.findViewById(R.id.editTextAdditionalInformation);
-			editText.setText(myTemplate.description);
+			editText.setText(myTemplate.getDescription());
 
 			builder.setMessage(getString(R.string.popup_template_details_info_titel));
 			builder.setPositiveButton(positiveButtonText,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							myTemplate.description = editText.getEditableText().toString();
+							myTemplate.setDescription(editText.getEditableText().toString());
 							createNewTemplateActivity.edDescription.setText(editText.getEditableText().toString());
 						}
 					});
