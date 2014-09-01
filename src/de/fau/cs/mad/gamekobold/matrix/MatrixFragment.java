@@ -213,39 +213,44 @@ public class MatrixFragment extends GeneralFragment {
 				@Override
 				public void onItemClick(AdapterView<?> adapterView, View view,
 						int position, long id) {
-					// selection of last item may not be toggled
-					// TODO check this! not working by me!
-					// if (position == itemsList.size() - 1) {
-					// return;
-					// }
-					MatrixItem curMatrixItem = itemsList.get(position);
 
-					if (selectedItems.contains(curMatrixItem)) {
-						curMatrixItem.setSelected(false);
-						selectedItems.remove(curMatrixItem);
-
-						// newCharacter.removeMatrixItem(curMatrixItem);
-						Log.d("setOnItemClickListener", "pos:" + position);
-						Log.d("remove", "remove");
-						a.notifyDataSetChanged();
-
-					} else {
-						curMatrixItem.setSelected(true);
-						selectedItems.add(curMatrixItem);
+					if (position == itemsList.size() - 1) {
 						Toast.makeText(
 								getActivity(),
-								((TextView) view
-										.findViewById(R.id.m_textItemTitle))
-										.getText()
-										+ "-Attribut wird zu dem Charakter hinzugefuegt",
+								"Neues Element wird in Deinem Character erstellt!",
 								Toast.LENGTH_SHORT).show();
+						// TODO Benni save new matrix item
+						showPopup();
+					} else {
 
-						Log.d("add", "add");
-						a.notifyDataSetChanged();
+						MatrixItem curMatrixItem = itemsList.get(position);
 
-						// newCharacter.addMatrixItem(curMatrixItem);
+						if (selectedItems.contains(curMatrixItem)) {
+							curMatrixItem.setSelected(false);
+							selectedItems.remove(curMatrixItem);
+
+							// newCharacter.removeMatrixItem(curMatrixItem);
+							Log.d("setOnItemClickListener", "pos:" + position);
+							Log.d("remove", "remove");
+							a.notifyDataSetChanged();
+
+						} else {
+							curMatrixItem.setSelected(true);
+							selectedItems.add(curMatrixItem);
+							Toast.makeText(
+									getActivity(),
+									((TextView) view
+											.findViewById(R.id.m_textItemTitle))
+											.getText()
+											+ "-Attribut wird zu dem Charakter hinzugefuegt",
+									Toast.LENGTH_SHORT).show();
+
+							Log.d("add", "add");
+							a.notifyDataSetChanged();
+
+							// newCharacter.addMatrixItem(curMatrixItem);
+						}
 					}
-
 				}
 			});
 

@@ -157,21 +157,6 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						itemModificator.setTextColor(context.getResources()
 								.getColor(R.color.white));
 				}
-
-				// // TODO make this check smarter
-				// if (!curItem.getModificator().isEmpty()) {
-				//
-				// if (curItem.getModificator().charAt(0) == '+')
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_blue));
-				// else if (curItem.getModificator().charAt(0) == '-')
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_red));
-				// else
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_grey));
-				//
-
 			}
 		}
 		return convertView;
