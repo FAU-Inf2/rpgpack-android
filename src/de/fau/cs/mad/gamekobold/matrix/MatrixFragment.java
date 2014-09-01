@@ -94,12 +94,7 @@ public class MatrixFragment extends GeneralFragment {
 					.findViewById(R.id.gridViewMatrixItem);
 			// check needed for jackson data loading
 			if (itemsList == null) {
-
-				// FIXME remove
-				// itemsList = getDataForGridView();
-
 				itemsList = new ArrayList<MatrixItem>();
-
 				jacksonTable.entries = itemsList;
 
 				// set create new item to the end, it will not appear in
@@ -195,15 +190,6 @@ public class MatrixFragment extends GeneralFragment {
 				itemsList = new ArrayList<MatrixItem>();
 				jacksonTable.entries = itemsList;
 
-			}
-			
-			//TODO refactor!!!!!!!!!
-			// check if last item is a fake one and delete
-			if(!itemsList.isEmpty()) {
-				if (itemsList.get(itemsList.size() - 1).getItemName()
-						.equals(getResources().getString(R.string.new_matrix_item))) {
-					itemsList.remove(itemsList.size() - 1);
-				}
 			}
 
 			if (a == null) {
