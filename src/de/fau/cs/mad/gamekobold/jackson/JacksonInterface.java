@@ -13,8 +13,10 @@ import android.os.Environment;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
@@ -45,6 +47,7 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		if(onlyMetaData) {
 			mapper.addMixInAnnotations(CharacterSheet.class, CharacterSheetMixInClass.class);
 		}
@@ -69,12 +72,16 @@ public abstract class JacksonInterface {
 		}
 		FileOutputStream outStream = new FileOutputStream(jsonFile);
 		ObjectMapper mapper = new ObjectMapper();
+//		if(use_pretty_writer) {
+//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, sheet);
+//		}
+//		else {
+//			mapper.writer().writeValue(outStream, sheet);
+//		}
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, sheet);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, sheet);
-		}
+		mapper.writer().writeValue(outStream, sheet);
 	}
 	//
 	// TEMPLATE FUNCTIONS START
@@ -212,12 +219,16 @@ public abstract class JacksonInterface {
 			return;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+//		if(use_pretty_writer) {
+//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, template);
+//		}
+//		else {
+//			mapper.writer().writeValue(outStream, template);
+//		}
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, template);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, template);
-		}
+		mapper.writer().writeValue(outStream, template);
 	}
 
 	// LOADING FUNCTIONS
@@ -237,6 +248,7 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		if(onlyMetaData) {
 			// in order to load only meta data we use mix in annotations
 			// the Template.Character sheet won't be loaded.
@@ -396,12 +408,16 @@ public abstract class JacksonInterface {
 			return;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+//		if(use_pretty_writer) {
+//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
+//		}
+//		else {
+//			mapper.writer().writeValue(outStream, game);
+//		}
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, game);
-		}
+		mapper.writer().writeValue(outStream, game);
 	}
 
 	public static Game loadGame(File gameFile) throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
@@ -416,6 +432,7 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		if(onlyMetaData) {
 //			// in order to load only meta data we use mix in annotations
 //			// the Template.Character sheet won't be loaded.

@@ -18,16 +18,16 @@ import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 public class MatrixTable extends AbstractTable{
 	@JsonIgnore
 	public List<MatrixItem> entries;
-	
+
 	public MatrixTable() {
 		entries = new LinkedList<MatrixItem>();
 	}
-	
+
 	@JsonCreator
 	public MatrixTable(@JsonProperty("entries") List<MatrixItem> entries) {
 		this.entries = entries;
 	}
-	
+
 	public List<MatrixItem> getEntries() {
 		return entries;
 	}
@@ -38,7 +38,7 @@ public class MatrixTable extends AbstractTable{
 	 */
 	@JsonProperty("entries")
 	@Deprecated
-	public List<MatrixItem> getEntriesForJackson() {
+	private List<MatrixItem> getEntriesForJackson() {
 		if(entries.isEmpty()) {
 			return entries;
 		}
@@ -47,10 +47,5 @@ public class MatrixTable extends AbstractTable{
 			return entries.subList(0, entries.size()-1);	
 		}
 		return entries;
-	}
-	
-	@Override
-	public void print() {
-		Log.d("MatrixTable","print");
 	}
 }
