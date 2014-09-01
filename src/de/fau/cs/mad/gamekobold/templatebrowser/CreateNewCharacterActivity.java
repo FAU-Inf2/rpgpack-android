@@ -78,7 +78,7 @@ public class CreateNewCharacterActivity extends Activity implements
 						.getDirectoryForCharacters(template, this, true);
 				sheet = template.characterSheet;
 				// change to default color
-				sheet.color = getResources().getColor(R.color.light_green);
+				sheet.setColor(getResources().getColor(R.color.light_green));
 			} catch (Throwable e) {
 				e.printStackTrace();
 				// TODO correct error handling
@@ -178,8 +178,8 @@ public class CreateNewCharacterActivity extends Activity implements
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
-					if (!sheet.description.equals(s.toString())) {
-						sheet.description = s.toString();
+					if (!sheet.getDescription().equals(s.toString())) {
+						sheet.setDescription(s.toString());
 						characterAltered = true;
 					}
 				}
@@ -200,7 +200,7 @@ public class CreateNewCharacterActivity extends Activity implements
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
-					sheet.name = s.toString();
+					sheet.setName(s.toString());
 					setTitle(s.toString());
 					characterAltered = true;
 				}
@@ -222,11 +222,11 @@ public class CreateNewCharacterActivity extends Activity implements
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
 					try {
-						sheet.level = Integer.parseInt(s.toString());
+						sheet.setLevel(Integer.parseInt(s.toString()));
 						characterAltered = true;
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
-						sheet.level = 0;
+						sheet.setLevel(0);
 					}
 				}
 			}
@@ -262,34 +262,34 @@ public class CreateNewCharacterActivity extends Activity implements
 		Log.d("Trying to save sheet", "sheet:" + sheet);
 		Log.d("Trying to save sheet", "altered:" + characterAltered);
 		if (sheet != null && characterAltered) {
-			if (!sheet.name.isEmpty()) {
+			if (!sheet.getName().isEmpty()) {
 				Log.d("Trying to save sheet", "name not empty!");
 				
-				if (sheet.fileAbsolutePath.isEmpty()) {
+				if (sheet.getFileAbsolutePath().isEmpty()) {
 					Log.d("Trying to save sheet", "path is empty");
 					// create file
 					if (characterDirectoryFile != null) {
 						Log.d("Trying to save sheet", "dir not null");
 						String fileName = JacksonInterface
-								.getSanitizedFileName(sheet.name);
+								.getSanitizedFileName(sheet.getName());
 						if (fileName.isEmpty()) {
 							SimpleDateFormat format = new SimpleDateFormat(
 									"yyyy-MM-dd--HH-mm-ss");
 							Date date = new Date();
 							fileName = format.format(date);
 						}
-						sheet.fileAbsolutePath = characterDirectoryFile
+						sheet.setFileAbsolutePath(characterDirectoryFile
 								.getAbsolutePath()
 								+ File.separatorChar
-								+ fileName;
+								+ fileName);
 					}
 				}
 				// save
 				try {
 					Log.d("Trying to save sheet", "path:"
-							+ sheet.fileAbsolutePath);
+							+ sheet.getFileAbsolutePath());
 					// open file
-					final File jsonFile = new File(sheet.fileAbsolutePath);
+					final File jsonFile = new File(sheet.getFileAbsolutePath());
 					JacksonInterface.saveCharacterSheet(sheet, jsonFile);
 					// clear flag
 					characterAltered = false;
@@ -323,8 +323,8 @@ public class CreateNewCharacterActivity extends Activity implements
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
 		if (sheet != null) {
-			if (sheet.color != color) {
-				sheet.color = color;
+			if (sheet.getColor() != color) {
+				sheet.setColor(color);
 				characterAltered = true;
 			}
 		}

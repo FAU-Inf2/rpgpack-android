@@ -1,9 +1,9 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,21 +19,11 @@ public class GameCharacter implements Serializable {
 	private String iconPath;
 	private String fileAbsPath;
 
-	/**
-	 * Constructor for jackson.
-	 * 
-	 * @param characterName
-	 * @param date
-	 * @param tagList
-	 * @param description
-	 * @param fileAbsPath
-	 */
-	@JsonCreator
-	public GameCharacter(@JsonProperty("characterName") String characterName,
-			@JsonProperty("date") String date,
-			@JsonProperty("tagList") List<String> tagList,
-			@JsonProperty("description") String description,
-			@JsonProperty("fileAbsPath") String fileAbsPath) {
+	public GameCharacter(String characterName,
+							String date,
+							List<String> tagList,
+							String description,
+							String fileAbsPath) {
 		this.template = null;
 		this.characterName = characterName;
 		this.date = date;
@@ -67,11 +57,25 @@ public class GameCharacter implements Serializable {
 		this.characterName = characterName;
 		this.fileAbsPath = "";
 	}
+	
+	/**
+	 * For json deserialization.
+	 */
+	public GameCharacter() {
+		this.characterName = "";
+		this.date = "";
+		this.tagList = new LinkedList<String>();
+		this.description = "";
+		this.template = null;
+		this.iconPath = "";
+		this.fileAbsPath = "";
+	}
 
 	public String getCharacterName() {
 		return characterName;
 	}
 
+	@JsonProperty("characterName") 
 	public void setCharacterName(String characterName) {
 		this.characterName = characterName;
 	}
@@ -79,7 +83,8 @@ public class GameCharacter implements Serializable {
 	public String getDate() {
 		return date;
 	}
-
+	
+	@JsonProperty("date") 
 	public void setDate(String date) {
 		this.date = date;
 	}
@@ -88,6 +93,7 @@ public class GameCharacter implements Serializable {
 		return tagList;
 	}
 
+	@JsonProperty("tagList")
 	public void setTagList(List<String> tagList) {
 		this.tagList = tagList;
 	}
@@ -95,7 +101,8 @@ public class GameCharacter implements Serializable {
 	public String getDescription() {
 		return description;
 	}
-
+	
+	@JsonProperty("description")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -113,6 +120,7 @@ public class GameCharacter implements Serializable {
 		return iconPath;
 	}
 
+	@JsonProperty("icon")
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
@@ -121,6 +129,7 @@ public class GameCharacter implements Serializable {
 		return fileAbsPath;
 	}
 
+	@JsonProperty("fileAbsPath")
 	public void setFileAbsPath(String fileAbsPath) {
 		this.fileAbsPath = fileAbsPath;
 	}

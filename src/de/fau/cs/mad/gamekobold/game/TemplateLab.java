@@ -182,8 +182,8 @@ public class TemplateLab {
 					final CharacterSheet sheet = JacksonInterface
 							.loadCharacterSheet(characterFile, true);
 					final GameCharacter character = new GameCharacter("");
-					character.setCharacterName(sheet.name);
-					character.setDescription(sheet.description);
+					character.setCharacterName(sheet.getName());
+					character.setDescription(sheet.getDescription());
 					character.setTemplate(template);
 					character.setFileAbsPath(characterFile.getAbsolutePath());
 					template.addCharacter(character);
