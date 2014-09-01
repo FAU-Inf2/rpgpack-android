@@ -2,14 +2,17 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Template implements Parcelable{
 	@JsonIgnore
@@ -77,17 +80,16 @@ public class Template implements Parcelable{
 	}
 
 	/**
+	 * @param withPrettyWriter If true the writer will indent the output.
 	 * @return Json representation of this template
 	 * @throws JsonProcessingException
 	 */
 	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		if(withPrettyWriter) {
-			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			return mapper.writer().writeValueAsString(this);
-		}
+		return mapper.writer().writeValueAsString(this);
 	}
 	
 	@JsonProperty("tags")

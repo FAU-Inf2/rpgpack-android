@@ -15,39 +15,38 @@ import android.util.Log;
 public class Table extends AbstractTable{
 	private List<Row> rows;
 	private int numberOfColumns;
-
 	private ArrayList<ColumnHeader> columnHeaders;
-	
-	@JsonIgnore
-	public boolean writeOnly;
 
 	public Table() {
 		tableName = "";
 		columnHeaders = new ArrayList<ColumnHeader>();
 		numberOfColumns = 0;
-		writeOnly = false;
 		rows = new ArrayList<Row>();
 	}
-	
+
 	public Table(String name, ArrayList<ColumnHeader> headers){
 		tableName = name;
 		numberOfColumns = headers.size();
 		columnHeaders = headers;
-		writeOnly = false;
 		rows = new ArrayList<Row>();
 	}
-	
+
+	/**
+	 * Creator for jackson deserialization.
+	 * @param name
+	 * @param headers
+	 * @param loadedRows
+	 * @param selection
+	 * @param favlist
+	 * @return
+	 */
 	@JsonCreator
-	public Table(@JsonProperty("name") String name,
-				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
-				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
-				@JsonProperty("sellist") ArrayList<Integer> selection,
-				@JsonProperty("favlist") ArrayList<Integer> favlist) {
-		tableName = name;
-		numberOfColumns = headers.size();
-		columnHeaders = headers;
-		writeOnly = false;
-		rows = new ArrayList<Row>();
+	static private Table create(@JsonProperty("name") String name,
+								@JsonProperty("columns") ArrayList<ColumnHeader> headers,
+								@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
+								@JsonProperty("sellist") ArrayList<Integer> selection,
+								@JsonProperty("favlist") ArrayList<Integer> favlist) {
+		Table table = new Table(name, headers);
 		// parse rows
 		for(int i = 0; i < loadedRows.size(); ++i) {
 			final ArrayList<String> rawRow = loadedRows.get(i);
@@ -62,6 +61,8 @@ public class Table extends AbstractTable{
 				else {
 					newRow.setSelected(true);
 				}
+			}
+			if(favlist != null) {
 				if(favlist.get(i).intValue() == 0) {
 					newRow.setFavorite(false);	
 				}
@@ -70,10 +71,11 @@ public class Table extends AbstractTable{
 				}
 			}
 			// add
-			rows.add(newRow);
+			table.rows.add(newRow);
 		}
+		return table;
 	}
-	
+
 	/**
 	 * Used for saving to json by jackson library.
 	 * @return
@@ -86,7 +88,7 @@ public class Table extends AbstractTable{
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Used for saving to json by jackson library.
 	 * @return
@@ -104,7 +106,7 @@ public class Table extends AbstractTable{
 		}
 		return ret;
 	}
-	
+
 	@JsonProperty("favlist")
 	private List<Integer> getFavList() {
 		List<Integer> ret = new LinkedList<Integer>();
@@ -118,31 +120,31 @@ public class Table extends AbstractTable{
 		}				
 		return ret;
 	}
-	
+
 	public Row getRow(int index) {
 		if(index < 0 || index >= rows.size()) {
 			return null;
 		}
 		return rows.get(index);
 	}
-	
+
 	@JsonProperty(value="columns")
 	public ArrayList<ColumnHeader> getColumnHeaders() {
 		return columnHeaders;
 	}
-	
+
 	public ColumnHeader getColumnHeader(int index) {
 		if(index < 0 || index >= columnHeaders.size()) {
 			return null;
 		}
 		return columnHeaders.get(index);
 	}
-	
+
 	@JsonIgnore
 	public int getNumberOfColumns() {
 		return numberOfColumns;
 	}
-	
+
 	/**
 	 * Returns the number of selected rows.
 	 * @return Number of selected rows.
@@ -157,7 +159,7 @@ public class Table extends AbstractTable{
 		}
 		return counter;
 	}
-	
+
 	/**
 	 * Returns a list containing only the currently selected rows.
 	 * @return A List containing only the selected rows.

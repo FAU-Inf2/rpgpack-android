@@ -119,6 +119,11 @@ public class CharacterSheet implements Parcelable{
 		this.rootTable = rootTable;
 	}
 
+	/**
+	 * @param withPrettyWriter If true the writer will indent the output.
+	 * @return Json representation of this CharacterSheet.
+	 * @throws JsonProcessingException
+	 */
 	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		if(withPrettyWriter) {
