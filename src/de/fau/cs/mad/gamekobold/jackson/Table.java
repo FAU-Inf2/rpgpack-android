@@ -258,10 +258,10 @@ public class Table extends AbstractTable{
 	 	}
 	 	ColumnHeader header = columnHeaders.get(index);
 		Log.d("Table-setColumnTitle", "index:"+index);
-		Log.d("Table-setColumnTitle", "old:"+header.name);
+		Log.d("Table-setColumnTitle", "old:"+header.getContent());
 		Log.d("Table-setColumnTitle", "new:"+title);
-	 	if(!header.name.equals(title)) {
-		 	header.name = title;
+	 	if(!header.getContent().equals(title)) {
+		 	header.setContent(title);
 		 	return true;
 		}
 	 	return false;
@@ -296,10 +296,10 @@ public class Table extends AbstractTable{
 		 // change header
 		 final ColumnHeader oldHeader = columnHeaders.get(index);
 		 // check if old type == new type
-		 if(oldHeader.type.equals(newType)) {
+		 if(oldHeader.getType().equals(newType)) {
 			 return;
 		 }
-		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.name, newType/*, oldHeader.hidden*/);
+		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.getContent(), newType/*, oldHeader.hidden*/);
 		 columnHeaders.set(index, newHeader);
 		 // create new entry according to type
 		 // checkbox
