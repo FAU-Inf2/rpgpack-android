@@ -6,10 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-//@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@class")
-//@JsonSubTypes({ @Type(value = Table.class, name = "table"),
-//				@Type(value = ContainerTable.class, name = "containertable"),
-//				@Type(value = MatrixTable.class, name ="matrixtable")})
 @JsonTypeInfo(use=Id.NAME, include=As.WRAPPER_OBJECT, property="type")
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=Table.class, name="table"),
@@ -19,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 public abstract class AbstractTable extends SelectAndFavorableItem {	
 	@JsonProperty(value="name")
 	public String tableName;
-	
-	public abstract void print();
-	
+		
 	public AbstractTable() {
 		tableName = "";
 	}

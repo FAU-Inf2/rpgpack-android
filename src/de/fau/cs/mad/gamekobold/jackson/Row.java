@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.util.Log;
-
 public class Row extends SelectAndFavorableItem {
 	private ArrayList<AbstractColumnEntry> entries;
 
@@ -51,17 +49,6 @@ public class Row extends SelectAndFavorableItem {
 		for(int i = 0; i < headers.size(); i++) {
 			addColumn(headers.get(i), entries.get(i));
 		}
-	}
-
-	public void print() {
-		StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < entries.size(); i++) {
-			builder.append(entries.get(i));
-			if(i < entries.size()-1) {
-				builder.append(" | ");
-			}
-		}
-		Log.d("ROW-print",builder.toString());
 	}
 
 	/**

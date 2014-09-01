@@ -172,24 +172,6 @@ public class Table extends AbstractTable{
 		}
 		return selRows;
 	}
-	
-	public void print() {
-//		StringBuilder builder = new StringBuilder();
-//		builder.append("Table Name:"+tableName+"\n");
-//		for(int i = 0; i < numberOfColumns; i++) {
-//			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
-//			if(columnHeaders.get(i).hidden) {
-//				builder.append("[hidden]");
-//			}
-//			if( i < numberOfColumns-1) {
-//				builder.append(" | ");
-//			}
-//		}
-//		Log.d("TABLE-print", builder.toString());
-//		for(int i = 0; i < rows.size(); i++) {
-//			rows.get(i).print();
-//		}
-	}
 
 	/**
 	 * Creates a new row and adds it to the table.

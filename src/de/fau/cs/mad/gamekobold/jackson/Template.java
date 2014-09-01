@@ -16,7 +16,6 @@ public class Template implements Parcelable{
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
-	// TODO set fileName when loading + abspath
 	@JsonIgnore
 	private String fileName = null;
 	public String templateName = "";
