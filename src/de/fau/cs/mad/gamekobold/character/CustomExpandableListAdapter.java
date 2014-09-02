@@ -1,6 +1,8 @@
 package de.fau.cs.mad.gamekobold.character;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
@@ -13,6 +15,7 @@ import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
+import de.fau.cs.mad.gamekobold.template_generator.MyClickableSpan;
 import de.fau.cs.mad.gamekobold.template_generator.TableFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TableFragment.content_type;
 import android.content.Context;
@@ -22,7 +25,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
@@ -416,9 +421,39 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 			  } 
 		  });
 	        // TEST
-	        if(!jacksonEntry.getContent().isEmpty()) {
-	        	inputPopup.setText(jacksonEntry.getContent());
-	        }
+		  if(!jacksonEntry.getContent().isEmpty()) {
+			  //	        	inputPopup.setText(jacksonEntry.getContent());
+			  inputPopup.setText(jacksonEntry.getContent());
+			  //XXX: references activation
+			  if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+				  Log.d("TableFragment", "durchsuche Popup nach Referenzen!");
+				  String searchForReferences = inputPopup.getText().toString();
+				  Pattern p = Pattern.compile("@");
+				  Matcher m = p.matcher(searchForReferences);
+				  SpannableStringBuilder span = (SpannableStringBuilder) inputPopup.getText();
+				  while (m.find()){
+					  //	        	    	System.out.print("Start index: " + matcher.start());
+					  //TODO: copy&paste for highlighting popup?
+					  int startIndex = m.start();
+					  int endIndex = startIndex;
+					  while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
+							  && searchForReferences.charAt(endIndex) != '\b'){
+						  endIndex++;
+					  }
+					  Log.d("TableFragment", "Popup: startIndex: " + startIndex + "; endIndex: " + endIndex);
+					  String referenceString = searchForReferences.substring(startIndex, endIndex);
+					  mBelongsTo.getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
+//					  span.setSpan(new MyClickableSpan(popupView, mBelongsTo), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					  span.setSpan(new ClickableSpan() {  
+						  @Override
+						  public void onClick(View v) {  
+							  Log.d("MyClickableSpan", "MyClickableSpan -> onClick");
+						  }
+					  }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				  }
+				  inputPopup.setText(span); 
+			  }
+		  }
 	        // TEST END
 	        
 	        //before

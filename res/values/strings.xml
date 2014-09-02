@@ -241,16 +241,14 @@
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
     <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> more features coming soon....</br></string>
-
-	<string name="search_title">Templates suchen</string>
-	<string name="hint_search">Store durchsuchen</string>
-	<string name="store_actions">Actions</string>
-	<string name="store_reload">Neu laden</string>
-	<string name="store_tags">Tags</string>
-	<string name="tag_horror">Horror</string>
+    <string name="search_title">Templates suchen</string>
+    <string name="hint_search">Store durchsuchen</string>
+    <string name="store_actions">Actions</string>
+    <string name="store_reload">Neu laden</string>
+    <string name="store_tags">Tags</string>
+    <string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
     <string name="tag_future">Zukunft</string>
-    
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
@@ -266,10 +264,11 @@
 
     <!-- activity_play_character_welcome -->
     <string name="play_character_welcome">Willkommen im Charakter-Spielmodus! \n \n Um die aktuelle Werte von Deinem Charakter anzusehen oder sie zu modifizieren einfach das Menü lege los!</string>
+    <string name="titel_play_character_welcome">Willkommen im Spielmodus!</string>
+    <string name="titel_character_generator_welcome">Willkommen im Charakter-Generator!</string>
+    <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
 
-    
-       <string name="titel_play_character_welcome">Willkommen im Spielmodus!</string>
-     <string name="titel_character_generator_welcome">Willkommen im Charakter-Generator!</string>
-      <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
+    <!-- new_character_matrix_view_array_adapter -->
+    <string name="msg_added_to_matrix_favorite">-Attribut wird zu Deiner Charakter-Schnellansicht hinzugefügt!</string>
 
 </resources>

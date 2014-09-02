@@ -3,9 +3,6 @@ package de.fau.cs.mad.gamekobold.jackson;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.util.Log;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,21 +20,20 @@ public class MatrixTable extends AbstractTable{
 		entries = new LinkedList<MatrixItem>();
 	}
 
-	@JsonCreator
-	public MatrixTable(@JsonProperty("entries") List<MatrixItem> entries) {
-		this.entries = entries;
-	}
-
 	public List<MatrixItem> getEntries() {
 		return entries;
 	}
-
+	
+	@JsonProperty("entries")
+	public void setEntries(List<MatrixItem> entries) {
+		this.entries = entries;
+	}
+	
 	/**
 	 * DO NOT USE! Used for jackson serialization. Excludes the "add new item" entry
 	 * @return
 	 */
 	@JsonProperty("entries")
-	@Deprecated
 	private List<MatrixItem> getEntriesForJackson() {
 		if(entries.isEmpty()) {
 			return entries;

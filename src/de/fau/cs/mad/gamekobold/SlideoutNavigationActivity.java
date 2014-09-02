@@ -139,7 +139,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 
 				if (creationMode) {
 					((FolderFragment) rootFragment)
-							.setJacksonTable(myTemplate.characterSheet
+							.setJacksonTable(myTemplate.getCharacterSheet()
 									.getRootTable());
 				}
 			}
@@ -452,7 +452,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				return;
 			}
 			// myActivity.inflate();
-			myActivity.inflate(myTemplate.characterSheet.getRootTable());
+			myActivity.inflate(myTemplate.getCharacterSheet().getRootTable());
 			if (pd != null) {
 				pd.dismiss();
 			}

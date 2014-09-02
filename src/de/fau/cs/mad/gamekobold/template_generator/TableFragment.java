@@ -798,7 +798,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     int styleStart = 0;
     int cursorLoc = 0;
     
-    private ArrayList<MatrixItem> getAllMatrixReferences(FolderFragment fragmentToSearch){
+    public ArrayList<MatrixItem> getAllMatrixReferences(FolderFragment fragmentToSearch){
     	ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
 		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
         for(FolderElementData currentDatum  : fragmentToSearch.dataAdapter.getAll()){
@@ -1172,50 +1172,48 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	} 
         });
         
-        Log.d("TableFragment", "VOR Popup Inhalt!");
         // TEST
         if(!jacksonEntry.getContent().isEmpty()) {
-	        Log.d("TableFragment", "set Popup Inhalt!");
         	inputPopup.setText(jacksonEntry.getContent());
-        	//XXX: references activation
-        	if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
-    	        Log.d("TableFragment", "durchsuche Popup!");
-        		String searchForReferences = inputPopup.getText().toString();
-        		Pattern p = Pattern.compile("@");
-        	    Matcher m = p.matcher(searchForReferences);
-        	    while (m.find()){
-//        	    	System.out.print("Start index: " + matcher.start());
-        	    	//TODO: copy&paste for highlighting popup?
-        	    	int startIndex = m.start();
-        	    	int endIndex = startIndex;
-        	    	while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
-        	    			&& searchForReferences.charAt(endIndex) != '\b'){
-        	    		endIndex++;
-        	    	}
-        	    	String referenceString = searchForReferences.substring(startIndex, endIndex);
-        	    	getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
-        	    	Spannable span = (Spannable) inputPopup;
-        	    	span.setSpan(new MyClickableSpan(popupView), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        	        span.setSpan(new ClickableSpan() {  
-//        	            @Override
-//        	            public void onClick(View v) {  
-////        	            	ToolTipRelativeLayout a = new ToolTipRelativeLayout(getActivity(), null);
-//        	            	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) popupView.findViewById(R.id.activity_main_tooltipRelativeLayout);
-////
-//        	                ToolTip toolTip = new ToolTip()
-//        	                                    .withText("A beautiful View")
-//        	                                    .withColor(R.color.red)
-//        	                                    .withShadow();
-//        	                View myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, this.);
-////        	                myToolTipView.setOnToolTipViewClickedListener(MainActivity.this);
-//        	            	
-//        	                //TODO: tooltip
-//        	            }
-//        	        }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        	        inputPopup.setText(span); 
-        	    }
-        	}
-        	
+        	//XXX:following is atm only done in character-edit mode
+        	//-> code is in CustomExpendableListAdapter
+//        	if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+//    	        Log.d("TableFragment", "durchsuche Popup!");
+//        		String searchForReferences = inputPopup.getText().toString();
+//        		Pattern p = Pattern.compile("@");
+//        	    Matcher m = p.matcher(searchForReferences);
+//        	    while (m.find()){
+////        	    	System.out.print("Start index: " + matcher.start());
+//        	    	//TODO: copy&paste for highlighting popup?
+//        	    	int startIndex = m.start();
+//        	    	int endIndex = startIndex;
+//        	    	while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
+//        	    			&& searchForReferences.charAt(endIndex) != '\b'){
+//        	    		endIndex++;
+//        	    	}
+//        	    	String referenceString = searchForReferences.substring(startIndex, endIndex);
+//        	    	getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
+//        	    	Spannable span = (Spannable) inputPopup;
+//        	    	span.setSpan(new MyClickableSpan(popupView), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+////        	        span.setSpan(new ClickableSpan() {  
+////        	            @Override
+////        	            public void onClick(View v) {  
+//////        	            	ToolTipRelativeLayout a = new ToolTipRelativeLayout(getActivity(), null);
+////        	            	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) popupView.findViewById(R.id.activity_main_tooltipRelativeLayout);
+//////
+////        	                ToolTip toolTip = new ToolTip()
+////        	                                    .withText("A beautiful View")
+////        	                                    .withColor(R.color.red)
+////        	                                    .withShadow();
+////        	                View myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, this.);
+//////        	                myToolTipView.setOnToolTipViewClickedListener(MainActivity.this);
+////        	            	
+////        	                //TODO: tooltip
+////        	            }
+////        	        }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        	        inputPopup.setText(span); 
+//        	    }
+//        	}
         }
         // TEST END
         

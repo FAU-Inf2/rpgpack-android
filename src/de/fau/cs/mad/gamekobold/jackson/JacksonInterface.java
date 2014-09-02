@@ -53,8 +53,8 @@ public abstract class JacksonInterface {
 		}
 		FileInputStream inStream = new FileInputStream(jsonFile);
 		CharacterSheet sheet = mapper.readValue(inStream, CharacterSheet.class);
-		sheet.fileAbsolutePath = jsonFile.getAbsolutePath();
-		sheet.fileTimeStamp = jsonFile.lastModified();
+		sheet.setFileAbsolutePath(jsonFile.getAbsolutePath());
+		sheet.setFileTimeStamp(jsonFile.lastModified());
 		return sheet;		
 	}
 
