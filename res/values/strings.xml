@@ -270,5 +270,7 @@
 
     <!-- new_character_matrix_view_array_adapter -->
     <string name="msg_added_to_matrix_favorite">-Attribut wird zu Deiner Charakter-Schnellansicht hinzugefügt!</string>
+    <!-- new_matrix_item_popup -->
+    <string name="warning_set_matrixitem_name">Dein Matrix-Element braucht einen Namen!</string>
 
 </resources>

@@ -11,7 +11,9 @@ import android.view.Menu;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 
 public class CharacterPlayActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -35,7 +37,10 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 			}
 		}
 		if (characterSheet != null) {
-			super.inflate(characterSheet.getRootTable());
+			ContainerTable table = characterSheet.getRootTable();
+			//TODO create new Table type - Favorite! and add it for inflation!
+			
+			super.inflate(table);
 		}
 
 	}
@@ -48,10 +53,11 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 			try {
 				// TODO add simple characterAltered Flag to prevent some
 				// unneeded saving
-				Log.d("Trying to save sheet", "path:"
-						+ characterSheet.getFileAbsolutePath());
+				Log.d("Trying to save sheet",
+						"path:" + characterSheet.getFileAbsolutePath());
 				// open file
-				final File jsonFile = new File(characterSheet.getFileAbsolutePath());
+				final File jsonFile = new File(
+						characterSheet.getFileAbsolutePath());
 				// save
 				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
 			} catch (Throwable e) {
@@ -88,8 +94,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
 		intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, true);
-		
-		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE, false);
+
+		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+				false);
 		intent.putExtra(SlideoutNavigationActivity.MODE_PLAY_CHARACTER, true);
 
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,

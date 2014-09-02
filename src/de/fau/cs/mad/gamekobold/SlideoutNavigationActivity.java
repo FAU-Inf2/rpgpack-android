@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
+import de.fau.cs.mad.gamekobold.character.FavoriteItemsCharacterFragment;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -138,9 +139,8 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				// table and start inflation
 
 				if (creationMode) {
-					((FolderFragment) rootFragment)
-							.setJacksonTable(myTemplate.getCharacterSheet()
-									.getRootTable());
+					((FolderFragment) rootFragment).setJacksonTable(myTemplate
+							.getCharacterSheet().getRootTable());
 				}
 			}
 			/*
