@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 
@@ -24,17 +23,13 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
 		characterSheet = null;
-		// final String characterAbsPath = intent
-		// .getStringExtra(EXTRA_CHARACTER_ABS_PATH);
-
-		String characterAbsPath = "/storage/emulated/0/RPG Pack/Characters/annatest-26.08.2014/anna1";
-
-		Log.d("CharacterEditActivity", "onCreate absPath:" + characterAbsPath);
+		final String characterAbsPath = intent
+				.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
 		if (characterAbsPath != null) {
 			try {
 				characterSheet = JacksonInterface.loadCharacterSheet(new File(
 						characterAbsPath), false);
-				Log.d("CharacterEditActivity", "loaded sheet");
+				Log.d("CharacterPlayActivity", "loaded sheet");
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -47,7 +42,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 
 	@Override
 	public void onPause() {
-		Log.d("CharacterEditActivity", "onPause, sheet:" + characterSheet);
+		Log.d("CharacterPlayActivity", "onPause, sheet:" + characterSheet);
 		if (characterSheet != null) {
 
 			try {
@@ -78,7 +73,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 
 	/**
 	 * Creates and returns a new intent with which you can start the
-	 * CharacterEditActivity. The intent will already have all necessary flags
+	 * CharacterPlayActivity. The intent will already have all necessary flags
 	 * and extras set.
 	 * 
 	 * @param packageContext
@@ -89,15 +84,21 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 	 */
 	public static Intent createIntentForStarting(Context packageContext,
 			CharacterSheet sheet) {
-		Intent intent = new Intent(packageContext, CharacterEditActivity.class);
+		Intent intent = new Intent(packageContext, CharacterPlayActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
-		intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, false);
+		intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, true);
+		
+		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE, false);
+		intent.putExtra(SlideoutNavigationActivity.MODE_PLAY_CHARACTER, true);
+
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
 				true);
-
-		intent.putExtra(CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.getFileAbsolutePath());
+		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
+				sheet.fileAbsolutePath);
+		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
+				sheet.fileAbsolutePath);
+		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
 	}
 }

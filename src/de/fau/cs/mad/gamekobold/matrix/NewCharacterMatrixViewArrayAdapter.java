@@ -10,10 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
+import de.fau.cs.mad.gamekobold.jackson.Row;
 
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> {
@@ -47,7 +52,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		// TODO ate refactor with view holder
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
 			if (position == getCount() - 1) {
@@ -57,9 +62,9 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				MatrixItem curItem = items.get(position);
 
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.mnew_textItemTitle);
+						.findViewById(R.id.matr_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.mnew_textValue);
+						.findViewById(R.id.matr_textValue);
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 
@@ -67,19 +72,50 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				convertView = inflater.inflate(
 						R.layout.itemlayout_newcharacter_matrix_view, parent,
 						false);
-				// or reuse
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.m_textItemTitle);
+						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.m_textValue);
+						.findViewById(R.id.matrix_textValue);
 				// combine min and max
 				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.m_textRangeFromTo);
+						.findViewById(R.id.matrix_textRangeFromTo);
 
 				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.m_textModificator);
+						.findViewById(R.id.matrix_textModificator);
 
-				MatrixItem curItem = items.get(position);
+				final MatrixItem curItem = items.get(position);
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				if (!selectedMatrixItems.contains(curItem)) {
+					favoriteItem.setChecked(false);
+					favoriteItem.setEnabled(false);
+				} else {
+					favoriteItem.setEnabled(true);
+					favoriteItem
+							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+								@Override
+								public void onCheckedChanged(
+										CompoundButton buttonView,
+										boolean isChecked) {
+
+									curItem.setFavorite(isChecked);
+									// TODO Benni save isFavorite for current
+									// Matrix
+									// Item
+									if (isChecked) {
+										Toast.makeText(
+												context,
+												curItem.getItemName()
+														+ "-Attribut wird zu Deiner Character-Schnellansicht hizugefügt!",
+												Toast.LENGTH_SHORT).show();
+									}
+
+								}
+							});
+
+				}
 
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
@@ -95,7 +131,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemModificator.setText(curItem.getModificator());
 
 				highlightingImageView = (ImageView) convertView
-						.findViewById(R.id.m_item_highlighting_circle);
+						.findViewById(R.id.matrix_item_highlighting_circle);
 
 				Log.i("selectedMatrixItems.contains(curItem) - "
 						+ curItem.getItemName(),
@@ -141,6 +177,9 @@ public class NewCharacterMatrixViewArrayAdapter extends
 						R.color.background_green) : context.getResources()
 						.getColor(android.R.color.transparent));
 
+				if (!selectedMatrixItems.contains(curItem)) {
+					favoriteItem.setChecked(false);
+				}
 			}
 		} else {
 			// or reuse
@@ -148,24 +187,54 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				MatrixItem curItem = items.get(position);
 
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.mnew_textItemTitle);
+						.findViewById(R.id.matr_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.mnew_textValue);
+						.findViewById(R.id.matr_textValue);
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 			} else {
 				TextView itemName = (TextView) convertView
-						.findViewById(R.id.m_textItemTitle);
+						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.m_textValue);
+						.findViewById(R.id.matrix_textValue);
 				// combine min and max
 				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.m_textRangeFromTo);
+						.findViewById(R.id.matrix_textRangeFromTo);
 
 				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.m_textModificator);
+						.findViewById(R.id.matrix_textModificator);
 
-				MatrixItem curItem = items.get(position);
+				final MatrixItem curItem = items.get(position);
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				if (!selectedMatrixItems.contains(curItem)) {
+					favoriteItem.setChecked(false);
+					favoriteItem.setEnabled(false);
+				} else {
+					favoriteItem.setEnabled(true);
+					favoriteItem
+							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+								@Override
+								public void onCheckedChanged(
+										CompoundButton buttonView,
+										boolean isChecked) {
+
+									curItem.setFavorite(isChecked);
+									// TODO Benni save isFavorite for current
+									// Matrix
+									// Item
+									if (isChecked) {
+										Toast.makeText(
+												context,
+												curItem.getItemName()
+														+ "-Attribut wird zu Deiner Character-Schnellansicht hinzugefügt!",
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+							});
+				}
 
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
@@ -181,7 +250,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemModificator.setText(curItem.getModificator());
 
 				highlightingImageView = (ImageView) convertView
-						.findViewById(R.id.m_item_highlighting_circle);
+						.findViewById(R.id.matrix_item_highlighting_circle);
 
 				Log.i("selectedMatrixItems.contains(curItem) - "
 						+ curItem.getItemName(),

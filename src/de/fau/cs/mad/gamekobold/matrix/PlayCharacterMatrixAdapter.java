@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,44 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
-public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
-
-	/*
-	 * JACKSON START
-	 */
-	// public MatrixTable jacksonTable;
-	/*
-	 * JACKSON END
-	 */
+public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
 	Context context;
 
 	// the list of objects we want to display
 	private List<MatrixItem> items;
 
-	public MatrixViewArrayAdapter(Context context, List<MatrixItem> items) {
-		super(context, R.layout.itemlayout2_matrix_view, items);
+	public PlayCharacterMatrixAdapter(Context context, List<MatrixItem> items) {
+		super(context, R.layout.itemlayout_play_character_matrix_view, items);
 		this.context = context;
 		this.items = items;
-	}
-
-	// needed for viewConvertion so that the system knows that there are
-	// different layouts in the adapter
-	// 0 for normal item. 1 for "new item" item
-	@Override
-	public int getItemViewType(int position) {
-		// if it is the last element
-		if (position == getCount() - 1) {
-			// return 1
-			return 1;
-		}
-		// return 0 for every other item
-		return 0;
-	}
-
-	// we got 2 types: normal items and the last one
-	@Override
-	public int getViewTypeCount() {
-		return 2; // Count of different layouts
 	}
 
 	@Override
@@ -61,26 +34,13 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 		// TODO ate refactor with view holder
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
-			if (position == getCount() - 1) {
-				// if it is the last row -> create new item
-				convertView = inflater
-						.inflate(R.layout.itemlayout2_newitem_matrix_view,
-								parent, false);
+			convertView = inflater.inflate(
+					R.layout.itemlayout_play_character_matrix_view, parent,
+					false);
+			MatrixItem curItem = items.get(position);
 
-				MatrixItem curItem = items.get(position);
+			if (curItem.isSelected()) {
 
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textItemAdd);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-
-			} else {
-				convertView = inflater.inflate(
-						R.layout.itemlayout2_matrix_view, parent, false);
-				MatrixItem curItem = items.get(position);
 				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 				TextView itemValue = (TextView) convertView
@@ -98,25 +58,15 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				itemRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 				iModificator.setText(curItem.getModificator());
+			} else {
+				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
+				
 			}
 			// or reuse
 		} else {
-			// if it is the last row -> create new template
-			if (position == getCount() - 1) {
 
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textItemAdd);
-				MatrixItem curItem = items.get(position);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-
-			} else {
-				// itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
-				// parent, false);
+			MatrixItem curItem = items.get(position);
+			if (curItem.isSelected()) {
 				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
 				TextView itemValue = (TextView) convertView
@@ -128,16 +78,9 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.textModificator);
 
-				MatrixItem curItem = items.get(position);
-
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
-				/*
-				 * Log.d("ADAPTER", "pos:"+position); Log.d("ADAPTER",
-				 * "iRange:"+iRange); Log.d("ADAPTER", "curItem:"+curItem);
-				 * Log.d("ADAPTER", "min:"+curItem.getRangeMin());
-				 * Log.d("ADAPTER", "max:"+curItem.getRangeMax());
-				 */
+
 				itemRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 
@@ -146,7 +89,6 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				// // set modificator text color: blue for positive red for
 				// // negative
 				if (!curItem.getModificator().isEmpty()) {
-
 					if (Integer.valueOf(curItem.getModificator()) > 0) {
 						itemModificator.setTextColor(context.getResources()
 								.getColor(R.color.a_blue));
@@ -157,9 +99,11 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						itemModificator.setTextColor(context.getResources()
 								.getColor(R.color.white));
 				}
+			} else {
+				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
+				
 			}
 		}
 		return convertView;
 	}
-
 }
