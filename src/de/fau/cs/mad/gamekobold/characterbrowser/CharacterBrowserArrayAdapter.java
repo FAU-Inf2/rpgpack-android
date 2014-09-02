@@ -21,27 +21,65 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<GameCharacter>{
 		this.context = context;
 	}
 	
+	public List<GameCharacter> getList() {
+		return characterList;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = null;
-		if (convertView == null) {
-			rowView = inflater.inflate(
-					R.layout.rowlayout_character_browser,
-					parent, false);
+		// check for layout type
+		if(position < getCount()-1) {
+			if(convertView == null) {
+				rowView = inflater.inflate(
+						R.layout.rowlayout_character_browser,
+						parent, false);
+			}
+			else {
+				rowView = convertView;
+			}
+			final TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
+			final TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
+			final TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
+			
+			final GameCharacter character = characterList.get(position);
+			textView1.setText(character.getCharacterName());
+			textView2.setText(character.getDate());
+			textView3.setText(character.getDescription());	
 		}
 		else {
-			rowView = convertView;
+			if(convertView == null) {
+				rowView = inflater.inflate(
+						R.layout.rowlayout_character_browser_new_character,
+						parent, false);
+				final TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
+				textView1.setText(context.getResources().getString(R.string.create_new_character));
+			}
+			else {
+				rowView = convertView;
+			}
 		}
-		final TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
-		final TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
-		final TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
-		
-		final GameCharacter character = characterList.get(position);
-		textView1.setText(character.getCharacterName());
-		textView2.setText(character.getDate());
-		textView3.setText(character.getDescription());
 		return rowView;
+	}
+	
+	// needed for viewConvertion so that the system knows that there are different layouts in the adapter
+	// 0 for character. 1 for "new character" item.
+	@Override
+	public int getItemViewType(int position) {
+		// if "create"
+		if(position >= getCount() - 1) {
+			// return 1
+			return 1;
+		}
+		// return 0 for every other item
+		return 0;
+	}
+	
+	// we got 2 types: normal items and the last one
+	@Override
+	public int getViewTypeCount() {
+	    return 2; // Count of different layouts
 	}
 }
