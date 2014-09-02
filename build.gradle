@@ -9,6 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
+	compile 'com.nhaarman.supertooltips:library:3.0.+'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
