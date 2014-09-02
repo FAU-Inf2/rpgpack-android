@@ -1,5 +1,11 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.File;
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -22,14 +28,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class GameDetailsFragment extends Fragment {
 	public static final String EXTRA_GAME_NAME = "de.fau.cs.mad.gamekobold.game.gamename";
-
+	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
+	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
+	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
 	// private List<GameCharakter> charakterList;
 	// private List<String> tagList;
 
@@ -106,42 +118,21 @@ public class GameDetailsFragment extends Fragment {
 						((TextView) view.findViewById(R.id.textItemTitle))
 								.getText(), Toast.LENGTH_SHORT).show();
 
-				// // Start PlayCharacterActivity
-				// Intent i = new Intent(getActivity(),
-				// PlayCharacterActivity.class);
-				// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_CHARACTER,
-				// curCharacter);
-				// i.putExtra(PlayCharacterFragment.EXTRA_PLAYED_GAME, game);
-				// startActivity(i);
-
 				// Start CharacterPlayActivity
 
-				Log.d("curCharacter",
-						"" + curCharacter.getCharacterName());
-				Log.d("curCharacter.getTemplate()", ""
-						+ curCharacter.getTemplate().getTemplateName());
-				Log.d("curCharacter.getTemplate().fileAbsolutePath",
-						"" + curCharacter.getTemplate().fileAbsolutePath);
-
-				if (curCharacter.getTemplate().fileAbsolutePath != null) {
-
-					String fileName = getFileName();
-
-					Intent intent = new Intent(getActivity(),
-							TemplateGeneratorActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					// flag to distinguish between editing and creating
-					intent.putExtra(
-							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-							false);
-					intent.putExtra(
-							SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-							fileName);
-					intent.putExtra(
-							SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
-							true);
-
+				File jsonFile = new File(curCharacter.getFileAbsPath());
+				curCharacter.getFileAbsPath();
+	
+				try {
+					CharacterSheet sheet = JacksonInterface.loadCharacterSheet(
+							jsonFile, false);
+					Intent intent = CharacterPlayActivity
+							.createIntentForStarting(getActivity(), sheet);
 					startActivity(intent);
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
