@@ -80,7 +80,6 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 
 			 try {
 				// TODO add simple characterAltered Flag to prevent some unneeded saving
-				Log.d("Trying to save sheet", "path:"+characterSheet.getFileAbsolutePath());
 				// open file
 				final File jsonFile = new File(characterSheet.getFileAbsolutePath());
 				// save

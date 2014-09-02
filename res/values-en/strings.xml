@@ -271,5 +271,6 @@
     <string name="msg_added_to_matrix_favorite">-attribut is added to your charakter quick view!</string>
     <!-- new_matrix_item_popup -->
     <string name="warning_set_matrixitem_name">Your new Matrix element should have a name!</string>
-
+   	
+	<string name="title_activity_character_browser">Character Browser</string>
 </resources>

@@ -1,5 +1,8 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
+import java.util.Collections;
+import java.util.List;
+
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,7 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class CharacterSheet implements Parcelable{	
+public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{	
 	/* METADATA */
 	private String name;
 	private int level;
@@ -18,6 +21,7 @@ public class CharacterSheet implements Parcelable{
 	private int color = Color.RED;
 	private String fileAbsolutePath = null;
 	private long fileTimeStamp;
+	private String fileLastUpdated;
 
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -28,6 +32,7 @@ public class CharacterSheet implements Parcelable{
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
+		fileLastUpdated = "";
 	}
 
 	public CharacterSheet(String name) {
@@ -36,6 +41,7 @@ public class CharacterSheet implements Parcelable{
 		this.description = "";
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
+		this.fileLastUpdated = "";
 	}
 
 	public CharacterSheet(String name,
@@ -50,6 +56,7 @@ public class CharacterSheet implements Parcelable{
 		this.rootTable = table;
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
+		fileLastUpdated = "";
 	}
 	
 	public String getName() {
@@ -138,6 +145,15 @@ public class CharacterSheet implements Parcelable{
 		description = otherSheet.description;
 		level = otherSheet.level;
 	}
+	
+	public String getFileLastUpdated() {
+		return fileLastUpdated;
+	}
+	
+	@JsonProperty("lastUpdate")
+	public void setFileLastUpdated(String fileLastUpdated) {
+		this.fileLastUpdated = fileLastUpdated;
+	}
 
 	// PARCELABLE START
 	@Override
@@ -175,4 +191,20 @@ public class CharacterSheet implements Parcelable{
 		}
 	};
 	// PARCELABLE END
+
+	/**
+	 * Used for sorting with {@link Collections#sort(List)}.
+	 * Sorts by {@link #getFileLastUpdated()}. Newest first oldest last.
+	 */
+	@Override
+	public int compareTo(CharacterSheet another) {
+		final int res = this.fileLastUpdated.compareToIgnoreCase(another.fileLastUpdated);
+		if(res == 0){
+			return 0;
+		}
+		if(res < 0) {
+			return 1;
+		}
+		return -1;
+	}
 }
