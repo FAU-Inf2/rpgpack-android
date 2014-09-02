@@ -9,19 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.game.GameCharacter;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 
-public class CharacterBrowserArrayAdapter extends ArrayAdapter<GameCharacter>{
-	private List<GameCharacter> characterList;
+public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet>{
+	private List<CharacterSheet> characterList;
 	private Context context;
 	
-	public CharacterBrowserArrayAdapter(Context context, List<GameCharacter> objects) {
+	public CharacterBrowserArrayAdapter(Context context, List<CharacterSheet> objects) {
 		super(context,R.layout.rowlayout_template_browser , objects);
 		this.characterList = objects;
 		this.context = context;
 	}
 	
-	public List<GameCharacter> getList() {
+	public List<CharacterSheet> getList() {
 		return characterList;
 	}
 	
@@ -44,9 +44,9 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<GameCharacter>{
 			final TextView textView2 = (TextView) rowView.findViewById(R.id.textView2);
 			final TextView textView3 = (TextView) rowView.findViewById(R.id.textView3);
 			
-			final GameCharacter character = characterList.get(position);
-			textView1.setText(character.getCharacterName());
-			textView2.setText(character.getDate());
+			final CharacterSheet character = characterList.get(position);
+			textView1.setText(character.getName());
+			textView2.setText(character.getFileLastUpdated());
 			textView3.setText(character.getDescription());	
 		}
 		else {

@@ -1,5 +1,8 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
+import java.util.Collections;
+import java.util.List;
+
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,7 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class CharacterSheet implements Parcelable{	
+public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{	
 	/* METADATA */
 	private String name;
 	private int level;
@@ -188,4 +191,20 @@ public class CharacterSheet implements Parcelable{
 		}
 	};
 	// PARCELABLE END
+
+	/**
+	 * Used for sorting with {@link Collections#sort(List)}.
+	 * Sorts by {@link #getFileLastUpdated()}. Newest first oldest last.
+	 */
+	@Override
+	public int compareTo(CharacterSheet another) {
+		final int res = this.fileLastUpdated.compareToIgnoreCase(another.fileLastUpdated);
+		if(res == 0){
+			return 0;
+		}
+		if(res < 0) {
+			return 1;
+		}
+		return -1;
+	}
 }

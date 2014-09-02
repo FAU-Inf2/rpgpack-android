@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 // TODO no jackson annotations needed! 
-public class GameCharacter implements Serializable, Comparable<GameCharacter> {
+public class GameCharacter implements Serializable{
 	// TODO CharakterInfo
 	private String characterName;
 	private String date;
@@ -138,17 +138,5 @@ public class GameCharacter implements Serializable, Comparable<GameCharacter> {
 	@JsonIgnore
 	public boolean isFilePathValid() {
 		return !fileAbsPath.isEmpty();
-	}
-
-	@Override
-	public int compareTo(GameCharacter another) {
-		final int res = this.date.compareToIgnoreCase(another.date);
-		if(res == 0){
-			return 0;
-		}
-		if(res == -1) {
-			return 1;
-		}
-		return -1;
 	}
 }

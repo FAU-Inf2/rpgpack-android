@@ -152,6 +152,15 @@ public abstract class JacksonInterface {
 	}
 
 	/**
+	 * 
+	 * @param context
+	 * @return The root character directory.
+	 * Returns the root directory characters are saved for this device.
+	 */
+	public static File getCharacterRootDirectory(final Context context) {
+		return getRootDirectoryFor(CHARACTER_ROOT_FOLDER_NAME, context);
+	}
+	/**
 	 * Checks whether the file for the template exists on the file system.
 	 * @param context
 	 * @return true if the file exists, false otherwise
