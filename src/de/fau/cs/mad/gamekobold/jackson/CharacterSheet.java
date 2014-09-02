@@ -4,22 +4,20 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class CharacterSheet implements Parcelable{	
 	/* METADATA */
-	public String name;
-	public int level;
-	public String description;
-	public int color = Color.RED;
-	@JsonIgnore
-	public String fileAbsolutePath = null;
-	@JsonIgnore
-	public long fileTimeStamp;
+	private String name;
+	private int level;
+	private String description;
+	private int color = Color.RED;
+	private String fileAbsolutePath = null;
+	private long fileTimeStamp;
 
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -34,18 +32,17 @@ public class CharacterSheet implements Parcelable{
 
 	public CharacterSheet(String name) {
 		this.name = name;		
-		level = 0;
-		description = "";
-		fileAbsolutePath = "";
-		fileTimeStamp = 0;
+		this.level = 0;
+		this.description = "";
+		this.fileAbsolutePath = "";
+		this.fileTimeStamp = 0;
 	}
 
-	@JsonCreator
-	public CharacterSheet(@JsonProperty("name") String name,
-							@JsonProperty("level") int level,
-							@JsonProperty("color") int color,
-							@JsonProperty("description") String description,
-							@JsonProperty("rootTable") ContainerTable table) {
+	public CharacterSheet(String name,
+							int level,
+							int color,
+							String description,
+							ContainerTable table) {
 		this.name = name;
 		this.level = level;
 		this.color = color;
@@ -53,6 +50,60 @@ public class CharacterSheet implements Parcelable{
 		this.rootTable = table;
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	@JsonProperty("name")
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	@JsonProperty("level")
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	@JsonProperty("description")
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getColor() {
+		return color;
+	}
+	
+	@JsonProperty("color")
+	public void setColor(int color) {
+		this.color = color;
+	}
+
+	public String getFileAbsolutePath() {
+		return fileAbsolutePath;
+	}
+
+	@JsonIgnore
+	public void setFileAbsolutePath(String fileAbsolutePath) {
+		this.fileAbsolutePath = fileAbsolutePath;
+	}
+
+	public long getFileTimeStamp() {
+		return fileTimeStamp;
+	}
+
+	@JsonIgnore
+	public void setFileTimeStamp(long fileTimeStamp) {
+		this.fileTimeStamp = fileTimeStamp;
 	}
 
 	public ContainerTable getRootTable() {
@@ -63,14 +114,22 @@ public class CharacterSheet implements Parcelable{
 		return rootTable;
 	}
 
+	@JsonProperty("rootTable")
+	public void setRootTable(ContainerTable rootTable) {
+		this.rootTable = rootTable;
+	}
+
+	/**
+	 * @param withPrettyWriter If true the writer will indent the output.
+	 * @return Json representation of this CharacterSheet.
+	 * @throws JsonProcessingException
+	 */
 	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		if(withPrettyWriter) {
-			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			return mapper.writer().writeValueAsString(this);
-		}
+		return mapper.writer().writeValueAsString(this);
 	}
 
 	public void takeOverChanges(final CharacterSheet otherSheet) {

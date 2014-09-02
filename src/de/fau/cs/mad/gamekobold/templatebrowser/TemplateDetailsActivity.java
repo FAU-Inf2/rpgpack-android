@@ -112,7 +112,7 @@ public class TemplateDetailsActivity extends Activity {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick( DialogInterface dialog, int which) {
-								File sheetFile = new File(clickedSheet.fileAbsolutePath);
+								File sheetFile = new File(clickedSheet.getFileAbsolutePath());
 								if(sheetFile != null) {
 									sheetFile.delete();
 									adapter.remove(clickedSheet);
@@ -231,12 +231,12 @@ public class TemplateDetailsActivity extends Activity {
 				boolean characterListChanged = false;
 				for(int i = 0; i < adapter.getCount() - 1; i++) {
 					CharacterSheet sheet = adapter.getItem(i);
-					final File sheetFile = new File(sheet.fileAbsolutePath);
-					Log.d("TemplateDetailsActivity", "checking file:"+sheet.fileAbsolutePath);
+					final File sheetFile = new File(sheet.getFileAbsolutePath());
+					Log.d("TemplateDetailsActivity", "checking file:"+sheet.getFileAbsolutePath());
 					if(sheetFile != null) {
 						final long newTimeStamp = sheetFile.lastModified();
-						if(newTimeStamp > sheet.fileTimeStamp) {
-							Log.d("TemplateDetailsActivity", "reloading file:"+sheet.fileAbsolutePath);
+						if(newTimeStamp > sheet.getFileTimeStamp()) {
+							Log.d("TemplateDetailsActivity", "reloading file:"+sheet.getFileAbsolutePath());
 							try {
 								adapter.remove(sheet);
 								sheet = JacksonInterface.loadCharacterSheet(sheetFile, true);
@@ -398,7 +398,7 @@ public class TemplateDetailsActivity extends Activity {
 			}
 			// entry for creating a new character
 			final CharacterSheet createNewCharacter = new CharacterSheet("Create Character");
-			createNewCharacter.color = Color.WHITE;
+			createNewCharacter.setColor(Color.WHITE);
 			characterList.add(createNewCharacter);
 			((TemplateDetailsActivity) myActivity)
 					.setCharacterList(characterList);

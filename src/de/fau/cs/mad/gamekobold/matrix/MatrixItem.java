@@ -1,29 +1,30 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
 
 public class MatrixItem extends SelectAndFavorableItem{
-	// @JsonProperty(value="name")
 	private String itemName;
-	// @JsonProperty("val")
 	private String value;
-	// @JsonProperty("min")
 	private int rangeMin;
-	// @JsonProperty("max")
 	private int rangeMax;
-	// @JsonProperty("mod")
 	private String modificator;
 
+	// needed for jackson
+	public MatrixItem() {
+		this.itemName= ""; 
+		this.value = "";
+		this.rangeMin = Integer.MIN_VALUE; 
+		this.rangeMax = Integer.MAX_VALUE;
+		this.modificator = "";		
+	}
 
-	@JsonCreator
-	public MatrixItem(@JsonProperty("itemName") String itemName,
-			@JsonProperty("value") String value,
-			@JsonProperty("rangeMin") int rangeMin,
-			@JsonProperty("rangeMax") int rangeMax,
-			@JsonProperty("modificator") String modificator) {
+	public MatrixItem(String itemName,
+						String value,
+						int rangeMin,
+						int rangeMax,
+						String modificator) {
 		this.itemName = itemName;
 		this.value = value;
 		this.rangeMin = rangeMin;
@@ -41,51 +42,48 @@ public class MatrixItem extends SelectAndFavorableItem{
 		this.isSelected = false;
 	}
 
-	// @JsonProperty("name")
+	
 	public String getItemName() {
 		return itemName;
 	}
-
-	public void setItemName(/* @JsonProperty("name") */String itemName) {
+	
+	@JsonProperty("name")
+	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
-	// @JsonProperty("val")
 	public String getValue() {
 		return value;
 	}
 
-	// @JsonProperty("val")
+	@JsonProperty("val")
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	// @JsonProperty("min")
 	public int getRangeMin() {
 		return rangeMin;
 	}
 
-	// @JsonProperty("min")
+	@JsonProperty("min")
 	public void setRangeMin(int rangeMin) {
 		this.rangeMin = rangeMin;
 	}
 
-	// @JsonProperty("max")
 	public int getRangeMax() {
 		return rangeMax;
 	}
 
-	// @JsonProperty("max")
+	@JsonProperty("max")
 	public void setRangeMax(int rangeMax) {
 		this.rangeMax = rangeMax;
 	}
 
-	// @JsonProperty("mod")
 	public String getModificator() {
 		return modificator;
 	}
 
-	// @JsonProperty("mod")
+	@JsonProperty("mod")
 	public void setModificator(String modificator) {
 		this.modificator = modificator;
 	}

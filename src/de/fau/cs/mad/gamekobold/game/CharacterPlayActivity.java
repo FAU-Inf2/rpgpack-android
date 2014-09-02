@@ -49,9 +49,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 				// TODO add simple characterAltered Flag to prevent some
 				// unneeded saving
 				Log.d("Trying to save sheet", "path:"
-						+ characterSheet.fileAbsolutePath);
+						+ characterSheet.getFileAbsolutePath());
 				// open file
-				final File jsonFile = new File(characterSheet.fileAbsolutePath);
+				final File jsonFile = new File(characterSheet.getFileAbsolutePath());
 				// save
 				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
 			} catch (Throwable e) {
@@ -95,9 +95,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
 				true);
 		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.fileAbsolutePath);
+				sheet.getFileAbsolutePath());
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.fileAbsolutePath);
+				sheet.getFileAbsolutePath());
 		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
 	}

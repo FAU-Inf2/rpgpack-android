@@ -135,8 +135,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			@Override
 			public void afterTextChanged(Editable s) {
 				if(sheet != null) {
-					if(!sheet.description.equals(s.toString())) {
-						sheet.description = s.toString();
+					if(!sheet.getDescription().equals(s.toString())) {
+						sheet.setDescription(s.toString());
 						characterAltered = true;
 					}
 				}
@@ -153,7 +153,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			@Override
 			public void afterTextChanged(Editable s) {
 				if(!s.toString().isEmpty()) {
-					sheet.level = Integer.parseInt(s.toString());
+					sheet.setLevel(Integer.parseInt(s.toString()));
 					characterAltered = true;
 				}
 			}
@@ -165,12 +165,12 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			sheet = (CharacterSheet)extras.getParcelable("CharacterSheet");
 			// remove next line later when we got a character
 			if(sheet != null) {
-				setTitle(sheet.name);
-				characterName.setText(sheet.name);
-				levelEditText.setText(String.valueOf(sheet.level));
-				description.setTag(sheet.description);
+				setTitle(sheet.getName());
+				characterName.setText(sheet.getName());
+				levelEditText.setText(String.valueOf(sheet.getLevel()));
+				description.setTag(sheet.getDescription());
 				// set to character color
-				relLayout.setBackgroundColor(sheet.color);
+				relLayout.setBackgroundColor(sheet.getColor());
 			}
 		}
 		
@@ -216,8 +216,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
 		if(sheet != null) {
-			if(sheet.color != color) {
-				sheet.color = color;
+			if(sheet.getColor() != color) {
+				sheet.setColor(color);
 				characterAltered = true;
 			}
 		}
@@ -227,11 +227,11 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		// TODO maybe save async. Don't know right now.
 		// check if character has been altered
 		if(sheet != null && characterAltered) {
-			if(!sheet.fileAbsolutePath.isEmpty()) {
+			if(!sheet.getFileAbsolutePath().isEmpty()) {
 				// load sheet. take over changes. save again
 				try {
 					// open file
-					final File jsonFile = new File(sheet.fileAbsolutePath);
+					final File jsonFile = new File(sheet.getFileAbsolutePath());
 					// load sheet with all data
 					CharacterSheet loadedSheet = JacksonInterface.loadCharacterSheet(jsonFile, false);
 					// take over changes

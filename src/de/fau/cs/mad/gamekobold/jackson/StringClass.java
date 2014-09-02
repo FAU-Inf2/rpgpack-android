@@ -1,11 +1,6 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class StringClass extends AbstractColumnEntry {
-	@JsonIgnore
 	public static final String TYPE_STRING = "string";
 	
 	public String mainText;
@@ -14,8 +9,7 @@ public class StringClass extends AbstractColumnEntry {
 		mainText = "";
 	}
 	
-	@JsonCreator
-	public StringClass(@JsonProperty("mainText") String text) {
+	public StringClass(String text) {
 		this.mainText = text;
 	}
 	
