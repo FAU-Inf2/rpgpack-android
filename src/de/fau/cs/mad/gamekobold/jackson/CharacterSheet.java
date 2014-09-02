@@ -18,6 +18,7 @@ public class CharacterSheet implements Parcelable{
 	private int color = Color.RED;
 	private String fileAbsolutePath = null;
 	private long fileTimeStamp;
+	private String fileLastUpdated;
 
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -28,6 +29,7 @@ public class CharacterSheet implements Parcelable{
 		description = "";
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
+		fileLastUpdated = "";
 	}
 
 	public CharacterSheet(String name) {
@@ -36,6 +38,7 @@ public class CharacterSheet implements Parcelable{
 		this.description = "";
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
+		this.fileLastUpdated = "";
 	}
 
 	public CharacterSheet(String name,
@@ -50,6 +53,7 @@ public class CharacterSheet implements Parcelable{
 		this.rootTable = table;
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
+		fileLastUpdated = "";
 	}
 	
 	public String getName() {
@@ -137,6 +141,15 @@ public class CharacterSheet implements Parcelable{
 		color = otherSheet.color;
 		description = otherSheet.description;
 		level = otherSheet.level;
+	}
+	
+	public String getFileLastUpdated() {
+		return fileLastUpdated;
+	}
+	
+	@JsonProperty("lastUpdate")
+	public void setFileLastUpdated(String fileLastUpdated) {
+		this.fileLastUpdated = fileLastUpdated;
 	}
 
 	// PARCELABLE START

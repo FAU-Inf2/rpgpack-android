@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
@@ -78,6 +80,9 @@ public abstract class JacksonInterface {
 		if(use_pretty_writer) {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		sheet.setFileLastUpdated(dateFormat.format(date));
 		mapper.writer().writeValue(outStream, sheet);
 	}
 	//

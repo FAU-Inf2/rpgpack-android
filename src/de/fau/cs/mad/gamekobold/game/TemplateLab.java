@@ -186,6 +186,7 @@ public class TemplateLab {
 					character.setDescription(sheet.getDescription());
 					character.setTemplate(template);
 					character.setFileAbsPath(characterFile.getAbsolutePath());
+					character.setDate(sheet.getFileLastUpdated());
 					template.addCharacter(character);
 				} catch (Throwable e) {
 					e.printStackTrace();

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
+// TODO no jackson annotations needed! 
 public class GameCharacter implements Serializable {
 	// TODO CharakterInfo
 	private String characterName;
