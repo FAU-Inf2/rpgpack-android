@@ -241,6 +241,8 @@ public class MatrixFragment extends GeneralFragment {
 
 						if (selectedItems.contains(curMatrixItem)) {
 							curMatrixItem.setSelected(false);
+							curMatrixItem.setFavorite(false);
+
 							selectedItems.remove(curMatrixItem);
 
 							// newCharacter.removeMatrixItem(curMatrixItem);
@@ -249,6 +251,7 @@ public class MatrixFragment extends GeneralFragment {
 							adapterCreateCharacter.notifyDataSetChanged();
 
 						} else {
+							curMatrixItem.setFavorite(false);
 							curMatrixItem.setSelected(true);
 							selectedItems.add(curMatrixItem);
 							Toast.makeText(

@@ -14,9 +14,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
+import de.fau.cs.mad.gamekobold.jackson.Row;
 
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> {
@@ -70,7 +72,6 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				convertView = inflater.inflate(
 						R.layout.itemlayout_newcharacter_matrix_view, parent,
 						false);
-				// or reuse
 				TextView itemName = (TextView) convertView
 						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
@@ -82,7 +83,39 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.matrix_textModificator);
 
-				MatrixItem curItem = items.get(position);
+				final MatrixItem curItem = items.get(position);
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				if (!selectedMatrixItems.contains(curItem)) {
+					favoriteItem.setChecked(false);
+					favoriteItem.setEnabled(false);
+				} else {
+					favoriteItem.setEnabled(true);
+					favoriteItem
+							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+								@Override
+								public void onCheckedChanged(
+										CompoundButton buttonView,
+										boolean isChecked) {
+
+									curItem.setFavorite(isChecked);
+									// TODO Benni save isFavorite for current
+									// Matrix
+									// Item
+									if (isChecked) {
+										Toast.makeText(
+												context,
+												curItem.getItemName()
+														+ "-Attribut wird zu Deiner Character-Schnellansicht hizugefügt!",
+												Toast.LENGTH_SHORT).show();
+									}
+
+								}
+							});
+
+				}
 
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
@@ -144,20 +177,8 @@ public class NewCharacterMatrixViewArrayAdapter extends
 						R.color.background_green) : context.getResources()
 						.getColor(android.R.color.transparent));
 
-				CheckBox favorite = (CheckBox) convertView
-						.findViewById(R.id.favorite_checkbox);
-				favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-
-						// TODO: Benni: favorite speichern
-
-					}
-				});
-
 				if (!selectedMatrixItems.contains(curItem)) {
-					favorite.setChecked(false);
+					favoriteItem.setChecked(false);
 				}
 			}
 		} else {
@@ -183,7 +204,37 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.matrix_textModificator);
 
-				MatrixItem curItem = items.get(position);
+				final MatrixItem curItem = items.get(position);
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				if (!selectedMatrixItems.contains(curItem)) {
+					favoriteItem.setChecked(false);
+					favoriteItem.setEnabled(false);
+				} else {
+					favoriteItem.setEnabled(true);
+					favoriteItem
+							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+								@Override
+								public void onCheckedChanged(
+										CompoundButton buttonView,
+										boolean isChecked) {
+
+									curItem.setFavorite(isChecked);
+									// TODO Benni save isFavorite for current
+									// Matrix
+									// Item
+									if (isChecked) {
+										Toast.makeText(
+												context,
+												curItem.getItemName()
+														+ "-Attribut wird zu Deiner Character-Schnellansicht hinzugefügt!",
+												Toast.LENGTH_SHORT).show();
+									}
+								}
+							});
+				}
 
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
