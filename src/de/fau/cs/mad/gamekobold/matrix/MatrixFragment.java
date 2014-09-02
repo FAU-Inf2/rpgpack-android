@@ -38,8 +38,9 @@ public class MatrixFragment extends GeneralFragment {
 	public List<MatrixItem> itemsList = null;
 
 	// dte check adapter type!
-	MatrixViewArrayAdapter adapter;
-	NewCharacterMatrixViewArrayAdapter a;
+	MatrixViewArrayAdapter adapterCreateTemplate;
+	NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
+	MatrixViewArrayAdapter adapterPlay;
 
 	View rootView;
 
@@ -75,8 +76,8 @@ public class MatrixFragment extends GeneralFragment {
 							getActivity()), false);
 			Toast.makeText(getActivity(), "CHARACTER GENERATOR",
 					Toast.LENGTH_LONG).show();
-			
-		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
 			Log.d("MatrixFragment", "inflated for CharacterPLAYActivity");
 			rootView = (FrameLayout) inflater.inflate(
 					R.layout.character_edit_matrix_view, new LinearLayout(
@@ -122,13 +123,14 @@ public class MatrixFragment extends GeneralFragment {
 			// + itemsList.get(itemsList.size() - 1).getItemName());
 			// itemsList.remove(itemsList.size() - 1);
 
-			if (adapter == null) {
-				adapter = new MatrixViewArrayAdapter(getActivity(), itemsList);
+			if (adapterCreateTemplate == null) {
+				adapterCreateTemplate = new MatrixViewArrayAdapter(
+						getActivity(), itemsList);
 				// adapter.jacksonTable = jacksonTable;
 			}
 			Log.d("gridView is null?", "" + (gridView == null));
-			Log.d("adapter is null?", "" + (adapter == null));
-			gridView.setAdapter(adapter);
+			Log.d("adapter is null?", "" + (adapterCreateTemplate == null));
+			gridView.setAdapter(adapterCreateTemplate);
 
 			gridView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
@@ -141,12 +143,13 @@ public class MatrixFragment extends GeneralFragment {
 									.getText(), Toast.LENGTH_SHORT).show();
 
 					// is it last item?
-					if (position == adapter.getCount() - 1) {
+					if (position == adapterCreateTemplate.getCount() - 1) {
 						showPopup();
 
 					} else {
 						// click on item
-						showPopupForEditing(adapter.getItem(position));
+						showPopupForEditing(adapterCreateTemplate
+								.getItem(position));
 					}
 
 				}
@@ -157,7 +160,7 @@ public class MatrixFragment extends GeneralFragment {
 				public boolean onItemLongClick(AdapterView<?> adapterView,
 						View view, final int position, long id) {
 					Log.d("LONG CLICK", "pos:" + position);
-					if (position == adapter.getCount() - 1) {
+					if (position == adapterCreateTemplate.getCount() - 1) {
 						return true;
 					}
 					AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -201,14 +204,14 @@ public class MatrixFragment extends GeneralFragment {
 
 			}
 
-			if (a == null) {
-				a = new NewCharacterMatrixViewArrayAdapter(getActivity(),
-						itemsList);
+			if (adapterCreateCharacter == null) {
+				adapterCreateCharacter = new NewCharacterMatrixViewArrayAdapter(
+						getActivity(), itemsList);
 				// adapter.jacksonTable = jacksonTable;
 			}
 
 			// TODO ate don't work on selectedMatrixItems list directly
-			final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) a).selectedMatrixItems;
+			final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) adapterCreateCharacter).selectedMatrixItems;
 
 			for (final MatrixItem item : itemsList) {
 				if (item.isSelected()) {
@@ -216,7 +219,7 @@ public class MatrixFragment extends GeneralFragment {
 				}
 			}
 
-			gridView.setAdapter(a);
+			gridView.setAdapter(adapterCreateCharacter);
 
 			gridView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
@@ -224,7 +227,7 @@ public class MatrixFragment extends GeneralFragment {
 						int position, long id) {
 
 					if (position == itemsList.size() - 1) {
-						
+
 						Toast.makeText(
 								getActivity(),
 								"Neues Element wird in Deinem Character erstellt!",
@@ -242,7 +245,7 @@ public class MatrixFragment extends GeneralFragment {
 							// newCharacter.removeMatrixItem(curMatrixItem);
 							Log.d("setOnItemClickListener", "pos:" + position);
 							Log.d("remove", "remove");
-							a.notifyDataSetChanged();
+							adapterCreateCharacter.notifyDataSetChanged();
 
 						} else {
 							curMatrixItem.setSelected(true);
@@ -256,7 +259,7 @@ public class MatrixFragment extends GeneralFragment {
 									Toast.LENGTH_SHORT).show();
 
 							Log.d("add", "add");
-							a.notifyDataSetChanged();
+							adapterCreateCharacter.notifyDataSetChanged();
 
 							// newCharacter.addMatrixItem(curMatrixItem);
 						}
@@ -269,7 +272,7 @@ public class MatrixFragment extends GeneralFragment {
 				public boolean onItemLongClick(AdapterView<?> adapterView,
 						View view, final int position, long id) {
 					Log.d("LONG CLICK", "pos:" + position);
-					if (position == adapter.getCount() - 1) {
+					if (position == adapterCreateTemplate.getCount() - 1) {
 						return true;
 					}
 					AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -301,116 +304,67 @@ public class MatrixFragment extends GeneralFragment {
 			});
 
 			// Character Playing mode
-					} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
-						Toast.makeText(getActivity(), "CHARACTER PLAY!",
-								Toast.LENGTH_SHORT).show();
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
+			Toast.makeText(getActivity(), "CHARACTER PLAY!", Toast.LENGTH_SHORT)
+					.show();
 
-						gridView = (GridView) rootView.findViewById(R.id.gridView);
-						// check needed for jackson data loading
-						if (itemsList == null) {
-							itemsList = new ArrayList<MatrixItem>();
-							jacksonTable.entries = itemsList;
+			gridView = (GridView) rootView.findViewById(R.id.gridView);
+			// check needed for jackson data loading
+			if (itemsList == null) {
+				itemsList = new ArrayList<MatrixItem>();
+				jacksonTable.entries = itemsList;
+			}
 
-						}
+			if (adapterPlay == null) {
+				adapterPlay = new MatrixViewArrayAdapter(getActivity(),
+						itemsList);
+				// adapter.jacksonTable = jacksonTable;
+			}
 
-						if (a == null) {
-							a = new NewCharacterMatrixViewArrayAdapter(getActivity(),
-									itemsList);
-							// adapter.jacksonTable = jacksonTable;
-						}
+			gridView.setAdapter(adapterPlay);
 
-						// TODO ate don't work on selectedMatrixItems list directly
-						final ArrayList<MatrixItem> selectedItems = ((NewCharacterMatrixViewArrayAdapter) a).selectedMatrixItems;
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> adapterView, View view,
+						int position, long id) {
+					// TODO Benni save new values
+					showPopup();
+				}
+			});
 
-						for (final MatrixItem item : itemsList) {
-							if (item.isSelected()) {
-								selectedItems.add(item);
-							}
-						}
+			gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapterView,
+						View view, final int position, long id) {
+					Log.d("LONG CLICK", "pos:" + position);
 
-						gridView.setAdapter(a);
-
-						gridView.setOnItemClickListener(new OnItemClickListener() {
-							@Override
-							public void onItemClick(AdapterView<?> adapterView, View view,
-									int position, long id) {
-
-								if (position == itemsList.size() - 1) {
-									
-									Toast.makeText(
-											getActivity(),
-											"Neues Element wird in Deinem Character erstellt!",
-											Toast.LENGTH_SHORT).show();
-									// TODO Benni save new matrix item
-									showPopup();
-								} else {
-
-									MatrixItem curMatrixItem = itemsList.get(position);
-
-									if (selectedItems.contains(curMatrixItem)) {
-										curMatrixItem.setSelected(false);
-										selectedItems.remove(curMatrixItem);
-
-										// newCharacter.removeMatrixItem(curMatrixItem);
-										Log.d("setOnItemClickListener", "pos:" + position);
-										Log.d("remove", "remove");
-										a.notifyDataSetChanged();
-
-									} else {
-										curMatrixItem.setSelected(true);
-										selectedItems.add(curMatrixItem);
-										Toast.makeText(
-												getActivity(),
-												((TextView) view
-														.findViewById(R.id.matrix_textItemTitle))
-														.getText()
-														+ "-Attribut wird zu dem Charakter hinzugefuegt",
-												Toast.LENGTH_SHORT).show();
-
-										Log.d("add", "add");
-										a.notifyDataSetChanged();
-
-										// newCharacter.addMatrixItem(curMatrixItem);
-									}
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setTitle(getResources().getString(
+							R.string.msg_delete_item));
+					builder.setMessage(getResources().getString(
+							R.string.msg_yes_to_item_delete));
+					builder.setNegativeButton(
+							getResources().getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
 								}
-							}
-						});
-
-						gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-							@Override
-							public boolean onItemLongClick(AdapterView<?> adapterView,
-									View view, final int position, long id) {
-								Log.d("LONG CLICK", "pos:" + position);
-								if (position == adapter.getCount() - 1) {
-									return true;
+							});
+					builder.setPositiveButton(
+							getResources().getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									removeMatrixItem(position);
 								}
-								AlertDialog.Builder builder = new AlertDialog.Builder(
-										getActivity());
-								builder.setTitle(getResources().getString(
-										R.string.msg_delete_item));
-								builder.setMessage(getResources().getString(
-										R.string.msg_yes_to_item_delete));
-								builder.setNegativeButton(
-										getResources().getString(R.string.no),
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog,
-													int which) {
-											}
-										});
-								builder.setPositiveButton(
-										getResources().getString(R.string.yes),
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog,
-													int which) {
-												removeMatrixItem(position);
-											}
-										});
-								builder.create().show();
-								return true;
-							}
-						});
+							});
+					builder.create().show();
+					return true;
+				}
+			});
 		}
 		return rootView;
 	}
@@ -428,16 +382,17 @@ public class MatrixFragment extends GeneralFragment {
 
 	public void addMatrixItem(MatrixItem newItem) {
 		// adapter.getCount >= 1
-		adapter.insert(newItem, adapter.getCount() - 1);
-		adapter.notifyDataSetChanged();
+		adapterCreateTemplate.insert(newItem,
+				adapterCreateTemplate.getCount() - 1);
+		adapterCreateTemplate.notifyDataSetChanged();
 	}
 
 	public void removeMatrixItem(int position) {
-		if (position < 0 || position == adapter.getCount() - 1) {
+		if (position < 0 || position == adapterCreateTemplate.getCount() - 1) {
 			return;
 		}
-		adapter.remove(adapter.getItem(position));
-		adapter.notifyDataSetChanged();
+		adapterCreateTemplate.remove(adapterCreateTemplate.getItem(position));
+		adapterCreateTemplate.notifyDataSetChanged();
 	}
 
 	private void showPopup() {
@@ -547,7 +502,8 @@ public class MatrixFragment extends GeneralFragment {
 								editItem.setRangeMin(min);
 								editItem.setRangeMax(max);
 								editItem.setModificator(mod);
-								matrixFragment.adapter.notifyDataSetChanged();
+								matrixFragment.adapterCreateTemplate
+										.notifyDataSetChanged();
 							}
 						}
 					});

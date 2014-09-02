@@ -59,10 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
         android:gravity="center"
         android:maxWidth="200dip"
-        android:layout_marginTop="20dp"
         android:padding="2dp"
         android:scaleType="fitXY"
         android:src="@drawable/shape_circle_matrix_green" />
