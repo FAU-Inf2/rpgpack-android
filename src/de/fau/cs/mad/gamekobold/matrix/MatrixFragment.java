@@ -36,11 +36,12 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 public class MatrixFragment extends GeneralFragment {
 	GridView gridView;
 	public List<MatrixItem> itemsList = null;
+	public List<MatrixItem> playMatrixItems = null;
 
 	// dte check adapter type!
 	MatrixViewArrayAdapter adapterCreateTemplate;
 	NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
-	MatrixViewArrayAdapter adapterPlay;
+	PlayCharacterMatrixAdapter adapterPlay;
 
 	View rootView;
 
@@ -80,7 +81,7 @@ public class MatrixFragment extends GeneralFragment {
 		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
 			Log.d("MatrixFragment", "inflated for CharacterPLAYActivity");
 			rootView = (FrameLayout) inflater.inflate(
-					R.layout.character_edit_matrix_view, new LinearLayout(
+					R.layout.fragment_matrix_view, new LinearLayout(
 							getActivity()), false);
 			Toast.makeText(getActivity(), "PLAY CHARACTER!!!!!!!!!!!",
 					Toast.LENGTH_LONG).show();
@@ -308,16 +309,24 @@ public class MatrixFragment extends GeneralFragment {
 			Toast.makeText(getActivity(), "CHARACTER PLAY!", Toast.LENGTH_SHORT)
 					.show();
 
-			gridView = (GridView) rootView.findViewById(R.id.gridView);
+			gridView = (GridView) rootView
+					.findViewById(R.id.gridViewMatrixItem);
 			// check needed for jackson data loading
 			if (itemsList == null) {
 				itemsList = new ArrayList<MatrixItem>();
 				jacksonTable.entries = itemsList;
 			}
 
+			playMatrixItems = new ArrayList<MatrixItem>();
+
+			for (MatrixItem ma : itemsList) {
+				if (ma.isSelected())
+					playMatrixItems.add(ma);
+			}
+
 			if (adapterPlay == null) {
-				adapterPlay = new MatrixViewArrayAdapter(getActivity(),
-						itemsList);
+				adapterPlay = new PlayCharacterMatrixAdapter(getActivity(),
+						playMatrixItems);
 				// adapter.jacksonTable = jacksonTable;
 			}
 
