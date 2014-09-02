@@ -337,7 +337,7 @@ public class MatrixFragment extends GeneralFragment {
 				public void onItemClick(AdapterView<?> adapterView, View view,
 						int position, long id) {
 					// TODO Benni save new values
-					showPopup();
+					showPopupForEditing(adapterPlay.getItem(position));
 				}
 			});
 
