@@ -95,9 +95,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
 				true);
 		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.fileAbsolutePath);
+				sheet.getFileAbsolutePath());
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.fileAbsolutePath);
+				sheet.getFileAbsolutePath());
 		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
 	}
