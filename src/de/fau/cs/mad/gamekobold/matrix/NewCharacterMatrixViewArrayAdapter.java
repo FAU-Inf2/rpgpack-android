@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
 
@@ -141,6 +144,21 @@ public class NewCharacterMatrixViewArrayAdapter extends
 						R.color.background_green) : context.getResources()
 						.getColor(android.R.color.transparent));
 
+				CheckBox favorite = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+
+						// TODO: Benni: favorite speichern
+
+					}
+				});
+
+				if (!selectedMatrixItems.contains(curItem)) {
+					favorite.setChecked(false);
+				}
 			}
 		} else {
 			// or reuse

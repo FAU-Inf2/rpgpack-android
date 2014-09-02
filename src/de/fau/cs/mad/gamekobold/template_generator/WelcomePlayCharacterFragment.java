@@ -21,7 +21,7 @@ public class WelcomePlayCharacterFragment extends GeneralFragment{
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
 		super.onCreateView(inflater, container, savedInstanceState);
-		View view = (CustomDrawerLayout) inflater.inflate(R.layout.activity_template_generator_welcome, null);
+		View view = (CustomDrawerLayout) inflater.inflate(R.layout.activity_play_character_welcome, null);
         return view;
     }
 
