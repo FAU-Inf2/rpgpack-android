@@ -271,5 +271,6 @@
        <string name="titel_play_character_welcome">Willkommen im Spielmodus!</string>
      <string name="titel_character_generator_welcome">Willkommen im Charakter-Generator!</string>
       <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
+      <string name="title_activity_character_browser">Charakter Browser</string>
 
 </resources>

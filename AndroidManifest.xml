@@ -123,6 +123,7 @@
             android:name="de.fau.cs.mad.gamekobold.LogoActivity"
             android:label="@string/title_activity_logo" >
         </activity>
+        <activity android:name=".characterbrowser.CharacterBrowserActivity" android:label="@string/title_activity_character_browser"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -23,6 +24,7 @@ import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.game.Game;
 
 public abstract class JacksonInterface {
+	private static final String LOG_TAG = "JacksonInterface";
 
 	public static final String CHARACTER_ROOT_FOLDER_NAME = "Characters";
 	public static final String TEMPLATE_ROOT_FOLDER_NAME = "Templates";
@@ -70,14 +72,9 @@ public abstract class JacksonInterface {
 		if(jsonFile == null || sheet == null) {
 			return;
 		}
+		Log.d(LOG_TAG, " saving character. path:"+jsonFile.getAbsolutePath());
 		FileOutputStream outStream = new FileOutputStream(jsonFile);
 		ObjectMapper mapper = new ObjectMapper();
-//		if(use_pretty_writer) {
-//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, sheet);
-//		}
-//		else {
-//			mapper.writer().writeValue(outStream, sheet);
-//		}
 		if(use_pretty_writer) {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
@@ -218,13 +215,8 @@ public abstract class JacksonInterface {
 		if(template == null || outStream == null) {
 			return;
 		}
+		Log.d(LOG_TAG, "saving template. name:"+template.getTemplateName());
 		ObjectMapper mapper = new ObjectMapper();
-//		if(use_pretty_writer) {
-//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, template);
-//		}
-//		else {
-//			mapper.writer().writeValue(outStream, template);
-//		}
 		if(use_pretty_writer) {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}

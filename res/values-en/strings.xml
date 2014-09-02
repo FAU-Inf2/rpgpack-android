@@ -266,5 +266,5 @@
     <string name="titel_play_character_welcome">Welcome to Play-mode!</string>
     <string name="titel_character_generator_welcome">Welcome to Character-Generator!</string>
     <string name="titel_template_generator_welcome">Welcome to Template-Generator!</string>
-
+  	<string name="title_activity_character_browser">Character Browser</string>
 </resources>

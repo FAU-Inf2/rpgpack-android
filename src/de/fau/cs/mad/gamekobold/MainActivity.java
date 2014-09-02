@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
@@ -47,8 +48,9 @@ public class MainActivity extends Activity {
 	}
 
 	public void manageCharackter(View view) {
-		this.notImplemented();
-
+		Intent intent = new Intent(MainActivity.this,
+				CharacterBrowserActivity.class);
+		startActivity(intent);
 	}
 
 	public void templateGenerator(View view) {
