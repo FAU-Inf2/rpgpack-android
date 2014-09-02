@@ -27,6 +27,7 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -430,6 +431,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 				  String searchForReferences = inputPopup.getText().toString();
 				  Pattern p = Pattern.compile("@");
 				  Matcher m = p.matcher(searchForReferences);
+				  //following needed for onClick of ClickableSpan to work!
+				  inputPopup.setMovementMethod(LinkMovementMethod.getInstance());
 				  SpannableStringBuilder span = (SpannableStringBuilder) inputPopup.getText();
 				  while (m.find()){
 					  //	        	    	System.out.print("Start index: " + matcher.start());
@@ -443,13 +446,13 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 					  Log.d("TableFragment", "Popup: startIndex: " + startIndex + "; endIndex: " + endIndex);
 					  String referenceString = searchForReferences.substring(startIndex, endIndex);
 					  mBelongsTo.getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
-//					  span.setSpan(new MyClickableSpan(popupView, mBelongsTo), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					  span.setSpan(new ClickableSpan() {  
-						  @Override
-						  public void onClick(View v) {  
-							  Log.d("MyClickableSpan", "MyClickableSpan -> onClick");
-						  }
-					  }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					  span.setSpan(new MyClickableSpan(popupView, mBelongsTo), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//					  span.setSpan(new ClickableSpan() {  
+//						  @Override
+//						  public void onClick(View v) {  
+//							  Log.d("MyClickableSpan", "MyClickableSpan -> onClick");
+//						  }
+//					  }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				  }
 				  inputPopup.setText(span); 
 			  }
