@@ -1,7 +1,9 @@
 package de.fau.cs.mad.gamekobold;
 
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -36,13 +38,16 @@ import android.widget.Toast;
 public class SlideoutNavigationActivity extends FragmentActivity {
 
 	public static Template myTemplate = null;
+	public static CharacterSheet myCharacter = null;
 	// for distinguishing between template creation/editing and character
 	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
 	public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
+	public static final String MODE_PLAY_CHARACTER = "MODE_PLAY_CHARACTER";
 	public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
 	public static final String AUTO_SAVE_TEMPLATE_ON_EXIT = "AUTO_SAVE_TEMPLATE_ON_EXIT";
 	public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
+	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
 
 	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
 	public static final String WELCOME_TYPE_NEW_CHARACTER = "WELCOME_NEW_CHARACTER";
@@ -67,7 +72,8 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		 * JACKSON START
 		 */
 		myActivity = this;
-		boolean creationMode = true;
+		boolean creationMode = false;
+		boolean playingMode = false;
 		Log.d("Saved instance state", "" + savedInstanceState);
 		if (savedInstanceState == null) {
 			Intent intent = getIntent();
@@ -87,7 +93,15 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					} else {
 						// TODO show error?!
 					}
-				} else {
+				} else if (intent.getBooleanExtra(MODE_PLAY_CHARACTER, true)) {
+					playingMode = true;
+					Log.d("MODE_PLAY_CHARACTER", "MODE_PLAY_CHARACTER!");
+					// we are in a play mode
+
+				}
+
+				else {
+					// we are in edit character mode
 					Log.d("MainTemplateGenerator", "Edit mode!");
 					// we are editing an old one, so load it
 					// get file name
@@ -122,6 +136,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				// So we set the jackson table
 				// if we are editing a template, the async task will set the
 				// table and start inflation
+
 				if (creationMode) {
 					((FolderFragment) rootFragment)
 							.setJacksonTable(myTemplate.characterSheet
@@ -155,16 +170,32 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					.beginTransaction();
 
 			// pass the current WelcomeFragment!
-			if (getIntent().hasExtra(WELCOME_TYPE_TEMPLATE)) {
+			if (creationMode) {
+				// (getIntent().getBooleanExtra(WELCOME_TYPE_TEMPLATE, true)) {
+
 				topFragment = new WelcomeFragment();
-			} else if (getIntent().hasExtra(WELCOME_TYPE_NEW_CHARACTER)) {
-				topFragment = new WelcomeNewCharacterFragment();
-			} else if (getIntent().hasExtra(WELCOME_TYPE_PLAY_CHARACTER)) {
+				topFragment.elementName = getResources().getString(
+						R.string.titel_template_generator_welcome);
+
+			} else if (playingMode)
+			// (getIntent().getBooleanExtra(WELCOME_TYPE_PLAY_CHARACTER,
+			// true))
+			{
 				topFragment = new WelcomePlayCharacterFragment();
+				topFragment.elementName = getResources().getString(
+						R.string.titel_play_character_welcome);
+
+			} else
+			// if (getIntent().getBooleanExtra(WELCOME_TYPE_NEW_CHARACTER,
+			// true))
+			{
+				topFragment = new WelcomeNewCharacterFragment();
+				topFragment.elementName = getResources().getString(
+						R.string.titel_character_generator_welcome);
+
 			}
 
 			topFragment.isATopFragment = true;
-			topFragment.elementName = "Welcome";
 			currentFragment = topFragment;
 			fragmentTransaction.add(R.id.frame_layout_container,
 					currentFragment);

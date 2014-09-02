@@ -267,5 +267,9 @@
     <!-- activity_play_character_welcome -->
     <string name="play_character_welcome">Willkommen im Charakter-Spielmodus! \n \n Um die aktuelle Werte von Deinem Charakter anzusehen oder sie zu modifizieren einfach das Menü lege los!</string>
 
+    
+       <string name="titel_play_character_welcome">Willkommen im Spielmodus!</string>
+     <string name="titel_character_generator_welcome">Willkommen im Charakter-Generator!</string>
+      <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
 
 </resources>

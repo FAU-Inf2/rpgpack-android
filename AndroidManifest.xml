@@ -88,6 +88,8 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.PlayCharacterActivity" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.game.CharacterPlayActivity" >
+        </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
@@ -102,15 +104,17 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity" 
-             android:launchMode="singleTop"
-             android:configChanges="orientation|screenSize|keyboardHidden"
-             android:windowSoftInputMode="adjustResize"
-             >
-                <intent-filter>
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/storesearchable" />
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity" >

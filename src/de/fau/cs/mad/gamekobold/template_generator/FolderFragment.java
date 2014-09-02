@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
@@ -53,7 +54,8 @@ public class FolderFragment extends GeneralFragment {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        editable = (getActivity() instanceof CharacterEditActivity? false:true);
+       
+        editable = (getActivity() instanceof CharacterEditActivity || getActivity() instanceof CharacterPlayActivity? false:true);
 		Log.d("FolderFragment","onCreate; editable set to: " + editable);
         // nullcheck needed for jackson inflation. creates allData before onCreate is called
         if(allData == null) {
