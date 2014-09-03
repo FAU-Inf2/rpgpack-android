@@ -241,14 +241,16 @@
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
     <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> more features coming soon....</br></string>
-    <string name="search_title">Templates suchen</string>
-    <string name="hint_search">Store durchsuchen</string>
-    <string name="store_actions">Actions</string>
-    <string name="store_reload">Neu laden</string>
-    <string name="store_tags">Tags</string>
-    <string name="tag_horror">Horror</string>
+
+	<string name="search_title">Templates suchen</string>
+	<string name="hint_search">Store durchsuchen</string>
+	<string name="store_actions">Actions</string>
+	<string name="store_reload">Neu laden</string>
+	<string name="store_tags">Tags</string>
+	<string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
     <string name="tag_future">Zukunft</string>
+    
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
