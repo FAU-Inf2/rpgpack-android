@@ -8,8 +8,11 @@ buildscript {
 }
 apply plugin: 'android'
 
+repositories {
+    mavenCentral()
+}
 dependencies {
-	compile 'com.nhaarman.supertooltips:library:3.0.+'
+	compile 'com.nhaarman.supertooltips:library:3.0.0'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

@@ -112,7 +112,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 										Toast.makeText(
 												context,
 												curItem.getItemName()
-														+ "-Attribut wird zu Deiner Character-Schnellansicht hizugefügt!",
+														+ "-Attribut wird zu Deiner Character-Schnellansicht hizugefuegt!",
 												Toast.LENGTH_SHORT).show();
 									}
 
