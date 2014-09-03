@@ -4,7 +4,6 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import java.util.ArrayList;
 
-import com.nhaarman.supertooltips.*;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
