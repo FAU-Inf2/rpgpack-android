@@ -103,20 +103,15 @@
             android:id="@+id/gridViewFavMatrixItems"
             android:layout_width="match_parent"
             android:layout_height="146dp"
-            android:numColumns="3" >
+            android:layout_weight="1.05"
+            android:numColumns="4" >
         </GridView>
 
         <ListView
             android:id="@+id/listViewFavTableItems"
             android:layout_width="match_parent"
-            android:layout_height="122dp" >
+            android:layout_height="196dp" >
         </ListView>
-
-        <ExpandableListView
-            android:id="@+id/expandableListViewFavFolderItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ExpandableListView>
     </LinearLayout>
 
 </FrameLayout>

@@ -266,8 +266,10 @@
     <string name="titel_play_character_welcome">Welcome to Play-mode!</string>
     <string name="titel_character_generator_welcome">Welcome to Character-Generator!</string>
     <string name="titel_template_generator_welcome">Welcome to Template-Generator!</string>
-    
-     <!-- new_character_matrix_view_array_adapter -->
+
+    <!-- new_character_matrix_view_array_adapter -->
     <string name="msg_added_to_matrix_favorite">-attribut is added to your charakter quick view!</string>
+    <!-- new_matrix_item_popup -->
+    <string name="warning_set_matrixitem_name">Your new Matrix element should have a name!</string>
 
 </resources>

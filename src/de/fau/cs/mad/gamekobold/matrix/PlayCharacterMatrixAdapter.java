@@ -13,6 +13,10 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
+	public static final int FLAG_FROM = 1; // Binary 00001
+	public static final int FLAG_TO = 2; // Binary 00010
+	public static final int FLAG_VALUE = 4; // Binary 00100
+	public static final int FLAG_MOD = 8; // Binary 01000
 	Context context;
 
 	// the list of objects we want to display

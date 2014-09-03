@@ -100,6 +100,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 							context.getResources(),
 							R.drawable.game_default_white);
 				} else {
+					path = curGame.getIconPath();
 					bitmap = BitmapFactory.decodeFile(path);
 				}
 

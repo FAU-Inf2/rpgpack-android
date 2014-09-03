@@ -17,10 +17,13 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
@@ -34,6 +37,10 @@ import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class MatrixFragment extends GeneralFragment {
+	public static final int FLAG_FROM = 1; // Binary 00001
+	public static final int FLAG_TO = 2; // Binary 00010
+	public static final int FLAG_VALUE = 4; // Binary 00100
+	public static final int FLAG_MOD = 8; // Binary 01000
 	GridView gridView;
 	public List<MatrixItem> itemsList = null;
 	public List<MatrixItem> playMatrixItems = null;
@@ -424,7 +431,8 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
-		private EditText itemName, rangeMin, rangeMax, defaultVal, modificator;
+		private EditText itemName, rangeMin, rangeMax, defaultVal, modificator,
+				description;
 		public MatrixFragment matrixFragment;
 		public MatrixItem editItem = null;
 
@@ -454,6 +462,17 @@ public class MatrixFragment extends GeneralFragment {
 			rangeMax = (EditText) view.findViewById(R.id.rangeTo);
 			defaultVal = (EditText) view.findViewById(R.id.defaultValue);
 			modificator = (EditText) view.findViewById(R.id.modificator);
+			description = (EditText) view.findViewById(R.id.description);
+
+			final Switch switchFrom = (Switch) view
+					.findViewById(R.id.switchRangeFrom);
+			final Switch switchTo = (Switch) view
+					.findViewById(R.id.switchRangeTo);
+			final Switch switchValue = (Switch) view
+					.findViewById(R.id.switchDefaultValue);
+			final Switch switchMod = (Switch) view
+					.findViewById(R.id.switchModificator);
+
 			// check for editItem
 			if (editItem != null) {
 				// insert values from editItem into views
@@ -462,6 +481,24 @@ public class MatrixFragment extends GeneralFragment {
 				rangeMax.setText(String.valueOf(editItem.getRangeMax()));
 				defaultVal.setText(editItem.getValue());
 				modificator.setText(editItem.getModificator());
+				description.setText(editItem.getDescription());
+
+				if ((editItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+					switchFrom.setChecked(true);
+				else
+					switchFrom.setChecked(false);
+				if ((editItem.getVisibility() & FLAG_TO) == FLAG_TO)
+					switchTo.setChecked(true);
+				else
+					switchTo.setChecked(false);
+				if ((editItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE)
+					switchValue.setChecked(true);
+				else
+					switchValue.setChecked(false);
+				if ((editItem.getVisibility() & FLAG_MOD) == FLAG_MOD)
+					switchMod.setChecked(true);
+				else
+					switchMod.setChecked(false);
 			}
 			builder.setView(view);
 
@@ -483,6 +520,15 @@ public class MatrixFragment extends GeneralFragment {
 							// TODO Check for null values
 							final String name = itemName.getEditableText()
 									.toString();
+							if (name.equals("")) {
+								Toast.makeText(
+										getActivity(),
+										getResources()
+												.getString(
+														R.string.warning_set_matrixitem_name),
+										Toast.LENGTH_SHORT).show();
+								return;
+							}
 							final String defValue = defaultVal
 									.getEditableText().toString();
 							int min = 0;
@@ -499,14 +545,23 @@ public class MatrixFragment extends GeneralFragment {
 							}
 							final String mod = modificator.getEditableText()
 									.toString();
-							/*
-							 * Log.d("NEW ITEM", "Name:"+name);
-							 * Log.d("NEW ITEM", "min:"+min); Log.d("NEW ITEM",
-							 * "max:"+max);
-							 */
+
+							final String desc = description.getEditableText()
+									.toString();
+
+							int vis = 0;
+							if (switchFrom.isChecked())
+								vis = vis | FLAG_FROM;
+							if (switchTo.isChecked())
+								vis = vis | FLAG_TO;
+							if (switchValue.isChecked())
+								vis = vis | FLAG_VALUE;
+							if (switchMod.isChecked())
+								vis = vis | FLAG_MOD;
+
 							if (editItem == null) {
 								final MatrixItem newItem = new MatrixItem(name,
-										defValue, min, max, mod);
+										defValue, min, max, mod, desc, vis);
 								matrixFragment.addMatrixItem(newItem);
 							} else {
 								editItem.setItemName(name);
@@ -514,6 +569,8 @@ public class MatrixFragment extends GeneralFragment {
 								editItem.setRangeMin(min);
 								editItem.setRangeMax(max);
 								editItem.setModificator(mod);
+								editItem.setDescription(desc);
+								editItem.setVisibility(vis);
 								matrixFragment.adapterCreateTemplate
 										.notifyDataSetChanged();
 							}

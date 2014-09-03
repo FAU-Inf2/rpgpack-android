@@ -4,33 +4,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
 
-public class MatrixItem extends SelectAndFavorableItem{
+public class MatrixItem extends SelectAndFavorableItem {
 	private String itemName;
 	private String value;
 	private int rangeMin;
 	private int rangeMax;
 	private String modificator;
+	private String description;
+	private int visibility;
 
 	// needed for jackson
 	public MatrixItem() {
-		this.itemName= ""; 
+		this.itemName = "";
 		this.value = "";
-		this.rangeMin = Integer.MIN_VALUE; 
+		this.rangeMin = Integer.MIN_VALUE;
 		this.rangeMax = Integer.MAX_VALUE;
-		this.modificator = "";		
+		this.modificator = "";
+		this.description = "";
+		this.visibility = 15; // from, to, value, mod
 	}
 
-	public MatrixItem(String itemName,
-						String value,
-						int rangeMin,
-						int rangeMax,
-						String modificator) {
+	public MatrixItem(String itemName, String value, int rangeMin,
+			int rangeMax, String modificator, String description, int visibility) {
 		this.itemName = itemName;
 		this.value = value;
 		this.rangeMin = rangeMin;
 		this.rangeMax = rangeMax;
 		this.modificator = modificator;
 		this.isSelected = false;
+		this.description = description;
+		this.visibility = visibility;
 	}
 
 	public MatrixItem(String itemName, String value, String modificator) {
@@ -40,13 +43,14 @@ public class MatrixItem extends SelectAndFavorableItem{
 		this.rangeMax = Integer.MAX_VALUE;
 		this.modificator = modificator;
 		this.isSelected = false;
+		this.description = "";
+		this.visibility = 15;
 	}
 
-	
 	public String getItemName() {
 		return itemName;
 	}
-	
+
 	@JsonProperty("name")
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
@@ -87,4 +91,23 @@ public class MatrixItem extends SelectAndFavorableItem{
 	public void setModificator(String modificator) {
 		this.modificator = modificator;
 	}
+
+	// TODO Benni save description
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	// TODO Benni save visibility
+	public int getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(int visibility) {
+		this.visibility = visibility;
+	}
+
 }
