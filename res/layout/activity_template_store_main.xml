@@ -11,8 +11,9 @@
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    tools:context=".TemplateStoreMainActivity" 
      >
-
+    
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -22,8 +23,12 @@
         android:layout_marginTop="16dp"
         android:text="@string/template_store_main_heading"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_large" />
+        android:textSize="@dimen/text_large">
+        
+    </TextView>
+	
 
+    
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -32,8 +37,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/template_store_main_desc"
-        android:textColor="@color/white" />
+        android:textColor="@color/white" >
+        
+    </TextView>
 
+
+    
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
@@ -45,4 +54,6 @@
 
 
 </RelativeLayout>
+
+ 
 </FrameLayout>

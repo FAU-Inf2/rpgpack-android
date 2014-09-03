@@ -1,6 +1,6 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
-//import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.*;
 //import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 
 import de.fau.cs.mad.gamekobold.R;

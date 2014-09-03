@@ -6,6 +6,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhaarman.supertooltips.*;
+import com.nhaarman.supertooltips.ToolTipView.OnToolTipViewClickedListener;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.app.ActionBar.LayoutParams;
@@ -17,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -158,6 +161,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 		setContentView(R.layout.activity_template_store_main);
 		setTitle(R.string.template_store_title);
+		
 		
 	    // Get the intent, verify the action and get the query
 	    Intent intent = getIntent();
