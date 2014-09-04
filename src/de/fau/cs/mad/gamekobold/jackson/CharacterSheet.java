@@ -72,7 +72,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		return level;
 	}
 
-	@JsonProperty("level")
+	@JsonProperty("lvl")
 	public void setLevel(int level) {
 		this.level = level;
 	}
@@ -81,7 +81,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		return description;
 	}
 
-	@JsonProperty("description")
+	@JsonProperty("des")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -90,7 +90,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		return color;
 	}
 	
-	@JsonProperty("color")
+	@JsonProperty("clr")
 	public void setColor(int color) {
 		this.color = color;
 	}
@@ -121,7 +121,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		return rootTable;
 	}
 
-	@JsonProperty("rootTable")
+	@JsonProperty("root")
 	public void setRootTable(ContainerTable rootTable) {
 		this.rootTable = rootTable;
 	}
@@ -150,7 +150,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		return fileLastUpdated;
 	}
 	
-	@JsonProperty("lastUpdate")
+	@JsonProperty("lastUpd")
 	public void setFileLastUpdated(String fileLastUpdated) {
 		this.fileLastUpdated = fileLastUpdated;
 	}

@@ -92,22 +92,21 @@ public class MatrixItem extends SelectAndFavorableItem {
 		this.modificator = modificator;
 	}
 
-	// TODO Benni save description
 	public String getDescription() {
 		return description;
 	}
 
+	@JsonProperty("des")
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	// TODO Benni save visibility
 	public int getVisibility() {
 		return visibility;
 	}
 
+	@JsonProperty("vis")
 	public void setVisibility(int visibility) {
 		this.visibility = visibility;
 	}
-
 }

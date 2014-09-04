@@ -44,7 +44,7 @@ public class SelectAndFavorableItem {
 		}
 	}
 
-	@JsonProperty("selected")
+	@JsonProperty("sel")
 	private int jsonSelectedGetter() {
 		if(isSelected) {
 			return 1;
@@ -52,7 +52,7 @@ public class SelectAndFavorableItem {
 		return 0;
 	}
 
-	@JsonProperty("selected")
+	@JsonProperty("sel")
 	private void jsonSelectedSetter(int value) {
 		if(value == 0) {
 			isSelected = false;

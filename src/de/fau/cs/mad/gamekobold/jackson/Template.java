@@ -92,15 +92,20 @@ public class Template implements Parcelable{
 		return mapper.writer().writeValueAsString(this);
 	}
 	
-	@JsonProperty("tags")
 	public String getTagString() {
 		return tagString;
+	}
+	
+	@JsonProperty("tags")
+	public void setTagString(String tagString) {
+		this.tagString = tagString;
 	}
 
 	public String getTemplateName() {
 		return templateName;
 	}
 
+	@JsonProperty("name")
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
@@ -141,6 +146,7 @@ public class Template implements Parcelable{
 		return description;
 	}
 
+	@JsonProperty("des")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -149,14 +155,9 @@ public class Template implements Parcelable{
 		return characterSheet;
 	}
 	
-	@JsonProperty("characterSheet") 
+	@JsonProperty("charSheet")
 	public void setCharacterSheet(CharacterSheet characterSheet) {
 		this.characterSheet = characterSheet;
-	}
-
-	@JsonProperty("tags")
-	public void setTagString(String tagString) {
-		this.tagString = tagString;
 	}
 
 	//
