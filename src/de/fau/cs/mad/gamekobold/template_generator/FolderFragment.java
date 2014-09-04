@@ -86,6 +86,11 @@ public class FolderFragment extends GeneralFragment {
        	//	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.table, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
@@ -95,6 +100,11 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.matrix, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
@@ -104,6 +114,11 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.folder, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");

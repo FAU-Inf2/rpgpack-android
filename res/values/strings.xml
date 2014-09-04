@@ -149,6 +149,7 @@
     <string name="text_matrix">Matrix</string>
     <string name="text_ordner">Ordner</string>
     <string name="hint_text_element_name">Name</string>
+    <string name="alert_set_element_name">Bitte trage einen Namen ein!</string>
 
     <!-- activity_template_generator -->
     <string name="text_press_to_add_new_folder">Neues Element hinzufügen</string>
