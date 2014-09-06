@@ -182,6 +182,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		dest.writeInt(level);
 		dest.writeString(fileAbsolutePath);
 		dest.writeLong(fileTimeStamp);
+		dest.writeString(iconPath);
 	}
 
 	public static final Parcelable.Creator<CharacterSheet> CREATOR = new Creator<CharacterSheet>() {
@@ -200,6 +201,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 			sheet.level = source.readInt();
 			sheet.fileAbsolutePath = source.readString();
 			sheet.fileTimeStamp = source.readLong();
+			sheet.iconPath = source.readString();
 			return sheet;
 		}
 	};

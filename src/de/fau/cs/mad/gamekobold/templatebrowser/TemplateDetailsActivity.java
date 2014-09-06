@@ -80,7 +80,7 @@ public class TemplateDetailsActivity extends Activity {
 							CreateNewCharacterActivity.class);
 					// TODO bei den anderen auch curTemplate.getFileName()
 					// don't add the activity to the history
-					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					i.putExtra("templateFileName", curTemplate.getFileName());
 					startActivity(i);
 				}
