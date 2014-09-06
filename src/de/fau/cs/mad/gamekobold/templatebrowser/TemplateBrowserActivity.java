@@ -296,7 +296,7 @@ public class TemplateBrowserActivity extends ListActivity {
 						templateToCheck.setWorldName(loadedTemplate.getGameName());
 						templateToCheck.setAuthor(loadedTemplate.getAuthor());
 						templateToCheck.setDate(loadedTemplate.getDate());
-						templateToCheck.setIconID(loadedTemplate.getIconID());
+//						templateToCheck.setIconID(loadedTemplate.getIconID());
 						templateToCheck
 								.setDescription(loadedTemplate.getDescription());
 						templateToCheck.setTagString(loadedTemplate.getTagString());
@@ -414,7 +414,7 @@ public class TemplateBrowserActivity extends ListActivity {
 										loadedTemplate.getGameName(),
 										loadedTemplate.getAuthor(),
 										loadedTemplate.getDate(),
-										loadedTemplate.getIconID(),
+										loadedTemplate.getIconPath(),
 										loadedTemplate.getDescription());
 								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {

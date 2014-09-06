@@ -215,7 +215,7 @@ public class CreateNewTemplateActivity extends Activity {
 				// TODO icon id
 //				jTemplate.iconID = 0;
 //				jTemplate.description = tvDescription.getText().toString();
-				newTemplate.setIconID(0);
+//				newTemplate.setIconID(0);
 				newTemplate.setDescription(tvDescription.getText().toString());
 				// check to see if a file for this template already exists
 				if (JacksonInterface.doesTemplateFileExist(newTemplate, myActivity)) {
@@ -303,9 +303,10 @@ public class CreateNewTemplateActivity extends Activity {
 
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 		addImageButton.setImageBitmap(bitmap);
-		// TODO store image path for later use
 		// TemplateIcons.getInstance().addTemplateIcon(path);
-
+		// TODO store image path for later use
+		// set icon path
+		newTemplate.setIconPath(path);
 	}
 
 	@Override

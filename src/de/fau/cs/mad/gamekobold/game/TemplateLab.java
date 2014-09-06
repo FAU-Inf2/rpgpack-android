@@ -97,7 +97,7 @@ public class TemplateLab {
 										loadedTemplate.getGameName(),
 										loadedTemplate.getAuthor(),
 										loadedTemplate.getDate(),
-										loadedTemplate.getIconID(),
+										loadedTemplate.getIconPath(),
 										loadedTemplate.getDescription());
 								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {
@@ -146,7 +146,7 @@ public class TemplateLab {
 							template.setWorldName(loadedTemplate.getGameName());
 							template.setAuthor(loadedTemplate.getAuthor());
 							template.setDate(loadedTemplate.getDate());
-							template.setIconID(loadedTemplate.getIconID());
+//							template.setIconID(loadedTemplate.getIconID());
 							template.setDescription(loadedTemplate.getDescription());
 							template.setTagString(loadedTemplate.getTagString());
 							// update time stamp

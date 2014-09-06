@@ -14,6 +14,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -151,8 +153,14 @@ public class TemplateDetailsActivity extends Activity {
 				tvInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 
-				ivIcon.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				if(!curTemplate.getIconPath().isEmpty()) {
+					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
+					if(icon != null) {
+						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						ivIcon.setImageBitmap(icon);
+					}
+				}
 
 				if (curTemplate.fileAbsolutePath == null) {
 					editButton.setEnabled(false);

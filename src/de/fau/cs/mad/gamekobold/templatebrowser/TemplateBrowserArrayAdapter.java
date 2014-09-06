@@ -4,6 +4,8 @@ import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +103,20 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor()
 						+ ", " + curTemplate.getDate());
 
-				// change the icon for different games
-				TemplateIcons templateIcons = TemplateIcons.getInstance();
-				imageView.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				if(!curTemplate.getIconPath().isEmpty()) {
+					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
+//					Log.d("TEMPLATE_BROWSER", "decode icon");
+					if(icon != null) {
+//						Log.d("TEMPLATE_BROWSER", "decode icon != NULL");
+						// create smaller thumbnail version
+						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						imageView.setImageBitmap(icon);
+					}
+				}
+//				else {
+//					Log.d("TEMPLATE_BROWSER", "icon path is empty");
+//				}
 			}
 		} else {
 			// check for last 2 lines -> edit last template, create new template.
@@ -136,9 +148,23 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 
-				TemplateIcons templateIcons = TemplateIcons.getInstance();
-				imageView.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				if(!curTemplate.getIconPath().isEmpty()) {
+					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
+//					Log.d("TEMPLATE_BROWSER", "decode icon");
+					if(icon != null) {
+//						Log.d("TEMPLATE_BROWSER", "decode icon != NULL");
+						// create smaller thumbnail version
+						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						imageView.setImageBitmap(icon);
+					}
+				}
+				else {
+//					Log.d("TEMPLATE_BROWSER", "icon path is empty");
+					TemplateIcons templateIcons = TemplateIcons.getInstance();
+					imageView.setImageResource(Integer.valueOf(templateIcons
+							.getTempalteIcon(0)));
+				}
 			}
 		}
 		return rowView;

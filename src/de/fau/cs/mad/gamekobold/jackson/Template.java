@@ -24,10 +24,9 @@ public class Template implements Parcelable{
 	private String gameName = "";
 	private String author = "";
 	private String date = "";
-	private int iconID;
 	private String description = "";
 	private String tagString = "";
-
+	private String iconPath = "";
 
 	/* Character */
 	private CharacterSheet characterSheet = null;
@@ -35,12 +34,10 @@ public class Template implements Parcelable{
 	public Template() {
 		Log.d("Template", "default constructor");
 		characterSheet = new CharacterSheet();
-		iconID = 0;
 	}
 
 	public Template(CharacterSheet sheet) {
 		characterSheet = sheet;
-		iconID = 0;
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -74,7 +71,7 @@ public class Template implements Parcelable{
 		gameName = otherTemplate.getWorldName();
 		author = otherTemplate.getAuthor();
 		date = otherTemplate.getDate();
-		iconID = otherTemplate.getIconID();
+		iconPath = otherTemplate.getIconPath();
 		description = otherTemplate.getDescription();
 		tagString = otherTemplate.getTagString();
 	}
@@ -114,6 +111,7 @@ public class Template implements Parcelable{
 		return gameName;
 	}
 
+	@JsonProperty("world")
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}
@@ -134,14 +132,6 @@ public class Template implements Parcelable{
 		this.date = date;
 	}
 
-	public int getIconID() {
-		return iconID;
-	}
-
-	public void setIconID(int iconID) {
-		this.iconID = iconID;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -158,6 +148,15 @@ public class Template implements Parcelable{
 	@JsonProperty("charSheet")
 	public void setCharacterSheet(CharacterSheet characterSheet) {
 		this.characterSheet = characterSheet;
+	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	@JsonProperty("icon")
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
 	}
 
 	//
@@ -178,9 +177,9 @@ public class Template implements Parcelable{
 		dest.writeString(gameName);
 		dest.writeString(author);
 		dest.writeString(date);
-		dest.writeInt(iconID);
 		dest.writeString(description);
 		dest.writeString(tagString);
+		dest.writeString(iconPath);
 	}
 
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -197,9 +196,9 @@ public class Template implements Parcelable{
 			ret.gameName = source.readString();
 			ret.author = source.readString();
 			ret.date = source.readString();
-			ret.iconID = source.readInt();
 			ret.description = source.readString();
 			ret.tagString = source.readString();
+			ret.iconPath = source.readString();
 			return ret;
 		}
 	};

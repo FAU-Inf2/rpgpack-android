@@ -61,8 +61,7 @@ public class TableEditDialog extends DialogFragment {
         		dialog.dismiss();
         	}
         });
-        
-        // TODO listener
+
         headerNameFocusListener = new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -390,8 +389,7 @@ public class TableEditDialog extends DialogFragment {
 		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
 			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
 		}
-
-        // TODO benni: hier richtig column-> row 1-childCount row:1
+		// set focus listener to all column header title elements
         for(int i = 1; i < dialogTable.getChildCount(); ++i) {
         	View column = ((TableRow)dialogTable.getChildAt(i)).getChildAt(1);
         	column.setOnFocusChangeListener(headerNameFocusListener);
