@@ -22,6 +22,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	private String fileAbsolutePath = null;
 	private long fileTimeStamp;
 	private String fileLastUpdated;
+	private String iconPath;
 
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -33,6 +34,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
 		fileLastUpdated = "";
+		iconPath = "";
 	}
 
 	public CharacterSheet(String name) {
@@ -42,6 +44,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 		this.fileLastUpdated = "";
+		this.iconPath = "";
 	}
 
 	public CharacterSheet(String name,
@@ -57,8 +60,18 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		fileAbsolutePath = "";
 		fileTimeStamp = 0;
 		fileLastUpdated = "";
+		iconPath = "";
 	}
-	
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	@JsonProperty("icon")
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
+	}
+
 	public String getName() {
 		return name;
 	}

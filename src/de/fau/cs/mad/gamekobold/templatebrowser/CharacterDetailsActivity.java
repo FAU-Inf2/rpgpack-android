@@ -171,6 +171,14 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				description.setTag(sheet.getDescription());
 				// set to character color
 				relLayout.setBackgroundColor(sheet.getColor());
+				
+				if(!sheet.getIconPath().isEmpty()) {
+					Bitmap icon = BitmapFactory.decodeFile(sheet.getIconPath());
+					if(icon != null) {
+						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						characterIconButton.setImageBitmap(icon);
+					}
+				}
 			}
 		}
 		
@@ -291,6 +299,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			characterIconButton.setImageBitmap(bitmap);
 		}
 		// TODO store image path for later use
+		sheet.setIconPath(path);
+		characterAltered = true;
 	}
 	
 	// TODO refactoring?

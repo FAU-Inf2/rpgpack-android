@@ -372,6 +372,8 @@ public class CreateNewCharacterActivity extends Activity implements
 			characterIconButton.setImageBitmap(bitmap);
 		}
 		// TODO store image path for later use
+		sheet.setIconPath(path);
+		characterAltered = true;
 	}
 
 	// TODO refactoring?
