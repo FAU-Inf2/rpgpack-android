@@ -31,6 +31,7 @@ public class TableEditDialog extends DialogFragment {
 	AlertDialog.Builder alertDialogBuilder;
 	SessionMonitorEditText dialogRowCounter;
 	boolean newlyShown = true;
+	View.OnFocusChangeListener headerNameFocusListener = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,49 @@ public class TableEditDialog extends DialogFragment {
         		dialog.dismiss();
         	}
         });
+        
+        // TODO listener
+        headerNameFocusListener = new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+//				Log.d("TABLE_EDIT_DIALOG", "focus change, view:"+v+" focus:"+hasFocus);
+				final EditText editText = (EditText)v;
+				// get localized headline string
+				final String HEADLINE_STRING = getResources().getString(R.string.headline);
+				// if has focus
+				if(hasFocus) {
+					// our regex to match
+					final String regex = "^"+HEADLINE_STRING+" [0-9]+$";
+					// check match
+					if(editText.getEditableText().toString().matches(regex)) {
+//						Log.d("TABLE_EDIT_DIALOG", "regex match");
+						// if match, clear text
+						editText.setText("");
+					}
+//					else {
+//						Log.d("TABLE_EDIT_DIALOG", "regex DID NOT match");
+//					}
+				}
+				else {
+					// check if the title is empty
+					if(editText.getEditableText().toString().isEmpty()) {
+						// get parent = row
+						final TableRow row = (TableRow)v.getParent();
+						// counter for column index
+						int columnNumberCounter = 1;
+						// get column index for our view
+						for(;columnNumberCounter < dialogTable.getChildCount(); ++columnNumberCounter) {
+							if(dialogTable.getChildAt(columnNumberCounter).equals(row)) {
+								break;
+							}
+						}
+						// set correct title
+						editText.setText(HEADLINE_STRING+" "+String.valueOf(columnNumberCounter));
+					}
+				}
+			}
+		};
+        
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -224,13 +268,16 @@ public class TableEditDialog extends DialogFragment {
 	 * @param dialogTable
 	 */
 	protected void adaptHeaderTable(TableLayout dialogTable){
+		// get localized headline string
+		final String HEADLINE_STRING = getResources().getString(R.string.headline);
 		int amountRows = dialogTable.getChildCount()-1;
 		for(int i=1; i<amountRows+1; i++){
 			String otherString = ((EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1)).getText().toString();
 			TextView textToChange = ((TextView) ((TableRow) targetFragment.headerTable.getChildAt(0)).getChildAt(i-1));
-			if(!otherString.equals("")){
-				textToChange.setText(otherString);
+			if(otherString.isEmpty()) {
+				otherString = HEADLINE_STRING+" "+String.valueOf(i);
 			}
+			textToChange.setText(otherString);
 		}
 	}
 	
@@ -308,6 +355,7 @@ public class TableEditDialog extends DialogFragment {
 								.getChildAt(i);
 						// Log.d("i,k", "i==" + ", k==" +k);
 						if (headerText == null) {
+//							oneColumn.setText(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.headline)+" "+String.valueOf(i+1));
 							oneColumn.setText("");
 						}
 						else{
@@ -324,6 +372,12 @@ public class TableEditDialog extends DialogFragment {
 		for(int i=rowsNeeded+1; i<firstRowToAdd; i++){
 			dialogTable.removeView(dialogTable.getChildAt(dialogTable.getChildCount()-1));
 		}
+
+        // TODO benni: hier richtig column-> row 1-childCount row:1
+        for(int i = 1; i < dialogTable.getChildCount(); ++i) {
+        	View column = ((TableRow)dialogTable.getChildAt(i)).getChildAt(1);
+        	column.setOnFocusChangeListener(headerNameFocusListener);
+        }
 	}
 
 	@Override
