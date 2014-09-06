@@ -136,7 +136,14 @@ public class TableEditDialog extends DialogFragment {
         addButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
+        		int oldValue;
+        		// surrounded by a try: if the input field is empty we get a numberformatexception. so catch it and do nothing
+        		try {
+        			oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
+        		}
+        		catch(NumberFormatException e) {
+        			return;
+        		}
         		int newValue = oldValue+1;
         		dialogRowCounter.setText(Integer.toString(newValue));
         		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
@@ -146,8 +153,19 @@ public class TableEditDialog extends DialogFragment {
         subtractButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		int oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));
+        		int oldValue;
+        		// surrounded by a try: if the input field is empty we get a numberformatexception. so catch it and do nothing
+        		try {
+            		oldValue = (Integer.parseInt(dialogRowCounter.getText().toString()));        			
+        		}
+        		catch(NumberFormatException e) {
+        			return;
+        		}
         		int newValue = oldValue-1;
+        		// preventing negativ row count and deletion of table header
+        		if(newValue < 0) {
+        			return;
+        		}
         		dialogRowCounter.setText(Integer.toString(newValue));
         		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
         	}
