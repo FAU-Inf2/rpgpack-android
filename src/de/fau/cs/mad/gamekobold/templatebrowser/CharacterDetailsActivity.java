@@ -175,7 +175,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				if(!sheet.getIconPath().isEmpty()) {
 					Bitmap icon = BitmapFactory.decodeFile(sheet.getIconPath());
 					if(icon != null) {
-						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						final int[] thumbnail_dimens = getResources().getIntArray(R.array.thumbnail_dimensions);
+						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
 						characterIconButton.setImageBitmap(icon);
 					}
 				}

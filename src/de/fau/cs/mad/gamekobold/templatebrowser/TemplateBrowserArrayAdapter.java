@@ -106,17 +106,13 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				// load image bitmap
 				if(!curTemplate.getIconPath().isEmpty()) {
 					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
-//					Log.d("TEMPLATE_BROWSER", "decode icon");
 					if(icon != null) {
-//						Log.d("TEMPLATE_BROWSER", "decode icon != NULL");
 						// create smaller thumbnail version
-						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						final int[] thumbnail_dimens = context.getResources().getIntArray(R.array.thumbnail_dimensions);
+						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
 						imageView.setImageBitmap(icon);
 					}
 				}
-//				else {
-//					Log.d("TEMPLATE_BROWSER", "icon path is empty");
-//				}
 			}
 		} else {
 			// check for last 2 lines -> edit last template, create new template.
@@ -151,16 +147,14 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				// load image bitmap
 				if(!curTemplate.getIconPath().isEmpty()) {
 					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
-//					Log.d("TEMPLATE_BROWSER", "decode icon");
 					if(icon != null) {
-//						Log.d("TEMPLATE_BROWSER", "decode icon != NULL");
 						// create smaller thumbnail version
-						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
+						final int[] thumbnail_dimens = context.getResources().getIntArray(R.array.thumbnail_dimensions);
+						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
 						imageView.setImageBitmap(icon);
 					}
 				}
 				else {
-//					Log.d("TEMPLATE_BROWSER", "icon path is empty");
 					TemplateIcons templateIcons = TemplateIcons.getInstance();
 					imageView.setImageResource(Integer.valueOf(templateIcons
 							.getTempalteIcon(0)));

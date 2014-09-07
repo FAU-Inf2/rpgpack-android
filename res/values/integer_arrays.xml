@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- dimensions for the icon thumbnail -->
+    <integer-array name="thumbnail_dimensions">
+        <!-- width -->
+        <item >64</item>
+        <!-- height -->
+        <item >64</item>
+    </integer-array>
+</resources>
