@@ -3,9 +3,9 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,14 +104,9 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						+ ", " + curTemplate.getDate());
 
 				// load image bitmap
-				if(!curTemplate.getIconPath().isEmpty()) {
-					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
-					if(icon != null) {
-						// create smaller thumbnail version
-						final int[] thumbnail_dimens = context.getResources().getIntArray(R.array.thumbnail_dimensions);
-						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
-						imageView.setImageBitmap(icon);
-					}
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
+				if(icon != null) {
+					imageView.setImageBitmap(icon);
 				}
 			}
 		} else {
@@ -145,19 +140,14 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						+ curTemplate.getDate());
 
 				// load image bitmap
-				if(!curTemplate.getIconPath().isEmpty()) {
-					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
-					if(icon != null) {
-						// create smaller thumbnail version
-						final int[] thumbnail_dimens = context.getResources().getIntArray(R.array.thumbnail_dimensions);
-						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
-						imageView.setImageBitmap(icon);
-					}
-				}
-				else {
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
+				if(icon == null) {
 					TemplateIcons templateIcons = TemplateIcons.getInstance();
 					imageView.setImageResource(Integer.valueOf(templateIcons
 							.getTempalteIcon(0)));
+				}
+				else {
+					imageView.setImageBitmap(icon);
 				}
 			}
 		}

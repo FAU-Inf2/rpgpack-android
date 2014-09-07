@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
@@ -171,14 +172,9 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				description.setTag(sheet.getDescription());
 				// set to character color
 				relLayout.setBackgroundColor(sheet.getColor());
-				
-				if(!sheet.getIconPath().isEmpty()) {
-					Bitmap icon = BitmapFactory.decodeFile(sheet.getIconPath());
-					if(icon != null) {
-						final int[] thumbnail_dimens = getResources().getIntArray(R.array.thumbnail_dimensions);
-						icon = Bitmap.createScaledBitmap(icon, thumbnail_dimens[0], thumbnail_dimens[1], false);
-						characterIconButton.setImageBitmap(icon);
-					}
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+				if(icon != null) {
+					characterIconButton.setImageBitmap(icon);
 				}
 			}
 		}
