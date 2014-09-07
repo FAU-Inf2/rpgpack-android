@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 
@@ -73,6 +74,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// needed for jackson
+		MatrixTable.appContext = getApplicationContext();
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
 		leaveToast = Toast.makeText(this, "Press back again to leave",
