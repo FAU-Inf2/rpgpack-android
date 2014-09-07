@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -280,7 +279,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				path = iconUri.getPath(); // from File Manager
 
 			if (path != null)
-				bitmap = BitmapFactory.decodeFile(path);
+				bitmap = ThumbnailLoader.loadThumbnail(path, this);
 
 		}
 		else if(requestCode == PICK_FROM_CAMERA){

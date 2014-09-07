@@ -3,7 +3,6 @@ package de.fau.cs.mad.gamekobold.character;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -47,7 +47,6 @@ public class FavoriteItemsCharacterFragment extends GeneralFragment {
 		View view = (CustomDrawerLayout) inflater.inflate(
 				R.layout.character_favorite_items, null);
 
-		Bitmap bitmap = null;
 		GameCharacter curCharacter = null;
 		CharacterSheet curSheet = null;
 		String path = "";
@@ -67,19 +66,16 @@ public class FavoriteItemsCharacterFragment extends GeneralFragment {
 		ListView listViewTable = (ListView) view
 				.findViewById(R.id.listViewFavTableItems);
 
-		if (curCharacter.getIconPath() == null) {
+		final Bitmap bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), getActivity());
+		if(bitmap == null) {
 			// set some default game icon
-			bitmap = BitmapFactory.decodeResource(getActivity().getResources(),
-					R.drawable.game_default_white);
-		} else {
-			path = curCharacter.getIconPath();
-			bitmap = BitmapFactory.decodeFile(path);
+			charIcon.setImageResource(R.drawable.game_default_white);
 		}
-		if (bitmap != null) {
+		else {
 			// set game icon
 			charIcon.setImageBitmap(bitmap);
 		}
-		
+
 		charName.setText(curCharacter.getCharacterName());
 
 		//TODO find out fav items!

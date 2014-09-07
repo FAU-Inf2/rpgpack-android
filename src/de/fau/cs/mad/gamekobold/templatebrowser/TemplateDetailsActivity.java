@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -152,12 +152,9 @@ public class TemplateDetailsActivity extends Activity {
 						+ curTemplate.getDate());
 
 				// load image bitmap
-				if(!curTemplate.getIconPath().isEmpty()) {
-					Bitmap icon = BitmapFactory.decodeFile(curTemplate.getIconPath());
-					if(icon != null) {
-						icon = Bitmap.createScaledBitmap(icon, 64, 64, false);
-						ivIcon.setImageBitmap(icon);
-					}
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), this);
+				if(icon != null) {
+					ivIcon.setImageBitmap(icon);
 				}
 
 				if (curTemplate.fileAbsolutePath == null) {

@@ -54,6 +54,7 @@ public class Game implements Serializable {
 	public Game(String gameName) {
 		this();
 		this.gameName = gameName;
+		this.iconPath = "";
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class Game implements Serializable {
 		return iconPath;
 	}
 
-	@JsonProperty("iconPath") 
+	@JsonProperty("icon") 
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}

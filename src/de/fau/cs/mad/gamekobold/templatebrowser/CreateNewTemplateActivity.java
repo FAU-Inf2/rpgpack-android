@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
@@ -291,13 +291,13 @@ public class CreateNewTemplateActivity extends Activity {
 				path = imageUri.getPath(); // from File Manager
 
 			if (path != null)
-				bitmap = BitmapFactory.decodeFile(path);
+				bitmap = ThumbnailLoader.loadThumbnail(path, this);
 
 		} else {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
 			path = imageUri.getPath();
-			bitmap = BitmapFactory.decodeFile(path);
+			bitmap = ThumbnailLoader.loadThumbnail(path, this);
 		}
 
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);

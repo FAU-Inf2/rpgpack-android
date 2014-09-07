@@ -11,7 +11,6 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -67,7 +67,6 @@ public class GameDetailsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		Bitmap bitmap = null;
 		String path = "";
 
 		View view = inflater.inflate(R.layout.fragment_game_details, parent,
@@ -211,20 +210,16 @@ public class GameDetailsFragment extends Fragment {
 
 		// TODO Check it! is it necessary?
 		Log.e("getIconPath is null?", "" + (game.getIconPath() == null));
-
-		if (game.getIconPath() == null) {
+		
+		final Bitmap bitmap = ThumbnailLoader.loadThumbnail(game.getIconPath(), getActivity());
+		if(bitmap == null) {
 			// set some default game icon
-			bitmap = BitmapFactory.decodeResource(getActivity().getResources(),
-					R.drawable.game_default_white);
-		} else {
-			bitmap = BitmapFactory.decodeFile(path);
+			gameIcon.setImageResource(R.drawable.game_default_white);
 		}
-
-		if (bitmap != null) {
+		else {
 			// set game icon
 			gameIcon.setImageBitmap(bitmap);
 		}
-
 		return view;
 	}
 
