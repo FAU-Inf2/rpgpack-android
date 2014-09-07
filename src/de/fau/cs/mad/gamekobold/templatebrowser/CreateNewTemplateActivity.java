@@ -298,7 +298,6 @@ public class CreateNewTemplateActivity extends Activity {
 			// temporary file
 			path = imageUri.getPath();
 			bitmap = BitmapFactory.decodeFile(path);
-
 		}
 
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);

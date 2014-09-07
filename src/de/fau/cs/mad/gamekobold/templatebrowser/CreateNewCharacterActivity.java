@@ -247,6 +247,7 @@ public class CreateNewCharacterActivity extends Activity implements
 				saveCharacterSheet();
 				Intent intent = CharacterEditActivity.createIntentForStarting(CreateNewCharacterActivity.this, sheet);
 				startActivity(intent);
+				finish();
 			}
 		});
 	}
