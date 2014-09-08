@@ -277,4 +277,8 @@
 	
 	<!-- autosave toast string -->
     <string name="autosave_toast_text">Saving#8230;</string>
+    <!-- SettingValueDialogFragment -->
+    <string name="string_set_matrix_value">Put your value!</string>
+    <!-- dialog_fragment_setting_matrix_value -->
+    <string name="matrix_value">Value:</string>
 </resources>

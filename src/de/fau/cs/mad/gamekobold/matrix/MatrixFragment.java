@@ -16,9 +16,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -29,9 +28,7 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
-import de.fau.cs.mad.gamekobold.game.CharacterGridAdapter;
 import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
-import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -66,6 +63,7 @@ public class MatrixFragment extends GeneralFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
+
 		LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -260,7 +258,14 @@ public class MatrixFragment extends GeneralFragment {
 						} else {
 							curMatrixItem.setFavorite(false);
 							curMatrixItem.setSelected(true);
+
+							// show popup to set current value
+							// TODO new popup
+
+							showSetValuePopup(curMatrixItem,
+									adapterCreateCharacter);
 							selectedItems.add(curMatrixItem);
+
 							Toast.makeText(
 									getActivity(),
 									((TextView) view
@@ -388,6 +393,13 @@ public class MatrixFragment extends GeneralFragment {
 		return rootView;
 	}
 
+	// just one simple check
+	@Override
+	public void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		Log.d("onSaveInstanceState", "onSaveInstanceState!!!!!!!!!");
+	}
+
 	@Override
 	protected void addItemList() {
 		// TODO Auto-generated method stub
@@ -417,6 +429,7 @@ public class MatrixFragment extends GeneralFragment {
 	private void showPopup() {
 		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment
 				.newInstance(this);
+
 		popupAddNewItemFragment.show(getFragmentManager(),
 				"popupAddNewItemFragment");
 
@@ -425,18 +438,28 @@ public class MatrixFragment extends GeneralFragment {
 	private void showPopupForEditing(MatrixItem item) {
 		AddNewItemDialogFragment popupAddNewItemFragment = AddNewItemDialogFragment
 				.newInstance(this);
+
 		popupAddNewItemFragment.editItem = item;
 		popupAddNewItemFragment.show(getFragmentManager(),
 				"popupAddNewItemFragment");
 	}
 
+	private void showSetValuePopup(MatrixItem item,
+			ArrayAdapter<MatrixItem> adapter) {
+		SettingValueDialogFragment settingValueDialogFragment = SettingValueDialogFragment
+				.newInstance();
+		settingValueDialogFragment.show(getFragmentManager(), "dialog");
+		settingValueDialogFragment.matrixItem = item;
+		settingValueDialogFragment.passAdapter(adapter);
+	}
+
+	// TODO ate refactor
 	public static class AddNewItemDialogFragment extends DialogFragment {
 		private EditText itemName, rangeMin, rangeMax, defaultVal, modificator,
 				description;
 		public MatrixFragment matrixFragment;
 		public MatrixItem editItem = null;
 
-		// TODO pruefen
 		public static AddNewItemDialogFragment newInstance(
 				MatrixFragment receiver) {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
@@ -445,7 +468,14 @@ public class MatrixFragment extends GeneralFragment {
 		}
 
 		@Override
-		public Dialog onCreateDialog(Bundle SaveInstanceState) {
+		public void onCreate(Bundle saveInstanceState) {
+			super.onCreate(saveInstanceState);
+			setRetainInstance(true);
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle saveInstanceState) {
+
 			// Use the Builder class for convenient Dialog construction
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -543,7 +573,8 @@ public class MatrixFragment extends GeneralFragment {
 								max = Integer.parseInt(rangeMax
 										.getEditableText().toString());
 							}
-							final String mod = modificator.getEditableText()
+
+							String mod = modificator.getEditableText()
 									.toString();
 
 							final String desc = description.getEditableText()
@@ -606,6 +637,22 @@ public class MatrixFragment extends GeneralFragment {
 					WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 			return dialog;
 		}
+
+		// just one simple check
+		@Override
+		public void onSaveInstanceState(Bundle bundle) {
+			super.onSaveInstanceState(bundle);
+			Log.d("onSaveInstanceState", "onSaveInstanceState DIALOG!!!!!!!!!");
+		}
+
+		// to stop your dialog from being
+		// dismissed on rotation, due to a bug with the compatibility library
+		// @Override
+		// public void onDestroyView() {
+		// if (getDialog() != null && getRetainInstance())
+		// getDialog().setOnDismissListener(null);
+		// super.onDestroyView();
+		// }
 	}
 
 	/*
