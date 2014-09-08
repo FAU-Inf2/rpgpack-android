@@ -15,12 +15,14 @@ public class AutosaveHandler extends Handler {
 	private final AtomicBoolean running;
 	private final Object theObject;
 	private final Context myContext;
+	private final String toastMessage;
 
 	public AutosaveHandler(Context context, Object objectToSave) {
 		autosaveInterval = context.getResources().getInteger(R.integer.autosave_interval_in_ms);
 		running = new AtomicBoolean(true);
 		theObject = objectToSave;
 		myContext = context;
+		toastMessage = context.getResources().getString(R.string.autosave_toast_text);
 		
 		runnable = new Runnable() {
 			@Override
@@ -30,7 +32,7 @@ public class AutosaveHandler extends Handler {
 					final File characterFile = new File(((CharacterSheet)theObject).getFileAbsolutePath()); 
 					try {
 						JacksonInterface.saveCharacterSheet((CharacterSheet)theObject, characterFile);
-						Toast.makeText(myContext, "Autosave...", Toast.LENGTH_SHORT).show();
+						Toast.makeText(myContext, toastMessage, Toast.LENGTH_SHORT).show();
 					}
 					catch(Throwable e) {
 						e.printStackTrace();
@@ -39,7 +41,7 @@ public class AutosaveHandler extends Handler {
 				else if(theObject instanceof Template) {
 					try {
 						JacksonInterface.saveTemplate((Template)theObject, myContext, true);
-						Toast.makeText(myContext, "Autosave...", Toast.LENGTH_SHORT).show();
+						Toast.makeText(myContext, toastMessage, Toast.LENGTH_SHORT).show();
 					}
 					catch(Throwable e) {
 						e.printStackTrace();

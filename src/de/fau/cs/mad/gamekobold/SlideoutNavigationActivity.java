@@ -45,7 +45,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
 	public static final String MODE_PLAY_CHARACTER = "MODE_PLAY_CHARACTER";
 	public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
-	public static final String AUTO_SAVE_TEMPLATE_ON_EXIT = "AUTO_SAVE_TEMPLATE_ON_EXIT";
+	public static final String AUTO_SAVE_PREFERENCE = "AUTO_SAVE";
 	public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
@@ -54,8 +54,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final String WELCOME_TYPE_NEW_CHARACTER = "WELCOME_NEW_CHARACTER";
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 
-	public static boolean skipNextOnPauseSave = false;
-	public static boolean forceSaveOnNextOnPause = false;
+	public static boolean saveOnNextOnPause = false;
 	public static SlideoutNavigationActivity myActivity = null;
 	public CountDownLatch countDownLatch;
 	protected GeneralFragment currentFragment;

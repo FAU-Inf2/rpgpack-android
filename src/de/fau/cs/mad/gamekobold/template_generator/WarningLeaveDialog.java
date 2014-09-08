@@ -29,9 +29,8 @@ public class WarningLeaveDialog extends DialogFragment{
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.yes_and_trash), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				//TODO: hier sollte verworfen werden
 				// JACKSON START
-				SlideoutNavigationActivity.skipNextOnPauseSave = true;
+				SlideoutNavigationActivity.saveOnNextOnPause = false;
 				// JACKSON END
 				((TemplateGeneratorActivity) SlideoutNavigationActivity.theActiveActivity).superBackPressed();
 			} });
@@ -44,7 +43,7 @@ public class WarningLeaveDialog extends DialogFragment{
 				/*
 				 * JACKSON START
 				 */ 
-				SlideoutNavigationActivity.forceSaveOnNextOnPause = true;
+				SlideoutNavigationActivity.saveOnNextOnPause = true;
 				/*
 				 * JACKSON END
 				 */
