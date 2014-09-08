@@ -11,7 +11,8 @@ public class TemplateStoreClient extends HttpClient {
 
 	//private final String apiUrl = "http://192.168.2.110:8080/templates";
 	private final String apiUrl = "http://kobold-devel.cloudapp.net:8080/templates";
-	
+	private int currentPage=1;
+	private String currentMethod = null;
 	public TemplateStoreClient() {
 		
 	}
@@ -33,8 +34,9 @@ public class TemplateStoreClient extends HttpClient {
 	 * @return
 	 */
 	public ApiResponse getTemplates() {
+		this.currentMethod = "getTemplates";
 		try {
-			this.get(this.apiUrl);
+			this.get(this.apiUrl+"?page="+currentPage);
 		} catch (Exception e) {
 			Log.e("store clients", e.getMessage());
 		}
@@ -69,6 +71,16 @@ public class TemplateStoreClient extends HttpClient {
 	
 	public void cancel() {
 		super.cancel();
+	}
+	
+	public ApiResponse loadMore() {
+		this.currentPage++;
+		return getTemplates();
+		
+	}
+	
+	public void setCurrentPage(int page) {
+		this.currentPage = page;
 	}
 
 }

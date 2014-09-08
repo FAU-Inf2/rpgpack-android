@@ -25,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -54,17 +57,73 @@ public class TemplateStoreMainActivity extends ListActivity {
     PopupWindow popupWindow = null;
     ProgressDialog progress = null;
     SearchView searchView;
+    private boolean isLoading = false;
+	private boolean moreDataAvailable = true;
+	private boolean initialLoad = true;
+    ListView listView;
+    View footer;
     
+      private class ScrollListener implements OnScrollListener {
+	    	private int currentFirstVisibleItem;
+			private int currentVisibleItemCount;
+			private int currentScrollState;
+			private int lastItem;
+			private int totalItemCount;
+
+
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+	    	    this.currentFirstVisibleItem = firstVisibleItem;
+	    	    this.currentVisibleItemCount = visibleItemCount;
+	    	    this.lastItem = firstVisibleItem + visibleItemCount;
+	    	    this.totalItemCount = totalItemCount;
+	    	}
+
+	    	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	    	    this.currentScrollState = scrollState;
+	    	    this.isScrollCompleted();
+	    	 }
+
+	    	private void isScrollCompleted() {
+	    	    if (this.lastItem == this.totalItemCount && this.currentScrollState == SCROLL_STATE_IDLE) {
+	    	    	
+	    	        if(!isLoading && moreDataAvailable ){
+	    	        	// alertMessage("loading...");
+	    	        	 getListView().addFooterView(footer);
+	    	        	 // scroll down to see loading animation
+	    	        	 getListView().setSelection(lastItem);
+	    	             isLoading = true;
+	    	           
+	    	           /* TODO just introduced delay to see the loading animation working... */
+	  	    		   Handler handler = new Handler(); 
+		    		    handler.postDelayed(new Runnable() { 
+		    		         public void run() { 
+			    	             ApiTaskParams apiParams = new ApiTaskParams();
+			    	             apiParams.setMethod("loadMore");
+			    	             ApiTask task = new ApiTask();
+		    		        	 task.execute(apiParams);
+		    		         } 
+		    		    }, 1000);
+	    	             //task.execute(apiParams);
+	    	        }
+	    	    }
+	    	}
+	    	
+	    }
+      
 	  private class ApiTask extends AsyncTask<ApiTaskParams, Integer, ApiResponse> {
 		 
+		  private String method; 
+		  
 		  protected void onPreExecute() {
 			  super.onPreExecute();
+			  if(initialLoad) {
 			  	 progress = new ProgressDialog(TemplateStoreMainActivity.this);
 		         progress.setTitle("Loading");
 		         progress.setMessage("Wait while loading...");
 		         progress.setCanceledOnTouchOutside(false);
 		         progress.show();
-			 // ProgressDialog.show(TemplateStoreMainActivity.this , "Test", "test");
+		         initialLoad = false;
+			  }
 		  }
 		 
 		 @Override
@@ -72,10 +131,14 @@ public class TemplateStoreMainActivity extends ListActivity {
 	         ApiTaskParams apiParam = params[0];
 	         ApiResponse response = null;
 	         
-	         String method = apiParam.getMethod();
+	         method = apiParam.getMethod();
 	         
 
 	         ArrayList<NameValuePair> nameValuePairs;
+	         
+	         if(method != "loadMore") {
+	        	 client.setCurrentPage(1);
+	         }
 	         
 	         switch(method) {
 	         case "getTemplates":
@@ -92,6 +155,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	         case "searchByTag":
 	        	 nameValuePairs = apiParam.getParams();
 	        	 response = client.searchByTag(nameValuePairs);
+	        	 break;
+	         case "loadMore":
+	        	 response = client.loadMore();
 	         default:
 	        	 break;
 	         }
@@ -110,8 +176,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 	     protected void onPostExecute(ApiResponse response) {
 //	         showDialog("Downloaded " + result + " bytes");
 	         // To dismiss the dialog
-	         progress.dismiss();
-	         
+	    	 if(progress != null && progress.isShowing()) {
+	    		 progress.dismiss();
+	    	 }
+	         isLoading = false;
 	    	 // make sure response is ok
 	    	 if(response.resultCode == 200) {
 	    		 ObjectMapper mapper = new ObjectMapper();
@@ -123,17 +191,29 @@ public class TemplateStoreMainActivity extends ListActivity {
 					alertMessage("There was an error processing the result - See log for details");
 					return;					
 				}
+
+	    		 getListView().removeFooterView(footer);
+
 	    		 
 	    		 if(templates.length == 0) {
-	    			 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    			 if(method != "loadMore") {
+	    				 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    			 } else {
+	    				 moreDataAvailable = false;
+	    			 }
 	    			 return;
 	    		 }
 	    		 
-	    		 adapter.clear();
+	    		 // when loading more we want to append results to list
+	    		 if(method != "loadMore") {
+	    			 adapter.clear();
+	    		 }
 	  	   		 for(StoreTemplate tmpl : templates) {
 	    			// alertMessage(tmpl.toString());
 	    			 adapter.add(tmpl);
 	    		 }
+	  	   		 // show first row
+	  	   		 getListView().setSelection(0);
 	  	   		 
 	 	  	 } else {
 	    		 alertMessage(response.toString());
@@ -162,7 +242,6 @@ public class TemplateStoreMainActivity extends ListActivity {
 		setContentView(R.layout.activity_template_store_main);
 		setTitle(R.string.template_store_title);
 		
-		
 	    // Get the intent, verify the action and get the query
 	    Intent intent = getIntent();
 	    handleIntent(intent);
@@ -174,8 +253,14 @@ public class TemplateStoreMainActivity extends ListActivity {
 		this.templates = new ArrayList<StoreTemplate>();
 		this.adapter = new TemplateStoreArrayAdapter(this, templates);
   
+		// set footer
+		this.footer = getLayoutInflater().inflate(R.layout.template_store_loading_footer, null);
+		listView = getListView();
+		listView.addFooterView(footer);
 	    setListAdapter(adapter);
-	      
+	    listView.removeFooterView(footer);
+	    getListView().setOnScrollListener(new ScrollListener());
+  
 		this.task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		/*
@@ -190,6 +275,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 	
+
 	public void onResume() {
 		super.onResume();
 	}
@@ -273,11 +359,13 @@ public class TemplateStoreMainActivity extends ListActivity {
 		boolean is_task = true;
 		switch(id) {
 			case R.id.action_restore :
+				this.restoreListStatus();
 	    		apiParams.setMethod("getTemplates");
 				break;			
 			case R.id.tag_fantasy:
 			case R.id.tag_horror:
 			case R.id.tag_future:
+				this.restoreListStatus();
 				ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 				String tag = (String) item.getTitle();
 				httpParams.add(new BasicNameValuePair("tagname", tag));
@@ -383,5 +471,11 @@ public class TemplateStoreMainActivity extends ListActivity {
 		      }
 		  }
 	      finish();
+	  }
+	  
+	  private void restoreListStatus() {
+		  this.initialLoad = true;
+		  this.isLoading = false;
+		  this.moreDataAvailable = true;
 	  }
 }
