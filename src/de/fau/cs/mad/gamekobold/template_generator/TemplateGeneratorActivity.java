@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.jackson.AutosaveHandler;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.jackson.TemplateSaverTask;
 import android.app.DialogFragment;
@@ -12,16 +13,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
-
+	private AutosaveHandler autosaveHandler;
+	
 	@Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 setContentView(R.layout.activity_template_generator_welcome2);
 		 super.onCreate(savedInstanceState);
+		 // has to be created AFTER SlideoutNavigationActivity.onCreate
+		 autosaveHandler = new AutosaveHandler(this, myTemplate);
 	 }
 	 
 	@Override
 	protected void onStart() {
 		 super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+		autosaveHandler.start();
+		super.onResume();
 	}
 	 
     @Override
@@ -132,6 +142,7 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
     
     @Override
     protected void onPause() {
+    	autosaveHandler.stop();
     	/*
     	 * JACKSON START
     	 */
