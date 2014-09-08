@@ -186,6 +186,7 @@ public class TemplateDetailsActivity extends Activity {
 			public void onClick(View v) {
 				if (curTemplate != null) {
 					if (curTemplate.fileAbsolutePath != null) {
+						Log.d("TemplateDetailsActivity", "editing template now!");
 						String fileName = getFileName();
 						Intent intent = new Intent(
 								TemplateDetailsActivity.this,
@@ -195,6 +196,11 @@ public class TemplateDetailsActivity extends Activity {
 						intent.putExtra(
 								SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 								false);
+						intent.putExtra(SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
+								true);
+//						intent.putExtra(
+//								SlideoutNavigationActivity.MODE_PLAY_CHARACTER,
+//								false);
 						intent.putExtra(
 								SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 								fileName);

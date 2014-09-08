@@ -28,8 +28,8 @@ public class MyClickableSpan extends ClickableSpan {
     	//        Toast.makeText(MyActivity.this,tv.getText(),
     	//        Toast.LENGTH_SHORT).show();
 //		Toast.makeText(mBelongsTo.getActivity(), "TOAST" ,Toast.LENGTH_SHORT).show();
-        Log.d("MyClickableSpan", "MyClickableSpan -> onClick");
-//    	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) mainView.findViewById(R.id.activity_main_tooltipRelativeLayout);
+//        Log.d("MyClickableSpan", "MyClickableSpan -> onClick");
+    	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) mainView.findViewById(R.id.activity_main_tooltipRelativeLayout);
 //    	ToolTip toolTip = new ToolTip()
 //    	.withText("The tooltip")
 //    	.withColor(R.color.red)

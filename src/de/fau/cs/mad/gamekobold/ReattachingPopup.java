@@ -35,6 +35,7 @@ public class ReattachingPopup extends PopupWindow{
 	
 	@Override
 	public void dismiss(){
+		Log.d("ReattachingPopup", "dismissing W/O saving!");
 		if(belongsTo instanceof TableFragment){
         	TableFragment tf = (TableFragment) belongsTo;
         	tf.currentlyShownPopups.remove(popup);
@@ -43,6 +44,7 @@ public class ReattachingPopup extends PopupWindow{
 	}
 	
 	public void saveDismiss(){
+		Log.d("ReattachingPopup", "dismissing but saving for showing it again");
 		super.dismiss();
 	}
 	
@@ -56,9 +58,13 @@ public class ReattachingPopup extends PopupWindow{
 		this.x = x;
 		this.y = y;
 		if(belongsTo instanceof TableFragment){
+			Log.d("ReattachingPopup", "registering popup at fragment");
         	TableFragment tf = (TableFragment) belongsTo;
         	tf.currentlyShownPopups.add(popup);
         }
+		else{
+			Log.d("ReattachingPopup", "This class should not be used in that way!");
+		}
 		if(parent == null){
 			Log.d("ReattachingPopup", "parent IS null!");
 		}

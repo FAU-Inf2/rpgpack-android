@@ -808,7 +808,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         		results.addAll(toAdd);
         	}
         	else if(currentFragment instanceof TableFragment){
-    			Log.d("popupReferences", "tableview found");
+    			Log.d("popupReferences", "tableview found; atm ignoring");
         	}
         	else if(currentFragment instanceof MatrixFragment){
     			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
@@ -1095,11 +1095,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                                 highlightedText.removeSpan(ss[i]);
                     			Log.d("textstyle", "removeSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
                         }
-                        highlightedText.setSpan(new UnderlineSpan(), styleStart, position,  33);
+                        highlightedText.setSpan(new UnderlineSpan(), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             			Log.d("textstyle", "setSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
 //            			Log.d("textstyle", "UNDERLINE from " + styleStart + " to " + position);
                     }
-                    //XXX:note: i think recursive calls to listener are the problem
+                    //XXX:note: i think recursive calls to listener are the problem; dont think so anymore; should be fixed...
             		spans = text.getSpans(styleStart, position, Object.class);
         			Log.d("textstyle", "setting text with " + spans.length + " spans! (" + styleStart + " to " + position + ")");
         			for (int i = 0; i < spans.length; i++) {
@@ -1119,7 +1119,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                         			Log.d("textstyle", "removeSpan: BOLD!!! (" + styleStart + " to " + position + ")");
         						}
         					}
-        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position,  33);
+        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 			Log.d("textstyle", "setSpan: BOLD!!! (" + styleStart + " to " + position + ")");
 //        					Log.d("textstyle", "BOLD from " + styleStart + " to " + position);
 //        				}
@@ -1131,7 +1131,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //                        			Log.d("textstyle", "removeSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
 //        						}
 //        					}
-//        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position,  33);
+//        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                			Log.d("textstyle", "setSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
 //        					Log.d("textstyle", "BOLD_ITALIC from " + styleStart + " to " + position);
 //        				}
@@ -1144,7 +1144,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                     			Log.d("textstyle", "removeSpan: ITALIC (" + styleStart + " to " + position + ")");
                             }
                         }
-                        highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position,  33);
+                        highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             			Log.d("textstyle", "setSpan: ITALIC (" + styleStart + " to " + position + ")");
 //                        Log.d("textstyle", "ITALIC from " + styleStart + " to " + position);
         			}
