@@ -9,6 +9,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * Handler for periodically auto saving a {@link Template} or {@link CharacterSheet}.
+ * @author Benjamin
+ *
+ */
 public class AutosaveHandler extends Handler {
 	private final int autosaveInterval;
 	private final Runnable runnable;
@@ -17,6 +22,12 @@ public class AutosaveHandler extends Handler {
 	private final Context myContext;
 	private final String toastMessage;
 
+	/**
+	 * 
+	 * @param context A valid context for accessing the resources.
+	 * @param objectToSave The {@link Template} or {@link CharacterSheet}.
+	 * The saving process is started when creating the {@link AutosaveHandler}.
+	 */
 	public AutosaveHandler(Context context, Object objectToSave) {
 		autosaveInterval = context.getResources().getInteger(R.integer.autosave_interval_in_ms);
 		running = new AtomicBoolean(true);
@@ -55,10 +66,19 @@ public class AutosaveHandler extends Handler {
 		};
 	}
 	
+	/**
+	 * Starts the auto saving.
+	 */
 	public void start() {
-		postDelayed(runnable, autosaveInterval);
+		if(!running.get()) {
+			running.set(true);
+			postDelayed(runnable, autosaveInterval);
+		}
 	}
 	
+	/**
+	 * Stops the auto saving.
+	 */
 	public void stop() {
 		running.set(false);
 		removeCallbacks(runnable);
