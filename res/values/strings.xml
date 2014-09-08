@@ -278,4 +278,11 @@
 
     <!-- autosave toast string -->
     <string name="autosave_toast_text">Speichere#8230;</string>
+    
+    <!-- SettingValueDialogFragment -->
+    <string name="string_set_matrix_value">Gib aktuellen Wert ein!</string>
+    
+    <!-- dialog_fragment_setting_matrix_value -->
+    <string name="matrix_value">Wert:</string>
+    
 </resources>
