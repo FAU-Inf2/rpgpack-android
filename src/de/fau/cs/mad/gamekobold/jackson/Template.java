@@ -19,7 +19,7 @@ public class Template implements Parcelable{
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
 
-	private String fileName = null;
+	private String fileName = "";
 	private String templateName = "";
 	private String gameName = "";
 	private String author = "";
@@ -43,7 +43,7 @@ public class Template implements Parcelable{
 	@SuppressLint("SimpleDateFormat")
 	@JsonIgnore
 	public String getFileName() {
-		if(fileName == null) {
+		if(fileName.isEmpty()) {
 			final String sanitizedName = JacksonInterface.getSanitizedFileName(templateName); 
 			if(!sanitizedName.isEmpty()) {
 				fileName = sanitizedName + "-" + date;
@@ -180,6 +180,7 @@ public class Template implements Parcelable{
 		dest.writeString(description);
 		dest.writeString(tagString);
 		dest.writeString(iconPath);
+		dest.writeString(fileName);
 	}
 
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -199,6 +200,7 @@ public class Template implements Parcelable{
 			ret.description = source.readString();
 			ret.tagString = source.readString();
 			ret.iconPath = source.readString();
+			ret.fileName = source.readString();
 			return ret;
 		}
 	};

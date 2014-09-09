@@ -103,13 +103,23 @@ public class TemplateBrowserActivity extends ListActivity {
 					}
 					else{
 						Intent i = new Intent(TemplateBrowserActivity.this,
-								TemplateDetailsActivity.class);
+								// TODO HIER
+								CreateNewTemplateActivity.class);
 
 						Log.e("er", "position: " + position);
 
-						i.putExtra("position", position);
-						i.putExtra("template", templateList.get(position));
-						startActivityForResult(i, 0);
+//						i.putExtra("position", position);
+						try {
+							final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
+								JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
+							i.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jacksonTemplate);
+							startActivity(i);
+						}
+						catch(Throwable e) {
+							e.printStackTrace();
+						}
+//						i.putExtra("template", templateList.get(position));
+//						startActivityForResult(i, 0);
 					}
 				}
 			}

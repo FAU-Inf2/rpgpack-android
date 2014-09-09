@@ -129,9 +129,9 @@
     <string name="yes_and_save">"Yes and Save"</string>
 
     <!-- TemplateDetailsActivity -->
-    <string name="edit_template">Edit Template</string>
+    <string name="edit_template">Edit template</string>
     <string name="popup_template_details_info_titel">Template Description</string>
-    <string name="popup_template_details_tags_titel">Template Tags</string>
+    <string name="popup_template_details_tags_titel">Template tags</string>
     <string name="action_delete_template">Delete Template</string>
     <string name="no_description_found">No description found</string>
     <string name="create_new_character">Create new charakter</string>

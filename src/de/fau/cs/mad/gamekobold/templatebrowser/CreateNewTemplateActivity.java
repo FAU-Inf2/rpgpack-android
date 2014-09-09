@@ -38,26 +38,54 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class CreateNewTemplateActivity extends Activity {
 	private Uri imageUri;
-	private Template newTemplate;
+	private Template currentTemplate;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
 	private static Activity myActivity = null;
+	
+	private boolean editTemplate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
 		myActivity = this;
-		newTemplate = new Template();
+		// standard mode is to create a new one
+		editTemplate = false;
+		// check if we got a tempalte for editing
+		final Intent intent = getIntent();
+		final Bundle extras = intent.getExtras();
+		if(extras != null) {
+			currentTemplate = extras.getParcelable(Template.PARCELABLE_STRING);
+			if(currentTemplate != null) {
+				// set mode
+				editTemplate = true;
+			}
+		}
+		if(editTemplate == false) {
+			// creation mode so create a new one
+			currentTemplate = new Template();
+		}
 
-		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
-		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);
+		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
+		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);		
 		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
 		final TextView tvDescription = (TextView) findViewById(R.id.description);
-		Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
+		final Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
+		final Button infoButton = (Button) findViewById(R.id.buttonInfo);
 		
-		Button infoButton = (Button) findViewById(R.id.buttonInfo);
+		// set values from template and change button text
+		if(editTemplate) {
+			tvTemplateName.setText(currentTemplate.getTemplateName());
+			tvGameName.setText(currentTemplate.getGameName());
+			tvDescription.setText(currentTemplate.getDescription());
+			createTemplateButton.setText(R.string.edit_template);
+			final Bitmap icon = ThumbnailLoader.loadThumbnail(currentTemplate.getIconPath(), this);
+			if(icon != null) {
+				addImageButton.setImageBitmap(icon);
+			}
+		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.select_dialog_item, getResources()
@@ -128,6 +156,8 @@ public class CreateNewTemplateActivity extends Activity {
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// check if the template name is empty
+				// prevent templates with no name
 				if (tvTemplateName.getEditableText().toString().equals("")) {
 					Toast.makeText(
 							getApplicationContext(),
@@ -136,9 +166,17 @@ public class CreateNewTemplateActivity extends Activity {
 					return;
 				}
 				// add new template to list on template browser-view
-				Toast.makeText(getApplicationContext(),
-						"Dein Template wird erstellt!", Toast.LENGTH_SHORT)
-						.show();
+				// TODO international strings
+				if(editTemplate) {
+					Toast.makeText(getApplicationContext(),
+					"Editiere jetzt dein Template!", Toast.LENGTH_SHORT)
+					.show();
+				}
+				else {
+					Toast.makeText(getApplicationContext(),
+					"Dein Template wird erstellt!", Toast.LENGTH_SHORT)
+					.show();					
+				}
 
 				// it goes template generator
 				final Intent intent = new Intent(
@@ -148,32 +186,40 @@ public class CreateNewTemplateActivity extends Activity {
 				/*
 				 * JACKSON START
 				 */
+				if(editTemplate) {
+					intent.putExtra(
+							SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
+							true);
+				}
+				else {
+					intent.putExtra(
+							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							true);					
+				}
 				// flag to distinguish between editing and creating
-				intent.putExtra(
-						SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-						true);
 				intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 
 				// create template for data transfer
 				// set data
-				newTemplate.setTemplateName(tvTemplateName.getText().toString());
-				newTemplate.setGameName(tvGameName.getText().toString());
+				currentTemplate.setTemplateName(tvTemplateName.getText().toString());
+				currentTemplate.setGameName(tvGameName.getText().toString());
 				// TODO author
-				newTemplate.setAuthor("Registered Author");
-				newTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
+				currentTemplate.setAuthor("Registered Author");
+				currentTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
 						.format(new Date()));
-				newTemplate.setDescription(tvDescription.getText().toString());
-				// check to see if a file for this template already exists
-				if (JacksonInterface.doesTemplateFileExist(newTemplate, myActivity)) {
-					// if yes we show a dialog and ask whether to overwrite the
-					// file or not.
-					final AlertDialog.Builder builder = new AlertDialog.Builder(
+				currentTemplate.setDescription(tvDescription.getText().toString());
+				if(!editTemplate) {
+					// check to see if a file for this template already exists
+					if (JacksonInterface.doesTemplateFileExist(currentTemplate, myActivity)) {
+						// if yes we show a dialog and ask whether to overwrite the
+						// file or not.
+						final AlertDialog.Builder builder = new AlertDialog.Builder(
 							myActivity);
-					builder.setTitle(getResources().getString(
+						builder.setTitle(getResources().getString(
 							R.string.msg_file_already_exists));
-					builder.setMessage(getResources().getString(
+						builder.setMessage(getResources().getString(
 							R.string.msg_yes_to_overwrite));
-					builder.setNegativeButton(
+						builder.setNegativeButton(
 							getResources().getString(R.string.no),
 							new DialogInterface.OnClickListener() {
 								@Override
@@ -181,31 +227,31 @@ public class CreateNewTemplateActivity extends Activity {
 										int which) {
 								}
 							});
-					builder.setPositiveButton(
+						builder.setPositiveButton(
 							getResources().getString(R.string.yes),
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									intent.putExtra(
-											de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
-											newTemplate);
+											Template.PARCELABLE_STRING,
+											currentTemplate);
 									startActivity(intent);
 								}
 							});
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				} else {
-					// if the file does not exists continue
-					intent.putExtra(
-							de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING,
-							newTemplate);
-					startActivity(intent);
+						AlertDialog dialog = builder.create();
+						dialog.show();
+						return;
+					}
 				}
+				intent.putExtra(
+						Template.PARCELABLE_STRING,
+						currentTemplate);
+				startActivity(intent);
 				/*
 				 * JACKSON END
 				 */
-			}
+				}
 		});
 
 		if (savedInstanceState == null) {
@@ -245,7 +291,7 @@ public class CreateNewTemplateActivity extends Activity {
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 		addImageButton.setImageBitmap(bitmap);
 		// set icon path
-		newTemplate.setIconPath(path);
+		currentTemplate.setIconPath(path);
 	}
 
 	@Override
@@ -269,7 +315,7 @@ public class CreateNewTemplateActivity extends Activity {
 	
 	private void showPopup() {
 		TemplateTagsDialogFragment popupTemplateTagsFragment = TemplateTagsDialogFragment
-				.newInstance(this, newTemplate);
+				.newInstance(this, currentTemplate);
 		popupTemplateTagsFragment.show(getFragmentManager(),
 				"popupTemplateTagsFragment");
 	}
