@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    android:background="@color/background_dark"
     android:orientation="vertical" >
 
     <TextView
@@ -17,7 +16,6 @@
         android:paddingRight="40dp"
         android:paddingTop="25dp"
         android:text="@string/matrix_value"
-        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <EditText

@@ -21,7 +21,7 @@ import de.fau.cs.mad.gamekobold.R;
 
 public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_VALUE = "KEY_SAVE_MATRIX_VALUE";
-
+	private EditText editTextMatrixValue;
 	protected ArrayAdapter<MatrixItem> selectedItemsAdapter;
 	protected ArrayList<MatrixItem> selectedItems;
 	public MatrixItem matrixItem = null;
@@ -53,7 +53,7 @@ public class SettingValueDialogFragment extends DialogFragment {
 		View view = getActivity().getLayoutInflater().inflate(
 				R.layout.dialog_fragment_setting_matrix_value, null);
 
-		EditText editTextMatrixValue = (EditText) view
+		editTextMatrixValue = (EditText) view
 				.findViewById(R.id.editTextMatrixValue);
 
 		Log.d("savedInstanceState? STRING??????", ""
@@ -63,18 +63,18 @@ public class SettingValueDialogFragment extends DialogFragment {
 			Log.d("savedInstanceState, STRING IS DA!!!!!!", ""
 					+ savedInstanceState.getString(KEY_SAVE_MATRIX_VALUE));
 
+			// TODO ate not working!
 			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_VALUE)) {
 				editTextMatrixValue.setText((savedInstanceState
 						.getString(KEY_SAVE_MATRIX_VALUE)));
 
 			}
-			editTextMatrixValue.setText("privet!");
 		}
 
 		alertDialogBuilder.setView(view);
 		alertDialogBuilder.setTitle(getResources().getString(
 				R.string.string_set_matrix_value));
-		Log.d("3333333333333333333333333333", "" + (savedInstanceState == null));
+
 		// create add and subtract buttons for the dialog
 		ImageButton addButton = (ImageButton) view
 				.findViewById(R.id.button_add_column);
@@ -102,8 +102,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
 			}
 		});
-
-		Log.d("2222222222222222222222222", "" + (savedInstanceState == null));
 
 		alertDialogBuilder.setPositiveButton(
 				getResources().getString(R.string.save),
@@ -140,8 +138,7 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 		// Create the AlertDialog object and return it
 		final AlertDialog dialog = alertDialogBuilder.create();
-
-		Log.d("111111111111111111111111111", "" + (savedInstanceState == null));
+		
 
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
