@@ -21,11 +21,6 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 		super.onCreate(savedInstanceState);
 		// has to be created AFTER SlideoutNavigationActivity.onCreate
 		autosaveHandler = new AutosaveHandler(this, myTemplate);
-		SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-		// check for user setting
-		if (!prefs.getBoolean(AUTO_SAVE_PREFERENCE, true)) {
-			autosaveHandler.stop();
-		}
 	}
 
 	@Override
@@ -35,7 +30,11 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 
 	@Override
 	protected void onResume() {
-		autosaveHandler.start();
+		// check for user setting
+		final SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+		if (prefs.getBoolean(AUTO_SAVE_PREFERENCE, true)) {
+			autosaveHandler.start();
+		}
 		super.onResume();
 	}
 
