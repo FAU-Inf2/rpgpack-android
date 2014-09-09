@@ -86,7 +86,8 @@
             android:hint="@string/hint_world_name"
             android:textColor="@color/white"
             android:textSize="16sp" />
-
+        
+	<!-- temp. disabled  
         <Button
             android:id="@+id/buttonInfo"
             android:layout_width="25dp"
@@ -98,7 +99,8 @@
             android:layout_marginRight="5dip"
             android:background="@drawable/info2_white"
             android:scaleType="fitXY" />
-
+ 		-->
+ 		
         <TextView
             android:id="@+id/textAddIcon"
             android:layout_width="wrap_content"
