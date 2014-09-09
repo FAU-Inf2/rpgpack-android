@@ -28,7 +28,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
@@ -39,7 +38,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
@@ -89,76 +87,77 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	  @Override
 	  public View getChildView(final int groupPosition, final int childPosition,
 			  boolean isLastChild, View convertView, ViewGroup parent) {
-	  Log.d("CustomExpandableListAdapter", "getChildView!");
+//	  Log.d("CustomExpandableListAdapter", "getChildView!");
 		  if (convertView == null) {
 			  LayoutInflater infalInflater = (LayoutInflater) mContext
 					  .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			  convertView = infalInflater.inflate(R.layout.table_view_child_item,
 					  null);
-			  LinearLayout content = (LinearLayout) convertView.findViewById(R.id.content_keeper);
-			  content.removeAllViews();
-			  final String headline = mHeadlines[childPosition];
-			  if(mTypes[groupPosition][childPosition] == content_type.editText){
-				  TextView txt = new TextView(mContext);
-				  txt.setText(mContents[groupPosition][childPosition]);
-				  content.addView(txt);
-			  }
-			  else if(mTypes[groupPosition][childPosition] == content_type.popup){
-				  //			  TextView txt = new TextView(mContext);
-				  //			  txt.setText("...");
-				  //			  txt.setTextColor(mContext.getResources().getColor(R.color.green));
-				  LinearLayout popup = initPopup(headline, mJacksonTable.getEntry(childPosition, groupPosition), childPosition, groupPosition);
-//				  popup.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//				  int popupHeight = popup.getMeasuredHeight();
-//				  item.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//				  int itemHeight = popup.getMeasuredHeight();
-//				  if(popupHeight < itemHeight){
-//					  LayoutParams popupParams = popup.getLayoutParams();
-//					  LayoutParams p = new LinearLayout.LayoutParams(popupParams.width, itemHeight);
-//					  popup.setLayoutParams(p);
-//				  }
-				  LayoutParams p = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL);
-				  content.setLayoutParams(p);
-//				  int paddingBottom = content.getPaddingBottom();
-//				  int paddingRight = content.getPaddingRight();
-//				  int paddingTop = content.getPaddingTop();
-//				  content.setPadding(android.R.attr.expandableListPreferredChildPaddingLeft, paddingTop, paddingRight, paddingBottom);
-				  content.addView(popup);
-				  
-//				  LayoutParams p = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL);
-//				  popup.setLayoutParams(p);
-				  content = popup;
-
-				  //			  content = popup;
-			  }
-			  else if(mTypes[groupPosition][childPosition] == content_type.checkbox){
-				  CheckBox cb = new CheckBox(mContext);
-				  cb.setButtonDrawable(R.drawable.custom_checkbox);
-				  final IEditableContent jacksonEntry =
-						  mJacksonTable.getEntry(childPosition, groupPosition);
-				  if(jacksonEntry != null) {
-					  // sets the onCheckedChangeListener
-					  // this is needed so we can take over the changes to our jackson model
-					  cb.setOnCheckedChangeListener(this);
-					  // sets the associated jackson row to this 
-					  cb.setTag(R.id.jackson_row_tag_id, jacksonEntry);
-					  // set checked state to jackson state
-					  cb.setChecked(Boolean.parseBoolean(jacksonEntry.getContent()));
-				  }
-				  content.addView(cb);
-			  }
-			  final TextView item = (TextView) convertView.findViewById(R.id.table_view_item);
-//			  item.addTextChangedListener(new TextWatcher(){
-//					public void afterTextChanged(Editable s) {
-//						resizePopup(item, convView);
-//					}
-//					public void beforeTextChanged(CharSequence s, int start, int count, int after){
-//					}
-//					public void onTextChanged(CharSequence s, int start, int before, int count){
-//					}
-//				});
-			  item.setText(headline + ":");
+			  
 		  }
+		  LinearLayout content = (LinearLayout) convertView.findViewById(R.id.content_keeper);
+		  content.removeAllViews();
+		  final String headline = mHeadlines[childPosition];
+		  if(mTypes[groupPosition][childPosition] == content_type.editText){
+			  TextView txt = new TextView(mContext);
+			  txt.setText(mContents[groupPosition][childPosition]);
+			  content.addView(txt);
+		  }
+		  else if(mTypes[groupPosition][childPosition] == content_type.popup){
+			  //			  TextView txt = new TextView(mContext);
+			  //			  txt.setText("...");
+			  //			  txt.setTextColor(mContext.getResources().getColor(R.color.green));
+			  LinearLayout popup = initPopup(headline, mJacksonTable.getEntry(childPosition, groupPosition), childPosition, groupPosition);
+//			  popup.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//			  int popupHeight = popup.getMeasuredHeight();
+//			  item.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//			  int itemHeight = popup.getMeasuredHeight();
+//			  if(popupHeight < itemHeight){
+//				  LayoutParams popupParams = popup.getLayoutParams();
+//				  LayoutParams p = new LinearLayout.LayoutParams(popupParams.width, itemHeight);
+//				  popup.setLayoutParams(p);
+//			  }
+			  LayoutParams p = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL);
+			  content.setLayoutParams(p);
+//			  int paddingBottom = content.getPaddingBottom();
+//			  int paddingRight = content.getPaddingRight();
+//			  int paddingTop = content.getPaddingTop();
+//			  content.setPadding(android.R.attr.expandableListPreferredChildPaddingLeft, paddingTop, paddingRight, paddingBottom);
+			  content.addView(popup);
+			  
+//			  LayoutParams p = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL);
+//			  popup.setLayoutParams(p);
+			  content = popup;
+
+			  //			  content = popup;
+		  }
+		  else if(mTypes[groupPosition][childPosition] == content_type.checkbox){
+			  CheckBox cb = new CheckBox(mContext);
+			  cb.setButtonDrawable(R.drawable.custom_checkbox);
+			  final IEditableContent jacksonEntry =
+					  mJacksonTable.getEntry(childPosition, groupPosition);
+			  if(jacksonEntry != null) {
+				  // sets the onCheckedChangeListener
+				  // this is needed so we can take over the changes to our jackson model
+				  cb.setOnCheckedChangeListener(this);
+				  // sets the associated jackson row to this 
+				  cb.setTag(R.id.jackson_row_tag_id, jacksonEntry);
+				  // set checked state to jackson state
+				  cb.setChecked(Boolean.parseBoolean(jacksonEntry.getContent()));
+			  }
+			  content.addView(cb);
+		  }
+		  final TextView item = (TextView) convertView.findViewById(R.id.table_view_item);
+//		  item.addTextChangedListener(new TextWatcher(){
+//				public void afterTextChanged(Editable s) {
+//					resizePopup(item, convView);
+//				}
+//				public void beforeTextChanged(CharSequence s, int start, int count, int after){
+//				}
+//				public void onTextChanged(CharSequence s, int start, int before, int count){
+//				}
+//			});
+		  item.setText(headline + ":");
 		  final View convView = convertView;
 		  
 //			resizePopup(convView, convView);
@@ -209,55 +208,68 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	    return 0;
 	  }
 	  @Override
-	  public View getGroupView(int groupPosition, boolean isExpanded,
+	  public View getGroupView(final int groupPosition, boolean isExpanded,
 	      View convertView, ViewGroup parent) {
 	    if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.table_view_group_item,
                     null);
-            TextView item = (TextView) convertView.findViewById(R.id.rowName);
-    	    item.setTypeface(Typeface.DEFAULT_BOLD);
-    	    item.setPaintFlags(item.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-    	    item.setText(mTitles[groupPosition]);
-//    	    row.setTextSize(R.dimen.text_large);
-    	    final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
-    	    final CheckBox favorite = (CheckBox) convertView.findViewById(R.id.favorite_checkbox);
-    	    final Row jacksonRow = mJacksonTable.getRow(groupPosition);
-    	    checkbox.setChecked(jacksonRow.isSelected());
-    	    favorite.setChecked(jacksonRow.isFavorite());
-    	    checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-    	    	final Row mRow = jacksonRow;
-    			@Override
-    			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    				mRow.setSelected(isChecked);
-    				if(!isChecked){
-    					favorite.setChecked(false);
-    					mRow.setFavorite(false);
-    				}
-//    				Log.d("CUSTOM EXP ADAPTER", "onCheckedChange:"+isChecked);
-    			}
-    		});
-    	    favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-    	    	final Row mRow = jacksonRow;
-    		    //TODO: fuer Benni: Favorit in Jackson setzen
-    			@Override
-    			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-    				mRow.setFavorite(isChecked);
-    				if(isChecked){
-    					checkbox.setChecked(true);
-    					mRow.setSelected(true);
-    				}
-    			}
-    		});
+            
         }
+	    TextView item = (TextView) convertView.findViewById(R.id.rowName);
+	    item.setTypeface(Typeface.DEFAULT_BOLD);
+	    item.setPaintFlags(item.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+	    item.setText(mTitles[groupPosition]);
+//	    row.setTextSize(R.dimen.text_large);
+	    final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
+	    final CheckBox favorite = (CheckBox) convertView.findViewById(R.id.favorite_checkbox);
+	    final Row jacksonRow = mJacksonTable.getRow(groupPosition);
+	    //important: remove listener before setting -> else listener will be called
+	    checkbox.setOnCheckedChangeListener(null);
+	    checkbox.setChecked(jacksonRow.isSelected());
+	    favorite.setOnCheckedChangeListener(null);
+	    favorite.setChecked(jacksonRow.isFavorite());
+		Log.d("CUSTOM EXP ADAPTER", "groupNumber: " + groupPosition + "; fav: " +
+				jacksonRow.isFavorite() + ", checked: "	+ jacksonRow.isSelected());
+	    checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//	    	final Row mRow = jacksonRow;
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//				mRow.setSelected(isChecked);
+				Log.d("CUSTOM EXP ADAPTER", "groupNumber: " + groupPosition + "checkbon: " +
+						isChecked);
+				mJacksonTable.getRow(groupPosition).setSelected(isChecked);
+				checkbox.setSelected(isChecked);
+				if(!isChecked){
+					favorite.setChecked(false);
+//					mRow.setFavorite(false);
+					mJacksonTable.getRow(groupPosition).setFavorite(false);
+				}
+//				Log.d("CUSTOM EXP ADAPTER", "onCheckedChange:"+isChecked);
+			}
+		});
+	    favorite.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//	    	final Row mRow = jacksonRow;
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//				mRow.setFavorite(isChecked);
+				mJacksonTable.getRow(groupPosition).setFavorite(isChecked);
+				favorite.setSelected(isChecked);
+				if(isChecked){
+					checkbox.setChecked(true);
+//					mRow.setSelected(true);
+					mJacksonTable.getRow(groupPosition).setSelected(true);
+				}
+			}
+		});
         
 	    return convertView;
 	  }
 
 	  @Override
 	  public boolean hasStableIds() {
-	    return false;
+	    return true;
 	  }
 
 	  @Override
@@ -281,7 +293,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	  int cursorLoc = 0;
 
 	  private LinearLayout initPopup(final String headline, final IEditableContent jacksonEntry, final int columnIndex, final int rowIndex){
-		  Log.d("CUSTOM_EXPANDABLE_LIST_ADAPTER", "init_popup");
+//		  Log.d("CUSTOM_EXPANDABLE_LIST_ADAPTER", "init_popup");
 
 		  final LinearLayout ll = new LinearLayout(mContext);
 		  final TextView newElement = new TextView(mContext);
@@ -431,7 +443,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 		  if(!jacksonEntry.getContent().isEmpty()) {
 			  //	        	inputPopup.setText(jacksonEntry.getContent());
 			  inputPopup.setText(jacksonEntry.getContent());
-			  //XXX: references activation
 			  if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
 				  Log.d("CustomExpendableListAdapter", "durchsuche Popup nach Referenzen!");
 				  String searchForReferences = inputPopup.getText().toString();
@@ -444,7 +455,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 				  while (m.find()){
 					  foundAny = true;
 					  //	        	    	System.out.print("Start index: " + matcher.start());
-					  //TODO: copy&paste for highlighting popup?
 					  int startIndex = m.start();
 					  int endIndex = startIndex;
 					  while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
