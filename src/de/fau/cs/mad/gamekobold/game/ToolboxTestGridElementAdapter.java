@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
@@ -33,7 +34,7 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 			convertView = inflater.inflate(
 					R.layout.activity_game_toolbox_test_cell, null);
 
-		TextView textView = (TextView) convertView
+		TextView imageView = (TextView) convertView
 				.findViewById(R.id.grid_test_item);
 		return convertView;
 	}
