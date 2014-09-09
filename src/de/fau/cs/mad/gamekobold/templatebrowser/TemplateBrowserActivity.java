@@ -35,6 +35,7 @@ public class TemplateBrowserActivity extends ListActivity {
 	// time stamp of the template directory
 	// with this we can determine if a template has been deleted / created
 	private long templateFolderTimeStamp = 0;
+	public static final String CREATE_CHAR_DIRECT = "CREATE_CHAR_DIRECT";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +87,30 @@ public class TemplateBrowserActivity extends ListActivity {
 				}
 				// JACKSON end
 				else {
-					Intent i = new Intent(TemplateBrowserActivity.this,
-							TemplateDetailsActivity.class);
+					//check if we came here from character browser
+					//and want to create a character from this template directly
+					final Intent intent = getIntent();
+					final Bundle extras = intent.getExtras();
+					boolean createCharDirectly = false;
+					if (extras != null) {
+						createCharDirectly = extras.getBoolean(CREATE_CHAR_DIRECT);
+					}
+					if(createCharDirectly){
+						Intent i = new Intent(TemplateBrowserActivity.this,
+								CreateNewCharacterActivity.class);
+						i.putExtra("templateFileName", templateList.get(position).getFileName());
+						startActivity(i);
+					}
+					else{
+						Intent i = new Intent(TemplateBrowserActivity.this,
+								TemplateDetailsActivity.class);
 
-					Log.e("er", "position: " + position);
+						Log.e("er", "position: " + position);
 
-					i.putExtra("position", position);
-					i.putExtra("template", templateList.get(position));
-					startActivityForResult(i, 0);
+						i.putExtra("position", position);
+						i.putExtra("template", templateList.get(position));
+						startActivityForResult(i, 0);
+					}
 				}
 			}
 		});

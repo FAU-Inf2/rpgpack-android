@@ -58,73 +58,74 @@ public class TemplateDetailsActivity extends Activity {
 
 		List<CharacterSheet> characters = new ArrayList<CharacterSheet>();
 		adapter = new CharacterGridArrayAdapter(this, characters);
-
-		gridView = (GridView) findViewById(R.id.gridView1);
-		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long id) {
-				Log.d("TemplateDetailsActivity", "character grid click:"
-						+ position);
-				if (position != adapter.getCount() - 1) {
-					Intent i = new Intent(TemplateDetailsActivity.this,
-							CharacterDetailsActivity.class);
-					i.putExtra("CharacterSheet", adapter.getItem(position));
-					i.putExtra("templateFileName", getFileName());
-					startActivity(i);
-				}
-				else {
-					// create new character
-					Intent i = new Intent(TemplateDetailsActivity.this,
-							CreateNewCharacterActivity.class);
-					// TODO bei den anderen auch curTemplate.getFileName()
-					i.putExtra("templateFileName", curTemplate.getFileName());
-					startActivity(i);
-				}
-			}
-		});
-		
-		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int position, long id) {
-				// skip last element ("create new character")
-				if(position == adapter.getCount()-1) {
-					return true;
-				}
-				final CharacterSheet clickedSheet = adapter.getItem(position);
-				// create and show dialog
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						TemplateDetailsActivity.this);
-				builder.setTitle(getResources().getString(
-						R.string.msg_ask_character_deletion));
-				builder.setMessage(getResources().getString(
-						R.string.msg_yes_to_delete_character));
-				builder.setNegativeButton( 
-						getResources().getString(R.string.no),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {}
-						});
-				builder.setPositiveButton(
-						getResources().getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick( DialogInterface dialog, int which) {
-								File sheetFile = new File(clickedSheet.getFileAbsolutePath());
-								if(sheetFile != null) {
-									sheetFile.delete();
-									adapter.remove(clickedSheet);
-									adapter.notifyDataSetChanged();
-								}
-							}
-						});
-				// show dialog
-				builder.create().show();
-				return true;
-			}
-		});
+	
+		//uncommenting the characters -> shall not be shown
+//		gridView = (GridView) findViewById(R.id.gridView1);
+//		gridView.setAdapter(adapter);
+//		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1,
+//					int position, long id) {
+//				Log.d("TemplateDetailsActivity", "character grid click:"
+//						+ position);
+//				if (position != adapter.getCount() - 1) {
+//					Intent i = new Intent(TemplateDetailsActivity.this,
+//							CharacterDetailsActivity.class);
+//					i.putExtra("CharacterSheet", adapter.getItem(position));
+//					i.putExtra("templateFileName", getFileName());
+//					startActivity(i);
+//				}
+//				else {
+//					// create new character
+//					Intent i = new Intent(TemplateDetailsActivity.this,
+//							CreateNewCharacterActivity.class);
+//					// TODO bei den anderen auch curTemplate.getFileName()
+//					i.putExtra("templateFileName", curTemplate.getFileName());
+//					startActivity(i);
+//				}
+//			}
+//		});
+//		
+//		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+//					int position, long id) {
+//				// skip last element ("create new character")
+//				if(position == adapter.getCount()-1) {
+//					return true;
+//				}
+//				final CharacterSheet clickedSheet = adapter.getItem(position);
+//				// create and show dialog
+//				AlertDialog.Builder builder = new AlertDialog.Builder(
+//						TemplateDetailsActivity.this);
+//				builder.setTitle(getResources().getString(
+//						R.string.msg_ask_character_deletion));
+//				builder.setMessage(getResources().getString(
+//						R.string.msg_yes_to_delete_character));
+//				builder.setNegativeButton( 
+//						getResources().getString(R.string.no),
+//						new DialogInterface.OnClickListener() {
+//							@Override
+//							public void onClick(DialogInterface dialog, int which) {}
+//						});
+//				builder.setPositiveButton(
+//						getResources().getString(R.string.yes),
+//						new DialogInterface.OnClickListener() {
+//							@Override
+//							public void onClick( DialogInterface dialog, int which) {
+//								File sheetFile = new File(clickedSheet.getFileAbsolutePath());
+//								if(sheetFile != null) {
+//									sheetFile.delete();
+//									adapter.remove(clickedSheet);
+//									adapter.notifyDataSetChanged();
+//								}
+//							}
+//						});
+//				// show dialog
+//				builder.create().show();
+//				return true;
+//			}
+//		});
 
 		TemplateIcons templateIcons = TemplateIcons.getInstance();
 
