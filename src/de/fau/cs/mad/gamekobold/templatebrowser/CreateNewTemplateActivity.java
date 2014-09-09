@@ -43,8 +43,6 @@ import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity.Template
 public class CreateNewTemplateActivity extends Activity {
 	private Uri imageUri;
 	private Template newTemplate;
-//	temp. disabled info button
-//	private EditText edDescription;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
@@ -58,14 +56,12 @@ public class CreateNewTemplateActivity extends Activity {
 		newTemplate = new Template();
 
 		ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
-//		temp. disabled info button
-//		edDescription = (EditText)findViewById(R.id.description);
 		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);
 		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
 		final TextView tvDescription = (TextView) findViewById(R.id.description);
 		Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
-//		temp. disabled info button
-//		Button infoButton = (Button) findViewById(R.id.buttonInfo);
+		
+		Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.select_dialog_item, getResources()
@@ -125,14 +121,13 @@ public class CreateNewTemplateActivity extends Activity {
 			}
 		});
 
-		// temp. disabled info button
-//		infoButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				// show popup with TemplateInfo
-//				showPopup();
-//			}
-//		});
+		infoButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// show popup with TemplateTags
+				showPopup();
+			}
+		});
 
 		createTemplateButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -332,91 +327,88 @@ public class CreateNewTemplateActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-//	temp. disabled info button
-//	private void showPopup() {
-//		TemplateInfoDialogFragment popupTemplateInfoFragment = TemplateInfoDialogFragment
-//				.newInstance(this, newTemplate);
-//		popupTemplateInfoFragment.show(getFragmentManager(),
-//				"popupTemplateInfoFragment");
-//	}
+	private void showPopup() {
+		TemplateTagsDialogFragment popupTemplateTagsFragment = TemplateTagsDialogFragment
+				.newInstance(this, newTemplate);
+		popupTemplateTagsFragment.show(getFragmentManager(),
+				"popupTemplateTagsFragment");
+	}
 
-//	temp. disabled info button
-//	public static class TemplateInfoDialogFragment extends DialogFragment {
-//		public CreateNewTemplateActivity createNewTemplateActivity;
-//		private Template myTemplate;
-//
-//		public static TemplateInfoDialogFragment newInstance(
-//				CreateNewTemplateActivity createNewTemplateActivity,
-//				Template template) {
-//			TemplateInfoDialogFragment fragment = new TemplateInfoDialogFragment();
-//			fragment.createNewTemplateActivity = createNewTemplateActivity;
-//			fragment.myTemplate = template;
-//			return fragment;
-//		}
-//
-//		@Override
-//		public Dialog onCreateDialog(Bundle SaveInstanceState) {
-//			// Use the Builder class for convenient Dialog construction
-//			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//
-//			// Get the layout inflater
-//			LayoutInflater inflater = getActivity().getLayoutInflater();
-//
-//			// Inflate and set the layout for the dialog
-//			// Pass null as the parent view because its going in the dialog
-//			// layout
-//			View view = inflater.inflate(R.layout.popup_template_details_info,
-//					null);
-//
-//			builder.setView(view);
-//
-//			// set Dialog characteristics
-//			// get right button text
-//			String positiveButtonText;
-//
-//			positiveButtonText = getString(R.string.save_changes);
-//			final EditText editText = (EditText)view.findViewById(R.id.editTextAdditionalInformation);
-//			editText.setText(myTemplate.getDescription());
-//
-//			builder.setMessage(getString(R.string.popup_template_details_info_titel));
-//			builder.setPositiveButton(positiveButtonText,
-//					new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int id) {
-//							myTemplate.setDescription(editText.getEditableText().toString());
-//							createNewTemplateActivity.edDescription.setText(editText.getEditableText().toString());
-//						}
-//					});
-//
-//			builder.setNegativeButton(getString(R.string.cancel),
-//					new DialogInterface.OnClickListener() {
-//						@Override
-//						public void onClick(DialogInterface dialog, int id) {
-//							// User cancelled the dialog
-//							TemplateInfoDialogFragment.this.getDialog()
-//									.cancel();
-//						}
-//					});
-//
-//			// Create the AlertDialog object and return it
-//			final AlertDialog dialog = builder.create();
-//
-//			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//				@Override
-//				public void onShow(final DialogInterface dialog) {
-//
-//					Button positiveButton = ((AlertDialog) dialog)
-//							.getButton(DialogInterface.BUTTON_POSITIVE);
-//
-//					// set OK button color here
-//					positiveButton.setBackgroundColor(getActivity()
-//							.getResources().getColor(R.color.bright_green));
-//					positiveButton.invalidate();
-//				}
-//			});
-//			return dialog;
-//		}
-//	}
+	public static class TemplateTagsDialogFragment extends DialogFragment {
+		public CreateNewTemplateActivity createNewTemplateActivity;
+		private Template myTemplate;
+
+		public static TemplateTagsDialogFragment newInstance(
+				CreateNewTemplateActivity createNewTemplateActivity,
+				Template template) {
+			TemplateTagsDialogFragment fragment = new TemplateTagsDialogFragment();
+			fragment.createNewTemplateActivity = createNewTemplateActivity;
+			fragment.myTemplate = template;
+			return fragment;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle SaveInstanceState) {
+			// Use the Builder class for convenient Dialog construction
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+			// Get the layout inflater
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+
+			// Inflate and set the layout for the dialog
+			// Pass null as the parent view because its going in the dialog
+			// layout
+			View view = inflater.inflate(R.layout.popup_template_tag_info,
+					null);
+
+			builder.setView(view);
+
+			// set Dialog characteristics
+			// get right button text
+			String positiveButtonText;
+
+			positiveButtonText = getString(R.string.save_changes);
+			final EditText editText = (EditText)view.findViewById(R.id.editTextAdditionalInformation);
+			editText.setText(myTemplate.getTagString());
+
+			builder.setMessage(getString(R.string.popup_template_details_tags_titel));
+			builder.setPositiveButton(positiveButtonText,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							myTemplate.setTagString(editText.getEditableText().toString());
+						}
+					});
+
+			builder.setNegativeButton(getString(R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+							TemplateTagsDialogFragment.this.getDialog()
+									.cancel();
+						}
+					});
+
+			// Create the AlertDialog object and return it
+			final AlertDialog dialog = builder.create();
+
+			dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+				@Override
+				public void onShow(final DialogInterface dialog) {
+
+					Button positiveButton = ((AlertDialog) dialog)
+							.getButton(DialogInterface.BUTTON_POSITIVE);
+
+					// set OK button color here
+					positiveButton.setBackgroundColor(getActivity()
+							.getResources().getColor(R.color.bright_green));
+					positiveButton.invalidate();
+				}
+			});
+			return dialog;
+		}
+	}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -449,7 +441,5 @@ public class CreateNewTemplateActivity extends Activity {
 			return cursor.getString(column_index);
 		} else
 			return null;
-
 	}
-
 }

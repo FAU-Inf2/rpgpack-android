@@ -131,6 +131,7 @@
     <!-- TemplateDetailsActivity -->
     <string name="edit_template">Template bearbeiten</string>
     <string name="popup_template_details_info_titel">Template Beschreibung</string>
+    <string name="popup_template_details_tags_titel">Template Tags</string>
     <string name="action_delete_template">Template löschen</string>
     <string name="no_description_found">Keine Beschreibung gefunden</string>
     <string name="create_new_character">Charakter erstellen</string>
@@ -176,6 +177,7 @@
 
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Hier hast Du Platz für deine Notizen&#8230;</string>
+ 	<string name="hint_tag_string">Durch Komma getrennte Tags&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
 
     <!-- game -->
