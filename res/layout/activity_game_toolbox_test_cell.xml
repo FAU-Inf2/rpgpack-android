@@ -5,12 +5,21 @@
     android:background="@color/trans"
     android:padding="@dimen/game_toolbox_map_cell_padding" >
 
-     <ImageView
-        android:id="@+id/map_piece"
+    <ImageView
+        android:id="@+id/map_background_test"
         android:layout_width="@dimen/game_toolbox_map_cellsize_without_padding"
         android:layout_height="@dimen/game_toolbox_map_cellsize_without_padding"
         android:background="@color/black"
         android:layout_gravity="center"
         android:gravity="center_vertical|center_horizontal" />
+    
+     <ImageView
+        android:id="@+id/map_piece"
+        android:layout_width="@dimen/game_toolbox_map_cellsize_without_padding"
+        android:layout_height="@dimen/game_toolbox_map_cellsize_without_padding"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal" />
+     
+     
     
 </FrameLayout>

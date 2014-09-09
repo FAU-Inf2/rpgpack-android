@@ -59,6 +59,8 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
 								pieceView);
+						
+						v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
 						return true;
 					}
@@ -109,10 +111,13 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 			case DragEvent.ACTION_DROP:
 				// Log.v("Test", "Entered drop");
 				final View view = (View) event.getLocalState();
-				final ViewGroup owner = (ViewGroup) view.getParent();
-				owner.removeView(view);
-				final FrameLayout container = (FrameLayout) v;
-				container.addView(view);
+				if (view != null) {
+					final ViewGroup owner = (ViewGroup) view.getParent();
+					owner.removeView(view);
+					final FrameLayout container = (FrameLayout) v;
+					view.setVisibility(View.VISIBLE);
+					container.addView(view);
+				}				
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
 			default:

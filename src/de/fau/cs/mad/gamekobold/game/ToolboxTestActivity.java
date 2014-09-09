@@ -28,8 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ToolboxTestActivity extends Activity implements OnTouchListener,
-		OnDragListener {
+public class ToolboxTestActivity extends Activity implements OnTouchListener {
 
 	Activity mContext;
 	float mWidth;
@@ -40,6 +39,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 	private int mNumLines;
 	private int mNumColumns;
 	private int cell_size;
+	private float density;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 		WindowManager wm = (WindowManager) getApplicationContext()
 				.getSystemService(Context.WINDOW_SERVICE);
 		wm.getDefaultDisplay().getMetrics(displaymetrics);
-		float density = getResources().getDisplayMetrics().density;
+		density = getResources().getDisplayMetrics().density;
 		cell_size = (int) ((float) getResources().getDimension(
 				R.dimen.game_toolbox_map_cellsize) / density);
 		mWidth = displaymetrics.widthPixels / density;
@@ -66,7 +66,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 		mNumLines = (int) (mHeight / cell_size);
 		mNumCells = mNumLines * mNumColumns;
 		Log.i("Width", "" + mWidth);
-		Log.i("Cell_Size", "" + cell_size);
+		
 		Log.i("Height", "" + mHeight);
 		Log.i("Cells", "" + mNumCells);
 		Log.i("mNumColumns", "" + mNumColumns);
@@ -100,13 +100,15 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 	}
 
 	public void createDots() {
-		LinearLayout layout = (LinearLayout) findViewById(R.id.paint_test_dots);
-		layout.setOnDragListener(this);
+		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.paint_test_dots);
+		//linearLayout.setOnDragListener(this);
 
 		for (String item : dots) {
+			FrameLayout frameLayout = (FrameLayout) new FrameLayout(this);
 			ImageView img_view = (ImageView) new ImageView(this);
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					cell_size, cell_size);
+			int dim = (int) getResources().getDimension(R.dimen.game_toolbox_map_cellsize_without_padding);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dim, dim);
+			
 
 			if (item.equals("red")) {
 				img_view.setTag(item);
@@ -135,11 +137,12 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 			}
 			img_view.setOnTouchListener(this);
 			img_view.setLayoutParams(params);
-			layout.addView(img_view);
+			frameLayout.addView(img_view);
+			linearLayout.addView(frameLayout);
 		}
 	}
-
-	@Override
+	
+	/*@Override
 	public boolean onDrag(View v, DragEvent dragEvent) {
 		switch (dragEvent.getAction()) {
 
@@ -169,7 +172,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 			break;
 		}
 		return true;
-	}
+	}*/
 
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
@@ -178,7 +181,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener,
 				new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN }, item);
 		if (e.getAction() == MotionEvent.ACTION_DOWN) {
 			v.startDrag(clipData, new View.DragShadowBuilder(v), null, 0);
-			v.setVisibility(View.INVISIBLE);
+			//v.setVisibility(View.INVISIBLE);
 			return true;
 		} else {
 			return false;
