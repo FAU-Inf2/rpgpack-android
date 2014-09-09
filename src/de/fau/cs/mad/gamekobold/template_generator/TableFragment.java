@@ -118,16 +118,16 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					tv.setText("");
 				}
 //				// TODO horizontal scrolling bug testing
-				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
-						        hsv.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						Log.d("TABLE_FRAGMENT", "scrollling horizontal");
-//						hsv.setScrollX(tv.getLeft());
-//						hsv.scrollTo(tv.getLeft(), tv.getBottom());
-						hsv.smoothScrollTo(tv.getLeft(), tv.getBottom());
-					}
-				}, 120L);
+//				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
+//						        hsv.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+//						Log.d("TABLE_FRAGMENT", "scrollling horizontal");
+////						hsv.setScrollX(tv.getLeft());
+////						hsv.scrollTo(tv.getLeft(), tv.getBottom());
+//						hsv.smoothScrollTo(tv.getLeft(), tv.getTop());
+//					}
+//				}, 120L);
 //            	hsv.setScrollX(0);
 		        //note: we have to do scrolling in seperate thread to make sure the new item is already inserted
 //		        final ScrollView sv = (ScrollView) mainView.findViewById(R.id.table_scroll);
