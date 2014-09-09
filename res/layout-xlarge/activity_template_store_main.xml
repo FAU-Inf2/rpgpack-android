@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/template_main_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:foreground="@drawable/shape_window_dim"
+    tools:context="de.fau.cs.mad.gamekobold.TemplateStoreMainActivity" >
+    
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".TemplateStoreMainActivity" 
+     >
+    
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/template_store_main_heading"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large">
+        
+    </TextView>
+	
+
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/template_store_main_desc"
+        android:textColor="@color/white" >
+        
+    </TextView>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@android:id/list"
+        android:layout_marginRight="20dp"
+        android:background="@color/black" >
+
+    </ListView>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/listView1" >
+
+    </ListView>
+
+</RelativeLayout>
+
+ 
+</FrameLayout>
