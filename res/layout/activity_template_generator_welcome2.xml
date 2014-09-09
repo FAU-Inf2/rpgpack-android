@@ -39,7 +39,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-        </RelativeLayout>
+        </RelativeLayout>
+        
         -->
     </LinearLayout>
     <!-- The navigation drawer -->
@@ -54,7 +55,8 @@
         android:background="@color/list_background"
         android:choiceMode="singleChoice"
         android:divider="@color/list_divider"
-        android:dividerHeight="1dp" />
+        android:dividerHeight="1dp" />
+        
     -->
 
     <LinearLayout
