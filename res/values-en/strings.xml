@@ -272,13 +272,15 @@
     <string name="msg_added_to_matrix_favorite">-attribut is added to your charakter quick view!</string>
     <!-- new_matrix_item_popup -->
     <string name="warning_set_matrixitem_name">Your new Matrix element should have a name!</string>
-   	
-	<string name="title_activity_character_browser">Character Browser</string>
-	
-	<!-- autosave toast string -->
+    <string name="title_activity_character_browser">Character Browser</string>
+
+    <!-- autosave toast string -->
     <string name="autosave_toast_text">Saving#8230;</string>
     <!-- SettingValueDialogFragment -->
     <string name="string_set_matrix_value">Put your value!</string>
+    <string name="msg_added_matrix_to_character">-attribut is added to your charakter!</string>
+
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Value:</string>
+
 </resources>

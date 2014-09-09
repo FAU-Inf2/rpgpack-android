@@ -8,8 +8,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -57,33 +59,33 @@ public class SettingValueDialogFragment extends DialogFragment {
 		alertDialogBuilder.setTitle(getResources().getString(
 				R.string.string_set_matrix_value));
 
-		// // create add and subtract buttons for the dialog
-		// ImageButton addButton = (ImageButton) view
-		// .findViewById(R.id.button_add_column);
-		// addButton.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-		// .toString()));
-		// int newValue = oldValue + 1;
-		// editTextMatrixValue.setText(Integer.toString(newValue));
-		// // adaptDialogTable(dialogTable,
-		// // (Integer.parseInt(editTextMatrixValue.getText().toString())));
-		// }
-		// });
-		// ImageButton subtractButton = (ImageButton) view
-		// .findViewById(R.id.button_remove_column);
-		// subtractButton.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-		// .toString()));
-		// int newValue = oldValue - 1;
-		// editTextMatrixValue.setText(Integer.toString(newValue));
-		// // adaptDialogTable(dialogTable,
-		// // (Integer.parseInt(editTextMatrixValue.getText().toString())));
-		// }
-		// });
+		// create add and subtract buttons for the dialog
+		ImageButton addButton = (ImageButton) view
+				.findViewById(R.id.button_add_column);
+		addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+						.toString()));
+				int newValue = oldValue + 1;
+				editTextMatrixValue.setText(Integer.toString(newValue));
+				// adaptDialogTable(dialogTable,
+				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
+			}
+		});
+		ImageButton subtractButton = (ImageButton) view
+				.findViewById(R.id.button_remove_column);
+		subtractButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+						.toString()));
+				int newValue = oldValue - 1;
+				editTextMatrixValue.setText(Integer.toString(newValue));
+				// adaptDialogTable(dialogTable,
+				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
+			}
+		});
 
 		alertDialogBuilder.setPositiveButton(
 				getResources().getString(R.string.save),
@@ -93,7 +95,9 @@ public class SettingValueDialogFragment extends DialogFragment {
 						Toast.makeText(
 								getActivity(),
 								matrixItem.getItemName()
-										+ "-Attribut wird zu dem Charakter hinzugefuegt",
+										+ getResources()
+												.getString(
+														R.string.msg_added_matrix_to_character),
 								Toast.LENGTH_SHORT).show();
 						dialog.dismiss();
 						matrixItem.setValue(editTextMatrixValue.getText()
@@ -113,12 +117,28 @@ public class SettingValueDialogFragment extends DialogFragment {
 								Toast.LENGTH_SHORT).show();
 						dialog.cancel();
 
-						// TODO set selected or deselected here
-
 					}
 				});
 
-		return alertDialogBuilder.create();
+		// Create the AlertDialog object and return it
+		final AlertDialog dialog = alertDialogBuilder.create();
+
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(final DialogInterface dialog) {
+
+				Button positiveButton = ((AlertDialog) dialog)
+						.getButton(DialogInterface.BUTTON_POSITIVE);
+
+				// set OK button color here
+				positiveButton.setBackgroundColor(getActivity().getResources()
+						.getColor(R.color.bright_green));
+				positiveButton.invalidate();
+			}
+		});
+		dialog.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		return dialog;
 	}
 
 	@Override

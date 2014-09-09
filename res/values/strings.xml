@@ -272,7 +272,7 @@
     <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
 
     <!-- new_character_matrix_view_array_adapter -->
-    <string name="msg_added_to_matrix_favorite">-Attribut wird zu Deiner Charakter-Schnellansicht hinzugefügt!</string>
+    <string name="msg_added_to_matrix_favorite">-Attribut wird zu Deiner Charakter-Schnellansicht hinzugefuegt!</string>
     <!-- new_matrix_item_popup -->
     <string name="warning_set_matrixitem_name">Dein Matrix-Element braucht einen Namen!</string>
 
@@ -281,8 +281,11 @@
     
     <!-- SettingValueDialogFragment -->
     <string name="string_set_matrix_value">Gib aktuellen Wert ein!</string>
+    <string name="msg_added_matrix_to_character">-Attribut wird zu Deinem Charakter hinzugefuegt!</string>
     
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
+    
+    
     
 </resources>
