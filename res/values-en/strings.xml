@@ -193,6 +193,7 @@
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Edit Game </string>
+    <string name="text_play_game">Play Game</string>
     <string name="text_remove_character_from_game">Do you like to delete this character from the game?</string>
     <string name="text_click_to_remove_character_from_game">Click Yes to delete this character.</string>
     <string name="msg_edit_game_mode">You can edit your game now!</string>
