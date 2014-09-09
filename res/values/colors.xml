@@ -35,5 +35,6 @@
     <color name="belize_hole">#2980b9</color>
     <color name="button_grey">#525d6b</color>
     <color name="cold_green">#00AF64</color>
+    <color name="trans">#80000000</color>
 
 </resources>
