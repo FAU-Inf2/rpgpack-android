@@ -263,19 +263,19 @@ public class MatrixFragment extends GeneralFragment {
 							// TODO new popup
 
 							showSetValuePopup(curMatrixItem,
-									adapterCreateCharacter);
-							selectedItems.add(curMatrixItem);
-
-							Toast.makeText(
-									getActivity(),
-									((TextView) view
-											.findViewById(R.id.matrix_textItemTitle))
-											.getText()
-											+ "-Attribut wird zu dem Charakter hinzugefuegt",
-									Toast.LENGTH_SHORT).show();
-
-							Log.d("add", "add");
-							adapterCreateCharacter.notifyDataSetChanged();
+									adapterCreateCharacter, selectedItems);
+//							selectedItems.add(curMatrixItem);
+//
+//							Toast.makeText(
+//									getActivity(),
+//									((TextView) view
+//											.findViewById(R.id.matrix_textItemTitle))
+//											.getText()
+//											+ "-Attribut wird zu dem Charakter hinzugefuegt",
+//									Toast.LENGTH_SHORT).show();
+//
+//							Log.d("add", "add");
+//							adapterCreateCharacter.notifyDataSetChanged();
 
 							// newCharacter.addMatrixItem(curMatrixItem);
 						}
@@ -445,12 +445,13 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	private void showSetValuePopup(MatrixItem item,
-			ArrayAdapter<MatrixItem> adapter) {
+			ArrayAdapter<MatrixItem> adapter, ArrayList<MatrixItem> selectedItems) {
 		SettingValueDialogFragment settingValueDialogFragment = SettingValueDialogFragment
 				.newInstance();
 		settingValueDialogFragment.show(getFragmentManager(), "dialog");
 		settingValueDialogFragment.matrixItem = item;
 		settingValueDialogFragment.passAdapter(adapter);
+		settingValueDialogFragment.passSelItems(selectedItems);
 	}
 
 	// TODO ate refactor

@@ -1,5 +1,7 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -18,6 +20,7 @@ public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_VALUE = "KEY_SAVE_MATRIX_VALUE";
 	private EditText editTextMatrixValue;
 	protected ArrayAdapter<MatrixItem> selectedItemsAdapter;
+	protected ArrayList<MatrixItem> selectedItems;
 	public MatrixItem matrixItem = null;
 
 	public static SettingValueDialogFragment newInstance() {
@@ -27,6 +30,10 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 	public void passAdapter(ArrayAdapter<MatrixItem> selectedItemsAdapter) {
 		this.selectedItemsAdapter = selectedItemsAdapter;
+	}
+
+	public void passSelItems(ArrayList<MatrixItem> selectedItems) {
+		this.selectedItems = selectedItems;
 	}
 
 	@Override
@@ -91,6 +98,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 						dialog.dismiss();
 						matrixItem.setValue(editTextMatrixValue.getText()
 								.toString());
+						selectedItems.add(matrixItem);
+
 						selectedItemsAdapter.notifyDataSetChanged();
 
 					}
@@ -104,8 +113,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 								Toast.LENGTH_SHORT).show();
 						dialog.cancel();
 
-						//TODO set selected or deselected here
-						
+						// TODO set selected or deselected here
+
 					}
 				});
 
