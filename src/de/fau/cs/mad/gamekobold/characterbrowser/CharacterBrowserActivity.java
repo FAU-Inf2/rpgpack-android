@@ -45,7 +45,9 @@ public class CharacterBrowserActivity extends ListActivity {
 					// create new character
 					Intent i = new Intent(CharacterBrowserActivity.this,
 							TemplateBrowserActivity.class);
+					//TODO: translate
 					Toast.makeText(CharacterBrowserActivity.this, "Please pick a template", Toast.LENGTH_LONG).show();
+					i.putExtra(TemplateBrowserActivity.CREATE_CHAR_DIRECT, true);
 					startActivity(i);
 				}
 			}

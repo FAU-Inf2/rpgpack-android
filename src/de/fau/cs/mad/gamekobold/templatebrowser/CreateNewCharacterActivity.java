@@ -29,6 +29,7 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -393,4 +394,18 @@ public class CreateNewCharacterActivity extends Activity implements
 		} else
 			return null;
 	}
+	
+//	@Override
+//	public void onBackPressed() {
+//		//note: we should have reachen this character-edit mode from character-browser
+//		//so we should go back there and not to the step inbetween (picking template
+//		//to create a character from)
+//		Log.d("CreateNewCharacterActivity", "onBackPressed called!");
+//		Intent intent = new Intent(CreateNewCharacterActivity.this,
+//				CharacterBrowserActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		startActivity(intent);
+////		super.onBackPressed();
+//	}
 }
