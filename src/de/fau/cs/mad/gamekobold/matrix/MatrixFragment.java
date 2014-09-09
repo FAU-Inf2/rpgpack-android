@@ -264,18 +264,18 @@ public class MatrixFragment extends GeneralFragment {
 
 							showSetValuePopup(curMatrixItem,
 									adapterCreateCharacter, selectedItems);
-//							selectedItems.add(curMatrixItem);
-//
-//							Toast.makeText(
-//									getActivity(),
-//									((TextView) view
-//											.findViewById(R.id.matrix_textItemTitle))
-//											.getText()
-//											+ "-Attribut wird zu dem Charakter hinzugefuegt",
-//									Toast.LENGTH_SHORT).show();
-//
-//							Log.d("add", "add");
-//							adapterCreateCharacter.notifyDataSetChanged();
+							// selectedItems.add(curMatrixItem);
+							//
+							// Toast.makeText(
+							// getActivity(),
+							// ((TextView) view
+							// .findViewById(R.id.matrix_textItemTitle))
+							// .getText()
+							// + "-Attribut wird zu dem Charakter hinzugefuegt",
+							// Toast.LENGTH_SHORT).show();
+							//
+							// Log.d("add", "add");
+							// adapterCreateCharacter.notifyDataSetChanged();
 
 							// newCharacter.addMatrixItem(curMatrixItem);
 						}
@@ -393,13 +393,6 @@ public class MatrixFragment extends GeneralFragment {
 		return rootView;
 	}
 
-	// just one simple check
-	@Override
-	public void onSaveInstanceState(Bundle bundle) {
-		super.onSaveInstanceState(bundle);
-		Log.d("onSaveInstanceState", "onSaveInstanceState!!!!!!!!!");
-	}
-
 	@Override
 	protected void addItemList() {
 		// TODO Auto-generated method stub
@@ -445,7 +438,8 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	private void showSetValuePopup(MatrixItem item,
-			ArrayAdapter<MatrixItem> adapter, ArrayList<MatrixItem> selectedItems) {
+			ArrayAdapter<MatrixItem> adapter,
+			ArrayList<MatrixItem> selectedItems) {
 		SettingValueDialogFragment settingValueDialogFragment = SettingValueDialogFragment
 				.newInstance();
 		settingValueDialogFragment.show(getFragmentManager(), "dialog");
@@ -453,7 +447,6 @@ public class MatrixFragment extends GeneralFragment {
 		settingValueDialogFragment.passAdapter(adapter);
 		settingValueDialogFragment.passSelItems(selectedItems);
 	}
-
 
 	/*
 	 * JACKSON START

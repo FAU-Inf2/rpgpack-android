@@ -34,9 +34,23 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle saveInstanceState) {
-		super.onCreate(saveInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
+		
+		if (savedInstanceState != null) {
+			// TODO ate not working!
+			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
+				itemName.setText((savedInstanceState
+						.getString(KEY_SAVE_ITEM_NAME)));
+				Log.d("OnCREATE !!!!!!!!SETTING STRING TO:",
+						savedInstanceState.getString(KEY_SAVE_ITEM_NAME));
+
+			}
+		}
+		
+		
+		
 	}
 
 	@Override
@@ -96,17 +110,15 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				switchMod.setChecked(false);
 		}
 
-		Log.d("savedInstanceState? STRING??????", ""
-				+ (savedInstanceState == null));
+		Log.d("savedInstanceState is NULL?", "" + (savedInstanceState == null));
 
 		if (savedInstanceState != null) {
-			Log.d("savedInstanceState, STRING IS DA!!!!!!", ""
-					+ savedInstanceState.getString(KEY_SAVE_ITEM_NAME));
-
 			// TODO ate not working!
 			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
 				itemName.setText((savedInstanceState
 						.getString(KEY_SAVE_ITEM_NAME)));
+				Log.d("!!!!!!!!SETTING STRING TO:",
+						savedInstanceState.getString(KEY_SAVE_ITEM_NAME));
 
 			}
 		}
@@ -218,11 +230,8 @@ public class AddNewItemDialogFragment extends DialogFragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putString(KEY_SAVE_ITEM_NAME, itemName.getText()
-				.toString());
-		Log.d("onSaveInstanceState, STRING IS DA!!!!!!", itemName
-				.getText().toString());
 		super.onSaveInstanceState(outState);
+		outState.putString(KEY_SAVE_ITEM_NAME, itemName.getText().toString());
 	}
 
 	// There's a bug in the compatibility library that can cause dismissing

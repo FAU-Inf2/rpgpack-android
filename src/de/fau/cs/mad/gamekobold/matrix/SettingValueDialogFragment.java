@@ -138,7 +138,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 		// Create the AlertDialog object and return it
 		final AlertDialog dialog = alertDialogBuilder.create();
-		
 
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
@@ -160,11 +159,11 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 		outState.putString(KEY_SAVE_MATRIX_VALUE, editTextMatrixValue.getText()
 				.toString());
 		Log.d("onSaveInstanceState, STRING IS DA!!!!!!", editTextMatrixValue
 				.getText().toString());
-		super.onSaveInstanceState(outState);
 	}
 
 	// There's a bug in the compatibility library that can cause dismissing
