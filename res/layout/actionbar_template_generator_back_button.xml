@@ -12,7 +12,6 @@ android:orientation="horizontal" >
         android:layout_alignParentLeft="true"
 		android:scaleType="fitStart"
         android:background="@null"
-        android:onClick=""
         android:src="@drawable/arrow_left_icon_white" />
     
 <TextView

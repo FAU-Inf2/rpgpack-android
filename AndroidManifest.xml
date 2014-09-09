@@ -60,13 +60,9 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.template_generator.ShowLists" >
-        </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
-        </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.matrix.TemplateGeneratorWelcomeActivity" >
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
@@ -126,10 +122,6 @@
                 android:resource="@xml/storesearchable" />
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity" >
-        </activity>
-        <activity
-            android:name="de.fau.cs.mad.gamekobold.LogoActivity"
-            android:label="@string/title_activity_logo" >
         </activity>
         <activity
             android:name=".characterbrowser.CharacterBrowserActivity"
