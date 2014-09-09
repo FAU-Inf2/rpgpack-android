@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/test_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/test_layout" >
-
+    android:background="@color/background_dark"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/paint_test_dots"
@@ -12,4 +14,4 @@
         android:orientation="horizontal" >
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
