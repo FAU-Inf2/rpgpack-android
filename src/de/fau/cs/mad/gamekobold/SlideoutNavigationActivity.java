@@ -9,6 +9,7 @@ import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.matrix.SettingValueDialogFragment;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
 import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -150,6 +151,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			 }
 		} else {
 			Log.d("SlideoutNavigationActivity", "got savedInstance");
+			
 		}
 		/*
 		 * JACKSON END

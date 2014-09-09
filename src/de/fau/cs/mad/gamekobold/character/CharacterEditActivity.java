@@ -15,8 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity;
 
 public class CharacterEditActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -163,5 +165,19 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 					sheet.getFileAbsolutePath());
 			return intent;
 	 }
+	 
+	 @Override
+		public void onBackPressed() {
+			//note: we should have reachen this character-edit mode from character-browser
+			//so we should go back there and not to the step inbetween (picking template
+			//to create a character from)
+			Log.d("CreateNewCharacterActivity", "onBackPressed called!");
+			Intent intent = new Intent(CharacterEditActivity.this,
+					CharacterBrowserActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+//			super.onBackPressed();
+		}
 
 }

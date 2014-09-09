@@ -8,6 +8,7 @@ import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
+import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 
 import java.util.ArrayList;
@@ -148,6 +149,36 @@ public class FolderFragment extends GeneralFragment {
 			}
 		}
 	 }
+	
+	/**
+	 * 
+	 * @return all matrix elements contained in this folder
+	 */
+	public ArrayList<MatrixItem> getAllMatrixReferences(){
+    	ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
+//		Log.d("popupReferences", "subdirs: " + dataAdapter.getAll().length);
+        for(FolderElementData currentDatum  : dataAdapter.getAll()){
+        	GeneralFragment currentFragment = currentDatum.childFragment;
+        	if(currentFragment instanceof FolderFragment){
+//    			Log.d("popupReferences", "folderfragment found, descending now");
+        		ArrayList<MatrixItem> toAdd = ((FolderFragment) currentFragment).getAllMatrixReferences();
+        		results.addAll(toAdd);
+        	}
+        	else if(currentFragment instanceof TableFragment){
+//    			Log.d("popupReferences", "tableview found; atm ignoring");
+        	}
+        	else if(currentFragment instanceof MatrixFragment){
+//    			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
+        		for(MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList){
+        			results.add(oneItem);
+        		}
+        	}
+        	else{
+    			Log.d("popupReferences", "unhandled element found!!!");
+        	}
+        }
+        return results;
+    }
 	
 	/**
 	 * sets the visibilty of checkboxes for this

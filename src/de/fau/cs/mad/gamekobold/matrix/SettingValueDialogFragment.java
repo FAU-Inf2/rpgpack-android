@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -39,6 +40,12 @@ public class SettingValueDialogFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle saveInstanceState) {
+		super.onCreate(saveInstanceState);
+		setRetainInstance(true);
+	}
+
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
@@ -48,10 +55,19 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 		editTextMatrixValue = (EditText) view
 				.findViewById(R.id.editTextMatrixValue);
+
+		Log.d("savedInstanceState? STRING??????", ""
+				+ (savedInstanceState == null));
+
 		if (savedInstanceState != null) {
+			Log.d("savedInstanceState, STRING IS DA!!!!!!", ""
+					+ savedInstanceState.getString(KEY_SAVE_MATRIX_VALUE));
+
+			// TODO ate not working!
 			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_VALUE)) {
 				editTextMatrixValue.setText((savedInstanceState
-						.getInt(KEY_SAVE_MATRIX_VALUE)));
+						.getString(KEY_SAVE_MATRIX_VALUE)));
+
 			}
 		}
 
@@ -143,8 +159,23 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(KEY_SAVE_MATRIX_VALUE,
-				Integer.getInteger(editTextMatrixValue.getText().toString()));
 		super.onSaveInstanceState(outState);
+		outState.putString(KEY_SAVE_MATRIX_VALUE, editTextMatrixValue.getText()
+				.toString());
+		Log.d("onSaveInstanceState, STRING IS DA!!!!!!", editTextMatrixValue
+				.getText().toString());
+	}
+
+	// There's a bug in the compatibility library that can cause dismissing
+	// after the rotation. Note that there are reports that
+	// getDialog().setOnDismissListener(null); causes a crash on some devices.
+	// The workaround is to call getDialog().setDismissMessage(null); instead.
+	// Issue 17423: DialogFragment dismissed on orientation change when
+	// setRetainInstance(true) is set (compatibility library)
+	@Override
+	public void onDestroyView() {
+		if (getDialog() != null && getRetainInstance())
+			getDialog().setDismissMessage(null);
+		super.onDestroyView();
 	}
 }
