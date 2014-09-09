@@ -90,13 +90,15 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.CharacterPlayActivity" >
         </activity>
+
+        <!-- Toolbox Activities -->
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.CirclesActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTestActivity" >
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.ToolboxDiceActivity"
@@ -104,6 +106,9 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
+        
+        <!--  -->
+        
         <activity
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -123,7 +128,10 @@
             android:name="de.fau.cs.mad.gamekobold.LogoActivity"
             android:label="@string/title_activity_logo" >
         </activity>
-        <activity android:name=".characterbrowser.CharacterBrowserActivity" android:label="@string/title_activity_character_browser"></activity>
+        <activity
+            android:name=".characterbrowser.CharacterBrowserActivity"
+            android:label="@string/title_activity_character_browser" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
