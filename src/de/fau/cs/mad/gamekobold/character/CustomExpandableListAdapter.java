@@ -451,8 +451,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 							  && searchForReferences.charAt(endIndex) != '\b'){
 						  endIndex++;
 					  }
-					  String referenceString = searchForReferences.substring(startIndex, endIndex);
-					  mBelongsTo.getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
+//					  String referenceString = searchForReferences.substring(startIndex, endIndex);
+//					  SlideoutNavigationActivity.theActiveActivity.getRootFragment().getAllMatrixReferences();
+//					  mBelongsTo.getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
 					  Log.d("CustomExpandableListAdapter", "Popup: startIndex: " + startIndex + "; endIndex: " + endIndex);
 					  Log.d("CustomExpendableListAdapter", "setting span: clickable");
 					  span.setSpan(new MyClickableSpan(popupView, mBelongsTo), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

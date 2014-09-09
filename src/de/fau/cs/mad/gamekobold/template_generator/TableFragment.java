@@ -797,31 +797,31 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     int styleStart = 0;
     int cursorLoc = 0;
     
-    public ArrayList<MatrixItem> getAllMatrixReferences(FolderFragment fragmentToSearch){
-    	ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
-		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
-        for(FolderElementData currentDatum  : fragmentToSearch.dataAdapter.getAll()){
-        	GeneralFragment currentFragment = currentDatum.childFragment;
-        	if(currentFragment instanceof FolderFragment){
-    			Log.d("popupReferences", "folderfragment found, descending now");
-        		ArrayList<MatrixItem> toAdd = getAllMatrixReferences((FolderFragment) currentFragment);
-        		results.addAll(toAdd);
-        	}
-        	else if(currentFragment instanceof TableFragment){
-    			Log.d("popupReferences", "tableview found; atm ignoring");
-        	}
-        	else if(currentFragment instanceof MatrixFragment){
-    			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
-        		for(MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList){
-        			results.add(oneItem);
-        		}
-        	}
-        	else{
-    			Log.d("popupReferences", "unhandled element found!!!");
-        	}
-        }
-        return results;
-    }
+//    public ArrayList<MatrixItem> getAllMatrixReferences(FolderFragment fragmentToSearch){
+//    	ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
+//		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
+//        for(FolderElementData currentDatum  : fragmentToSearch.dataAdapter.getAll()){
+//        	GeneralFragment currentFragment = currentDatum.childFragment;
+//        	if(currentFragment instanceof FolderFragment){
+//    			Log.d("popupReferences", "folderfragment found, descending now");
+//        		ArrayList<MatrixItem> toAdd = getAllMatrixReferences((FolderFragment) currentFragment);
+//        		results.addAll(toAdd);
+//        	}
+//        	else if(currentFragment instanceof TableFragment){
+//    			Log.d("popupReferences", "tableview found; atm ignoring");
+//        	}
+//        	else if(currentFragment instanceof MatrixFragment){
+//    			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
+//        		for(MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList){
+//        			results.add(oneItem);
+//        		}
+//        	}
+//        	else{
+//    			Log.d("popupReferences", "unhandled element found!!!");
+//        	}
+//        }
+//        return results;
+//    }
     
     private ArrayList<String> getAllElementsToRef(FolderFragment fragmentToSearch){
     	ArrayList<String> results = new ArrayList<String>();
