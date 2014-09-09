@@ -302,8 +302,17 @@ public class TemplateStoreMainActivity extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				alertMessage("Klicked on " + texts[position]);
+				restoreListStatus();
 				
+				switch(texts[position]) {
+				case "Fantasy":
+				case "Horror":
+				case "Future":
+				case "Dungeon World":
+				case "D & D":
+					loadTag(texts[position]);
+					break;
+				}
 			}
 			
 		});
@@ -385,9 +394,6 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		boolean is_task = true;
@@ -399,13 +405,11 @@ public class TemplateStoreMainActivity extends ListActivity {
 			case R.id.tag_fantasy:
 			case R.id.tag_horror:
 			case R.id.tag_future:
+			case R.id.tag_d_and_d:
+			case R.id.tag_dungeon_world:
 				this.restoreListStatus();
-				ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-				String tag = (String) item.getTitle();
-				httpParams.add(new BasicNameValuePair("tagname", tag));
-				apiParams.setParams(httpParams);
-				apiParams.setMethod("searchByTag");
-				break;
+				this.loadTag((String)item.getTitle());
+				is_task = false;
 			default:
 				is_task = false;
 				break;
@@ -419,7 +423,18 @@ public class TemplateStoreMainActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	  @Override
+	  private void loadTag(String tag) {
+		  task = new ApiTask();
+		  ApiTaskParams apiParams = new ApiTaskParams();
+		  ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+		  httpParams.add(new BasicNameValuePair("tagname", tag));
+		  apiParams.setParams(httpParams);
+		  apiParams.setMethod("searchByTag");
+		  task.execute(apiParams);
+		
+	}
+
+	@Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 		  layout_main.getForeground().setAlpha( 180); // dim
 		  

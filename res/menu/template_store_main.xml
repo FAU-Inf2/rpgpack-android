@@ -13,6 +13,12 @@
         android:showAsAction="ifRoom"
         android:title="@string/store_tags">
     	<menu>
+    	    <item android:id="@+id/tag_dungeon_world"
+                  android:title="@string/tag_dungeon_world"
+                  />
+            <item android:id="@+id/tag_d_and_d"
+                  android:title="@string/d_and_d"
+                  />   	    
             <item android:id="@+id/tag_horror"
                   android:title="@string/tag_horror"
                   />
