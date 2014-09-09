@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -20,7 +21,7 @@ import de.fau.cs.mad.gamekobold.R;
 
 public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_VALUE = "KEY_SAVE_MATRIX_VALUE";
-	private EditText editTextMatrixValue;
+
 	protected ArrayAdapter<MatrixItem> selectedItemsAdapter;
 	protected ArrayList<MatrixItem> selectedItems;
 	public MatrixItem matrixItem = null;
@@ -39,6 +40,12 @@ public class SettingValueDialogFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle saveInstanceState) {
+		super.onCreate(saveInstanceState);
+		setRetainInstance(true);
+	}
+
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
@@ -46,19 +53,28 @@ public class SettingValueDialogFragment extends DialogFragment {
 		View view = getActivity().getLayoutInflater().inflate(
 				R.layout.dialog_fragment_setting_matrix_value, null);
 
-		editTextMatrixValue = (EditText) view
+		EditText editTextMatrixValue = (EditText) view
 				.findViewById(R.id.editTextMatrixValue);
+
+		Log.d("savedInstanceState? STRING??????", ""
+				+ (savedInstanceState == null));
+
 		if (savedInstanceState != null) {
+			Log.d("savedInstanceState, STRING IS DA!!!!!!", ""
+					+ savedInstanceState.getString(KEY_SAVE_MATRIX_VALUE));
+
 			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_VALUE)) {
 				editTextMatrixValue.setText((savedInstanceState
-						.getInt(KEY_SAVE_MATRIX_VALUE)));
+						.getString(KEY_SAVE_MATRIX_VALUE)));
+
 			}
+			editTextMatrixValue.setText("privet!");
 		}
 
 		alertDialogBuilder.setView(view);
 		alertDialogBuilder.setTitle(getResources().getString(
 				R.string.string_set_matrix_value));
-
+		Log.d("3333333333333333333333333333", "" + (savedInstanceState == null));
 		// create add and subtract buttons for the dialog
 		ImageButton addButton = (ImageButton) view
 				.findViewById(R.id.button_add_column);
@@ -86,6 +102,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
 			}
 		});
+
+		Log.d("2222222222222222222222222", "" + (savedInstanceState == null));
 
 		alertDialogBuilder.setPositiveButton(
 				getResources().getString(R.string.save),
@@ -123,6 +141,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 		// Create the AlertDialog object and return it
 		final AlertDialog dialog = alertDialogBuilder.create();
 
+		Log.d("111111111111111111111111111", "" + (savedInstanceState == null));
+
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(final DialogInterface dialog) {
@@ -143,8 +163,23 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(KEY_SAVE_MATRIX_VALUE,
-				Integer.getInteger(editTextMatrixValue.getText().toString()));
+		outState.putString(KEY_SAVE_MATRIX_VALUE, editTextMatrixValue.getText()
+				.toString());
+		Log.d("onSaveInstanceState, STRING IS DA!!!!!!", editTextMatrixValue
+				.getText().toString());
 		super.onSaveInstanceState(outState);
+	}
+
+	// There's a bug in the compatibility library that can cause dismissing
+	// after the rotation. Note that there are reports that
+	// getDialog().setOnDismissListener(null); causes a crash on some devices.
+	// The workaround is to call getDialog().setDismissMessage(null); instead.
+	// Issue 17423: DialogFragment dismissed on orientation change when
+	// setRetainInstance(true) is set (compatibility library)
+	@Override
+	public void onDestroyView() {
+		if (getDialog() != null && getRetainInstance())
+			getDialog().setDismissMessage(null);
+		super.onDestroyView();
 	}
 }
