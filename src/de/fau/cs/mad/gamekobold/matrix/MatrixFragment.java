@@ -74,8 +74,9 @@ public class MatrixFragment extends GeneralFragment {
 			Toast.makeText(getActivity(), "TEMPLATE GENERATOR",
 					Toast.LENGTH_LONG).show();
 		}
-
-		else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
+		//edited: show same in play and in character-edit-mode
+		else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
+				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
 			Log.d("MatrixFragment", "inflated for CharacterEditActivity");
 			rootView = (FrameLayout) inflater.inflate(
 					R.layout.character_edit_matrix_view, new LinearLayout(
@@ -198,7 +199,8 @@ public class MatrixFragment extends GeneralFragment {
 			});
 
 			// Character generator mode
-		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
+				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
 			Toast.makeText(getActivity(), "CHARACTER GENERATOR!",
 					Toast.LENGTH_SHORT).show();
 

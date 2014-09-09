@@ -14,6 +14,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
 import de.fau.cs.mad.gamekobold.jackson.CheckBoxClass;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
@@ -164,7 +165,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	});
         	setAddButtonStyle(addRowBelow);
         }
-        else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+        else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
+        		|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
 			Log.d("TableFragment", "inflated for CharacterEditActivity");
         	mainView = (RelativeLayout) inflater.inflate(R.layout.character_edit_table_view, new LinearLayout(getActivity()), false);
         }
@@ -219,7 +221,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				addItemList();
 			}
 		}
-		else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+		else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
+				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
 			// check for saved rows
 			fillListView();
 		}

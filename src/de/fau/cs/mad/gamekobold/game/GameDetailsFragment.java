@@ -56,6 +56,7 @@ public class GameDetailsFragment extends Fragment {
 	private ImageView gameIcon;
 	private Button infoButton;
 	private Button editGameButton;
+	private Button playgameButton;
 	private GridView gameCharacterGridView;
 
 	@Override
@@ -208,6 +209,37 @@ public class GameDetailsFragment extends Fragment {
 			}
 		});
 
+		//XXX
+		playgameButton = (Button) view.findViewById(R.id.buttonPlayGame);
+		playgameButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+//				curCharacter = (GameCharacter) gameCharacterGridView.getAdapter()
+//						.getItemAtPosition(0);
+				//just use the first character
+				curCharacter = (GameCharacter) gameDetailsCharacterGridAdapter.getItem(0);
+				// Start CharacterPlayActivity
+
+				File jsonFile = new File(curCharacter.getFileAbsPath());
+				curCharacter.getFileAbsPath();
+
+				try {
+					CharacterSheet sheet = JacksonInterface.loadCharacterSheet(
+							jsonFile, false);
+					Intent intent = CharacterPlayActivity
+							.createIntentForStarting(getActivity(), sheet);
+					startActivity(intent);
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		//XXX
+		
 		// TODO Check it! is it necessary?
 		Log.e("getIconPath is null?", "" + (game.getIconPath() == null));
 		
