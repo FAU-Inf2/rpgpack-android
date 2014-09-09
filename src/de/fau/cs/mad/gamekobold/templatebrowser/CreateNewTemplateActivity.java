@@ -165,19 +165,6 @@ public class CreateNewTemplateActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				// add new template to list on template browser-view
-				// TODO international strings
-				if(editTemplate) {
-					Toast.makeText(getApplicationContext(),
-					"Editiere jetzt dein Template!", Toast.LENGTH_SHORT)
-					.show();
-				}
-				else {
-					Toast.makeText(getApplicationContext(),
-					"Dein Template wird erstellt!", Toast.LENGTH_SHORT)
-					.show();					
-				}
-
 				// it goes template generator
 				final Intent intent = new Intent(
 						CreateNewTemplateActivity.this,
@@ -236,6 +223,10 @@ public class CreateNewTemplateActivity extends Activity {
 									intent.putExtra(
 											Template.PARCELABLE_STRING,
 											currentTemplate);
+									// show some info toast
+									Toast.makeText(getApplicationContext(),
+											getString(R.string.toast_create_template_now), Toast.LENGTH_SHORT)
+											.show();	
 									startActivity(intent);
 								}
 							});
@@ -247,6 +238,18 @@ public class CreateNewTemplateActivity extends Activity {
 				intent.putExtra(
 						Template.PARCELABLE_STRING,
 						currentTemplate);
+				// show some info toast
+				if(editTemplate) {
+					Toast.makeText(getApplicationContext(),
+					getString(R.string.toast_edit_template_now), Toast.LENGTH_SHORT)
+					.show();
+				}
+				else {
+					Toast.makeText(getApplicationContext(),
+					getString(R.string.toast_create_template_now), Toast.LENGTH_SHORT)
+					.show();					
+				}
+				
 				startActivity(intent);
 				/*
 				 * JACKSON END

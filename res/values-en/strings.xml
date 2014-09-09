@@ -82,7 +82,9 @@
     <string name="hint_template_name">Template name&#8230;</string>
     <string name="text_add_icon">Add Icon</string>
     <string name="hint_world_name">World name&#8230;</string>
-
+    <string name="toast_create_template_now">Create now your template!</string>
+    <string name="toast_edit_template_now">Edit now your template!</string>
+    
     <string-array name="image_picker_items">
         <item>from camera</item>
         <item>from SD-Card</item>
