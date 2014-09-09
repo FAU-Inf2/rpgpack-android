@@ -82,6 +82,8 @@
     <string name="hint_template_name">Name des Templates&#8230;</string>
     <string name="text_add_icon">Foto hinzufügen</string>
     <string name="hint_world_name">Name der Welt&#8230;</string>
+    <string name="toast_create_template_now">Erstelle nun dein Template!</string>
+    <string name="toast_edit_template_now">Editiere nun dein Template!</string>
 
     <string-array name="image_picker_items">
         <item>von Kamera</item>
