@@ -38,6 +38,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -213,7 +215,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    			 adapter.add(tmpl);
 	    		 }
 	  	   		 // show first row
-	  	   		 getListView().setSelection(0);
+	  	   		 if(method != "loadMore") {
+	  	   			 getListView().setSelection(0);
+	  	   		 }
 	  	   		 
 	 	  	 } else {
 	    		 alertMessage(response.toString());
@@ -250,6 +254,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 		layout_main = (FrameLayout) findViewById( R.id.template_main_layout);
 		layout_main.getForeground().setAlpha( 0);
 		
+		if(Helper.getSizeName(this) == "xlarge") {
+			this.initSidebar();
+		}
+		
 		this.templates = new ArrayList<StoreTemplate>();
 		this.adapter = new TemplateStoreArrayAdapter(this, templates);
   
@@ -275,6 +283,32 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 	
+
+	private void initSidebar() {
+		ListView list;
+		final String[] texts = { "Best Rated", "Newest", "Recommended", "Most Rated", "Dungeon World",
+				"D & D", "Fantasy", "Horror", "Future" };
+		Integer[] images = { R.drawable.dice_10, R.drawable.dice_10,
+				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10,
+				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10 };
+		
+		TemplateStoreSidebarArrayAdapter sidebarAdapter = 
+				new TemplateStoreSidebarArrayAdapter(this, texts, images);
+		
+		list = (ListView) findViewById(R.id.listView1);
+		list.setAdapter(sidebarAdapter);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				alertMessage("Klicked on " + texts[position]);
+				
+			}
+			
+		});
+		
+	}
 
 	public void onResume() {
 		super.onResume();
@@ -389,16 +423,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 		  layout_main.getForeground().setAlpha( 180); // dim
 		  
-//		  InputMethodManager inputManager = (InputMethodManager)
-//                  getSystemService(Context.INPUT_METHOD_SERVICE); 
-//
-//		  inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-//                     InputMethodManager.HIDE_NOT_ALWAYS);
 		  searchView.clearFocus();
 		  
 		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
-		 // Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
-	    
+	
 		    LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    
 		    View popupView = layoutInflater.inflate(R.layout.popup_templatestore_details, null);  
