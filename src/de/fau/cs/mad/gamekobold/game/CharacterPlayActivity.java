@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -72,9 +73,31 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		menu.clear();
 		if (SlideoutNavigationActivity.getAc().getDrawerLayout()
 				.isDrawerOpen(GravityCompat.START)) {
-			getMenuInflater().inflate(R.menu.character_editor, menu);
+			//getMenuInflater().inflate(R.menu.character_editor, menu);
+			getMenuInflater().inflate(R.menu.combined_play, menu);
+		}
+		else{
+			getMenuInflater().inflate(R.menu.play_actions, menu);
 		}
 		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	public void openTools() {
+		Intent intent = new Intent(CharacterPlayActivity.this,
+				ToolboxActivity.class);
+		startActivity(intent);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.action_tools:
+			openTools();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	/**

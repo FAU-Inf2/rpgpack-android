@@ -191,6 +191,7 @@
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
+    <string name="text_play_game">Spielen</string>
     <string name="text_remove_character_from_game">Charakter aus diesem Spiel löschen?</string>
     <string name="text_click_to_remove_character_from_game">Klicke auf JA um diesen Charakter aus dem Spiel zu löschen.</string>
     <string name="msg_edit_game_mode">Nun kann Du das Spiel bearbeiten!</string>
