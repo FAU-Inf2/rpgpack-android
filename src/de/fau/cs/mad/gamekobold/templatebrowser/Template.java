@@ -12,21 +12,22 @@ public class Template implements Serializable {
 	private String worldName;
 	private String author;
 	private String date;
-	private int iconID;
 	private String description;
 	public String fileAbsolutePath = null;
 	private long fileTimeStamp = 0;
-	
+	private String tagString = "";
+	private String iconPath = "";
+
 	//TODO pruefen in die andere richtung!!!
 	private List<GameCharacter> characters = new ArrayList<GameCharacter>();
 
 	public Template(String templateName, String worldName, String author,
-			String date, int iconID, String description) {
+			String date, String iconPath, String description) {
 		this.templateName = templateName;
 		this.worldName = worldName;
 		this.author = author;
 		this.date = date;
-		this.iconID = iconID;
+		this.iconPath = iconPath;
 		this.description = description;
 	}
 
@@ -36,7 +37,6 @@ public class Template implements Serializable {
 		this.worldName = worldName;
 		this.author = author;
 		this.date = date;
-		this.iconID = iconID;
 		this.description = "No description found!";
 	}
 
@@ -46,8 +46,6 @@ public class Template implements Serializable {
 		this.worldName = worldName;
 		this.author = author;
 		this.date = date;
-		// some value for default icon
-		this.iconID = -1;
 	}
 
 	//TODO pruefen
@@ -88,20 +86,20 @@ public class Template implements Serializable {
 		this.date = date;
 	}
 
-	public int getIconID() {
-		return iconID;
-	}
-
-	public void setIconID(int iconID) {
-		this.iconID = iconID;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
 	}
 
 	public String getFileName() {
@@ -134,10 +132,6 @@ public class Template implements Serializable {
 		this.characters.clear();
 	}
 
-	public void takeOverValues(final Template otherTemplate) {
-		this.description = otherTemplate.description;
-	}
-	
 	/**
 	 * Checks whether the file for this template has changed by checking the time stamp of it.
 	 * @return true if the file has been changed, false otherwise.
@@ -158,15 +152,23 @@ public class Template implements Serializable {
 	public void setFileTimeStamp(final long timeStamp) {
 		fileTimeStamp = timeStamp;
 	}
-	
+
 	public long getFileTimeStamp() {
 		return fileTimeStamp;
 	}
-	
+
 	public File getTemplateFile() {
 		if(fileAbsolutePath == null) {
 			return null;
 		}
 		return new File(fileAbsolutePath);
+	}
+	
+	public String getTagString() {
+		return tagString;
+	}
+
+	public void setTagString(String tagString) {
+		this.tagString = tagString;
 	}
 }

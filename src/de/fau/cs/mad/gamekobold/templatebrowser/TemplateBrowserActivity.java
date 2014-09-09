@@ -292,13 +292,14 @@ public class TemplateBrowserActivity extends ListActivity {
 					if (loadedTemplate != null) {
 						// take over changes
 						templateToCheck
-								.setTemplateName(loadedTemplate.templateName);
-						templateToCheck.setWorldName(loadedTemplate.gameName);
-						templateToCheck.setAuthor(loadedTemplate.author);
-						templateToCheck.setDate(loadedTemplate.date);
-						templateToCheck.setIconID(loadedTemplate.iconID);
+								.setTemplateName(loadedTemplate.getTemplateName());
+						templateToCheck.setWorldName(loadedTemplate.getGameName());
+						templateToCheck.setAuthor(loadedTemplate.getAuthor());
+						templateToCheck.setDate(loadedTemplate.getDate());
+//						templateToCheck.setIconID(loadedTemplate.getIconID());
 						templateToCheck
-								.setDescription(loadedTemplate.description);
+								.setDescription(loadedTemplate.getDescription());
+						templateToCheck.setTagString(loadedTemplate.getTagString());
 						// update time stamp
 						templateToCheck.setFileTimeStamp(templateFile
 								.lastModified());
@@ -347,6 +348,8 @@ public class TemplateBrowserActivity extends ListActivity {
 		// flag to distinguish between editing and creating
 		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 				false);
+		intent.putExtra(SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
+				true);
 		intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 				fileName);
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
@@ -409,12 +412,13 @@ public class TemplateBrowserActivity extends ListActivity {
 									file, true);
 							if (loadedTemplate != null) {
 								Template temp = new Template(
-										loadedTemplate.templateName,
-										loadedTemplate.gameName,
-										loadedTemplate.author,
-										loadedTemplate.date,
-										loadedTemplate.iconID,
-										loadedTemplate.description);
+										loadedTemplate.getTemplateName(),
+										loadedTemplate.getGameName(),
+										loadedTemplate.getAuthor(),
+										loadedTemplate.getDate(),
+										loadedTemplate.getIconPath(),
+										loadedTemplate.getDescription());
+								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {
 									temp.setTemplateName(file.getName());
 								}

@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 import de.fau.cs.mad.gamekobold.*;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
@@ -53,7 +54,8 @@ public class FolderFragment extends GeneralFragment {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        editable = (getActivity() instanceof CharacterEditActivity? false:true);
+       
+        editable = (getActivity() instanceof CharacterEditActivity || getActivity() instanceof CharacterPlayActivity? false:true);
 		Log.d("FolderFragment","onCreate; editable set to: " + editable);
         // nullcheck needed for jackson inflation. creates allData before onCreate is called
         if(allData == null) {
@@ -84,6 +86,11 @@ public class FolderFragment extends GeneralFragment {
        	//	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.table, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
@@ -93,6 +100,11 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.matrix, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
@@ -102,6 +114,11 @@ public class FolderFragment extends GeneralFragment {
         	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
 			@Override
 			public void onClick(View v) {
+				// check if a name has been set
+				if(nameInput.getText().toString().isEmpty()) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				addItemList(editable, element_type.folder, nameInput.getText().toString());
 				dialogCreateElement.cancel();
 				nameInput.setText("");
@@ -286,8 +303,9 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
+				newDataItem.favorite = subTable.isFavorite();
 				// create fragment
 				newDataItem.childFragment = new FolderFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
@@ -312,8 +330,9 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
+				newDataItem.favorite = subTable.isFavorite();
 				// create fragment
 				newDataItem.childFragment = new TableFragment();
 				newDataItem.childFragment.elementName = subTable.tableName;
@@ -334,8 +353,9 @@ public class FolderFragment extends GeneralFragment {
 				allData.add(newDataItem);
 				// set data holder jackson Table
 				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected);
-				newDataItem.checked = subTable.isSelected;
+				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+				newDataItem.checked = subTable.isSelected();
+				newDataItem.favorite = subTable.isFavorite();
 				// create fragment
 				// TODO add matrix inflation
 				newDataItem.childFragment = new MatrixFragment();

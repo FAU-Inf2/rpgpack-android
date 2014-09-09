@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
@@ -76,9 +76,9 @@ public class CreateNewCharacterActivity extends Activity implements
 						templateFileName, false);
 				characterDirectoryFile = JacksonInterface
 						.getDirectoryForCharacters(template, this, true);
-				sheet = template.characterSheet;
+				sheet = template.getCharacterSheet();
 				// change to default color
-				sheet.color = getResources().getColor(R.color.light_green);
+				sheet.setColor(getResources().getColor(R.color.light_green));
 			} catch (Throwable e) {
 				e.printStackTrace();
 				// TODO correct error handling
@@ -178,8 +178,8 @@ public class CreateNewCharacterActivity extends Activity implements
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
-					if (!sheet.description.equals(s.toString())) {
-						sheet.description = s.toString();
+					if (!sheet.getDescription().equals(s.toString())) {
+						sheet.setDescription(s.toString());
 						characterAltered = true;
 					}
 				}
@@ -200,7 +200,7 @@ public class CreateNewCharacterActivity extends Activity implements
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
-					sheet.name = s.toString();
+					sheet.setName(s.toString());
 					setTitle(s.toString());
 					characterAltered = true;
 				}
@@ -222,11 +222,11 @@ public class CreateNewCharacterActivity extends Activity implements
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
 					try {
-						sheet.level = Integer.parseInt(s.toString());
+						sheet.setLevel(Integer.parseInt(s.toString()));
 						characterAltered = true;
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
-						sheet.level = 0;
+						sheet.setLevel(0);
 					}
 				}
 			}
@@ -247,6 +247,7 @@ public class CreateNewCharacterActivity extends Activity implements
 				saveCharacterSheet();
 				Intent intent = CharacterEditActivity.createIntentForStarting(CreateNewCharacterActivity.this, sheet);
 				startActivity(intent);
+				finish();
 			}
 		});
 	}
@@ -262,34 +263,34 @@ public class CreateNewCharacterActivity extends Activity implements
 		Log.d("Trying to save sheet", "sheet:" + sheet);
 		Log.d("Trying to save sheet", "altered:" + characterAltered);
 		if (sheet != null && characterAltered) {
-			if (!sheet.name.isEmpty()) {
+			if (!sheet.getName().isEmpty()) {
 				Log.d("Trying to save sheet", "name not empty!");
 				
-				if (sheet.fileAbsolutePath.isEmpty()) {
+				if (sheet.getFileAbsolutePath().isEmpty()) {
 					Log.d("Trying to save sheet", "path is empty");
 					// create file
 					if (characterDirectoryFile != null) {
 						Log.d("Trying to save sheet", "dir not null");
 						String fileName = JacksonInterface
-								.getSanitizedFileName(sheet.name);
+								.getSanitizedFileName(sheet.getName());
 						if (fileName.isEmpty()) {
 							SimpleDateFormat format = new SimpleDateFormat(
 									"yyyy-MM-dd--HH-mm-ss");
 							Date date = new Date();
 							fileName = format.format(date);
 						}
-						sheet.fileAbsolutePath = characterDirectoryFile
+						sheet.setFileAbsolutePath(characterDirectoryFile
 								.getAbsolutePath()
 								+ File.separatorChar
-								+ fileName;
+								+ fileName);
 					}
 				}
 				// save
 				try {
 					Log.d("Trying to save sheet", "path:"
-							+ sheet.fileAbsolutePath);
+							+ sheet.getFileAbsolutePath());
 					// open file
-					final File jsonFile = new File(sheet.fileAbsolutePath);
+					final File jsonFile = new File(sheet.getFileAbsolutePath());
 					JacksonInterface.saveCharacterSheet(sheet, jsonFile);
 					// clear flag
 					characterAltered = false;
@@ -323,8 +324,8 @@ public class CreateNewCharacterActivity extends Activity implements
 	private void setCharacterColor(int color) {
 		relLayout.setBackgroundColor(color);
 		if (sheet != null) {
-			if (sheet.color != color) {
-				sheet.color = color;
+			if (sheet.getColor() != color) {
+				sheet.setColor(color);
 				characterAltered = true;
 			}
 		}
@@ -357,21 +358,23 @@ public class CreateNewCharacterActivity extends Activity implements
 				path = iconUri.getPath(); // from File Manager
 
 			if (path != null)
-				bitmap = BitmapFactory.decodeFile(path);
+				bitmap = ThumbnailLoader.loadThumbnail(path, this);
 
 		} else if (requestCode == PICK_FROM_CAMERA) {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
-			// path = iconUri.getPath();
-			// bitmap = BitmapFactory.decodeFile(path);
-			// gets the thumbnail
-			final Bundle extras = data.getExtras();
-			bitmap = (Bitmap) extras.get("data");
+			 path = iconUri.getPath();
+			 bitmap = ThumbnailLoader.loadThumbnail(path, this);
+//			// gets the thumbnail
+//			final Bundle extras = data.getExtras();
+//			bitmap = (Bitmap) extras.get("data");
 		}
 		if (bitmap != null) {
 			characterIconButton.setImageBitmap(bitmap);
 		}
 		// TODO store image path for later use
+		sheet.setIconPath(path);
+		characterAltered = true;
 	}
 
 	// TODO refactoring?

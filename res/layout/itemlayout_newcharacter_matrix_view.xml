@@ -4,11 +4,11 @@
     android:layout_height="fill_parent" >
 
     <ImageView
-        android:id="@+id/m_item_highlighting_circle"
+        android:id="@+id/matrix_item_highlighting_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:gravity="center"
         android:padding="2dp"
@@ -16,59 +16,71 @@
         android:src="@drawable/shape_circle_highlightig" />
 
     <ImageView
-        android:id="@+id/m_character_icon_circle"
+        android:id="@+id/matrix_character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
         android:adjustViewBounds="true"
         android:gravity="center"
         android:padding="2dp"
         android:scaleType="fitXY"
         android:src="@drawable/shape_circle_matrix_lightgrey" />
 
-    <TextView
-        android:id="@+id/m_textItemTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/m_item_highlighting_circle"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="title"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/grey" />
-
-    <TextView
-        android:id="@+id/m_textValue"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text="value"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/grey" />
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/m_textRangeFromTo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/m_textValue"
-        android:gravity="center"
-        android:text="range"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/grey" />
+        <TextView
+            android:id="@+id/matrix_textValue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:gravity="center"
+            android:text="value"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey" />
 
-    <TextView
-        android:id="@+id/m_textModificator"
-        android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/matrix_textRangeFromTo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="range"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/matrix_textModificator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="mod"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey" />
+
+        <TextView
+            android:id="@+id/matrix_textItemTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/favorite_checkbox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/m_textRangeFromTo"
-        android:gravity="center"
-        android:text="mod"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/grey" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/matrix_character_icon_circle"
+        android:button="@android:drawable/btn_star"
+        android:focusable="false" />
 
 </RelativeLayout>

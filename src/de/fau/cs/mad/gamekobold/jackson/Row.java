@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.util.Log;
-
-public class Row {
-	// TODO save value to json
-	private boolean isSelected;
+public class Row extends SelectAndFavorableItem {
 	private ArrayList<AbstractColumnEntry> entries;
 
-	public Row(ArrayList<AbstractColumnEntry> entries, boolean isSelected) {
+	public Row(ArrayList<AbstractColumnEntry> entries) {
 		this.entries = entries;
-		this.isSelected = isSelected;
 	}
 
 	public Row() {
@@ -56,17 +51,6 @@ public class Row {
 		}
 	}
 
-	public void print() {
-		StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < entries.size(); i++) {
-			builder.append(entries.get(i));
-			if(i < entries.size()-1) {
-				builder.append(" | ");
-			}
-		}
-		Log.d("ROW-print",builder.toString());
-	}
-
 	/**
 	 * Adds a new column to this row. This should only be called from the Table class.
 	 * @param header The column information
@@ -104,12 +88,4 @@ public class Row {
 		 }
 		 entries.set(index, newEntry);
 	 }
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
 }

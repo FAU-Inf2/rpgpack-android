@@ -3,7 +3,9 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +103,11 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor()
 						+ ", " + curTemplate.getDate());
 
-				// change the icon for different games
-				TemplateIcons templateIcons = TemplateIcons.getInstance();
-				imageView.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
+				if(icon != null) {
+					imageView.setImageBitmap(icon);
+				}
 			}
 		} else {
 			// check for last 2 lines -> edit last template, create new template.
@@ -136,9 +139,16 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 
-				TemplateIcons templateIcons = TemplateIcons.getInstance();
-				imageView.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
+				if(icon == null) {
+					TemplateIcons templateIcons = TemplateIcons.getInstance();
+					imageView.setImageResource(Integer.valueOf(templateIcons
+							.getTempalteIcon(0)));
+				}
+				else {
+					imageView.setImageBitmap(icon);
+				}
 			}
 		}
 		return rowView;

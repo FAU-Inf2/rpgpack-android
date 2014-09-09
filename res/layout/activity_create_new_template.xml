@@ -68,6 +68,7 @@
             android:layout_marginTop="9dip"
             android:ems="10"
             android:hint="@string/hint_template_name"
+            android:singleLine="true"
             android:textColor="@color/white" >
 
             <requestFocus />

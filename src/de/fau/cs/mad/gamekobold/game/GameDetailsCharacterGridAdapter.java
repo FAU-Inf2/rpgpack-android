@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class GameDetailsCharacterGridAdapter extends
@@ -63,19 +63,14 @@ public class GameDetailsCharacterGridAdapter extends
 
 			characterName.setText(curCharacter.getCharacterName());
 
-			if (curCharacter.getIconPath() == null) {
+			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
+			if(bitmap == null) {
 				// set some default game icon
-				bitmap = BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.person_without_plus);
-			} else {
-				bitmap = BitmapFactory.decodeFile(path);
+				characterIconView.setImageResource(R.drawable.person_without_plus);
 			}
-
-			if (bitmap != null) {
-				// set game icon
+			else {
 				characterIconView.setImageBitmap(bitmap);
 			}
-
 		}
 		// or reuse
 		else {
@@ -88,19 +83,14 @@ public class GameDetailsCharacterGridAdapter extends
 			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 
-			if (curCharacter.getIconPath() == null) {
+			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
+			if(bitmap == null) {
 				// set some default game icon
-				bitmap = BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.person_without_plus);
-			} else {
-				bitmap = BitmapFactory.decodeFile(path);
+				characterIconView.setImageResource(R.drawable.person_without_plus);
 			}
-
-			if (bitmap != null) {
-				// set game icon
+			else {
 				characterIconView.setImageBitmap(bitmap);
 			}
-
 		}
 
 		return convertView;

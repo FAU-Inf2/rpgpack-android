@@ -37,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/character_details_border"
-                android:paddingBottom="15dp" >
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp" >
 
                 <TextView
                     android:id="@+id/textView1"
@@ -46,11 +47,13 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
                     android:text="Character Name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
-                <ImageButton
+            <!--    <ImageButton
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,6 +62,7 @@
                     android:layout_marginRight="23dp"
                     android:background="@null"
                     android:src="@android:drawable/ic_notification_clear_all" />
+ -->
 
             </RelativeLayout>
 

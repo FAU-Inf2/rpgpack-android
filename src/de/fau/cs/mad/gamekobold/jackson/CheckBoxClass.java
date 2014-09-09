@@ -1,11 +1,6 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CheckBoxClass extends AbstractColumnEntry{
-	@JsonIgnore
 	public static final String TYPE_STRING = "chkbox";
 	
 	public boolean checked;
@@ -14,13 +9,12 @@ public class CheckBoxClass extends AbstractColumnEntry{
 		checked = false;
 	}
 	
-	@JsonCreator
-	public CheckBoxClass(@JsonProperty("checked") boolean isChecked) {
+	public CheckBoxClass(boolean isChecked) {
 		checked = isChecked;
 	}
 	
 	public CheckBoxClass(String value) {
-		// true if content == "true", false otherwise. no exception thrown!
+		// true if value == "true", false otherwise. no exception thrown!
 		checked = Boolean.parseBoolean(value);		
 	}
 

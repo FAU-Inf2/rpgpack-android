@@ -98,14 +98,4 @@ public class ContainerTable extends AbstractTable{
 		}
 		return subTables.add(table);
 	}
-	
-	public void print() {
-		Log.d("CONTAINER_TABLE","ContainerTabler Name:" + tableName);
-		if(subTables == null){
-			return;
-		}
-		for(int i = 0; i < subTables.size(); i++) {
-			subTables.get(i).print();
-		}
-	}
 }

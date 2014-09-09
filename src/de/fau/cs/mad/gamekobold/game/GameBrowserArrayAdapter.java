@@ -3,10 +3,10 @@ package de.fau.cs.mad.gamekobold.game;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,18 +94,14 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				Log.e("getIconPath is null?", ""
 						+ (curGame.getIconPath() == null));
 
-				if (curGame.getIconPath() == null) {
+				bitmap = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), context);
+				if(bitmap == null) {
 					// set some default game icon
-					bitmap = BitmapFactory.decodeResource(
-							context.getResources(),
-							R.drawable.game_default_white);
-				} else {
-					bitmap = BitmapFactory.decodeFile(path);
+					imageViewGameIcon.setImageResource(R.drawable.game_default_white);
 				}
-
-				if (bitmap != null) {
+				else {
 					// set game icon
-					imageViewGameIcon.setImageBitmap(bitmap);
+					imageViewGameIcon.setImageBitmap(bitmap);					
 				}
 			}
 		}
@@ -141,18 +137,14 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				gDate.setText(curGame.getDate());
 				gCounter.setText(String.valueOf(curGame.getCharacterList().size()));
 
-				if (curGame.getIconPath() == null) {
+				bitmap = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), context);
+				if(bitmap == null) {
 					// set some default game icon
-					bitmap = BitmapFactory.decodeResource(
-							context.getResources(),
-							R.drawable.game_default_white);
-				} else {
-					bitmap = BitmapFactory.decodeFile(path);
+					imageViewGameIcon.setImageResource(R.drawable.game_default_white);
 				}
-
-				if (bitmap != null) {
+				else {
 					// set game icon
-					imageViewGameIcon.setImageBitmap(bitmap);
+					imageViewGameIcon.setImageBitmap(bitmap);					
 				}
 			}
 		}

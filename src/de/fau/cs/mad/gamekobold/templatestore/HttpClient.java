@@ -58,6 +58,7 @@ public class HttpClient {
 			String paramString = URLEncodedUtils.format(nameValuePairs, "utf-8");
 			url += "?"+paramString;
 		}
+		Log.e("store", url);
 		this.httpGet = new HttpGet(url);
 		
 		try {

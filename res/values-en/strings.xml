@@ -20,7 +20,7 @@
     <string name="action_showlists">Show List (1 categorie)</string>
     <string name="choice_prompt">Select a choice</string>
     <string name="ok">OK</string>
-    
+
     <string-array name="choices">
         <item>Tabelle</item>
         <item>Matrix</item>
@@ -34,7 +34,7 @@
 
     <string name="popup_titel">Item Information</string>
     <string name="menu_item_save_template">Save template</string>
-    <string name="action_auto_save_on_exit">Autosave on exit</string>
+    <string name="action_auto_save">Autosave</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
     <string name="template_generator_welcom">Welcome in Template-Generator!\n \n To create your own template just open the menu!</string>
 
@@ -149,6 +149,7 @@
     <string name="text_matrix">Matrix</string>
     <string name="text_ordner">Folder</string>
     <string name="hint_text_element_name">Name</string>
+    <string name="alert_set_element_name">Please set a name!</string>
 
     <!-- activity_template_generator -->
     <string name="text_press_to_add_new_folder">Press to add new element</string>
@@ -241,14 +242,14 @@
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
     <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
-	<string name="search_title">search templates</string>
-	<string name="hint_search">search store</string>
-	<string name="store_actions">Actions</string>
-	<string name="store_reload">reload</string>
-	<string name="store_tags">Tags</string>  
-	<string name="tag_horror">Horror</string>
-	<string name="tag_fantasy">Fantasy</string>
-	<string name="tag_future">Future</string>  
+    <string name="search_title">search templates</string>
+    <string name="hint_search">search store</string>
+    <string name="store_actions">Actions</string>
+    <string name="store_reload">reload</string>
+    <string name="store_tags">Tags</string>
+    <string name="tag_horror">Horror</string>
+    <string name="tag_fantasy">Fantasy</string>
+    <string name="tag_future">Future</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
@@ -257,12 +258,27 @@
 
     <!-- character_edit_matrix_view -->
     <string name="hint_select_items">Select attributes for your character!</string>
-    
-      <!-- activity_character_generator_welcome -->
+
+    <!-- activity_character_generator_welcome -->
     <string name="character_generator_welcome">Welcome in Character-Generator!\n \n To create your own character just open the menu and choose the elements!</string>
 
     <!-- activity_play_character_welcome -->
     <string name="play_character_welcome">Welcome in Character-Play-Mode!\n \n To view your character current values or to modify them just open the menu!</string>
-    
+    <string name="titel_play_character_welcome">Welcome to Play-mode!</string>
+    <string name="titel_character_generator_welcome">Welcome to Character-Generator!</string>
+    <string name="titel_template_generator_welcome">Welcome to Template-Generator!</string>
 
+    <!-- new_character_matrix_view_array_adapter -->
+    <string name="msg_added_to_matrix_favorite">-attribut is added to your charakter quick view!</string>
+    <!-- new_matrix_item_popup -->
+    <string name="warning_set_matrixitem_name">Your new Matrix element should have a name!</string>
+   	
+	<string name="title_activity_character_browser">Character Browser</string>
+	
+	<!-- autosave toast string -->
+    <string name="autosave_toast_text">Saving#8230;</string>
+    <!-- SettingValueDialogFragment -->
+    <string name="string_set_matrix_value">Put your value!</string>
+    <!-- dialog_fragment_setting_matrix_value -->
+    <string name="matrix_value">Value:</string>
 </resources>

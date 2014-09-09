@@ -12,7 +12,10 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
-
+	public static final int FLAG_FROM = 1; // Binary 00001
+	public static final int FLAG_TO = 2; // Binary 00010
+	public static final int FLAG_VALUE = 4; // Binary 00100
+	public static final int FLAG_MOD = 8; // Binary 01000
 	/*
 	 * JACKSON START
 	 */
@@ -58,7 +61,7 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		// View itemView;
-
+		// TODO ate refactor with view holder
 		// if it's not recycled, initialize some attributes
 		if (convertView == null) {
 			if (position == getCount() - 1) {
@@ -90,14 +93,27 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 				TextView itemRange = (TextView) convertView
 						.findViewById(R.id.textRangeFromTo);
 
-				TextView iModificator = (TextView) convertView
+				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.textModificator);
 
+				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+					itemRange.setText(curItem.getRangeMin() + " - "
+							+ curItem.getRangeMax());
+				} else
+					itemRange.setText("");
+
+				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+					itemValue.setText(curItem.getValue());
+				} else
+					itemValue.setText("");
+
+				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+					itemModificator.setText(curItem.getModificator());
+				} else
+					itemModificator.setText("");
+
 				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-				itemRange.setText(curItem.getRangeMin() + " - "
-						+ curItem.getRangeMax());
-				iModificator.setText(curItem.getModificator());
 			}
 			// or reuse
 		} else {
@@ -129,48 +145,37 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						.findViewById(R.id.textModificator);
 
 				MatrixItem curItem = items.get(position);
-
 				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-				/*
-				 * Log.d("ADAPTER", "pos:"+position); Log.d("ADAPTER",
-				 * "iRange:"+iRange); Log.d("ADAPTER", "curItem:"+curItem);
-				 * Log.d("ADAPTER", "min:"+curItem.getRangeMin());
-				 * Log.d("ADAPTER", "max:"+curItem.getRangeMax());
-				 */
-				itemRange.setText(curItem.getRangeMin() + " - "
-						+ curItem.getRangeMax());
+				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+					itemRange.setText(curItem.getRangeMin() + " - "
+							+ curItem.getRangeMax());
+				} else
+					itemRange.setText("");
 
-				itemModificator.setText(curItem.getModificator());
+				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+					itemValue.setText(curItem.getValue());
+				} else
+					itemValue.setText("");
 
-				// // set modificator text color: blue for positive red for
-				// // negative
-				if (!curItem.getModificator().isEmpty()) {
+				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+					itemModificator.setText(curItem.getModificator());
+					// // set modificator text color: blue for positive red for
+					// // negative
+					if (!curItem.getModificator().isEmpty()) {
 
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.a_blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.a_red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
-
-				// // TODO make this check smarter
-				// if (!curItem.getModificator().isEmpty()) {
-				//
-				// if (curItem.getModificator().charAt(0) == '+')
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_blue));
-				// else if (curItem.getModificator().charAt(0) == '-')
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_red));
-				// else
-				// iModificator.setTextColor(getContext().getResources()
-				// .getColor(R.color.a_grey));
-				//
+						if (Integer.valueOf(curItem.getModificator()) > 0) {
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.a_blue));
+						} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.a_red));
+						} else
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.white));
+					}
+				} else
+					itemModificator.setText("");
 
 			}
 		}

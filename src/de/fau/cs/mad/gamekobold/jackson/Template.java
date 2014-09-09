@@ -2,56 +2,43 @@ package de.fau.cs.mad.gamekobold.jackson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Template implements Parcelable{
 	@JsonIgnore
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
-	// TODO set fileName when loading + abspath
-	@JsonIgnore
+
 	private String fileName = null;
-	public String templateName = "";
-	public String gameName = "";
-	public String author = "";
-	public String date = "";
-	public int iconID;
-	public String description = "";
+	private String templateName = "";
+	private String gameName = "";
+	private String author = "";
+	private String date = "";
+	private String description = "";
+	private String tagString = "";
+	private String iconPath = "";
+
 	/* Character */
-	public CharacterSheet characterSheet = null;
-	
+	private CharacterSheet characterSheet = null;
+
 	public Template() {
 		Log.d("Template", "default constructor");
 		characterSheet = new CharacterSheet();
 	}
-	
-	@JsonCreator
-	public Template(@JsonProperty("characterSheet") CharacterSheet sheet) {
+
+	public Template(CharacterSheet sheet) {
 		characterSheet = sheet;
 	}
-	
-//	public void print() {
-//		Log.d("TEMPLATE", "name:" + templateName);
-//		Log.d("TEMPLATE", "game:" + gameName);
-//		Log.d("TEMPLATE", "author:" + author);
-//		Log.d("TEMPLATE", "date:" + date);
-//		Log.d("TEMPLATE", "icon:" + iconID);
-//		Log.d("TEMPLATE", "description:" + description);
-//		if(characterSheet != null) {
-//			characterSheet.print();
-//		}
-//		else {
-//			Log.d("TEMPLATE", "characterSheet:null");
-//		}
-//	}
 
 	@SuppressLint("SimpleDateFormat")
 	@JsonIgnore
@@ -69,7 +56,8 @@ public class Template implements Parcelable{
 		}
 		return fileName;
 	}
-	
+
+	@JsonIgnore
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -83,22 +71,92 @@ public class Template implements Parcelable{
 		gameName = otherTemplate.getWorldName();
 		author = otherTemplate.getAuthor();
 		date = otherTemplate.getDate();
-		iconID = otherTemplate.getIconID();
+		iconPath = otherTemplate.getIconPath();
 		description = otherTemplate.getDescription();
+		tagString = otherTemplate.getTagString();
 	}
 
 	/**
+	 * @param withPrettyWriter If true the writer will indent the output.
 	 * @return Json representation of this template
 	 * @throws JsonProcessingException
 	 */
 	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		if(withPrettyWriter) {
-			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			return mapper.writer().writeValueAsString(this);
-		}
+		return mapper.writer().writeValueAsString(this);
+	}
+	
+	public String getTagString() {
+		return tagString;
+	}
+	
+	@JsonProperty("tags")
+	public void setTagString(String tagString) {
+		this.tagString = tagString;
+	}
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	@JsonProperty("name")
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	@JsonProperty("world")
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	@JsonProperty("des")
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CharacterSheet getCharacterSheet() {
+		return characterSheet;
+	}
+	
+	@JsonProperty("charSheet")
+	public void setCharacterSheet(CharacterSheet characterSheet) {
+		this.characterSheet = characterSheet;
+	}
+
+	public String getIconPath() {
+		return iconPath;
+	}
+
+	@JsonProperty("icon")
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
 	}
 
 	//
@@ -119,8 +177,9 @@ public class Template implements Parcelable{
 		dest.writeString(gameName);
 		dest.writeString(author);
 		dest.writeString(date);
-		dest.writeInt(iconID);
 		dest.writeString(description);
+		dest.writeString(tagString);
+		dest.writeString(iconPath);
 	}
 
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -137,8 +196,9 @@ public class Template implements Parcelable{
 			ret.gameName = source.readString();
 			ret.author = source.readString();
 			ret.date = source.readString();
-			ret.iconID = source.readInt();
 			ret.description = source.readString();
+			ret.tagString = source.readString();
+			ret.iconPath = source.readString();
 			return ret;
 		}
 	};

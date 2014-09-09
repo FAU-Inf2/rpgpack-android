@@ -124,14 +124,14 @@ public class MatrixViewActivity extends Activity {
 	public static List<MatrixItem> getDataForGridView() {
 		List<MatrixItem> itemsList = new ArrayList<MatrixItem>();
 
-		MatrixItem item1 = new MatrixItem("Mut", "34", 0, 100, "+1", true);
-		MatrixItem item2 = new MatrixItem("Ausdauer", "45", 20, 500, "-2", true);
-		MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 100, "+3", true);
-
-		itemsList.add(item1);
-		itemsList.add(item2);
-		itemsList.add(item3);
-
+		// MatrixItem item1 = new MatrixItem("Mut", "34", 0, 100, "+1");
+		// MatrixItem item2 = new MatrixItem("Ausdauer", "45", 20, 500, "-2");
+		// MatrixItem item3 = new MatrixItem("Kraft", "70", 0, 100, "+3");
+		//
+		// itemsList.add(item1);
+		// itemsList.add(item2);
+		// itemsList.add(item3);
+		//
 		return itemsList;
 	}
 

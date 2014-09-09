@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item format="integer" name="autosave_interval_in_ms" type="integer">300000</item>
+    
+</resources>

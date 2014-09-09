@@ -157,9 +157,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					Intent intent = new Intent(context,
 							CreateNewCharacterActivity.class);
 					// TODO bei den anderen auch curTemplate.getFileName()
-					// don't add the activity to the history
-					intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
 					intent.putExtra("templateFileName",
 							curClickedTemplate.getFileName());
 					context.startActivity(intent);

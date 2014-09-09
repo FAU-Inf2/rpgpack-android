@@ -25,7 +25,7 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<CharacterSheet>{
 		super(context, R.layout.itemlayout_character_icon, items);
 		if (items != null) {
 			final CharacterSheet createNewCharacter = new CharacterSheet("Create Character");
-			createNewCharacter.color = Color.WHITE;
+			createNewCharacter.setColor(Color.WHITE);
 			items.add(createNewCharacter);
 		}
 		this.context = context;
@@ -63,10 +63,10 @@ public class CharacterGridArrayAdapter extends ArrayAdapter<CharacterSheet>{
 		}
 		// the following code sets the color for the circle shape
 		final CharacterSheet sheet = getItem(position);
-		setColorForView(sheet.color, itemView);
+		setColorForView(sheet.getColor(), itemView);
 		// set the name
 		final TextView name = (TextView)itemView.findViewById(R.id.textView1);		
-		name.setText(items.get(position).name);
+		name.setText(items.get(position).getName());
 		return itemView;
 	}
 	

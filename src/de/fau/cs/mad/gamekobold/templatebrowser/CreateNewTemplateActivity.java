@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity;
@@ -204,19 +204,19 @@ public class CreateNewTemplateActivity extends Activity {
 				// set data
 //				jTemplate.templateName = tvTemplateName.getText().toString();
 //				jTemplate.gameName = tvGameName.getText().toString();
-				newTemplate.templateName = tvTemplateName.getText().toString();
-				newTemplate.gameName = tvGameName.getText().toString();
+				newTemplate.setTemplateName(tvTemplateName.getText().toString());
+				newTemplate.setGameName(tvGameName.getText().toString());
 				// TODO author
 //				jTemplate.author = "Registered Author";
 //				jTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
-				newTemplate.author = "Registered Author";
-				newTemplate.date = new SimpleDateFormat("dd.MM.yyyy")
-						.format(new Date());
+				newTemplate.setAuthor("Registered Author");
+				newTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
+						.format(new Date()));
 				// TODO icon id
 //				jTemplate.iconID = 0;
 //				jTemplate.description = tvDescription.getText().toString();
-				newTemplate.iconID = 0;
-				newTemplate.description = tvDescription.getText().toString();
+//				newTemplate.setIconID(0);
+				newTemplate.setDescription(tvDescription.getText().toString());
 				// check to see if a file for this template already exists
 				if (JacksonInterface.doesTemplateFileExist(newTemplate, myActivity)) {
 					// if yes we show a dialog and ask whether to overwrite the
@@ -291,21 +291,21 @@ public class CreateNewTemplateActivity extends Activity {
 				path = imageUri.getPath(); // from File Manager
 
 			if (path != null)
-				bitmap = BitmapFactory.decodeFile(path);
+				bitmap = ThumbnailLoader.loadThumbnail(path, this);
 
 		} else {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
 			path = imageUri.getPath();
-			bitmap = BitmapFactory.decodeFile(path);
-
+			bitmap = ThumbnailLoader.loadThumbnail(path, this);
 		}
 
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 		addImageButton.setImageBitmap(bitmap);
-		// TODO store image path for later use
 		// TemplateIcons.getInstance().addTemplateIcon(path);
-
+		// TODO store image path for later use
+		// set icon path
+		newTemplate.setIconPath(path);
 	}
 
 	@Override
@@ -370,14 +370,14 @@ public class CreateNewTemplateActivity extends Activity {
 
 			positiveButtonText = getString(R.string.save_changes);
 			final EditText editText = (EditText)view.findViewById(R.id.editTextAdditionalInformation);
-			editText.setText(myTemplate.description);
+			editText.setText(myTemplate.getDescription());
 
 			builder.setMessage(getString(R.string.popup_template_details_info_titel));
 			builder.setPositiveButton(positiveButtonText,
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							myTemplate.description = editText.getEditableText().toString();
+							myTemplate.setDescription(editText.getEditableText().toString());
 							createNewTemplateActivity.edDescription.setText(editText.getEditableText().toString());
 						}
 					});

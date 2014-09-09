@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,6 +43,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
@@ -576,14 +576,14 @@ public class CreateNewGameFragment extends Fragment {
 				path = imageUri.getPath(); // from File Manager
 
 			if (path != null)
-				bitmap = BitmapFactory.decodeFile(path);
+				bitmap = ThumbnailLoader.loadThumbnail(path, getActivity());
 			Log.i("Bitmap is null?", "" + (bitmap == null));
 
 		} else if (requestCode == PICK_FROM_CAMERA) {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
 			path = imageUri.getPath();
-			bitmap = BitmapFactory.decodeFile(path);
+			bitmap = ThumbnailLoader.loadThumbnail(path, getActivity());
 
 			Log.i("Here is imageUri = ", "" + imageUri);
 			Log.i("Here is path = ", "" + path);

@@ -25,6 +25,8 @@
 <item android:id="@+id/action_go_above" android:title="@string/action_go_above"></item>
 
 
-<group android:id="@+id/action_auto_save_group" android:checkableBehavior="all"><item android:id="@+id/action_save_template" android:title="@string/menu_item_save_template" android:checkable="false"></item><item android:id="@+id/action_auto_save_on_exit" android:checkable="true" android:title="@string/action_auto_save_on_exit" android:checked="false"></item></group>
+<group android:id="@+id/action_auto_save_group" android:checkableBehavior="all"><item android:id="@+id/action_save_template" android:title="@string/menu_item_save_template" android:checkable="false"></item>
+<item android:id="@+id/action_auto_save_menu_item" android:checkable="true" android:checked="true" android:title="@string/action_auto_save"></item>
+</group>
     
 </menu>

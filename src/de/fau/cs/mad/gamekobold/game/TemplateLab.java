@@ -93,12 +93,13 @@ public class TemplateLab {
 									file, true);
 							if (loadedTemplate != null) {
 								Template temp = new Template(
-										loadedTemplate.templateName,
-										loadedTemplate.gameName,
-										loadedTemplate.author,
-										loadedTemplate.date,
-										loadedTemplate.iconID,
-										loadedTemplate.description);
+										loadedTemplate.getTemplateName(),
+										loadedTemplate.getGameName(),
+										loadedTemplate.getAuthor(),
+										loadedTemplate.getDate(),
+										loadedTemplate.getIconPath(),
+										loadedTemplate.getDescription());
+								temp.setTagString(loadedTemplate.getTagString());
 								if (temp.getTemplateName().equals("")) {
 									temp.setTemplateName(file.getName());
 								}
@@ -141,12 +142,13 @@ public class TemplateLab {
 								.loadTemplate(templateFile, true);
 						if (loadedTemplate != null) {
 							// take over changes
-							template.setTemplateName(loadedTemplate.templateName);
-							template.setWorldName(loadedTemplate.gameName);
-							template.setAuthor(loadedTemplate.author);
-							template.setDate(loadedTemplate.date);
-							template.setIconID(loadedTemplate.iconID);
-							template.setDescription(loadedTemplate.description);
+							template.setTemplateName(loadedTemplate.getTemplateName());
+							template.setWorldName(loadedTemplate.getGameName());
+							template.setAuthor(loadedTemplate.getAuthor());
+							template.setDate(loadedTemplate.getDate());
+//							template.setIconID(loadedTemplate.getIconID());
+							template.setDescription(loadedTemplate.getDescription());
+							template.setTagString(loadedTemplate.getTagString());
 							// update time stamp
 							template.setFileTimeStamp(templateFile
 									.lastModified());
@@ -180,10 +182,12 @@ public class TemplateLab {
 					final CharacterSheet sheet = JacksonInterface
 							.loadCharacterSheet(characterFile, true);
 					final GameCharacter character = new GameCharacter("");
-					character.setCharacterName(sheet.name);
-					character.setDescription(sheet.description);
+					character.setCharacterName(sheet.getName());
+					character.setDescription(sheet.getDescription());
 					character.setTemplate(template);
 					character.setFileAbsPath(characterFile.getAbsolutePath());
+					character.setDate(sheet.getFileLastUpdated());
+					character.setIconPath(sheet.getIconPath());
 					template.addCharacter(character);
 				} catch (Throwable e) {
 					e.printStackTrace();

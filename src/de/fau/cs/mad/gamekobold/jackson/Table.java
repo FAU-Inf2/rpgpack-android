@@ -9,44 +9,46 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import android.util.Log;
 
 @JsonTypeName("table")
 public class Table extends AbstractTable{
 	private List<Row> rows;
 	private int numberOfColumns;
-
 	private ArrayList<ColumnHeader> columnHeaders;
-	
-	@JsonIgnore
-	public boolean writeOnly;
 
 	public Table() {
 		tableName = "";
 		columnHeaders = new ArrayList<ColumnHeader>();
 		numberOfColumns = 0;
-		writeOnly = false;
 		rows = new ArrayList<Row>();
 	}
-	
+
 	public Table(String name, ArrayList<ColumnHeader> headers){
 		tableName = name;
 		numberOfColumns = headers.size();
 		columnHeaders = headers;
-		writeOnly = false;
 		rows = new ArrayList<Row>();
 	}
-	
+
+	/**
+	 * Creator for jackson deserialization.
+	 * @param name
+	 * @param headers
+	 * @param loadedRows
+	 * @param selection
+	 * @param favlist
+	 * @return
+	 */
 	@JsonCreator
-	public Table(@JsonProperty("name") String name,
-				@JsonProperty("columns") ArrayList<ColumnHeader> headers,
-				@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
-				@JsonProperty("selection") ArrayList<Boolean> selection) {
-		tableName = name;
-		numberOfColumns = headers.size();
-		columnHeaders = headers;
-		writeOnly = false;
-		rows = new ArrayList<Row>();
+	static private Table create(@JsonProperty("name") String name,
+								@JsonProperty("columns") ArrayList<ColumnHeader> headers,
+								@JsonProperty("rows") ArrayList<ArrayList<String>> loadedRows,
+								@JsonProperty("sellist") ArrayList<Integer> selection,
+								@JsonProperty("favlist") ArrayList<Integer> favlist) {
+		Table table = new Table(name, headers);
 		// parse rows
 		for(int i = 0; i < loadedRows.size(); ++i) {
 			final ArrayList<String> rawRow = loadedRows.get(i);
@@ -55,13 +57,27 @@ public class Table extends AbstractTable{
 			// inflate
 			newRow.inflate(headers, rawRow);
 			if(selection != null) {
-				newRow.setSelected(selection.get(i));
+				if(selection.get(i).intValue() == 0) {
+					newRow.setSelected(false);
+				}
+				else {
+					newRow.setSelected(true);
+				}
+			}
+			if(favlist != null) {
+				if(favlist.get(i).intValue() == 0) {
+					newRow.setFavorite(false);	
+				}
+				else {
+					newRow.setFavorite(true);
+				}
 			}
 			// add
-			rows.add(newRow);
+			table.rows.add(newRow);
 		}
+		return table;
 	}
-	
+
 	/**
 	 * Used for saving to json by jackson library.
 	 * @return
@@ -74,44 +90,63 @@ public class Table extends AbstractTable{
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Used for saving to json by jackson library.
 	 * @return
 	 */
-	@JsonProperty("selection")
-	public List<Boolean> getSelection() {
-		List<Boolean> ret = new LinkedList<Boolean>();
+	@JsonProperty("sellist")
+	private List<Integer> getSelection() {
+		List<Integer> ret = new LinkedList<Integer>();
 		for(final Row row : rows) {
-			ret.add(row.isSelected());
+			if(row.isSelected()) {
+				ret.add(1);
+			}
+			else {
+				ret.add(0);
+			}
 		}
 		return ret;
 	}
-	
+
+	@JsonProperty("favlist")
+	private List<Integer> getFavList() {
+		List<Integer> ret = new LinkedList<Integer>();
+		for(final Row row : rows) {
+			if(row.isFavorite()) {
+				ret.add(1);
+			}
+			else {
+				ret.add(0);
+			}
+		}				
+		return ret;
+	}
+
 	public Row getRow(int index) {
 		if(index < 0 || index >= rows.size()) {
 			return null;
 		}
 		return rows.get(index);
 	}
-	
+
 	@JsonProperty(value="columns")
 	public ArrayList<ColumnHeader> getColumnHeaders() {
 		return columnHeaders;
 	}
-	
+
 	public ColumnHeader getColumnHeader(int index) {
 		if(index < 0 || index >= columnHeaders.size()) {
 			return null;
 		}
 		return columnHeaders.get(index);
 	}
-	
+
 	@JsonIgnore
 	public int getNumberOfColumns() {
 		return numberOfColumns;
 	}
-	
+
 	/**
 	 * Returns the number of selected rows.
 	 * @return Number of selected rows.
@@ -126,7 +161,7 @@ public class Table extends AbstractTable{
 		}
 		return counter;
 	}
-	
+
 	/**
 	 * Returns a list containing only the currently selected rows.
 	 * @return A List containing only the selected rows.
@@ -140,24 +175,6 @@ public class Table extends AbstractTable{
 			}
 		}
 		return selRows;
-	}
-	
-	public void print() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Table Name:"+tableName+"\n");
-		for(int i = 0; i < numberOfColumns; i++) {
-			builder.append(columnHeaders.get(i).name+"("+columnHeaders.get(i).type+")");
-			if(columnHeaders.get(i).hidden) {
-				builder.append("[hidden]");
-			}
-			if( i < numberOfColumns-1) {
-				builder.append(" | ");
-			}
-		}
-		Log.d("TABLE-print", builder.toString());
-		for(int i = 0; i < rows.size(); i++) {
-			rows.get(i).print();
-		}
 	}
 
 	/**
@@ -245,10 +262,10 @@ public class Table extends AbstractTable{
 	 	}
 	 	ColumnHeader header = columnHeaders.get(index);
 		Log.d("Table-setColumnTitle", "index:"+index);
-		Log.d("Table-setColumnTitle", "old:"+header.name);
+		Log.d("Table-setColumnTitle", "old:"+header.getContent());
 		Log.d("Table-setColumnTitle", "new:"+title);
-	 	if(!header.name.equals(title)) {
-		 	header.name = title;
+	 	if(!header.getContent().equals(title)) {
+		 	header.setContent(title);
 		 	return true;
 		}
 	 	return false;
@@ -283,10 +300,10 @@ public class Table extends AbstractTable{
 		 // change header
 		 final ColumnHeader oldHeader = columnHeaders.get(index);
 		 // check if old type == new type
-		 if(oldHeader.type.equals(newType)) {
+		 if(oldHeader.getType().equals(newType)) {
 			 return;
 		 }
-		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.name, newType, oldHeader.hidden);
+		 final ColumnHeader newHeader = new ColumnHeader(oldHeader.getContent(), newType/*, oldHeader.hidden*/);
 		 columnHeaders.set(index, newHeader);
 		 // create new entry according to type
 		 // checkbox

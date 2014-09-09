@@ -48,6 +48,7 @@
                     android:ems="10"
                     android:hint="@string/hint_matrix_item_name"
                     android:maxLength="24"
+                    android:singleLine="true"
                     android:textSize="16sp" >
 
                     <requestFocus />
@@ -79,6 +80,7 @@
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="25dp"
+                    android:checked="true" 
                     android:layout_row="5" />
 
                 <TextView
@@ -150,6 +152,7 @@
                     android:layout_gravity="left|bottom"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
+                    android:checked="true" 
                     android:layout_row="6" />
 
                 <Switch
@@ -158,6 +161,7 @@
                     android:layout_gravity="left|bottom"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
+                    android:checked="true" 
                     android:layout_row="7" />
 
                 <Switch
@@ -166,6 +170,7 @@
                     android:layout_gravity="left|bottom"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
+                    android:checked="true" 
                     android:layout_row="8" />
 
                 <EditText
@@ -238,8 +243,7 @@
             android:layout_height="30dp"
             android:layout_gravity="top|right"
             android:clickable="true"
-            android:src="@drawable/close_button_dred" />
-
+            android:src="@drawable/close_button_dred" />
         -->
     </FrameLayout>
 

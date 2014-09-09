@@ -88,5 +88,10 @@
                 android:hint="@string/hint_your_notes" />
         </ScrollView>
     </LinearLayout>
+    
+    <com.nhaarman.supertooltips.ToolTipRelativeLayout
+        android:id="@+id/activity_main_tooltipRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

@@ -5,22 +5,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.game.Game;
 
 public abstract class JacksonInterface {
+	private static final String LOG_TAG = "JacksonInterface";
 
 	public static final String CHARACTER_ROOT_FOLDER_NAME = "Characters";
 	public static final String TEMPLATE_ROOT_FOLDER_NAME = "Templates";
@@ -45,13 +51,14 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		if(onlyMetaData) {
 			mapper.addMixInAnnotations(CharacterSheet.class, CharacterSheetMixInClass.class);
 		}
 		FileInputStream inStream = new FileInputStream(jsonFile);
 		CharacterSheet sheet = mapper.readValue(inStream, CharacterSheet.class);
-		sheet.fileAbsolutePath = jsonFile.getAbsolutePath();
-		sheet.fileTimeStamp = jsonFile.lastModified();
+		sheet.setFileAbsolutePath(jsonFile.getAbsolutePath());
+		sheet.setFileTimeStamp(jsonFile.lastModified());
 		return sheet;		
 	}
 
@@ -67,14 +74,16 @@ public abstract class JacksonInterface {
 		if(jsonFile == null || sheet == null) {
 			return;
 		}
+		Log.d(LOG_TAG, " saving character. path:"+jsonFile.getAbsolutePath());
 		FileOutputStream outStream = new FileOutputStream(jsonFile);
 		ObjectMapper mapper = new ObjectMapper();
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, sheet);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, sheet);
-		}
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		sheet.setFileLastUpdated(dateFormat.format(date));
+		mapper.writer().writeValue(outStream, sheet);
 	}
 	//
 	// TEMPLATE FUNCTIONS START
@@ -142,6 +151,15 @@ public abstract class JacksonInterface {
 		return getRootDirectoryFor(GAME_ROOT_FOLDER_NAME, context);
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @return The root character directory.
+	 * Returns the root directory characters are saved for this device.
+	 */
+	public static File getCharacterRootDirectory(final Context context) {
+		return getRootDirectoryFor(CHARACTER_ROOT_FOLDER_NAME, context);
+	}
 	/**
 	 * Checks whether the file for the template exists on the file system.
 	 * @param context
@@ -211,13 +229,12 @@ public abstract class JacksonInterface {
 		if(template == null || outStream == null) {
 			return;
 		}
+		Log.d(LOG_TAG, "saving template. name:"+template.getTemplateName());
 		ObjectMapper mapper = new ObjectMapper();
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, template);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, template);
-		}
+		mapper.writer().writeValue(outStream, template);
 	}
 
 	// LOADING FUNCTIONS
@@ -237,6 +254,7 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		if(onlyMetaData) {
 			// in order to load only meta data we use mix in annotations
 			// the Template.Character sheet won't be loaded.
@@ -396,12 +414,16 @@ public abstract class JacksonInterface {
 			return;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+//		if(use_pretty_writer) {
+//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
+//		}
+//		else {
+//			mapper.writer().writeValue(outStream, game);
+//		}
 		if(use_pretty_writer) {
-			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
-		else {
-			mapper.writer().writeValue(outStream, game);
-		}
+		mapper.writer().writeValue(outStream, game);
 	}
 
 	public static Game loadGame(File gameFile) throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
@@ -416,6 +438,7 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		if(onlyMetaData) {
 //			// in order to load only meta data we use mix in annotations
 //			// the Template.Character sheet won't be loaded.

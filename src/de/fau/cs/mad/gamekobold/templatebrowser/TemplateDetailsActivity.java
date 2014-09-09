@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -77,8 +79,6 @@ public class TemplateDetailsActivity extends Activity {
 					Intent i = new Intent(TemplateDetailsActivity.this,
 							CreateNewCharacterActivity.class);
 					// TODO bei den anderen auch curTemplate.getFileName()
-					// don't add the activity to the history
-					i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					i.putExtra("templateFileName", curTemplate.getFileName());
 					startActivity(i);
 				}
@@ -112,7 +112,7 @@ public class TemplateDetailsActivity extends Activity {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick( DialogInterface dialog, int which) {
-								File sheetFile = new File(clickedSheet.fileAbsolutePath);
+								File sheetFile = new File(clickedSheet.getFileAbsolutePath());
 								if(sheetFile != null) {
 									sheetFile.delete();
 									adapter.remove(clickedSheet);
@@ -151,8 +151,11 @@ public class TemplateDetailsActivity extends Activity {
 				tvInfo.setText("Von: " + curTemplate.getAuthor() + ", "
 						+ curTemplate.getDate());
 
-				ivIcon.setImageResource(Integer.valueOf(templateIcons
-						.getTempalteIcon(curTemplate.getIconID())));
+				// load image bitmap
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), this);
+				if(icon != null) {
+					ivIcon.setImageBitmap(icon);
+				}
 
 				if (curTemplate.fileAbsolutePath == null) {
 					editButton.setEnabled(false);
@@ -183,6 +186,7 @@ public class TemplateDetailsActivity extends Activity {
 			public void onClick(View v) {
 				if (curTemplate != null) {
 					if (curTemplate.fileAbsolutePath != null) {
+						Log.d("TemplateDetailsActivity", "editing template now!");
 						String fileName = getFileName();
 						Intent intent = new Intent(
 								TemplateDetailsActivity.this,
@@ -192,6 +196,11 @@ public class TemplateDetailsActivity extends Activity {
 						intent.putExtra(
 								SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 								false);
+						intent.putExtra(SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
+								true);
+//						intent.putExtra(
+//								SlideoutNavigationActivity.MODE_PLAY_CHARACTER,
+//								false);
 						intent.putExtra(
 								SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 								fileName);
@@ -231,12 +240,12 @@ public class TemplateDetailsActivity extends Activity {
 				boolean characterListChanged = false;
 				for(int i = 0; i < adapter.getCount() - 1; i++) {
 					CharacterSheet sheet = adapter.getItem(i);
-					final File sheetFile = new File(sheet.fileAbsolutePath);
-					Log.d("TemplateDetailsActivity", "checking file:"+sheet.fileAbsolutePath);
+					final File sheetFile = new File(sheet.getFileAbsolutePath());
+					Log.d("TemplateDetailsActivity", "checking file:"+sheet.getFileAbsolutePath());
 					if(sheetFile != null) {
 						final long newTimeStamp = sheetFile.lastModified();
-						if(newTimeStamp > sheet.fileTimeStamp) {
-							Log.d("TemplateDetailsActivity", "reloading file:"+sheet.fileAbsolutePath);
+						if(newTimeStamp > sheet.getFileTimeStamp()) {
+							Log.d("TemplateDetailsActivity", "reloading file:"+sheet.getFileAbsolutePath());
 							try {
 								adapter.remove(sheet);
 								sheet = JacksonInterface.loadCharacterSheet(sheetFile, true);
@@ -398,7 +407,7 @@ public class TemplateDetailsActivity extends Activity {
 			}
 			// entry for creating a new character
 			final CharacterSheet createNewCharacter = new CharacterSheet("Create Character");
-			createNewCharacter.color = Color.WHITE;
+			createNewCharacter.setColor(Color.WHITE);
 			characterList.add(createNewCharacter);
 			((TemplateDetailsActivity) myActivity)
 					.setCharacterList(characterList);

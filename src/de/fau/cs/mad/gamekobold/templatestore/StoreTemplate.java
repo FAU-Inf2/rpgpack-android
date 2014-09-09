@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreTemplate {
 	
+	
 	@JsonProperty("author")
 	private String author;
 	@JsonProperty("name")

@@ -3,9 +3,12 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
@@ -29,8 +32,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
@@ -65,6 +71,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -419,7 +426,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		int amountRows = dialogTable.getChildCount()-1;
 		for(int i=1; i<amountRows+1; i++){
 			String otherString = ((EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1)).getText().toString();
-			EditText textToChange = ((EditText) ((TableRow) headerTable.getChildAt(0)).getChildAt(i-1));
+			TextView textToChange = ((TextView) ((TableRow) headerTable.getChildAt(0)).getChildAt(i-1));
 			if(!otherString.equals("")){
 				textToChange.setText(otherString);
 			}
@@ -436,6 +443,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
 		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
 		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
+		//TODO:
+//		((View) row).setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				showDialog();
+//			}
+//		});
 		headerTable.addView(row);
 		jacksonLoadTableHeader(row);
 		return headerTable;
@@ -783,6 +797,32 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     int styleStart = 0;
     int cursorLoc = 0;
     
+    public ArrayList<MatrixItem> getAllMatrixReferences(FolderFragment fragmentToSearch){
+    	ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
+		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
+        for(FolderElementData currentDatum  : fragmentToSearch.dataAdapter.getAll()){
+        	GeneralFragment currentFragment = currentDatum.childFragment;
+        	if(currentFragment instanceof FolderFragment){
+    			Log.d("popupReferences", "folderfragment found, descending now");
+        		ArrayList<MatrixItem> toAdd = getAllMatrixReferences((FolderFragment) currentFragment);
+        		results.addAll(toAdd);
+        	}
+        	else if(currentFragment instanceof TableFragment){
+    			Log.d("popupReferences", "tableview found; atm ignoring");
+        	}
+        	else if(currentFragment instanceof MatrixFragment){
+    			Log.d("popupReferences", "matrix found. Elements:" + (((MatrixFragment) currentFragment).itemsList).size());
+        		for(MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList){
+        			results.add(oneItem);
+        		}
+        	}
+        	else{
+    			Log.d("popupReferences", "unhandled element found!!!");
+        	}
+        }
+        return results;
+    }
+    
     private ArrayList<String> getAllElementsToRef(FolderFragment fragmentToSearch){
     	ArrayList<String> results = new ArrayList<String>();
 		Log.d("popupReferences", "subdirs: " + fragmentToSearch.dataAdapter.getAll().length);
@@ -1055,11 +1095,11 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                                 highlightedText.removeSpan(ss[i]);
                     			Log.d("textstyle", "removeSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
                         }
-                        highlightedText.setSpan(new UnderlineSpan(), styleStart, position,  33);
+                        highlightedText.setSpan(new UnderlineSpan(), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             			Log.d("textstyle", "setSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
 //            			Log.d("textstyle", "UNDERLINE from " + styleStart + " to " + position);
                     }
-                    //XXX:note: i think recursive calls to listener are the problem
+                    //XXX:note: i think recursive calls to listener are the problem; dont think so anymore; should be fixed...
             		spans = text.getSpans(styleStart, position, Object.class);
         			Log.d("textstyle", "setting text with " + spans.length + " spans! (" + styleStart + " to " + position + ")");
         			for (int i = 0; i < spans.length; i++) {
@@ -1079,7 +1119,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                         			Log.d("textstyle", "removeSpan: BOLD!!! (" + styleStart + " to " + position + ")");
         						}
         					}
-        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position,  33);
+        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 			Log.d("textstyle", "setSpan: BOLD!!! (" + styleStart + " to " + position + ")");
 //        					Log.d("textstyle", "BOLD from " + styleStart + " to " + position);
 //        				}
@@ -1091,7 +1131,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //                        			Log.d("textstyle", "removeSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
 //        						}
 //        					}
-//        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position,  33);
+//        					highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.BOLD_ITALIC), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                			Log.d("textstyle", "setSpan: BOLD_ITALIC!!! (" + styleStart + " to " + position + ")");
 //        					Log.d("textstyle", "BOLD_ITALIC from " + styleStart + " to " + position);
 //        				}
@@ -1104,7 +1144,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                     			Log.d("textstyle", "removeSpan: ITALIC (" + styleStart + " to " + position + ")");
                             }
                         }
-                        highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position,  33);
+                        highlightedText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC), styleStart, position,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             			Log.d("textstyle", "setSpan: ITALIC (" + styleStart + " to " + position + ")");
 //                        Log.d("textstyle", "ITALIC from " + styleStart + " to " + position);
         			}
@@ -1134,6 +1174,45 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         // TEST
         if(!jacksonEntry.getContent().isEmpty()) {
         	inputPopup.setText(jacksonEntry.getContent());
+        	//XXX:following is atm only done in character-edit mode
+        	//-> code is in CustomExpendableListAdapter
+//        	if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+//    	        Log.d("TableFragment", "durchsuche Popup!");
+//        		String searchForReferences = inputPopup.getText().toString();
+//        		Pattern p = Pattern.compile("@");
+//        	    Matcher m = p.matcher(searchForReferences);
+//        	    while (m.find()){
+////        	    	System.out.print("Start index: " + matcher.start());
+//        	    	//TODO: copy&paste for highlighting popup?
+//        	    	int startIndex = m.start();
+//        	    	int endIndex = startIndex;
+//        	    	while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
+//        	    			&& searchForReferences.charAt(endIndex) != '\b'){
+//        	    		endIndex++;
+//        	    	}
+//        	    	String referenceString = searchForReferences.substring(startIndex, endIndex);
+//        	    	getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
+//        	    	Spannable span = (Spannable) inputPopup;
+//        	    	span.setSpan(new MyClickableSpan(popupView), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+////        	        span.setSpan(new ClickableSpan() {  
+////        	            @Override
+////        	            public void onClick(View v) {  
+//////        	            	ToolTipRelativeLayout a = new ToolTipRelativeLayout(getActivity(), null);
+////        	            	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) popupView.findViewById(R.id.activity_main_tooltipRelativeLayout);
+//////
+////        	                ToolTip toolTip = new ToolTip()
+////        	                                    .withText("A beautiful View")
+////        	                                    .withColor(R.color.red)
+////        	                                    .withShadow();
+////        	                View myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, this.);
+//////        	                myToolTipView.setOnToolTipViewClickedListener(MainActivity.this);
+////        	            	
+////        	                //TODO: tooltip
+////        	            }
+////        	        }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        	        inputPopup.setText(span); 
+//        	    }
+//        	}
         }
         // TEST END
         
@@ -1213,32 +1292,51 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //					}
 //				});
                 ArrayList<String> allRefs = getAllElementsToRef(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
-                for(String aReference : allRefs){
+//                for(String aReference : allRefs){
+                //skip the last element (this is "new element")
+                if(allRefs.size() > 1){
                 	TextView oneLine = new TextView(SlideoutNavigationActivity.theActiveActivity);
-                	oneLine.setText(aReference);
-                	oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
-                	           getResources().getDimension(R.dimen.text_large));
-                	oneLine.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							String lastCharOfPopup = inputPopup.getText().toString();
-							if(lastCharOfPopup.length() > 0){
-								lastCharOfPopup = lastCharOfPopup.substring(lastCharOfPopup.length() - 1);
-								if(!lastCharOfPopup.equals("\n") && !lastCharOfPopup.equals(" ")){
-									inputPopup.append(" ");
-								}
-							}
-							inputPopup.append("@" + ((TextView) v).getText()+ " ");
-							popupReferences.dismiss();
-						}
-					});
-                	setTableStyle(oneLine);
-//                	setAddButtonStyle(oneLine);
-//                	oneLine.setBackground(R.drawable.cell_shape_white_borders);
-                	reference_list.addView(oneLine);
+                	//TODO: translate
+            		oneLine.setText("Choose the value to reference");
+            		oneLine.setGravity(Gravity.CENTER);
+            		oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
+            				getResources().getDimension(R.dimen.text_large));
+            		setHeaderTableStyle(oneLine);
+            		reference_list.addView(oneLine);
+                	for(int i=0; i<(allRefs.size()-1); i++){
+                		String aReference = allRefs.get(i);
+                		oneLine = new TextView(SlideoutNavigationActivity.theActiveActivity);
+                		oneLine.setText(aReference);
+                		oneLine.setGravity(Gravity.CENTER);
+                		oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
+                				getResources().getDimension(R.dimen.text_large));
+                		oneLine.setOnClickListener(new OnClickListener() {
+                			@Override
+                			public void onClick(View v) {
+                				String lastCharOfPopup = inputPopup.getText().toString();
+                				if(lastCharOfPopup.length() > 0){
+                					lastCharOfPopup = lastCharOfPopup.substring(lastCharOfPopup.length() - 1);
+                					if(!lastCharOfPopup.equals("\n") && !lastCharOfPopup.equals(" ")){
+                						inputPopup.append(" ");
+                					}
+                				}
+                				inputPopup.append("@" + ((TextView) v).getText()+ " ");
+                				popupReferences.dismiss();
+                			}
+                		});
+                		setTableStyle(oneLine);
+                		//                	setAddButtonStyle(oneLine);
+                		//                	oneLine.setBackground(R.drawable.cell_shape_white_borders);
+                		reference_list.addView(oneLine);
+                	}
+                	popupReferences.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+                	//                  reference_view.startAnimation(slide_up);
+
                 }
-//                reference_view.startAnimation(slide_up);
-    			popupReferences.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
+                else{
+                	//TODO: translation
+            		Toast.makeText(getActivity(), "unfortunately nothing available to reference to" ,Toast.LENGTH_SHORT).show();
+                }
         	}
         });
         //following does not work yet
@@ -1409,6 +1507,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 * adds one column to the table
 	 */
 	protected void addColumn() {
+		Log.d("addColumn()","addColumn()!!!");
 		amountColumns++;
 		View headerRow = headerTable.getChildAt(0);
 		TableRow row = (TableRow) headerRow;
@@ -1552,7 +1651,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					StringClass.TYPE_STRING));
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
 					StringClass.TYPE_STRING));
-			final EditText col1 = new EditText(getActivity());
+			final TextView  col1 = new TextView(getActivity());
+			((View) col1).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					showDialog();
+				}
+			});
 			col1.setText(getResources().getString(R.string.headline1));
 			col1.setGravity(Gravity.CENTER);
 			setHeaderTableStyle(col1);
@@ -1568,7 +1673,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			});
 			headerRow.addView(col1);
 			// SECOND COLUMN
-			final EditText col2 = new EditText(getActivity());
+			final TextView col2 = new TextView(getActivity());
+			((View) col2).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					showDialog();
+				}
+			});
 			setHeaderTableStyle(col2);
 			col2.setText(getResources().getString(R.string.headline2));
 			col2.setGravity(Gravity.CENTER);
