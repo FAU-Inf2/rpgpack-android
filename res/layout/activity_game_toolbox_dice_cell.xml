@@ -8,8 +8,6 @@
 		android:layout_height="50dp"   
         android:id="@+id/grid_dice_item"
         android:layout_gravity="center"
-        android:text="Test"
-        android:background="@drawable/dice_6"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/white" 
         android:textSize="20sp"

@@ -7,7 +7,12 @@ package com.nhaarman.supertooltips.exception;
  */
 public class ViewNotFoundRuntimeException extends RuntimeException {
 
-    public ViewNotFoundRuntimeException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ViewNotFoundRuntimeException() {
         super("View not found for this resource id. Are you sure it exists?");
     }
 }

@@ -17,7 +17,7 @@
             android:layout_marginBottom="20dip"
             android:background="@color/background_green"
             android:onClick="randomCharList"
-            android:text="Shuffle"
+            android:text="@string/shuffle_list"
             android:textColor="@color/white" />
     </LinearLayout>
 

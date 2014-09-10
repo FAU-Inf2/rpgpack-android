@@ -8,7 +8,12 @@ package com.nhaarman.supertooltips.exception;
  */
 public class NoOverflowMenuRuntimeException extends RuntimeException {
 
-    public NoOverflowMenuRuntimeException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NoOverflowMenuRuntimeException() {
         super("No overflow menu found. Are you sure the overflow menu button is visible? Check the docs for showToolTipForActionBarOverflowMenu(Activity, ToolTip) again!");
     }
 }

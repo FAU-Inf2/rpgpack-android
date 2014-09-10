@@ -40,7 +40,7 @@
             android:layout_below="@+id/textView1"
             android:layout_margin="5dp"
             android:layout_toRightOf="@+id/icon1"
-            android:text="Medium Text"
+            android:text="@string/medium_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white" />
 
@@ -51,7 +51,7 @@
             android:layout_alignLeft="@+id/textView4"
             android:layout_alignTop="@+id/icon1"
             android:layout_marginTop="15dp"
-            android:text="Medium Text"
+            android:text="@string/medium_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -62,7 +62,7 @@
             android:layout_height="20dp"
             android:layout_alignLeft="@+id/textView4"
             android:layout_below="@+id/textView4"
-            android:text="Medium Text"
+            android:text="@string/medium_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/white" />
 

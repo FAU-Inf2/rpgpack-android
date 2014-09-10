@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">RPG Pack</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_tools">Tools</string>
-    <string name="start_game">Spiel starten</string>
-    <string name="load_game">Spiel laden</string>
-    <string name="manage_charackter">Charakter verwalten</string>
-    <string name="template_generator">Templates verwalten</string>
-    <string name="settings">Einstellungen</string>
-    <string name="alljoyn">Alljoyn</string>
-    <string name="title_activity_alljoyn_test">AlljoynTest</string>
-    <string name="btn_call_service">Call Service</string>
-    <string name="answer_from_service">Answer From Service</string>
-    <string name="signal_from_service">Signal from Service</string>
+    <string name="hello_world">Hallo Welt!</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_tools">Werkzeuge</string>
+    <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
     <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
-    <string name="choice_prompt">Select a choice</string>
+    <string name="choice_prompt">Wähle aus</string>
     <string name="ok">OK</string>
+    <string name="empty"></string>
 
-    <string-array name="choices">
-        <item>Tabelle</item>
-        <item>Matrix</item>
-        <item>Ordner</item>
-    </string-array>
+    <!-- activity_main -->
+    <string name="start_game">Spiel starten</string>
+    <string name="load_game">Spiel laden</string>
+    <string name="template_generator">Templates verwalten</string>
+    <string name="manage_charackter">Charakter verwalten</string>
+    <string name="settings">Einstellungen</string>
+    <string name="alljoyn">Alljoyn</string>
+
+    <!-- Template Generator -->
+    <string name="tpg_actionbar_title">ABCD</string>
+
+    <!-- activity_alljoin_test -->
+    <string name="btn_call_service">Dienst rufen</string>
+    <string name="answer_from_service">Antwort des Dienstes</string>
+    <string name="signal_from_service">Signal des Dienstes</string>
+
     <string-array name="spaltentypen">
         <item>Textfeld</item>
         <item>CheckBox</item>
         <item>PopUp</item>
     </string-array>
-
+	
+    <!-- activity_template_generator_welcome -->
+    <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
+    
     <string name="popup_titel">Item Information</string>
     <string name="menu_item_save_template">Template speichern</string>
     <string name="action_auto_save">Automatisches Speichern</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
-    <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
+    
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -54,8 +61,8 @@
         <item>@drawable/ic_add_item2_grey</item>
     </array>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Navigation öffnen</string>
+    <string name="drawer_close">Navigation schließen</string>
 
     <!-- MatrixPopUp -->
     <string name="add_item">Speichern</string>
@@ -104,7 +111,7 @@
     <!-- TableFragment -->
     <string name="save_table">Tabelle speichern</string>
     <string name="go_back">Zurück</string>
-    <string name="new_element">...</string>
+    <string name="new_element">&#8230;</string>
     <string name="headline">Überschrift</string>
     <string name="headline1">Überschrift 1</string>
     <string name="headline2">Überschrift 2</string>
@@ -130,8 +137,9 @@
     <string name="yes_and_trash">Ja und verwerfen</string>
     <string name="yes_and_save">"Ja und speichern"</string>
 
-    <!-- TemplateDetailsActivity -->
+    <!-- activity_template_details -->
     <string name="edit_template">Template bearbeiten</string>
+    <string name="medium_text">Mittlerer Text</string>
     <string name="popup_template_details_info_titel">Template Beschreibung</string>
     <string name="popup_template_details_tags_titel">Template Tags</string>
     <string name="action_delete_template">Template löschen</string>
@@ -179,7 +187,7 @@
 
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Hier hast Du Platz für deine Notizen&#8230;</string>
- 	<string name="hint_tag_string">Durch Komma getrennte Tags&#8230;</string>
+    <string name="hint_tag_string">Durch Komma getrennte Tags&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
 
     <!-- game -->
@@ -189,9 +197,9 @@
 
     <!-- fragment_create_new_game -->
     <string name="hint_game_name">Spielname&#8230;</string>
-    <string name="hint_1">Hint1&#8230;</string>
-    <string name="hint_2">Hint2&#8230;</string>
-    <string name="hint_3">Hint3&#8230;</string>
+    <string name="hint_1">Tipp1&#8230;</string>
+    <string name="hint_2">Tipp2&#8230;</string>
+    <string name="hint_3">Tipp3&#8230;</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
@@ -206,20 +214,35 @@
     <!-- play_character_fragment -->
     <string name="played_character_title">Dein Charakter zum Spielen</string>
 
-    <!-- Toolbox -->
+    <!-- activity_game_toolbox_dice -->
+    <string name="add_dice">Würfel hinzufügen</string>
+    <string name="roll_dice">würfeln</string>
+    <string name="add_d4">d4</string>
+    <string name="add_d6">d6</string>
+    <string name="add_d8">d8</string>
+    <string name="add_d10">d10</string>
+    <string name="add_d12">d12</string>
+    <string name="add_d20">d20</string>
+
+    <!-- activity_game_toolbox_randomlist -->
+    <string name="shuffle_list">Liste mischen</string>
+
+    <!-- activity_game_toolbox_timer -->
+    <string name="timer_start">Start</string>
+    <string name="timer_pause">Pause</string>
+    <string name="add_hour">+h</string>
+    <string name="add_minute">+m</string>
+    <string name="add_second">+s</string>
+    <string name="remove_hour">-h</string>
+    <string name="remove_minute">-m</string>
+    <string name="remove_second">-s</string>
+    <string name="set_time">Setze Zeit</string>
+
+    <!-- fragment_game_toolbox -->
     <string name="open_dice">Würfel Tool</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Taktische Karte</string>
     <string name="open_randomlist">Zufallsliste</string>
-    <string name="btn_start">Start</string>
-    <string name="btn_pause">Pause</string>
-    <string name="set_time">Setze Zeit</string>
-    <string name="add_d4">Add d4</string>
-    <string name="add_d6">Add d6</string>
-    <string name="add_d8">Add d8</string>
-    <string name="add_d10">Add d10</string>
-    <string name="add_d12">Add d12</string>
-    <string name="add_d20">Add d20</string>
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
@@ -243,22 +266,20 @@
     <string name="msg_want_to_delete_game">Moechtest du dieses Spiel wirklich loeschen?</string>
     <string name="msg_yes_to_delete_game">Klicke auf JA um das Spiel zu loeschen.</string>
 
-    <!-- Template Store -->
+    <!-- activity_template_store_main -->
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
-    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> more features coming soon....</br></string>
-
-	<string name="search_title">Templates suchen</string>
-	<string name="hint_search">Store durchsuchen</string>
-	<string name="store_actions">Actions</string>
-	<string name="store_reload">Neu laden</string>
-	<string name="store_tags">Tags</string>
-	<string name="tag_horror">Horror</string>
+    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> wird ständig erweitert....</br></string>    
+    <string name="search_title">Templates suchen</string>
+    <string name="hint_search">Store durchsuchen</string>
+    <string name="store_actions">Actions</string>
+    <string name="store_reload">Neu laden</string>
+    <string name="store_tags">Tags</string>
+    <string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
     <string name="tag_future">Zukunft</string>
     <string name="tag_dungeon_world">Dungeon World</string>
     <string name="d_and_d">D &amp; D</string>
-    
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
@@ -285,15 +306,12 @@
 
     <!-- autosave toast string -->
     <string name="autosave_toast_text">Speichere#8230;</string>
-    
+
     <!-- SettingValueDialogFragment -->
     <string name="string_set_matrix_value">Gib aktuellen Wert ein!</string>
     <string name="msg_added_matrix_to_character">-Attribut wird zu Deinem Charakter hinzugefuegt!</string>
-    
+
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
-    
-    
-    
-    
+
 </resources>

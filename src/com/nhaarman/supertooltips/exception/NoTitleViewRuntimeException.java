@@ -7,7 +7,12 @@ package com.nhaarman.supertooltips.exception;
  */
 public class NoTitleViewRuntimeException extends RuntimeException {
 
-    public NoTitleViewRuntimeException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NoTitleViewRuntimeException() {
         super("No title View found. Are you sure it exists?");
     }
 }

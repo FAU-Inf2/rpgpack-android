@@ -10,7 +10,7 @@
            android:layout_gravity="center"
            android:clickable="false"
            android:focusable="false"
-           android:text="Test"
+           android:text="@string/hello_world"
            android:gravity="center_vertical|center_horizontal"
            android:textColor="@color/white"
            android:textSize="20sp" />

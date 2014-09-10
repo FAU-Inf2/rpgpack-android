@@ -14,7 +14,7 @@
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
 	        android:onClick="startTimer"
-	        android:text="@string/btn_start" />
+	        android:text="@string/timer_start" />
     
         <Button
 	        android:id="@+id/btn_stop"
@@ -26,7 +26,7 @@
     		android:background="@color/background_green"
 	        android:layout_alignParentRight="true"
 	        android:onClick="stopTimer"
-	        android:text="@string/btn_pause" />
+	        android:text="@string/timer_pause" />
        
         <Button
 	        android:id="@+id/btn_plus_hour"
@@ -38,7 +38,7 @@
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="addHour"
-	        android:text="+h" />
+	        android:text="@string/add_hour" />
         
         <Button
 	        android:id="@+id/btn_plus_min"
@@ -50,7 +50,7 @@
     		android:background="@color/background_green"
     		android:onClick="addMin"
 			android:layout_centerHorizontal="true"
-	        android:text="+m" />
+	        android:text="@string/add_minute" />
         
         
         <Button
@@ -63,7 +63,7 @@
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="addSec"
-	        android:text="+s" />
+	        android:text="@string/add_second" />
         
         <Button
 	        android:id="@+id/btn_minus_hour"
@@ -75,7 +75,7 @@
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="removeHour"
-	        android:text="-h" />
+	        android:text="@string/remove_hour" />
         
          <Button
             android:id="@+id/btn_minus_min"
@@ -85,7 +85,7 @@
             android:background="@color/background_green"
             android:onClick="removeMin"
             android:layout_centerHorizontal="true"
-            android:text="-m"
+            android:text="@string/remove_minute"
             android:textColor="@color/white" />
         
         <Button
@@ -98,7 +98,7 @@
 	        android:textColor="@color/white"
     		android:background="@color/background_green"
     		android:onClick="removeSec"
-	        android:text="-s" />
+	        android:text="@string/remove_second" />
         
           <TextView  
      		android:id="@+id/textViewTime"
