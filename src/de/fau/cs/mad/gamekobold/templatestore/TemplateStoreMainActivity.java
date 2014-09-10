@@ -38,6 +38,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -213,7 +215,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    			 adapter.add(tmpl);
 	    		 }
 	  	   		 // show first row
-	  	   		 getListView().setSelection(0);
+	  	   		 if(method != "loadMore") {
+	  	   			 getListView().setSelection(0);
+	  	   		 }
 	  	   		 
 	 	  	 } else {
 	    		 alertMessage(response.toString());
@@ -250,6 +254,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 		layout_main = (FrameLayout) findViewById( R.id.template_main_layout);
 		layout_main.getForeground().setAlpha( 0);
 		
+		if(Helper.getSizeName(this) == "xlarge") {
+			this.initSidebar();
+		}
+		
 		this.templates = new ArrayList<StoreTemplate>();
 		this.adapter = new TemplateStoreArrayAdapter(this, templates);
   
@@ -275,6 +283,41 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 	
+
+	private void initSidebar() {
+		ListView list;
+		final String[] texts = { "Best Rated", "Newest", "Recommended", "Most Rated", "Dungeon World",
+				"D & D", "Fantasy", "Horror", "Future" };
+		Integer[] images = { R.drawable.dice_10, R.drawable.dice_10,
+				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10,
+				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10 };
+		
+		TemplateStoreSidebarArrayAdapter sidebarAdapter = 
+				new TemplateStoreSidebarArrayAdapter(this, texts, images);
+		
+		list = (ListView) findViewById(R.id.listView1);
+		list.setAdapter(sidebarAdapter);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				restoreListStatus();
+				
+				switch(texts[position]) {
+				case "Fantasy":
+				case "Horror":
+				case "Future":
+				case "Dungeon World":
+				case "D & D":
+					loadTag(texts[position]);
+					break;
+				}
+			}
+			
+		});
+		
+	}
 
 	public void onResume() {
 		super.onResume();
@@ -351,9 +394,6 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		ApiTaskParams apiParams = new ApiTaskParams();
 		boolean is_task = true;
@@ -365,13 +405,11 @@ public class TemplateStoreMainActivity extends ListActivity {
 			case R.id.tag_fantasy:
 			case R.id.tag_horror:
 			case R.id.tag_future:
+			case R.id.tag_d_and_d:
+			case R.id.tag_dungeon_world:
 				this.restoreListStatus();
-				ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-				String tag = (String) item.getTitle();
-				httpParams.add(new BasicNameValuePair("tagname", tag));
-				apiParams.setParams(httpParams);
-				apiParams.setMethod("searchByTag");
-				break;
+				this.loadTag((String)item.getTitle());
+				is_task = false;
 			default:
 				is_task = false;
 				break;
@@ -385,20 +423,25 @@ public class TemplateStoreMainActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	  @Override
+	  private void loadTag(String tag) {
+		  task = new ApiTask();
+		  ApiTaskParams apiParams = new ApiTaskParams();
+		  ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+		  httpParams.add(new BasicNameValuePair("tagname", tag));
+		  apiParams.setParams(httpParams);
+		  apiParams.setMethod("searchByTag");
+		  task.execute(apiParams);
+		
+	}
+
+	@Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {
 		  layout_main.getForeground().setAlpha( 180); // dim
 		  
-//		  InputMethodManager inputManager = (InputMethodManager)
-//                  getSystemService(Context.INPUT_METHOD_SERVICE); 
-//
-//		  inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-//                     InputMethodManager.HIDE_NOT_ALWAYS);
 		  searchView.clearFocus();
 		  
 		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
-		 // Toast.makeText(this, "For now only description is displayed: " + tmpl.getDescription(), Toast.LENGTH_LONG).show();
-	    
+	
 		    LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    
 		    View popupView = layoutInflater.inflate(R.layout.popup_templatestore_details, null);  

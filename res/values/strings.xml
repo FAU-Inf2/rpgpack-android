@@ -256,6 +256,8 @@
 	<string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
     <string name="tag_future">Zukunft</string>
+    <string name="tag_dungeon_world">Dungeon World</string>
+    <string name="d_and_d">D &amp; D</string>
     
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
@@ -290,6 +292,7 @@
     
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
+    
     
     
     

@@ -3,7 +3,6 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,6 +65,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -117,6 +117,29 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				if(tv.getEditableText().toString().equals(getResources().getString(R.string.blank))) {
 					tv.setText("");
 				}
+//				// TODO horizontal scrolling bug testing
+//				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
+//						        hsv.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+//						Log.d("TABLE_FRAGMENT", "scrollling horizontal");
+////						hsv.setScrollX(tv.getLeft());
+////						hsv.scrollTo(tv.getLeft(), tv.getBottom());
+//						hsv.smoothScrollTo(tv.getLeft(), tv.getTop());
+//					}
+//				}, 120L);
+//            	hsv.setScrollX(0);
+		        //note: we have to do scrolling in seperate thread to make sure the new item is already inserted
+//		        final ScrollView sv = (ScrollView) mainView.findViewById(R.id.table_scroll);
+////            	sv.setScrollX(0);
+//		        sv.post(new Runnable() {
+//		            @Override
+//		            public void run() {
+//		            	Log.d("TABLE_FRAGMENT", "scrollllllllling");
+////		            	sv.scrollTo(tv.getLeft(), tv.getBottom());
+////		            	sv.setScrollX(0);
+//		            }
+//		        });
 			}
 			else {
 				if(tv.getEditableText().toString().isEmpty()) {

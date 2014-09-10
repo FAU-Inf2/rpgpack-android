@@ -174,16 +174,19 @@ public class CreateNewTemplateActivity extends Activity {
 				 * JACKSON START
 				 */
 				if(editTemplate) {
-					intent.putExtra(
-							SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
+					intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
+							false);
+					intent.putExtra(SlideoutNavigationActivity.MODE_EDIT_TEMPLATE,
 							true);
+					intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+							currentTemplate.getFileName());
+					intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 				}
 				else {
 					intent.putExtra(
 							SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
 							true);					
 				}
-				// flag to distinguish between editing and creating
 				intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 
 				// create template for data transfer

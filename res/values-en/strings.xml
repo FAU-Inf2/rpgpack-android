@@ -146,7 +146,7 @@
     <string name="edit_character">Edit Character</string>
 
     <!-- alertdialog_template_generator_add_new_element -->
-    <string name="text_element_name">Elements name:</string>
+    <string name="text_element_name">Element name:</string>
     <string name="text_element_type">Element type:</string>
     <string name="text_tabelle">Table</string>
     <string name="text_matrix">Matrix</string>
@@ -255,6 +255,8 @@
     <string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
     <string name="tag_future">Future</string>
+    <string name="tag_dungeon_world">Dungeon World</string>
+    <string name="d_and_d">D &amp; D</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
