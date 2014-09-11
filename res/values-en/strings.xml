@@ -185,13 +185,16 @@
 
     <!-- popup_template_details_info -->
     <string name="hint_set_your_description_text">Here you can add some notes&#8230;</string>
-    <string name="hint_tag_string">Comma seperated Tags&#8230;</string>
+    <string name="hint_tag_string">Comma separated Tags&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
 
     <!-- game -->
     <string name="save">Save</string>
     <string name="save_game">Save Game</string>
     <string name="game_browser_title">Your Games</string>
+    
+    <!-- character_editor -->
+    <string name="edit">edit</string>
 
     <!-- fragment_create_new_game -->
     <string name="hint_game_name">Game Name&#8230;</string>
@@ -221,6 +224,11 @@
     <string name="add_d10">d10</string>
     <string name="add_d12">d12</string>
     <string name="add_d20">d20</string>
+    
+    <!-- activity_game_toolbox_map -->
+    <string name="description_red">red</string>
+    <string name="description_green">green</string>
+    <string name="description_black">black</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>

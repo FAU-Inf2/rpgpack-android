@@ -194,6 +194,9 @@
     <string name="save">Speichern</string>
     <string name="save_game">Spiel speichern</string>
     <string name="game_browser_title">Deine Spiele</string>
+    
+    <!-- character_editor -->
+    <string name="edit">editieren</string>
 
     <!-- fragment_create_new_game -->
     <string name="hint_game_name">Spielname&#8230;</string>
@@ -223,6 +226,11 @@
     <string name="add_d10">d10</string>
     <string name="add_d12">d12</string>
     <string name="add_d20">d20</string>
+    
+    <!-- activity_game_toolbox_map -->
+    <string name="description_red">rot</string>
+    <string name="description_green">grün</string>
+    <string name="description_black">schwarz</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Liste mischen</string>

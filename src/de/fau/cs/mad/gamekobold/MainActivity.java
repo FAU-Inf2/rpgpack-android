@@ -78,8 +78,7 @@ public class MainActivity extends Activity {
 		MatrixTable.appContext = getApplicationContext();
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
-		leaveToast = Toast.makeText(this, "Press back again to leave",
-				Toast.LENGTH_SHORT);
+		//leaveToast = Toast.makeText(this, "Press back again to leave",Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main4);
 	}
 

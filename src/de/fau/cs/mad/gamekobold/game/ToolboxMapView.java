@@ -79,7 +79,6 @@ public class ToolboxMapView extends View {
 		}
 		drawPaint.setColor(paintColor);
 		canvas.drawPath(drawPath, drawPaint);
-
 	}
 
 	@Override

@@ -7,16 +7,22 @@
     android:orientation="vertical"
     tools:context=".ToolboxMapActivity" >
 
-    <de.fau.cs.mad.gamekobold.game.ToolboxMapView
-        android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_weight="1"
-        android:background="@color/white" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:id="@+id/maplayout">
+
+        <de.fau.cs.mad.gamekobold.game.ToolboxMapView
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:background="@color/white" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/paint_colors"
@@ -31,7 +37,7 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="#000000"
-            android:contentDescription="Black"
+            android:contentDescription="@string/description_black"
             android:onClick="iconClicked"
             android:src="@drawable/paint_unpressed"
             android:tag="#000000" />
@@ -41,7 +47,7 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="#008000"
-            android:contentDescription="Green"
+            android:contentDescription="@string/description_green"
             android:onClick="iconClicked"
             android:src="@drawable/paint_unpressed"
             android:tag="#008000" />
@@ -51,7 +57,7 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="#FF0000"
-            android:contentDescription="Red"
+            android:contentDescription="@string/description_red"
             android:onClick="iconClicked"
             android:src="@drawable/paint_unpressed"
             android:tag="#FF0000" />
@@ -61,7 +67,6 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="@color/background_green"
-            android:contentDescription="Background"
             android:onClick="openMenu"
             android:tag="Background"
             android:text="o" />
@@ -71,7 +76,6 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="@color/background_green"
-            android:contentDescription="Background"
             android:onClick="undo"
             android:tag="Background"
             android:text="u" />
@@ -81,17 +85,15 @@
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="@color/background_green"
-            android:contentDescription="Background"
             android:onClick="redo"
             android:tag="Background"
             android:text="r" />
-        
+
         <Button
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="2dp"
             android:background="@color/background_green"
-            android:contentDescription="Background"
             android:onClick="activateErase"
             android:tag="Background"
             android:text="E" />

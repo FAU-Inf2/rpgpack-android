@@ -46,7 +46,6 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		currPaint.setImageDrawable(getResources().getDrawable(
 				R.drawable.paint_pressed));
 		createDots();
-		findViewById(R.id.map).setOnDragListener(this);
 		findViewById(R.id.paint_colors).setOnDragListener(this);
 		findViewById(R.id.paint_dots).setOnDragListener(this);
 	}
