@@ -116,11 +116,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		Intent intent = new Intent(packageContext, CharacterPlayActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
-		intent.putExtra(SlideoutNavigationActivity.MODE_TEMPLATE, true);
-
-		intent.putExtra(SlideoutNavigationActivity.MODE_CREATE_NEW_TEMPLATE,
-				false);
-		intent.putExtra(SlideoutNavigationActivity.MODE_PLAY_CHARACTER, true);
+		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_PLAY_CHARACTER);
 
 		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
 				true);

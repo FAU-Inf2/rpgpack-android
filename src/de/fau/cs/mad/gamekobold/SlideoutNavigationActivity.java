@@ -42,11 +42,13 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 
 	public static Template myTemplate = null;
 	public static CharacterSheet myCharacter = null;
+	
 	// for distinguishing between template creation/editing and character
-	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
-	public static final String MODE_CREATE_NEW_TEMPLATE = "MODE_CREATE_NEW_TEMPLATE";
-	public static final String MODE_EDIT_TEMPLATE = "MODE_EDIT_TEMPLATE";
-	public static final String MODE_PLAY_CHARACTER = "MODE_PLAY_CHARACTER";
+	public static final String EXTRA_MODE = "EXTRA_MODE";
+	public static final int MODE_CREATE_TEMPLATE = 0;
+	public static final int MODE_EDIT_TEMPLATE = 1;
+	public static final int MODE_PLAY_CHARACTER = 2;
+
 	public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
 	public static final String AUTO_SAVE_PREFERENCE = "AUTO_SAVE";
 	public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
@@ -81,33 +83,29 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		boolean playingMode = false;
 		Log.d("Saved instance state", "" + savedInstanceState);
 		if (savedInstanceState == null) {
-			Intent intent = getIntent();
+			final Intent intent = getIntent();
 			// check if we are in template mode
 			if (getAc() instanceof TemplateGeneratorActivity) {
-				// is a new template created?
-				createTemplateMode = intent.getBooleanExtra(MODE_CREATE_NEW_TEMPLATE,
-						true);
-				if (createTemplateMode) {
-					Template template = (Template) intent
+				// check mode
+				if(intent.getIntExtra(EXTRA_MODE, MODE_CREATE_TEMPLATE) == MODE_CREATE_TEMPLATE) {
+					createTemplateMode = true;
+					final Template template = (Template) intent
 							.getParcelableExtra(Template.PARCELABLE_STRING);
 					if (template != null) {
 						Log.d("MainTemplateGenerator",
 								"Got template meta data in intent!");
-						// template.print();
 						myTemplate = template;
 					} else {
 						// TODO show error?!
 					}
 				}
-				else{
-					String templateFileName = intent
-							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+				else if(intent.getIntExtra(EXTRA_MODE, MODE_CREATE_TEMPLATE) == MODE_EDIT_TEMPLATE) {
 					Log.d("MainTemplateGenerator", "Edit mode!");
+					// get file name
+					final String templateFileName = intent
+							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
 					editTemplateMode = true;
 					// we are editing an old one, so load it
-					// get file name
-//					String templateFileName = intent
-//							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
 					// create new async task
 					jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
 					// do the setup
@@ -116,7 +114,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					task.execute(templateFileName);
 				}
 			}
-				else if(getAc() instanceof CharacterEditActivity){
+			else if(getAc() instanceof CharacterEditActivity) {
 					// we are in edit character mode
 					String templateFileName = intent
 							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
@@ -132,14 +130,14 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					countDownLatch = task.doSetup(this);
 					// start
 					task.execute(templateFileName);
-				}
+			}
 //				else{
 //					Log.d("SlideoutNavigationActivity", "mode to inflate not recognized!");
 //					System.exit(1);
 //				}
 				
 //			}
-			 else if (intent.getBooleanExtra(MODE_PLAY_CHARACTER, true)) {
+			 else if (intent.getIntExtra(EXTRA_MODE, MODE_PLAY_CHARACTER) == MODE_PLAY_CHARACTER) {
 					playingMode = true;
 					Log.d("MODE_PLAY_CHARACTER", "MODE_PLAY_CHARACTER!");
 					// we are in a play mode
@@ -151,7 +149,6 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			 }
 		} else {
 			Log.d("SlideoutNavigationActivity", "got savedInstance");
-			
 		}
 		/*
 		 * JACKSON END
@@ -165,17 +162,13 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			/*
 			 * JACKSON START
 			 */
-			if (getIntent().getBooleanExtra(MODE_TEMPLATE, true)) {
-				// if we are creating a new one, a template has been already
-				// created.
+			if (getIntent().getIntExtra(EXTRA_MODE, MODE_CREATE_TEMPLATE) == MODE_CREATE_TEMPLATE) {
+				// if we are creating a new one, a template has been already created.
 				// So we set the jackson table
 				// if we are editing a template, the async task will set the
 				// table and start inflation
-
-				if (createTemplateMode) {
 					((FolderFragment) rootFragment).setJacksonTable(myTemplate
 							.getCharacterSheet().getRootTable());
-				}
 			}
 			/*
 			 * JACKSON END
