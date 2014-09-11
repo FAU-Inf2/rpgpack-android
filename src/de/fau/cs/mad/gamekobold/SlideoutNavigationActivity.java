@@ -55,8 +55,6 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
 
-	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
-
 	public static boolean saveOnNextOnPause = false;
 	public static SlideoutNavigationActivity myActivity = null;
 	public CountDownLatch countDownLatch;
@@ -201,8 +199,6 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 						R.string.titel_template_generator_welcome);
 
 			} else if (playingMode)
-				// (getIntent().getBooleanExtra(WELCOME_TYPE_PLAY_CHARACTER,
-				// true))
 			{
 				topFragment = new WelcomePlayCharacterFragment();
 				topFragment.elementName = getResources().getString(

@@ -118,8 +118,6 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 		// set flag so we do not use template mode
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_PLAY_CHARACTER);
 
-		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_PLAY_CHARACTER,
-				true);
 		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
 				sheet.getFileAbsolutePath());
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
