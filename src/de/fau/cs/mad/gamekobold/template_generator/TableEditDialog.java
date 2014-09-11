@@ -50,9 +50,16 @@ public class TableEditDialog extends DialogFragment {
         .setCancelable(false)
         .setPositiveButton(SlideoutNavigationActivity.theActiveActivity.getResources().getString(R.string.save_table),new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int id) {
-        		targetFragment.setAmountOfColumns(Integer.parseInt(dialogRowCounter.getText().toString()));
-        		adaptHeaderTable(dialogTable);
-        		targetFragment.setTypeContents(dialogTable);
+        		// surrounded by a try: if the input field is empty we get a numberformatexception. so catch it and do nothing
+        		try {
+        			final int columnCount =	Integer.parseInt(dialogRowCounter.getText().toString());
+        			targetFragment.setAmountOfColumns(columnCount);
+            		adaptHeaderTable(dialogTable);
+            		targetFragment.setTypeContents(dialogTable);
+        		}
+        		catch(NumberFormatException e) {
+        			e.printStackTrace();
+        		}
         		dialog.dismiss();
         	}
         })
@@ -120,14 +127,20 @@ public class TableEditDialog extends DialogFragment {
         dialogRowCounter.setOnEditSessionCompleteListener(new OnEditSessionCompleteListener() {
         	@Override
         	public void onEditSessionComplete(TextView v) {
-        		int valueGiven = (Integer.parseInt(v.getText().toString()));
-        		if(valueGiven < 0){
-        			v.setText(Integer.toString(1));
+        		// surrounded by a try: if the input field is empty we get a numberformatexception. so catch it and do nothing
+        		try {
+        			final int valueGiven = (Integer.parseInt(v.getText().toString()));
+            		if(valueGiven < 0){
+            			v.setText(Integer.toString(1));
+            		}
+            		else if(valueGiven > 99){
+            			v.setText(Integer.toString(99));
+            		}
+            		adaptDialogTable(dialogTable, valueGiven);	
         		}
-        		else if(valueGiven > 99){
-        			v.setText(Integer.toString(99));
+        		catch(NumberFormatException e) {
+        			e.printStackTrace();
         		}
-        		adaptDialogTable(dialogTable, valueGiven);
         	}
         });
         //create add and subtract buttons for the dialog
@@ -162,7 +175,7 @@ public class TableEditDialog extends DialogFragment {
         		}
         		int newValue = oldValue-1;
         		// preventing negativ row count and deletion of table header
-        		if(newValue < 0) {
+        		if(newValue < 1) {
         			return;
         		}
         		dialogRowCounter.setText(Integer.toString(newValue));
