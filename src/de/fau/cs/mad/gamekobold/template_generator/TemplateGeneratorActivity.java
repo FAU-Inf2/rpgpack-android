@@ -32,7 +32,7 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 	protected void onResume() {
 		// check for user setting
 		final SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-		if (prefs.getBoolean(AUTO_SAVE_PREFERENCE, true)) {
+		if (prefs.getBoolean(PREFERENCE_AUTO_SAVE, true)) {
 			autosaveHandler.start();
 		}
 		super.onResume();
@@ -61,7 +61,7 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 		MenuItem myItem = menu.findItem(R.id.action_auto_save_menu_item);
 		if (myItem != null) {
 			SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-			myItem.setChecked(prefs.getBoolean(AUTO_SAVE_PREFERENCE, true));
+			myItem.setChecked(prefs.getBoolean(PREFERENCE_AUTO_SAVE, true));
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -93,11 +93,11 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 			SharedPreferences.Editor editor = prefs.edit();
 			if (item.isChecked()) {
 				item.setChecked(false);
-				editor.putBoolean(AUTO_SAVE_PREFERENCE, false);
+				editor.putBoolean(PREFERENCE_AUTO_SAVE, false);
 				autosaveHandler.stop();
 			} else {
 				item.setChecked(true);
-				editor.putBoolean(AUTO_SAVE_PREFERENCE, true);
+				editor.putBoolean(PREFERENCE_AUTO_SAVE, true);
 				autosaveHandler.start();
 			}
 			editor.commit();
