@@ -175,7 +175,7 @@ public class CreateNewTemplateActivity extends Activity {
 				 */
 				if(editTemplate) {
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
-					intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
+					intent.putExtra(SlideoutNavigationActivity.EXTRA_TEMPLATE_FILE_NAME,
 							currentTemplate.getFileName());
 				}
 				else {

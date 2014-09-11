@@ -49,11 +49,16 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final int MODE_EDIT_TEMPLATE = 1;
 	public static final int MODE_PLAY_CHARACTER = 2;
 
-	public static final String EDIT_TEMPLATE_FILE_NAME = "FILE_NAME";
+	// strings for passing data via intent
+	public static final String EXTRA_TEMPLATE_FILE_NAME = "FILE_NAME";
+	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
+	
+	// shared preferences strings
+	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	public static final String AUTO_SAVE_PREFERENCE = "AUTO_SAVE";
 	public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
-	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
-	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
+
+
 
 	public static boolean saveOnNextOnPause = false;
 	public static SlideoutNavigationActivity myActivity = null;
@@ -100,7 +105,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					editTemplateMode = true;
 					// get file name
 					final String templateFileName = intent
-							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+							.getStringExtra(EXTRA_TEMPLATE_FILE_NAME);
 					// we are editing an old one, so load it
 					// create new async task
 					jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
@@ -115,7 +120,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				editCharacterMode = true;
 				// we are in edit character mode
 				String templateFileName = intent
-						.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
+						.getStringExtra(EXTRA_TEMPLATE_FILE_NAME);
 					// we are editing an old one, so load it
 					// get file name
 //					String templateFileName = intent

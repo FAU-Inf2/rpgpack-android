@@ -374,9 +374,7 @@ public class TemplateBrowserActivity extends ListActivity {
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// flag to distinguish between editing and creating
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
-		intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
-				fileName);
-
+		intent.putExtra(SlideoutNavigationActivity.EXTRA_TEMPLATE_FILE_NAME, fileName);
 		startActivity(intent);
 	}
 
