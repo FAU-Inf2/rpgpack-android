@@ -75,7 +75,7 @@ public class TemplateBrowserActivity extends ListActivity {
 					// get last edited template file name
 					String templateFileName = pref
 							.getString(
-									SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
+									SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME,
 									"");
 					// check for existence
 					if (templateFileName.equals("")) {
@@ -193,7 +193,7 @@ public class TemplateBrowserActivity extends ListActivity {
 															MODE_PRIVATE);
 													String lastEditedTemplate = pref
 															.getString(
-																	SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
+																	SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME,
 																	"");
 													if (lastEditedTemplate
 															.equals(file
@@ -203,7 +203,7 @@ public class TemplateBrowserActivity extends ListActivity {
 														// preference
 														SharedPreferences.Editor editor = pref
 																.edit();
-														editor.remove(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME);
+														editor.remove(SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME);
 														editor.commit();
 													}
 													removeItem(longClickedTemplate);

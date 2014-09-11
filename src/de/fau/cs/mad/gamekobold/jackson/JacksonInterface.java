@@ -196,7 +196,7 @@ public abstract class JacksonInterface {
 			// save in shared preferences the last edited template file name
 			SharedPreferences pref = context.getSharedPreferences(SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,  Activity.MODE_PRIVATE);
 			SharedPreferences.Editor edit = pref.edit();
-			edit.putString(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME, template.getFileName());
+			edit.putString(SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME, template.getFileName());
 			edit.commit();
 		}
 	}

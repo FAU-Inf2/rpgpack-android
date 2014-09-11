@@ -48,15 +48,16 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final int MODE_CREATE_TEMPLATE = 0;
 	public static final int MODE_EDIT_TEMPLATE = 1;
 	public static final int MODE_PLAY_CHARACTER = 2;
+	public static final int MODE_EDIT_CARACTER = 3;
 
 	// strings for passing data via intent
-	public static final String EXTRA_TEMPLATE_FILE_NAME = "FILE_NAME";
-	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
+	public static final String EXTRA_TEMPLATE_FILE_NAME = "TEMPLATE_FILE_NAME";
+	public static final String EXTRA_CHARACTER_ABS_PATH = "CHARACTER_ABS_PATH";
 	
 	// shared preferences strings
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
-	public static final String AUTO_SAVE_PREFERENCE = "AUTO_SAVE";
-	public static final String LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
+	public static final String PREFERENCE_AUTO_SAVE = "AUTO_SAVE";
+	public static final String PREFERENCE_LAST_EDITED_TEMPLATE_NAME = "LAST_EDITED_TEMPLATE_NAME";
 
 
 
@@ -116,7 +117,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				}
 			}
 			else if(getAc() instanceof CharacterEditActivity) {
-				Log.d("MainTemplateGenerator", "Edit mode!");
+				Log.d("MainTemplateGenerator", "Character edit mode!");
 				editCharacterMode = true;
 				// we are in edit character mode
 				String templateFileName = intent

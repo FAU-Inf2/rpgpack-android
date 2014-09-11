@@ -319,7 +319,7 @@ public class TemplateDetailsActivity extends Activity {
 													MODE_PRIVATE);
 											String lastEditedTemplate = pref
 													.getString(
-															SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME,
+															SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME,
 															"");
 											if (lastEditedTemplate.equals(file
 													.getName())) {
@@ -327,7 +327,7 @@ public class TemplateDetailsActivity extends Activity {
 												// saved preference
 												SharedPreferences.Editor editor = pref
 														.edit();
-												editor.remove(SlideoutNavigationActivity.LAST_EDITED_TEMPLATE_NAME);
+												editor.remove(SlideoutNavigationActivity.PREFERENCE_LAST_EDITED_TEMPLATE_NAME);
 												editor.commit();
 											}
 										}
