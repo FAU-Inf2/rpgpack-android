@@ -33,7 +33,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 	Activity mContext;
 	float mWidth;
 	float mHeight;
-	private String[] dots = { "red", "green", "blue", "black", "orange" };
+	private int[] testDots = { R.drawable.red_dot, R.drawable.green_dot, R.drawable.blue_dot, R.drawable.black_dot, R.drawable.orange_dot };
 	private ArrayList<Integer> dotsList = new ArrayList();
 	private int mNumCells;
 	private int mNumLines;
@@ -47,7 +47,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_toolbox_test);
 		initTest();
-		createDots();
+		//createDots();
 		createCells();
 		// setContentView(R.layout.activity_game_toolbox_test);
 	}
@@ -77,9 +77,8 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 
 		for (int i = 0; i < mNumCells; i++) {
 			dotsList.add(null);
-			if (i == 6 || i == 10 || i == 20) {
-				Log.i("Activity", "" + i);
-				dotsList.set(i, R.drawable.red_dot);
+			if (i < testDots.length) {
+				dotsList.set(i, testDots[i]);
 			}
 
 		}
@@ -99,38 +98,38 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 
 	}
 
-	public void createDots() {
+	/*public void createDots() {
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.paint_test_dots);
 		//linearLayout.setOnDragListener(this);
 
-		for (String item : dots) {
+		for (int item : testDots) {
 			FrameLayout frameLayout = (FrameLayout) new FrameLayout(this);
 			ImageView img_view = (ImageView) new ImageView(this);
 			int dim = (int) getResources().getDimension(R.dimen.game_toolbox_map_cellsize_without_padding);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dim, dim);
 			
 
-			if (item.equals("red")) {
+			if (item==R.drawable.red_dot) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
 						R.drawable.red_dot));
 			}
-			if (item.equals("blue")) {
+			if (item==R.drawable.blue_dot) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
 						R.drawable.blue_dot));
 			}
-			if (item.equals("black")) {
+			if (item==R.drawable.black_dot) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
 						R.drawable.black_dot));
 			}
-			if (item.equals("green")) {
+			if (item==R.drawable.green_dot) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
 						R.drawable.green_dot));
 			}
-			if (item.equals("orange")) {
+			if (item==R.drawable.orange_dot) {
 				img_view.setTag(item);
 				img_view.setImageDrawable(getResources().getDrawable(
 						R.drawable.orange_dot));
@@ -140,7 +139,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 			frameLayout.addView(img_view);
 			linearLayout.addView(frameLayout);
 		}
-	}
+	}*/
 	
 	/*@Override
 	public boolean onDrag(View v, DragEvent dragEvent) {
