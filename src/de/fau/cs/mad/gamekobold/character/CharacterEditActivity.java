@@ -158,9 +158,6 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			// set flag so we do not use template mode
 			intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, MODE_PLAY_CHARACTER);
-			
-			intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_NEW_CHARACTER, true);
-			
 			intent.putExtra(CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
 					sheet.getFileAbsolutePath());
 			return intent;

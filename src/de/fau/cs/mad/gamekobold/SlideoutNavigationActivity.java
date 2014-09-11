@@ -55,8 +55,6 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
 
-//	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
-	public static final String WELCOME_TYPE_NEW_CHARACTER = "WELCOME_NEW_CHARACTER";
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 
 	public static boolean saveOnNextOnPause = false;
