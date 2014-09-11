@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">RPG Pack</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello World!</string>
     <string name="action_settings">Settings</string>
     <string name="action_tools">Tools</string>
-    <string name="start_game">Start Game</string>
-    <string name="load_game">Load Game</string>
-    <string name="manage_charackter">Character Manager</string>
-    <string name="template_generator">Templates Manager</string>
-    <string name="settings">Settings</string>
-    <string name="alljoyn">Alljoyn</string>
-    <string name="title_activity_alljoyn_test">AlljoynTest</string>
-    <string name="btn_call_service">Call Service</string>
-    <string name="answer_from_service">Answer From Service</string>
-    <string name="signal_from_service">Signal from Service</string>
+    <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
     <string name="action_showlists">Show List (1 categorie)</string>
     <string name="choice_prompt">Select a choice</string>
     <string name="ok">OK</string>
+    <string name="empty"></string>
 
-    <string-array name="choices">
-        <item>Tabelle</item>
-        <item>Matrix</item>
-        <item>Ordner</item>
-    </string-array>
+    <!-- activity_main -->
+    <string name="start_game">Start Game</string>
+    <string name="load_game">Load Game</string>
+    <string name="template_generator">Manage Templates</string>
+    <string name="manage_charackter">Manage Charakters</string>
+    <string name="settings">Settings</string>
+    <string name="alljoyn">Alljoyn</string>
+
+    <!-- Template Generator -->
+    <string name="tpg_actionbar_title">ABCD</string>
+
+    <!-- activity_alljoin_test -->
+    <string name="btn_call_service">Call Service</string>
+    <string name="answer_from_service">Answer from Service</string>
+    <string name="signal_from_service">Signal from Service</string>
+
     <string-array name="spaltentypen">
-        <item>Textfeld</item>
+        <item>Textfield</item>
         <item>CheckBox</item>
         <item>PopUp</item>
     </string-array>
 
+    <!-- activity_template_generator_welcome -->
+    <string name="template_generator_welcom">Welcome to the Template Generator!\n \n To create your own Template just open the menu and start!</string>
     <string name="popup_titel">Item Information</string>
-    <string name="menu_item_save_template">Save template</string>
+    <string name="menu_item_save_template">Save Template</string>
     <string name="action_auto_save">Autosave</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
-    <string name="template_generator_welcom">Welcome in Template-Generator!\n \n To create your own template just open the menu!</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Tabelle</item>
+        <item>Table</item>
         <item>Matrix</item>
-        <item>Ordner</item>
+        <item>Folder</item>
         <item>Add New Cell</item>
     </string-array>
     <!-- Nav Drawer List Item Icons -->
@@ -54,14 +59,14 @@
         <item>@drawable/ic_add_item2_grey</item>
     </array>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Open Navigation</string>
+    <string name="drawer_close">Close Navigation</string>
 
     <!-- MatrixPopUp -->
     <string name="add_item">Save</string>
-    <string name="save_changes">Save the changes</string>
-    <string name="cancel">Cancel</string>
-    <string name="hint_matrix_item_name">Element name&#8230;</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="cancel">Abort</string>
+    <string name="hint_matrix_item_name">Name of the Element&#8230;</string>
     <string name="hint_description_text">Your description&#8230;</string>
     <string name="hint_default_value_range_from">0</string>
     <string name="hint_default_value_range_to">100</string>
@@ -78,108 +83,109 @@
     <string name="text_item_add">+</string>
 
     <!-- CreateNewTemplate -->
-    <string name="text_create_template">Create template</string>
-    <string name="hint_template_name">Template name&#8230;</string>
+    <string name="text_create_template">Create Template</string>
+    <string name="hint_template_name">Tamplate Name&#8230;</string>
     <string name="text_add_icon">Add Icon</string>
-    <string name="hint_world_name">World name&#8230;</string>
-    <string name="toast_create_template_now">Create now your template!</string>
-    <string name="toast_edit_template_now">Edit now your template!</string>
-    
+    <string name="hint_world_name">World Name&#8230;</string>
+    <string name="toast_create_template_now">Now create a new Template!</string>
+    <string name="toast_edit_template_now">Now edit your template!</string>
+
     <string-array name="image_picker_items">
-        <item>from camera</item>
+        <item>from Camera</item>
         <item>from SD-Card</item>
     </string-array>
 
     <string name="add_icon">Add Icon</string>
-    <string name="warning_set_name">Your template needs a name!</string>
+    <string name="warning_set_name">Your Template needs a name!</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="msg_file_already_exists">File already exists!</string>
-    <string name="msg_yes_to_overwrite">Click Yes to overwrite.</string>
+    <string name="msg_file_already_exists">There is already a file for your Template!</string>
+    <string name="msg_yes_to_overwrite">Choose YES to overwrite the file.</string>
 
     <!-- FolderElementAdapter -->
-    <string name="question_delete">Delete this Element?</string>
-    <string name="long_click_dialog_message">Click Yes to delete this element.</string>
+    <string name="question_delete">Delete Element?</string>
+    <string name="long_click_dialog_message">Choose YES to delete the Elemente.</string>
 
     <!-- TableFragment -->
     <string name="save_table">Save Table</string>
     <string name="go_back">Back</string>
-    <string name="new_element">...</string>
-    <string name="headline">Header</string>
-    <string name="headline1">Header 1</string>
-    <string name="headline2">Header 2</string>
+    <string name="new_element">&#8230;</string>
+    <string name="headline">Headline</string>
+    <string name="headline1">Headline 1</string>
+    <string name="headline2">Headline 2</string>
     <string name="blank"> - </string>
     <string name="number">Nr.</string>
-    <string name="column_name">Column name</string>
-    <string name="column_type">Column type</string>
+    <string name="column_name">Column Name</string>
+    <string name="column_type">Column Type</string>
     <string name="dot">.</string>
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>
     <string name="new_matrix_item">New Element</string>
-    <string name="msg_yes_to_item_delete">Click Yes to delete this element.</string>
+    <string name="msg_yes_to_item_delete">Choose YES to delete Element</string>
     <string name="text_new_element">New Element</string>
 
     <!-- TemplateGenerator -->
     <string name="loading_template">Loading Template&#8230;</string>
-    <string name="wait">Plaese wait&#8230;</string>
-    <string name="loading_template_failure">Template could not be loaded!</string>
+    <string name="wait">Please wait&#8230;</string>
+    <string name="loading_template_failure">Unable to load Template!</string>
 
     <!-- WarningLeaveDialog -->
-    <string name="question_exit">Do you really want to leave Template-Generator?</string>
+    <string name="question_exit">Do you really want to leave the Template Generator?</string>
     <string name="yes_and_trash">Yes and Trash</string>
     <string name="yes_and_save">"Yes and Save"</string>
 
-    <!-- TemplateDetailsActivity -->
-    <string name="edit_template">Edit template</string>
+    <!-- activity_template_details -->
+    <string name="edit_template">Edit Template</string>
+    <string name="medium_text">Medium Text</string>
     <string name="popup_template_details_info_titel">Template Description</string>
-    <string name="popup_template_details_tags_titel">Template tags</string>
+    <string name="popup_template_details_tags_titel">Template Tags</string>
     <string name="action_delete_template">Delete Template</string>
     <string name="no_description_found">No description found</string>
-    <string name="create_new_character">Create new charakter</string>
+    <string name="create_new_character">Create Character</string>
     <string name="lvl_label">Lvl:</string>
-    <string name="change_color_label">Change color</string>
-    <string name="hint_your_description">Your description</string>
+    <string name="change_color_label">Change Color</string>
+    <string name="hint_your_description">Your Description</string>
     <string name="back">Back</string>
-    <string name="msg_want_to_delete">Do you really want to delete this template?</string>
-    <string name="msg_yes_to_delete">Click Yes to delete this template and all associated characters.</string>
-    <string name="edit_character">Edit Character</string>
+    <string name="msg_want_to_delete">Do you really want to delete this Template?</string>
+    <string name="msg_yes_to_delete">Choose YES to delete the Template.</string>
+    <string name="edit_character">Charakter bearbeiten</string>
 
     <!-- alertdialog_template_generator_add_new_element -->
-    <string name="text_element_name">Element name:</string>
-    <string name="text_element_type">Element type:</string>
+    <string name="text_element_name">Element Name:</string>
+    <string name="text_element_type">Element Type:</string>
     <string name="text_tabelle">Table</string>
     <string name="text_matrix">Matrix</string>
     <string name="text_ordner">Folder</string>
     <string name="hint_text_element_name">Name</string>
-    <string name="alert_set_element_name">Please set a name!</string>
+    <string name="alert_set_element_name">Please enter a name!</string>
 
     <!-- activity_template_generator -->
-    <string name="text_press_to_add_new_folder">Press to add new element</string>
-    <string name="text_create_your_folders_here">Create your folders here</string>
+    <string name="text_press_to_add_new_folder">Add new Element</string>
+    <string name="text_create_your_folders_here">Create your folder</string>
 
     <!-- alertdialog_template_generator_tableview -->
-    <string name="text_columns_number">Columns number</string>
+    <string name="text_columns_number">Number of columns</string>
 
     <!-- table_view_popup -->
-    <string name="hint_headline">Your header&#8230;</string>
+    <string name="hint_headline">Your headline&#8230;</string>
     <string name="hint_your_notes">Your notes&#8230;</string>
 
     <!-- TemplateBrowserActivity -->
-    <string name="msg_loading_template_list">Loading template list&#8230;</string>
+    <string name="msg_loading_template_list">Loading Template list&#8230;</string>
     <string name="msg_please_wait">Please wait&#8230;</string>
-    <string name="row_edit_last_template">Edit last template&#8230;</string>
-    <string name="row_create_new_template">Create new template&#8230;</string>
+    <string name="row_edit_last_template">Edit last Template&#8230;</string>
+    <string name="row_create_new_template">Create new Teamplate&#8230;</string>
 
     <!-- template_generator_table_view -->
-    <string name="text_add_row"> + row</string>
-    <string name="text_add_column"> + column</string>
-    <string name="text_remove_column"> - column</string>
-    <string name="text_press_to_add_new_row">Press to add new row</string>
+    <string name="text_add_row"> + Row</string>
+    <string name="text_add_column"> + Column</string>
+    <string name="text_remove_column"> - Column</string>
+    <string name="text_press_to_add_new_row">Add new Row</string>
 
     <!-- popup_template_details_info -->
-    <string name="hint_set_your_description_text">Your notices&#8230;</string>
-    <string name="hint_tag_string">Comma separated tags&#8230;</string>
+    <string name="hint_set_your_description_text">Here you can add some notes&#8230;</string>
+    <string name="hint_tag_string">Comma seperated Tags&#8230;</string>
     <string name="title_activity_new_game">NewGameActivity</string>
 
     <!-- game -->
@@ -188,69 +194,84 @@
     <string name="game_browser_title">Your Games</string>
 
     <!-- fragment_create_new_game -->
-    <string name="hint_game_name">Game name&#8230;</string>
+    <string name="hint_game_name">Game Name&#8230;</string>
     <string name="hint_1">Hint1&#8230;</string>
     <string name="hint_2">Hint2&#8230;</string>
     <string name="hint_3">Hint3&#8230;</string>
 
     <!-- fragment_game_details -->
-    <string name="text_change_game">Edit Game </string>
-    <string name="text_play_game">Play Game</string>
-    <string name="text_remove_character_from_game">Do you like to delete this character from the game?</string>
-    <string name="text_click_to_remove_character_from_game">Click Yes to delete this character.</string>
-    <string name="msg_edit_game_mode">You can edit your game now!</string>
+    <string name="text_change_game">Edit Game</string>
+    <string name="text_play_game">Play</string>
+    <string name="text_remove_character_from_game">Remove Character from Game?</string>
+    <string name="text_click_to_remove_character_from_game">Choose YES to remove Character from Game.</string>
+    <string name="msg_edit_game_mode">Now you can edit the Game!</string>
 
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
 
     <!-- play_character_fragment -->
-    <string name="played_character_title">Current character for play</string>
+    <string name="played_character_title">Your Character to play the Game</string>
 
-    <!-- Toolbox -->
-    <string name="open_dice">Dice Tool</string>
+    <!-- activity_game_toolbox_dice -->
+    <string name="add_dice">Add Dice</string>
+    <string name="roll_dice">Roll Dice</string>
+    <string name="add_d4">d4</string>
+    <string name="add_d6">d6</string>
+    <string name="add_d8">d8</string>
+    <string name="add_d10">d10</string>
+    <string name="add_d12">d12</string>
+    <string name="add_d20">d20</string>
+
+    <!-- activity_game_toolbox_randomlist -->
+    <string name="shuffle_list">Shuffle List</string>
+
+    <!-- activity_game_toolbox_timer -->
+    <string name="timer_start">Start</string>
+    <string name="timer_pause">Pause</string>
+    <string name="add_hour">+h</string>
+    <string name="add_minute">+m</string>
+    <string name="add_second">+s</string>
+    <string name="remove_hour">-h</string>
+    <string name="remove_minute">-m</string>
+    <string name="remove_second">-s</string>
+    <string name="set_time">Set Time</string>
+
+    <!-- fragment_game_toolbox -->
+    <string name="open_dice">Dicel Tool</string>
     <string name="open_timer">Timer</string>
     <string name="open_tactical">Tactical Map</string>
     <string name="open_randomlist">Random List</string>
-    <string name="btn_start">Start</string>
-    <string name="btn_pause">Pause</string>
-    <string name="set_time">Set Time</string>
-    <string name="add_d4">Add d4</string>
-    <string name="add_d6">Add d6</string>
-    <string name="add_d8">Add d8</string>
-    <string name="add_d10">Add d10</string>
-    <string name="add_d12">Add d12</string>
-    <string name="add_d20">Add d20</string>
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
 
     <!-- ExpandableLIstArrayAdapter -->
-    <string name="text_redirect_to_edit_character">You want to edit this character?</string>
-    <string name="click_to_redirect_to_edit_character">Click Yes to go to the character-editor.</string>
+    <string name="text_redirect_to_edit_character">Do you want to edit this character?</string>
+    <string name="click_to_redirect_to_edit_character">Click YES to go to the character editor.</string>
     <string name="msg_added_to_game">is added to the game!</string>
 
     <!-- CreateNewGameFragment -->
-    <string name="popup_create_game_info_titel">Game notices</string>
+    <string name="popup_create_game_info_titel">Game Notes</string>
     <string name="titel_create_game">New Game</string>
-    <string name="warning_set_gamename">Your new game should have a name!</string>
+    <string name="warning_set_gamename">Please enter a name for your Game!</string>
     <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
-    <string name="msg_yes_to_delete_character">Click Yes to delete this character.</string>
+    <string name="msg_yes_to_delete_character">Click YES to delete this character.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Please choose a name for your character!</string>
     <string name="create_new_game_last_item">Create New Game&#8230;</string>
     <string name="msg_creating_new_game_p1">Your new game</string>
     <string name="msg_creating_new_game_p2">is created!</string>
     <string name="msg_want_to_delete_game">Do you really want to delete this game?</string>
-    <string name="msg_yes_to_delete_game">Click Yes to delete this game.</string>
+    <string name="msg_yes_to_delete_game">Click YES to delete this game.</string>
 
-    <!-- Template Store -->
+    <!-- activity_template_store_main -->
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Welcome to the Template Store</h1></string>
     <string name="template_store_main_desc">Check out our <u>newest</u> Templates....<br> more features coming soon....</br></string>
-    <string name="search_title">search templates</string>
-    <string name="hint_search">search store</string>
+    <string name="search_title">Search Templates</string>
+    <string name="hint_search">Search Store</string>
     <string name="store_actions">Actions</string>
-    <string name="store_reload">reload</string>
+    <string name="store_reload">Reload</string>
     <string name="store_tags">Tags</string>
     <string name="tag_horror">Horror</string>
     <string name="tag_fantasy">Fantasy</string>
@@ -261,31 +282,32 @@
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
     <string name="hint_character_lvl">lvl</string>
-    <string name="character_game_notices">Notice</string>
+    <string name="character_game_notices">Notes</string>
 
     <!-- character_edit_matrix_view -->
     <string name="hint_select_items">Select attributes for your character!</string>
 
     <!-- activity_character_generator_welcome -->
-    <string name="character_generator_welcome">Welcome in Character-Generator!\n \n To create your own character just open the menu and choose the elements!</string>
+    <string name="character_generator_welcome">Welcome to the Character Generator!\n \n To create your own character just open the menu and choose the elements!</string>
 
     <!-- activity_play_character_welcome -->
-    <string name="play_character_welcome">Welcome in Character-Play-Mode!\n \n To view your character current values or to modify them just open the menu!</string>
-    <string name="titel_play_character_welcome">Welcome to Play-mode!</string>
-    <string name="titel_character_generator_welcome">Welcome to Character-Generator!</string>
-    <string name="titel_template_generator_welcome">Welcome to Template-Generator!</string>
+    <string name="play_character_welcome">Welcome in Character Play Mode!\n \n To view your character current values or to modify them just open the menu!</string>
+    <string name="titel_play_character_welcome">Welcome to the Play Mode!</string>
+    <string name="titel_character_generator_welcome">Welcome to the Character Generator!</string>
+    <string name="titel_template_generator_welcome">Welcome to the Template Generator!</string>
 
     <!-- new_character_matrix_view_array_adapter -->
-    <string name="msg_added_to_matrix_favorite">-attribut is added to your charakter quick view!</string>
+    <string name="msg_added_to_matrix_favorite">-attribute is added to your character quick view!</string>
     <!-- new_matrix_item_popup -->
-    <string name="warning_set_matrixitem_name">Your new Matrix element should have a name!</string>
+    <string name="warning_set_matrixitem_name">Please enter a name for your new matrix element!</string>
     <string name="title_activity_character_browser">Character Browser</string>
 
     <!-- autosave toast string -->
     <string name="autosave_toast_text">Saving#8230;</string>
+
     <!-- SettingValueDialogFragment -->
-    <string name="string_set_matrix_value">Put your value!</string>
-    <string name="msg_added_matrix_to_character">-attribut is added to your charakter!</string>
+     <string name="string_set_matrix_value">Put your value!</string>
+    <string name="msg_added_matrix_to_character">-attribute is added to your character!</string>
 
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Value:</string>
