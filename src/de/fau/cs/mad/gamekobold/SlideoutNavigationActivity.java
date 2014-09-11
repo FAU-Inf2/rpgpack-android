@@ -55,7 +55,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static final String SHARED_PREFERENCES_FILE_NAME = "TemplateGeneratorPrefs";
 	public static final String EXTRA_CHARACTER_ABS_PATH = "SHEET_NAME";
 
-	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
+//	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
 	public static final String WELCOME_TYPE_NEW_CHARACTER = "WELCOME_NEW_CHARACTER";
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 
@@ -101,10 +101,10 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				}
 				else if(intent.getIntExtra(EXTRA_MODE, MODE_CREATE_TEMPLATE) == MODE_EDIT_TEMPLATE) {
 					Log.d("MainTemplateGenerator", "Edit mode!");
+					editTemplateMode = true;
 					// get file name
 					final String templateFileName = intent
 							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-					editTemplateMode = true;
 					// we are editing an old one, so load it
 					// create new async task
 					jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
@@ -115,21 +115,21 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 				}
 			}
 			else if(getAc() instanceof CharacterEditActivity) {
-					// we are in edit character mode
-					String templateFileName = intent
-							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-					Log.d("MainTemplateGenerator", "Edit mode!");
-					editCharacterMode = true;
+				Log.d("MainTemplateGenerator", "Edit mode!");
+				editCharacterMode = true;
+				// we are in edit character mode
+				String templateFileName = intent
+						.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
 					// we are editing an old one, so load it
 					// get file name
 //					String templateFileName = intent
 //							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-					// create new async task
-					jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
-					// do the setup
-					countDownLatch = task.doSetup(this);
-					// start
-					task.execute(templateFileName);
+				// create new async task
+				jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
+				// do the setup
+				countDownLatch = task.doSetup(this);
+				// start
+				task.execute(templateFileName);
 			}
 //				else{
 //					Log.d("SlideoutNavigationActivity", "mode to inflate not recognized!");
@@ -162,7 +162,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			/*
 			 * JACKSON START
 			 */
-			if (getIntent().getIntExtra(EXTRA_MODE, MODE_CREATE_TEMPLATE) == MODE_CREATE_TEMPLATE) {
+			if (createTemplateMode) {
 				// if we are creating a new one, a template has been already created.
 				// So we set the jackson table
 				// if we are editing a template, the async task will set the
@@ -197,17 +197,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					.beginTransaction();
 
 			// pass the current WelcomeFragment!
-			if (createTemplateMode) {
-				// (getIntent().getBooleanExtra(WELCOME_TYPE_TEMPLATE, true)) {
-
-				topFragment = new WelcomeFragment();
-				topFragment.elementName = getResources().getString(
-						R.string.titel_template_generator_welcome);
-
-			} else if (editTemplateMode)
-				// if (getIntent().getBooleanExtra(WELCOME_TYPE_NEW_CHARACTER,
-				// true))
-			{
+			if (createTemplateMode || editTemplateMode) {
 				topFragment = new WelcomeFragment();
 				topFragment.elementName = getResources().getString(
 						R.string.titel_template_generator_welcome);

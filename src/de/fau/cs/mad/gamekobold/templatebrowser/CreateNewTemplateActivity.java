@@ -177,12 +177,10 @@ public class CreateNewTemplateActivity extends Activity {
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
 					intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 							currentTemplate.getFileName());
-					intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 				}
 				else {
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_CREATE_TEMPLATE);
 				}
-				intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 
 				// create template for data transfer
 				// set data

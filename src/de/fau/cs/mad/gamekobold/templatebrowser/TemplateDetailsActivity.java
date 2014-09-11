@@ -198,7 +198,6 @@ public class TemplateDetailsActivity extends Activity {
 						intent.putExtra(
 								SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 								fileName);
-						intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 
 						startActivity(intent);
 					}

@@ -376,7 +376,6 @@ public class TemplateBrowserActivity extends ListActivity {
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
 		intent.putExtra(SlideoutNavigationActivity.EDIT_TEMPLATE_FILE_NAME,
 				fileName);
-		intent.putExtra(SlideoutNavigationActivity.WELCOME_TYPE_TEMPLATE, true);
 
 		startActivity(intent);
 	}
