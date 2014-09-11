@@ -35,15 +35,13 @@
         <item>CheckBox</item>
         <item>PopUp</item>
     </string-array>
-	
+
     <!-- activity_template_generator_welcome -->
     <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
-    
     <string name="popup_titel">Item Information</string>
     <string name="menu_item_save_template">Template speichern</string>
     <string name="action_auto_save">Automatisches Speichern</string>
     <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
-    
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -194,7 +192,7 @@
     <string name="save">Speichern</string>
     <string name="save_game">Spiel speichern</string>
     <string name="game_browser_title">Deine Spiele</string>
-    
+
     <!-- character_editor -->
     <string name="edit">editieren</string>
 
@@ -226,12 +224,15 @@
     <string name="add_d10">d10</string>
     <string name="add_d12">d12</string>
     <string name="add_d20">d20</string>
-    
+
     <!-- activity_game_toolbox_map -->
     <string name="description_red">rot</string>
     <string name="description_green">grün</string>
     <string name="description_black">schwarz</string>
-
+    <string name="description_undo">rückgängig machen</string>
+    <string name="description_redo">wiederholen</string>
+    <string name="description_switch_background">Hintergrund wechseln</string>
+    
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Liste mischen</string>
 
@@ -277,7 +278,7 @@
     <!-- activity_template_store_main -->
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
-    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> wird ständig erweitert....</br></string>    
+    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> wird ständig erweitert....</br></string>
     <string name="search_title">Templates suchen</string>
     <string name="hint_search">Store durchsuchen</string>
     <string name="store_actions">Actions</string>

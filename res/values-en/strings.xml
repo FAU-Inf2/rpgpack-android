@@ -192,7 +192,7 @@
     <string name="save">Save</string>
     <string name="save_game">Save Game</string>
     <string name="game_browser_title">Your Games</string>
-    
+
     <!-- character_editor -->
     <string name="edit">edit</string>
 
@@ -224,11 +224,14 @@
     <string name="add_d10">d10</string>
     <string name="add_d12">d12</string>
     <string name="add_d20">d20</string>
-    
+
     <!-- activity_game_toolbox_map -->
     <string name="description_red">red</string>
     <string name="description_green">green</string>
     <string name="description_black">black</string>
+    <string name="description_undo">undo</string>
+    <string name="description_redo">redo</string>
+    <string name="description_switch_background">Change Background</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>
@@ -314,7 +317,7 @@
     <string name="autosave_toast_text">Saving#8230;</string>
 
     <!-- SettingValueDialogFragment -->
-     <string name="string_set_matrix_value">Put your value!</string>
+    <string name="string_set_matrix_value">Put your value!</string>
     <string name="msg_added_matrix_to_character">-attribute is added to your character!</string>
 
     <!-- dialog_fragment_setting_matrix_value -->
