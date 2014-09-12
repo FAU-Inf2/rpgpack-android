@@ -242,6 +242,7 @@
     <string name="description_switch_background">Change Background</string>
     <string name="map_forest">Forest</string>
     <string name="map_rock">Rock</string>
+    <string name="map_draw">draw</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>

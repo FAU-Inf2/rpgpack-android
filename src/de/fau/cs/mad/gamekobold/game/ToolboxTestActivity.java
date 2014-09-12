@@ -93,6 +93,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 				ToolboxTestActivity.this, dotsList);
 		grid.setNumColumns(mNumColumns);
 		grid.setAdapter(adapter);
+		grid.setBackgroundResource(R.drawable.forest);
 		//grid.setOnDragListener(this);
 		linearLayout.addView(grid);
 

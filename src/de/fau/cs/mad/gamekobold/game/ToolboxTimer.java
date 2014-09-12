@@ -1,7 +1,5 @@
 package de.fau.cs.mad.gamekobold.game;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
 import java.util.Locale;
 
 import de.fau.cs.mad.gamekobold.R;
@@ -11,8 +9,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.Formatter;
