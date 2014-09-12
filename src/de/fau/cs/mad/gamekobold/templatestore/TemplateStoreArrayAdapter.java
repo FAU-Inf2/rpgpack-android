@@ -5,6 +5,7 @@ import java.util.List;
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +73,11 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		}
 
 		if ((position % 2) == 0) {
-			convertView.setBackgroundColor(context.getResources().getColor(
-					R.color.background_green));
+			convertView.setBackgroundColor(Color.parseColor("#0f0f0f"));
 		} else {
-			convertView.setBackgroundColor(context.getResources().getColor(
-					R.color.background_dark));			
+//			convertView.setBackgroundColor(context.getResources().getColor(
+//					R.color.background_dark));
+			convertView.setBackgroundColor(Color.parseColor("#353535"));
 		}
 
 		if (curr.hasImage()) {

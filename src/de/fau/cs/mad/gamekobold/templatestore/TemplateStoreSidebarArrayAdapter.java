@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.templatestore;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ public class TemplateStoreSidebarArrayAdapter extends ArrayAdapter<String>{
 	private Integer[] images;
 	private String[] texts;
 	private Context context;
+	private int active = 0;
 	
 	public TemplateStoreSidebarArrayAdapter (Context context, String[] texts, Integer[] images) {
 			super(context, R.layout.template_store_rowlayout_sidebar, texts);
@@ -32,7 +34,14 @@ public class TemplateStoreSidebarArrayAdapter extends ArrayAdapter<String>{
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 		txtTitle.setText(texts[position]);
 		imageView.setImageResource(images[position]);
+		if(position == active) {
+			rowView.setBackgroundResource(R.drawable.store_list_selector_pressed);
+		}
 		return rowView;
+	}
+	
+	public void setActive(int pos) {
+		this.active = pos;
 	}
 	
 }

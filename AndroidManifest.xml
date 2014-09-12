@@ -113,7 +113,8 @@
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="stateHidden"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

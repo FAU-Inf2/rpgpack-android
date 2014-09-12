@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/background_dark"
     android:orientation="vertical"
-    android:padding="6dp" >
+    android:padding="6dp"
+     >
 
     <TextView
         android:id="@+id/tv_store_name"

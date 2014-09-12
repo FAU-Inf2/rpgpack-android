@@ -64,6 +64,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 	private boolean initialLoad = true;
     ListView listView;
     View footer;
+	private ListView sidebar;
+	private TemplateStoreSidebarArrayAdapter sidebarAdapter;
     
       private class ScrollListener implements OnScrollListener {
 			private int currentScrollState;
@@ -215,13 +217,15 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    		 }
 	  	   		 for(StoreTemplate tmpl : templates) {
 	    			// alertMessage(tmpl.toString());
-	    			 adapter.add(tmpl);
+	    			adapter.add(tmpl);
 	    		 }
 	  	   		 // show first row
 	  	   		 if(method != "loadMore") {
 	  	   			 getListView().setSelection(0);
 	  	   		 }
 	  	   		 
+	  	   		 // add color to clicked item again
+	  	   		  //sidebar.getChildAt(clickedSidebarPos).setBackgroundResource(R.drawable.store_list_selector_pressed);
 	 	  	 } else {
 	    		 alertMessage(response.toString());
 	    	 }
@@ -274,39 +278,36 @@ public class TemplateStoreMainActivity extends ListActivity {
   
 		this.task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
-		/*
-		apiParams.setMethod("postTemplate");
-		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-		httpParams.add(new BasicNameValuePair("json", "{}"));
-		apiParams.setParams(httpParams);
-		*/
 		
-		apiParams.setMethod("getTemplates");
+		apiParams.setMethod("bestRated");
 		this.task.execute(apiParams);
 		
 	}
 	
 
 	private void initSidebar() {
-		ListView list;
 		final String[] texts = { "Best Rated", "Newest", "Recommended", "Dungeon World",
 				"D & D", "Fantasy", "Horror", "Future" };
-		Integer[] images = { R.drawable.dice_10, R.drawable.dice_10,
-				R.drawable.dice_10, R.drawable.dice_10,
-				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10 };
+		Integer[] images = { R.drawable.best, R.drawable.newest,
+				R.drawable.best, R.drawable.dragon1,
+				R.drawable.dragon2, R.drawable.fantasy, R.drawable.horror, R.drawable.future };
 		
-		TemplateStoreSidebarArrayAdapter sidebarAdapter = 
-				new TemplateStoreSidebarArrayAdapter(this, texts, images);
+		sidebarAdapter = new TemplateStoreSidebarArrayAdapter(this, texts, images);
 		
-		list = (ListView) findViewById(R.id.listView1);
-		list.setAdapter(sidebarAdapter);
-		list.setOnItemClickListener(new OnItemClickListener() {
-
+		sidebar = (ListView) findViewById(R.id.listView1);
+		sidebar.setAdapter(sidebarAdapter);
+		sidebar.setChoiceMode(1);
+		sidebar.setItemChecked(1,true);
+		sidebar.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				restoreListStatus();
-				
+				searchView.clearFocus();
+				//sidebar.getChildAt(clickedSidebarPos).setBackgroundColor(Color.TRANSPARENT);
+				sidebarAdapter.setActive(position);
+				//view.setBackgroundResource(R.drawable.store_list_selector_pressed);
+				sidebarAdapter.notifyDataSetChanged();
 				switch(texts[position]) {
 				case "Fantasy":
 				case "Horror":
@@ -360,6 +361,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 	public void onResume() {
 		super.onResume();
+		//sidebar.getChildAt(clickedSidebarPos).setBackgroundResource(R.drawable.store_list_selector_pressed);
 	}
 	
 	@Override
@@ -388,7 +390,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 			this.task = new ApiTask();
 			ApiTaskParams apiParams = new ApiTaskParams();
 	
-			// for testing just geht templates again
+			// for testing just get templates again
 			apiParams.setMethod("searchTemplates");
 			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 			httpParams.add(new BasicNameValuePair("worldname", query));
@@ -399,7 +401,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+		 final MenuItem searchMenuItem = menu.findItem(R.id.search_template);
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.template_store_main, menu);
 		
@@ -427,6 +429,16 @@ public class TemplateStoreMainActivity extends ListActivity {
 				// TODO Auto-generated method stub
 				return false;
 			}
+			
+	    });
+	    
+	    searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+	        @Override
+	        public void onFocusChange(View view, boolean queryTextFocused) {
+	            if(!queryTextFocused) {
+	                searchView.setQuery("", false);
+	            }
+	        }
 	    });
 		return true;
 	}

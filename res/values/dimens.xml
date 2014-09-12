@@ -28,6 +28,5 @@
     <dimen name="game_toolbox_map_cellsize">32dp</dimen>
     <dimen name="game_toolbox_map_cellsize_without_padding">30dp</dimen>
     <dimen name="game_toolbox_map_cell_padding">1dp</dimen>
-      
 
 </resources>
