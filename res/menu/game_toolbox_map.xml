@@ -7,9 +7,9 @@
 	
     <item
         android:id="@+id/item_forest"
-        android:title="Forest"/>
+        android:title="@string/map_forest"/>
  
     <item
         android:id="@+id/item_rock"
-        android:title="Rock"/>
+        android:title="@string/map_rock"/>
 </menu>

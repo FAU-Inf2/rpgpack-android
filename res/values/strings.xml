@@ -6,6 +6,7 @@
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_tools">Werkzeuge</string>
+    <string name="action_edit">Editieren</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
@@ -202,13 +203,20 @@
     <string name="hint_2">Tipp2&#8230;</string>
     <string name="hint_3">Tipp3&#8230;</string>
 
+    <!-- fragment_character_details -->
+    <string name="character_name">Charakter Name</string>
+    <string name="three">3</string>
+
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
     <string name="text_play_game">Spielen</string>
     <string name="text_remove_character_from_game">Charakter aus diesem Spiel löschen?</string>
     <string name="text_click_to_remove_character_from_game">Klicke auf JA um diesen Charakter aus dem Spiel zu löschen.</string>
     <string name="msg_edit_game_mode">Nun kannst Du das Spiel bearbeiten!</string>
-
+    <string name="game_name">Spielname</string>
+    <string name="world_name">Name der Spielwelt</string>
+    <string name="creation_date">Erstellungsdatum</string>
+    
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
 
@@ -232,7 +240,9 @@
     <string name="description_undo">rückgängig machen</string>
     <string name="description_redo">wiederholen</string>
     <string name="description_switch_background">Hintergrund wechseln</string>
-    
+    <string name="map_forest">Wald</string>
+    <string name="map_rock">Stein</string>
+
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Liste mischen</string>
 
