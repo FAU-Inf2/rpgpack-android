@@ -14,7 +14,7 @@ import org.apache.http.NameValuePair;
 public class ApiTaskParams {
 	private String method;
 	private String[] allowedMethods = {"getTemplates", "postTemplate", "searchTemplates", 
-										"searchByTag", "loadMore", "bestRated"};
+										"searchByTag", "loadMore", "bestRated", "latest"};
 	
 	private ArrayList<NameValuePair> params;
 	

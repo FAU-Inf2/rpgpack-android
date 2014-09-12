@@ -159,6 +159,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 	        	 break;
 	         case "loadMore":
 	        	 response = client.loadMore();
+	        	 break;
+	         case "latest":
+	        	 response = client.latest();
+	        	 break;
 	         default:
 	        	 break;
 	         }
@@ -285,10 +289,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 
 	private void initSidebar() {
 		ListView list;
-		final String[] texts = { "Best Rated", "Newest", "Recommended", "Most Rated", "Dungeon World",
+		final String[] texts = { "Best Rated", "Newest", "Recommended", "Dungeon World",
 				"D & D", "Fantasy", "Horror", "Future" };
 		Integer[] images = { R.drawable.dice_10, R.drawable.dice_10,
-				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10,
+				R.drawable.dice_10, R.drawable.dice_10,
 				R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10, R.drawable.dice_10 };
 		
 		TemplateStoreSidebarArrayAdapter sidebarAdapter = 
@@ -309,10 +313,17 @@ public class TemplateStoreMainActivity extends ListActivity {
 				case "Future":
 				case "Dungeon World":
 				case "D & D":
+				case "Recommended":
 					loadTag(texts[position]);
 					break;
 				case "Best Rated" :
 					loadBestRated();
+					break;
+				case "Newest":
+					loadLatest();
+					break;
+				default:
+					alertMessage("not Implemented yet");
 				}
 			}
 			
@@ -320,11 +331,31 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 
-	private void loadBestRated() {
+	private void loadLatest() {
 		  task = new ApiTask();
 		  ApiTaskParams apiParams = new ApiTaskParams();
-		  apiParams.setMethod("bestRated");
-		  task.execute(apiParams);
+		  apiParams.setMethod("latest");
+		  task.execute(apiParams);	
+	}
+	
+	private void loadBestRated() {
+		task = new ApiTask();
+		 ApiTaskParams apiParams = new ApiTaskParams();
+		 apiParams.setMethod("bestRated");
+		 task.execute(apiParams);
+	}
+	
+	private void loadTag(String tag) {
+		
+		if(tag == "Recommended") tag = "feature";
+		
+		task = new ApiTask();
+		ApiTaskParams apiParams = new ApiTaskParams();
+		ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
+		httpParams.add(new BasicNameValuePair("tagname", tag));
+		apiParams.setParams(httpParams);
+		apiParams.setMethod("searchByTag");
+		task.execute(apiParams);	
 	}
 	
 	public void onResume() {
@@ -431,16 +462,6 @@ public class TemplateStoreMainActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	
-	  private void loadTag(String tag) {
-		  task = new ApiTask();
-		  ApiTaskParams apiParams = new ApiTaskParams();
-		  ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
-		  httpParams.add(new BasicNameValuePair("tagname", tag));
-		  apiParams.setParams(httpParams);
-		  apiParams.setMethod("searchByTag");
-		  task.execute(apiParams);	
-	}
 
 	@Override
 	  protected void onListItemClick(ListView l, View v, int position, long id) {

@@ -149,6 +149,21 @@ public class TemplateStoreClient extends HttpClient {
 	}
 
 	/**
+	 * gets templates ordered by date descending
+	 * @return templates in form of ApiResponse Object
+	 */
+	public ApiResponse latest() {
+		// TODO Auto-generated method stub
+		this.currentMethod = "latest";
+		try {
+			this.get(this.apiUrl+"/search/latest?page="+currentPage);
+		} catch (Exception e) {
+			Log.e("store clients", e.getMessage());
+		}
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);		
+	}
+	
+	/**
 	 * 
 	 * @return the base URL of the API end point
 	 */
@@ -179,6 +194,8 @@ public class TemplateStoreClient extends HttpClient {
 			return this.searchTemplates(currentNameValuePairs, true);
 		case "bestRated":
 			return this.bestRated();
+		case "latest":
+			return this.latest();
 		}
 		return getTemplates();
 		
