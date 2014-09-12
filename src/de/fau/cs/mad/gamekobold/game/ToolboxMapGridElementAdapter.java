@@ -22,14 +22,14 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.drawable;
 
-public class ToolboxTestGridElementAdapter extends BaseAdapter {
+public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private final ArrayList<Integer> dotsList;
 	private LayoutInflater mInflater;
 	private boolean drag_active;
 
-	public ToolboxTestGridElementAdapter(Context context,
+	public ToolboxMapGridElementAdapter(Context context,
 			ArrayList<Integer> dots, boolean drag_active) {
 		mContext = context;
 		dotsList = dots;
@@ -44,7 +44,7 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 
 		if (squareContainerView == null) {
 			squareContainerView = mInflater.inflate(
-					R.layout.activity_game_toolbox_test_cell, null);
+					R.layout.activity_game_toolbox_map_cell, null);
 
 			squareContainerView.setOnDragListener(new MyDragListener(
 					this.mContext));

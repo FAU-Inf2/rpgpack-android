@@ -55,11 +55,5 @@ public class ToolboxActivity extends SingleFragmentActivity {
 				ToolboxRandomListActivity.class);
 		startActivity(intent);
 	}
-	
-	public void openTest(View view) {
-		Intent intent = new Intent(ToolboxActivity.this,
-				ToolboxTestActivity.class);
-		startActivity(intent);
-	}
 
 }

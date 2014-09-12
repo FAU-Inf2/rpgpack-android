@@ -52,17 +52,4 @@
         android:text="@string/open_randomlist"
         android:textColor="@color/white" />
 
-    <Button
-        android:id="@+id/btn_open_test"
-        android:layout_width="120dp"
-        android:layout_height="70dp"
-         android:layout_below="@+id/btn_open_dice"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/background_green"
-        android:onClick="openTest"
-        android:text="Test Drag + Drop"
-        android:textColor="@color/white" />
-
 </RelativeLayout>

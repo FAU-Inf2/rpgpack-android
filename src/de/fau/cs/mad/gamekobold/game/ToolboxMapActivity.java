@@ -29,12 +29,9 @@ import android.widget.TableLayout;
 
 public class ToolboxMapActivity extends Activity{
 
-	private String[] dots = { "red", "green", "blue", "black", "orange" };
 	private ImageButton currPaint;
 	private ToolboxMapView mapView;
 	private LinearLayout paintLayout;
-	private final int dot_size = 40;
-	private ArrayList<String> dots_array = new ArrayList<String>();
 	
 	Activity mContext;
 	float mWidth;
@@ -47,7 +44,7 @@ public class ToolboxMapActivity extends Activity{
 	private int cell_size;
 	private float density;
 	private boolean drag_active;
-	private ToolboxTestGridElementAdapter mAdapter;
+	private ToolboxMapGridElementAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +54,10 @@ public class ToolboxMapActivity extends Activity{
 		mapView = (ToolboxMapView) findViewById(R.id.map);
 		initTest();
 		createCells();
-		// createGrid();
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
 				R.drawable.paint_pressed));
-		createDots();
-		
 	}
 /*
 	@Override
@@ -145,64 +139,12 @@ public class ToolboxMapActivity extends Activity{
 		popup.show();
 	}
 
-	public void createDots() {
-		LinearLayout layout = (LinearLayout) findViewById(R.id.paint_dots);
-
-		for (String item : dots) {
-			ImageView img_view = (ImageView) new ImageView(this);
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					dot_size, dot_size);
-
-			if (item.equals("red")) {
-				img_view.setTag(item);
-				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.red_dot));
-			}
-			if (item.equals("blue")) {
-				img_view.setTag(item);
-				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.blue_dot));
-			}
-			if (item.equals("black")) {
-				img_view.setTag(item);
-				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.black_dot));
-			}
-			if (item.equals("green")) {
-				img_view.setTag(item);
-				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.green_dot));
-			}
-			if (item.equals("orange")) {
-				img_view.setTag(item);
-				img_view.setImageDrawable(getResources().getDrawable(
-						R.drawable.orange_dot));
-			}
-			img_view.setLayoutParams(params);
-			//img_view.setOnTouchListener(this);
-			layout.addView(img_view);
-		}
-	}
-
 	public void undo(View v) {
 		mapView.undoLastStep();
 	}
 
 	public void redo(View v) {
 		mapView.redoLastUndo();
-	}
-
-	public void switchMode(View v) {
-		/*if (drag_active){
-			drag_active = false;
-			mAdapter.notifyDataSetChanged();
-			Log.i("drag_state", "false");
-		}
-		else{
-			drag_active = true;
-			mAdapter.notifyDataSetChanged();
-			Log.i("drag_state", "true");
-		}*/
 	}
 	
 	protected void initTest() {
@@ -237,7 +179,7 @@ public class ToolboxMapActivity extends Activity{
 
 		}
 
-		mAdapter = new ToolboxTestGridElementAdapter(
+		mAdapter = new ToolboxMapGridElementAdapter(
 				ToolboxMapActivity.this, dotsList, drag_active);
 		mapView.setNumColumns(mNumColumns);
 		mapView.setAdapter(mAdapter);
