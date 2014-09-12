@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +40,6 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
-import de.fau.cs.mad.gamekobold.filebrowser.FileBrowserActivity;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -475,17 +473,24 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		
 		// copy file
 		File templateFile = new File(currentTemplate.getFileAbsPath());
+		InputStream in = null;
+		OutputStream out = null;
 		try {
-			InputStream in = new FileInputStream(templateFile);
-			OutputStream out = new FileOutputStream(new File(directory, templateFile.getName()));
+			in = new FileInputStream(templateFile);
+			out = new FileOutputStream(new File(directory, templateFile.getName()));
 			byte[] buffer = new byte[1024];
 			int len;
 			while((len = in.read(buffer)) > 0) {
 				out.write(buffer, 0, len);
 			}
+			Toast.makeText(this, "Exported template. Filename:"+templateFile.getName(), Toast.LENGTH_LONG).show();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		try {
 			in.close();
 			out.close();
-			Toast.makeText(this, "Exported template", Toast.LENGTH_LONG).show();
 		}
 		catch(IOException e) {
 			e.printStackTrace();
