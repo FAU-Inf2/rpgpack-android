@@ -101,7 +101,9 @@ public class FileBrowser extends DialogFragment {
 			adapter.setHasParent(false);
 			getDialog().setTitle("File Browser");
 		}
-		adapter.addAll(subDirs);
+		if(subDirs != null) {
+			adapter.addAll(subDirs);
+		}
 		adapter.notifyDataSetChanged();
 	}
 	
