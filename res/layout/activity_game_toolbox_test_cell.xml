@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/game_toolbox_map_cell_padding" >
+    android:layout_height="wrap_content" >
 
     <ImageView
         android:id="@+id/map_background_test"
-        android:layout_width="@dimen/game_toolbox_map_cellsize_without_padding"
-        android:layout_height="@dimen/game_toolbox_map_cellsize_without_padding"
-        android:background="@android:color/transparent"
+        android:layout_width="@dimen/game_toolbox_map_cellsize"
+        android:layout_height="@dimen/game_toolbox_map_cellsize"
         android:layout_gravity="center"
-        android:gravity="center_vertical|center_horizontal" />
-    
-     <ImageView
+        android:background="@drawable/border" />
+
+    <ImageView
         android:id="@+id/map_piece"
         android:layout_width="@dimen/game_toolbox_map_cellsize_without_padding"
         android:layout_height="@dimen/game_toolbox_map_cellsize_without_padding"
         android:layout_gravity="center"
         android:gravity="center_vertical|center_horizontal" />
-     
-     
-    
+
 </FrameLayout>
