@@ -99,6 +99,15 @@
                 android:onClick="undo"
                 android:src="@drawable/ic_action_undo"
                 android:tag="Background" />
+            
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:layout_margin="2dp"
+                android:background="#FF999999"
+                android:onClick="switchMode"
+                android:text="@string/map_draw" />
+            
         </LinearLayout>
     </LinearLayout>
 

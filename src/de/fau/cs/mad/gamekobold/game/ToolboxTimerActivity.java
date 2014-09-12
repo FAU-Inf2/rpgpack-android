@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.fau.cs.mad.gamekobold.game.ToolboxTimerDialog;
@@ -180,7 +181,7 @@ public class ToolboxTimerActivity extends Activity{
 	 }
 	 
 	 public void setTime(int[] time){
-		 String tmp = String.format("%02d:%02d:%02d", time[0], time[1], time[2]);
+		 String tmp = String.format(Locale.getDefault(),"%02d:%02d:%02d", time[0], time[1], time[2]);
 		 textViewTime.setText(tmp);
 	 }
 	 	 
@@ -251,9 +252,9 @@ public class ToolboxTimerActivity extends Activity{
 			 
 			 public void onTick(long millisUntilFinished) {  
 				 long millis = millisUntilFinished;  
-				 String h = String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis));
-				 String m = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)));
-				 String s = String.format("%02d", TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));      
+				 String h = String.format(Locale.getDefault(),"%02d", TimeUnit.MILLISECONDS.toHours(millis));
+				 String m = String.format(Locale.getDefault(),"%02d", TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)));
+				 String s = String.format(Locale.getDefault(),"%02d", TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));      
                       
 				 textViewTime.setText(h + ":" + m + ":" + s);          
 			 }  

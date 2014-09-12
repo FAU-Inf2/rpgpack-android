@@ -5,6 +5,7 @@
     <string name="app_name">RPG Pack</string>
     <string name="hello_world">Hello World!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_edit">Edit</string>
     <string name="action_tools">Tools</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
@@ -201,6 +202,10 @@
     <string name="hint_1">Hint1&#8230;</string>
     <string name="hint_2">Hint2&#8230;</string>
     <string name="hint_3">Hint3&#8230;</string>
+    
+    <!-- fragment_character_details -->
+   <string name="character_name">Character Name</string>
+   <string name="three">3</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Edit Game</string>
@@ -208,6 +213,9 @@
     <string name="text_remove_character_from_game">Remove Character from Game?</string>
     <string name="text_click_to_remove_character_from_game">Choose YES to remove Character from Game.</string>
     <string name="msg_edit_game_mode">Now you can edit the Game!</string>
+    <string name="game_name">Game Name</string>
+    <string name="world_name">Gameworld Name</string>
+    <string name="creation_date">Date Created</string>
 
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
@@ -232,6 +240,9 @@
     <string name="description_undo">undo</string>
     <string name="description_redo">redo</string>
     <string name="description_switch_background">Change Background</string>
+    <string name="map_forest">Forest</string>
+    <string name="map_rock">Rock</string>
+    <string name="map_draw">draw</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>

@@ -195,6 +195,10 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		mapView.redoLastUndo();
 	}
 
+	public void switchMode(View v) {
+		;
+	}
+	
 	public void activateErase(View v) {
 		Log.i("Button Pressed", "true");
 		mapView.setErase(true);

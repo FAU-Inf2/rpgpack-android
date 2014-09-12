@@ -51,7 +51,7 @@
         android:layout_below="@+id/gameName"
         android:layout_margin="5dp"
         android:layout_toRightOf="@+id/iconGame"
-        android:text="World name"
+        android:text="@string/world_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_alignTop="@+id/iconGame"
-        android:text="Game Name"
+        android:text="@string/game_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="16sp" />
@@ -74,7 +74,7 @@
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_below="@+id/textViewWorldName"
         android:layout_toLeftOf="@+id/buttonGameInfoPopup"
-        android:text="Date"
+        android:text="@string/creation_date"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />
