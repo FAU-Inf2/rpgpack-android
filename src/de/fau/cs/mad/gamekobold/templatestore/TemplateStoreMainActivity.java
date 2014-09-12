@@ -66,16 +66,12 @@ public class TemplateStoreMainActivity extends ListActivity {
     View footer;
     
       private class ScrollListener implements OnScrollListener {
-	    	private int currentFirstVisibleItem;
-			private int currentVisibleItemCount;
 			private int currentScrollState;
 			private int lastItem;
 			private int totalItemCount;
 
 
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-	    	    this.currentFirstVisibleItem = firstVisibleItem;
-	    	    this.currentVisibleItemCount = visibleItemCount;
 	    	    this.lastItem = firstVisibleItem + visibleItemCount;
 	    	    this.totalItemCount = totalItemCount;
 	    	}
@@ -157,6 +153,9 @@ public class TemplateStoreMainActivity extends ListActivity {
 	         case "searchByTag":
 	        	 nameValuePairs = apiParam.getParams();
 	        	 response = client.searchByTag(nameValuePairs);
+	        	 break;
+	         case "bestRated":
+	        	 response = client.bestRated();
 	        	 break;
 	         case "loadMore":
 	        	 response = client.loadMore();
@@ -312,6 +311,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 				case "D & D":
 					loadTag(texts[position]);
 					break;
+				case "Best Rated" :
+					loadBestRated();
 				}
 			}
 			
@@ -319,6 +320,13 @@ public class TemplateStoreMainActivity extends ListActivity {
 		
 	}
 
+	private void loadBestRated() {
+		  task = new ApiTask();
+		  ApiTaskParams apiParams = new ApiTaskParams();
+		  apiParams.setMethod("bestRated");
+		  task.execute(apiParams);
+	}
+	
 	public void onResume() {
 		super.onResume();
 	}
@@ -423,6 +431,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
 	  private void loadTag(String tag) {
 		  task = new ApiTask();
 		  ApiTaskParams apiParams = new ApiTaskParams();
@@ -430,8 +439,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		  httpParams.add(new BasicNameValuePair("tagname", tag));
 		  apiParams.setParams(httpParams);
 		  apiParams.setMethod("searchByTag");
-		  task.execute(apiParams);
-		
+		  task.execute(apiParams);	
 	}
 
 	@Override
