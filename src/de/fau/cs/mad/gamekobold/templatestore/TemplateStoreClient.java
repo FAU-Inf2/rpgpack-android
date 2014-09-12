@@ -3,7 +3,6 @@ package de.fau.cs.mad.gamekobold.templatestore;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.util.Log;
@@ -15,12 +14,17 @@ public class TemplateStoreClient extends HttpClient {
 	private int currentPage=1;
 	private String currentMethod = null;
 	private ArrayList<NameValuePair> currentNameValuePairs;
-	private boolean pageAdded = false;
+	
+	/** default constructor **/
 	public TemplateStoreClient() {
 		
 	}
 	
-
+	/**
+	 * 
+	 * @param nameValuePairs - HTTP URL Parameters
+	 * @return request information in form of an ApiResponse object
+	 */
 	public ApiResponse postTemplate(ArrayList<NameValuePair> nameValuePairs){
 		try {
 			this.post(this.apiUrl, nameValuePairs, true);
@@ -34,16 +38,18 @@ public class TemplateStoreClient extends HttpClient {
 	
 	/**
 	 * method overload
-	 *
-	 * @return
+	 * 
+	 * @return - Templates in form of an ApiResponse object
 	 */
 	public ApiResponse getTemplates() {
 		this.currentPage = 1;
 		return this.getTemplates(false);
 	}
+	
 	/**
-	 * gets all Templates from Store
-	 * @return
+	 * 
+	 * @param more - indicates that pagination is used 
+	 * @return - Templates in form of an ApiResponse object
 	 */
 	public ApiResponse getTemplates(boolean more) {
 		this.currentMethod = "getTemplates";
@@ -60,7 +66,7 @@ public class TemplateStoreClient extends HttpClient {
 	/**
 	 * method overload
 	 * @param nameValuePairs
-	 * @return
+	 * @return templates in form of an ApiResponse object
 	 */
 	public ApiResponse searchTemplates(ArrayList<NameValuePair> nameValuePairs) {
 		this.currentPage = 1;
@@ -68,7 +74,14 @@ public class TemplateStoreClient extends HttpClient {
 		return this.searchTemplates(nameValuePairs, false);
 	}
 	
-	
+	/**
+	 * Searches store by custom search criteria
+	 * 
+	 * @see API Docs of template store
+	 * @param nameValuePairs - http get parameter used for searching
+	 * @param more - indicates pagination
+	 * @return found templates in form of an ApiResponse object
+	 */
 	public ApiResponse searchTemplates(ArrayList<NameValuePair> nameValuePairs, boolean more) {
 		this.currentMethod = "searchTemplates";
 		if(more) {
@@ -94,10 +107,15 @@ public class TemplateStoreClient extends HttpClient {
 	public ApiResponse searchByTag(ArrayList<NameValuePair> nameValuePairs) {
 		this.currentNameValuePairs = nameValuePairs;
 		this.currentPage = 1;
-		pageAdded = false;
 		return this.searchByTag(nameValuePairs, false);
 	}
 	
+	/**
+	 * searches templates by tag
+	 * @param nameValuePairs - parameters that are appended to URL as get parameter
+	 * @param more - indicates that more content should be loaded in form of pagination
+	 * @return
+	 */
 	public ApiResponse searchByTag(ArrayList<NameValuePair> nameValuePairs, boolean more) {
 		this.currentMethod = "searchByTag";
 		if(more) {
@@ -114,16 +132,42 @@ public class TemplateStoreClient extends HttpClient {
 		}
 		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
 	}
-
 	
+	/**
+	 * get best rated templates from store
+	 * @return best rated templates in form of an ApiResponseObject
+	 */
+	public ApiResponse bestRated() {
+		// TODO Auto-generated method stub
+		this.currentMethod = "bestRated";
+		try {
+			this.get(this.apiUrl+"/search/bestRated?page="+currentPage);
+		} catch (Exception e) {
+			Log.e("store clients", e.getMessage());
+		}
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
+	}
+
+	/**
+	 * 
+	 * @return the base URL of the API end point
+	 */
 	public String getApiUrl() {
 		return apiUrl;
 	}
 	
+	/**
+	 * cancels current request
+	 * @return void
+	 */
 	public void cancel() {
 		super.cancel();
 	}
 	
+	/**
+	 * load more templates when pagination is needed
+	 * @return Templates in form an ApiResponse
+	 */
 	public ApiResponse loadMore() {
 		this.currentPage++;
 		switch (this.currentMethod) {
@@ -133,11 +177,17 @@ public class TemplateStoreClient extends HttpClient {
 			return this.searchByTag(currentNameValuePairs, true);
 		case "searchTemplates" :
 			return this.searchTemplates(currentNameValuePairs, true);
+		case "bestRated":
+			return this.bestRated();
 		}
 		return getTemplates();
 		
 	}
 	
+	/**
+	 * set current page for pagination
+	 * @param page current page
+	 */
 	public void setCurrentPage(int page) {
 		this.currentPage = page;
 	}
