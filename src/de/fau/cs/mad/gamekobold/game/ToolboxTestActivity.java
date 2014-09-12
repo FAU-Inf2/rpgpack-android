@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ToolboxTestActivity extends Activity implements OnTouchListener {
+public class ToolboxTestActivity extends Activity  {
 
 	Activity mContext;
 	float mWidth;
@@ -40,6 +40,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 	private int mNumColumns;
 	private int cell_size;
 	private float density;
+	private boolean drag_active;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 		Log.i("Cells", "" + mNumCells);
 		Log.i("mNumColumns", "" + mNumColumns);
 		Log.i("mNumLines", "" + mNumLines);
+		drag_active = true;
 	}
 
 	public void createCells() {
@@ -90,7 +92,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 		// grid.setLayoutParams(lp);
 
 		ToolboxTestGridElementAdapter adapter = new ToolboxTestGridElementAdapter(
-				ToolboxTestActivity.this, dotsList);
+				ToolboxTestActivity.this, dotsList, drag_active);
 		grid.setNumColumns(mNumColumns);
 		grid.setAdapter(adapter);
 		grid.setBackgroundResource(R.drawable.forest);
@@ -173,7 +175,7 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 		}
 		return true;
 	}*/
-
+/*
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
 		ClipData.Item item = new ClipData.Item((String) v.getTag());
@@ -187,4 +189,5 @@ public class ToolboxTestActivity extends Activity implements OnTouchListener {
 			return false;
 		}
 	}
+	*/
 }

@@ -27,13 +27,15 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 	private Context mContext;
 	private final ArrayList<Integer> dotsList;
 	private LayoutInflater mInflater;
+	private boolean drag_active;
 
 	public ToolboxTestGridElementAdapter(Context context,
-			ArrayList<Integer> dots) {
+			ArrayList<Integer> dots, boolean drag_active) {
 		mContext = context;
 		dotsList = dots;
 		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.drag_active = drag_active;
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -55,6 +57,7 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
+						if (drag_active){
 						final ClipData data = ClipData.newPlainText("position",
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
@@ -63,6 +66,9 @@ public class ToolboxTestGridElementAdapter extends BaseAdapter {
 						v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
 						return true;
+						}
+						else 
+							return false;
 					}
 				});
 				}
