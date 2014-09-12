@@ -19,6 +19,7 @@ public class Template implements Parcelable{
 	public static final String PARCELABLE_STRING = "JacksonTemplate";
 	/* META DATA */
 
+	private String fileAbsPath = "";
 	private String fileName = "";
 	private String templateName = "";
 	private String gameName = "";
@@ -158,6 +159,14 @@ public class Template implements Parcelable{
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
+	
+	public String getFileAbsPath() {
+		return fileAbsPath;
+	}
+	@JsonIgnore
+	public void setFileAbsPath(String fileAbsPath) {
+		this.fileAbsPath = fileAbsPath;
+	}
 
 	//
 	// PARCELABLE BELOW
@@ -181,6 +190,7 @@ public class Template implements Parcelable{
 		dest.writeString(tagString);
 		dest.writeString(iconPath);
 		dest.writeString(fileName);
+		dest.writeString(fileAbsPath);
 	}
 
 	public static final Parcelable.Creator<Template> CREATOR = new Creator<Template>() {
@@ -201,6 +211,7 @@ public class Template implements Parcelable{
 			ret.tagString = source.readString();
 			ret.iconPath = source.readString();
 			ret.fileName = source.readString();
+			ret.fileAbsPath = source.readString();
 			return ret;
 		}
 	};

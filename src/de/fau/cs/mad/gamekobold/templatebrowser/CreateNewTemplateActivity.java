@@ -1,6 +1,11 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,6 +23,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Files;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,12 +40,14 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowserActivity;
+import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
-public class CreateNewTemplateActivity extends Activity {
+public class CreateNewTemplateActivity extends Activity implements IFileBrowserReceiver {
 	private Uri imageUri;
 	private Template currentTemplate;
 	private static final int PICK_FROM_CAMERA = 1;
@@ -317,8 +327,17 @@ public class CreateNewTemplateActivity extends Activity {
 		if(editTemplate) {
 			// editing mode
 			if(id == R.id.menu_item_export_template_to_file) {
-				Intent intent = new Intent(CreateNewTemplateActivity.this, FileBrowserActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(CreateNewTemplateActivity.this, FileBrowserActivity.class);
+//				startActivity(intent);
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
+				if(prev != null) {
+					ft.remove(prev);
+				}
+				ft.addToBackStack(null);
+				DialogFragment fileBrowser = FileBrowser.newInstance(this);
+				fileBrowser.setRetainInstance(true);
+				fileBrowser.show(ft, "file_browser_dialog");
 				return true;
 			}
 		}
@@ -442,5 +461,35 @@ public class CreateNewTemplateActivity extends Activity {
 			return cursor.getString(column_index);
 		} else
 			return null;
+	}
+
+	@Override
+	public void onDirectoryPicked(File directory) {
+		// TODO Auto-generated method stub
+		Log.d("CreateNewTemplateActivity", "export:"+directory.getAbsolutePath());
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
+		if(prev != null) {
+			ft.remove(prev);
+		}
+		ft.commit();
+		
+		// copy file
+		File templateFile = new File(currentTemplate.getFileAbsPath());
+		try {
+			InputStream in = new FileInputStream(templateFile);
+			OutputStream out = new FileOutputStream(new File(directory, templateFile.getName()));
+			byte[] buffer = new byte[1024];
+			int len;
+			while((len = in.read(buffer)) > 0) {
+				out.write(buffer, 0, len);
+			}
+			in.close();
+			out.close();
+			Toast.makeText(this, "Exported template", Toast.LENGTH_LONG).show();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

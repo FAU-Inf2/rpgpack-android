@@ -5,7 +5,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.R;
-import android.app.Fragment;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class FileBrowser extends Fragment {
+public class FileBrowser extends DialogFragment {
 	public static final String ARGUMENT_CURRENT_DIR_ABS_PATH = "ARGUMENT_CURRENT_DIR_ABS_PATH";
 	/**
 	 *
@@ -95,11 +95,19 @@ public class FileBrowser extends Fragment {
 		if(parentFile != null) {
 			adapter.add(parentFile);
 			adapter.setHasParent(true);
+			getDialog().setTitle(currentDirectory.getName());
 		}
 		else {
 			adapter.setHasParent(false);
+			getDialog().setTitle("File Browser");
 		}
 		adapter.addAll(subDirs);
 		adapter.notifyDataSetChanged();
+	}
+	
+	public static FileBrowser newInstance(IFileBrowserReceiver receiver) {
+		FileBrowser browser = new FileBrowser();
+		browser.setReceiver(receiver);
+		return browser;
 	}
 }
