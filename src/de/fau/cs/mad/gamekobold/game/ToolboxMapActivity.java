@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
@@ -24,8 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TableLayout;
 
-public class ToolboxMapActivity extends Activity implements OnTouchListener,
-		OnDragListener {
+public class ToolboxMapActivity extends Activity{
 
 	private String[] dots = { "red", "green", "blue", "black", "orange" };
 	private ImageButton currPaint;
@@ -33,6 +35,19 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 	private LinearLayout paintLayout;
 	private final int dot_size = 40;
 	private ArrayList<String> dots_array = new ArrayList<String>();
+	
+	Activity mContext;
+	float mWidth;
+	float mHeight;
+	private int[] testDots = { R.drawable.red_dot, R.drawable.green_dot, R.drawable.blue_dot, R.drawable.black_dot, R.drawable.orange_dot };
+	private ArrayList<Integer> dotsList = new ArrayList();
+	private int mNumCells;
+	private int mNumLines;
+	private int mNumColumns;
+	private int cell_size;
+	private float density;
+	private boolean drag_active;
+	private ToolboxTestGridElementAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +55,17 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_toolbox_map);
 		mapView = (ToolboxMapView) findViewById(R.id.map);
+		initTest();
+		createCells();
 		// createGrid();
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
 				R.drawable.paint_pressed));
 		createDots();
-		findViewById(R.id.paint_colors).setOnDragListener(this);
-		findViewById(R.id.paint_dots).setOnDragListener(this);
+		
 	}
-
+/*
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
 		if (e.getAction() == MotionEvent.ACTION_DOWN) {
@@ -75,6 +91,8 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 		return true;
 	}
 
+*/
+	
 	public void iconClicked(View view) {
 		if (view != currPaint) {
 			ImageButton imgView = (ImageButton) view;
@@ -161,31 +179,10 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 						R.drawable.orange_dot));
 			}
 			img_view.setLayoutParams(params);
-			img_view.setOnTouchListener(this);
+			//img_view.setOnTouchListener(this);
 			layout.addView(img_view);
 		}
 	}
-
-	/*
-	 * public void createGrid() { ToolboxMapView mapView = (ToolboxMapView)
-	 * findViewById(R.id.map_layout);
-	 * 
-	 * int height = mapView.getH(); int width = mapView.getW();
-	 * 
-	 * int num_row = height / (dot_size + (((height / dot_size) +1)*5)) ;
-	 * Log.i("Row", num_row + ""); int num_column = width / (dot_size + (((width
-	 * / dot_size) +1)*5)); Log.i("Column", num_column + ""); int grid_size =
-	 * num_column * num_row; GridView grid = new
-	 * GridView(ToolboxMapActivity.this); for (int i = 0; i < grid_size; i++) {
-	 * dots_array.add("" + i); } Log.i("Size", dots_array.size()+ "");
-	 * 
-	 * ToolboxMapElementAdapter adp = new ToolboxMapElementAdapter(
-	 * ToolboxMapActivity.this, num_row, num_column, dots_array);
-	 * grid.setNumColumns(num_column); grid.setAdapter(adp);
-	 * mapView.addView(grid); setContentView(linearLayout);
-	 * 
-	 * }
-	 */
 
 	public void undo(View v) {
 		mapView.undoLastStep();
@@ -196,11 +193,54 @@ public class ToolboxMapActivity extends Activity implements OnTouchListener,
 	}
 
 	public void switchMode(View v) {
-		;
+		/*if (drag_active){
+			drag_active = false;
+			mAdapter.notifyDataSetChanged();
+			Log.i("drag_state", "false");
+		}
+		else{
+			drag_active = true;
+			mAdapter.notifyDataSetChanged();
+			Log.i("drag_state", "true");
+		}*/
 	}
 	
-	public void activateErase(View v) {
-		Log.i("Button Pressed", "true");
-		mapView.setErase(true);
+	protected void initTest() {
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		WindowManager wm = (WindowManager) getApplicationContext()
+				.getSystemService(Context.WINDOW_SERVICE);
+		wm.getDefaultDisplay().getMetrics(displaymetrics);
+		density = getResources().getDisplayMetrics().density;
+		cell_size = (int) ((float) getResources().getDimension(
+				R.dimen.game_toolbox_map_cellsize) / density);
+		mWidth = displaymetrics.widthPixels / density;
+		mHeight = displaymetrics.heightPixels / density - (90 + cell_size);
+		mNumColumns = (int) (mWidth / cell_size);
+		mNumLines = (int) (mHeight / cell_size);
+		mNumCells = mNumLines * mNumColumns;
+		Log.i("Width", "" + mWidth);
+		
+		Log.i("Height", "" + mHeight);
+		Log.i("Cells", "" + mNumCells);
+		Log.i("mNumColumns", "" + mNumColumns);
+		Log.i("mNumLines", "" + mNumLines);
+		drag_active = true;
+	}
+	
+	public void createCells() {
+
+		for (int i = 0; i < mNumCells; i++) {
+			dotsList.add(null);
+			if (i < testDots.length) {
+				dotsList.set(i, testDots[i]);
+			}
+
+		}
+
+		mAdapter = new ToolboxTestGridElementAdapter(
+				ToolboxMapActivity.this, dotsList, drag_active);
+		mapView.setNumColumns(mNumColumns);
+		mapView.setAdapter(mAdapter);
+		mapView.setBackgroundResource(R.drawable.forest);
 	}
 }

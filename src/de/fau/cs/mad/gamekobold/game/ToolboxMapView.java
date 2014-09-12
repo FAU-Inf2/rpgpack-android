@@ -21,10 +21,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.view.MotionEvent;
 
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class ToolboxMapView extends View {
+public class ToolboxMapView extends GridView {
 
 	private Path drawPath;
 	private Paint drawPaint, canvasPaint;
