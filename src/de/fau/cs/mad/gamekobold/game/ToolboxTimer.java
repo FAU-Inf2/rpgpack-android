@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.game;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.Locale;
 
 import de.fau.cs.mad.gamekobold.R;
 
@@ -28,7 +29,7 @@ public class ToolboxTimer extends FrameLayout{
 		
 			@Override
 			public String format(int value) {
-			return String.format("%02d", value);
+			return String.format(Locale.getDefault(),"%02d", value);
 		}
 	};
     
