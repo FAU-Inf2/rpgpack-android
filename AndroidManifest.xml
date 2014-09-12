@@ -129,6 +129,7 @@
             android:name=".characterbrowser.CharacterBrowserActivity"
             android:label="@string/title_activity_character_browser" >
         </activity>
+        <activity android:name=".filebrowser.FileBrowserActivity"></activity>
     </application>
 
 </manifest>

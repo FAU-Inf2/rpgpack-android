@@ -280,6 +280,7 @@ public abstract class JacksonInterface {
 		FileInputStream inStream = new FileInputStream(file);
 		Template ret = loadTemplate(inStream, onlyMetaData);
 		ret.setFileName(file.getName());
+		ret.setFileAbsPath(file.getAbsolutePath());
 		return ret;
 	}
 
@@ -299,9 +300,11 @@ public abstract class JacksonInterface {
 			return null;
 		}
 		File dir = getTemplateRootDirectory(context);
-		FileInputStream inStream = new FileInputStream(dir.getAbsolutePath() + File.separator + fileName);
+		File templateFile = new File(dir, fileName);
+		FileInputStream inStream = new FileInputStream(templateFile);
 		Template ret = loadTemplate(inStream, onlyMetaData);
 		ret.setFileName(fileName);
+		ret.setFileAbsPath(templateFile.getAbsolutePath());
 		return ret;
 	}
 	// CHARACTER FOLDER FUNCTIONS
