@@ -13,6 +13,15 @@
         android:showAsAction="ifRoom"
         android:title="@string/store_tags">
     	<menu>
+    	    <item android:id="@+id/tag_best_rated"
+    	          android:title="@string/tag_best_rated"
+    	          />
+    	    <item android:id="@+id/tag_newest"
+    	          android:title="@string/tag_newest"
+    	          />
+    	    <item android:id="@+id/tag_recommended"
+    	          android:title="@string/tag_recommended"
+    	          />
     	    <item android:id="@+id/tag_dungeon_world"
                   android:title="@string/tag_dungeon_world"
                   />

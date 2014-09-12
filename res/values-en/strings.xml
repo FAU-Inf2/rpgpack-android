@@ -300,6 +300,9 @@
     <string name="tag_future">Future</string>
     <string name="tag_dungeon_world">Dungeon World</string>
     <string name="d_and_d">D &amp; D</string>
+    <string name="tag_best_rated">Best Rated</string>
+    <string name="tag_newest">Newest</string>
+    <string name="tag_recommended">Recommended</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>

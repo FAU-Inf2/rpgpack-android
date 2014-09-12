@@ -300,6 +300,10 @@
     <string name="tag_future">Zukunft</string>
     <string name="tag_dungeon_world">Dungeon World</string>
     <string name="d_and_d">D &amp; D</string>
+    <string name="tag_best_rated">Bestbewertet</string>
+    <string name="tag_newest">Neu</string>
+    <string name="tag_recommended">Empfohlen</string>
+    
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
@@ -334,5 +338,6 @@
 
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
+    
 
 </resources>

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -286,8 +287,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 	
 
 	private void initSidebar() {
-		final String[] texts = { "Best Rated", "Newest", "Recommended", "Dungeon World",
-				"D & D", "Fantasy", "Horror", "Future" };
+		Resources res = getResources();
+		final String[] texts = { res.getString(R.string.tag_best_rated), res.getString(R.string.tag_newest), 
+				res.getString(R.string.tag_recommended), "Dungeon World",
+				"D & D", "Fantasy", "Horror", getResources().getString(R.string.tag_future) };
 		Integer[] images = { R.drawable.best, R.drawable.newest,
 				R.drawable.best, R.drawable.dragon1,
 				R.drawable.dragon2, R.drawable.fantasy, R.drawable.horror, R.drawable.future };
@@ -312,15 +315,19 @@ public class TemplateStoreMainActivity extends ListActivity {
 				case "Fantasy":
 				case "Horror":
 				case "Future":
+				case "Zukunft":
 				case "Dungeon World":
 				case "D & D":
 				case "Recommended":
+				case "Empfohlen":
 					loadTag(texts[position]);
 					break;
 				case "Best Rated" :
+				case "Bestbewertet":
 					loadBestRated();
 					break;
 				case "Newest":
+				case "Neu":
 					loadLatest();
 					break;
 				default:
@@ -340,15 +347,14 @@ public class TemplateStoreMainActivity extends ListActivity {
 	}
 	
 	private void loadBestRated() {
-		task = new ApiTask();
+		 task = new ApiTask();
 		 ApiTaskParams apiParams = new ApiTaskParams();
 		 apiParams.setMethod("bestRated");
 		 task.execute(apiParams);
 	}
 	
 	private void loadTag(String tag) {
-		
-		if(tag == "Recommended") tag = "feature";
+		if(tag.equals("Empfohlen") || tag.equals("Recommended")) tag = "feature";
 		
 		task = new ApiTask();
 		ApiTaskParams apiParams = new ApiTaskParams();
@@ -446,12 +452,14 @@ public class TemplateStoreMainActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
+		searchView.clearFocus();
 		ApiTaskParams apiParams = new ApiTaskParams();
-		boolean is_task = true;
+		boolean is_task = false;
 		switch(id) {
 			case R.id.action_restore :
 				this.restoreListStatus();
 	    		apiParams.setMethod("getTemplates");
+	    		is_task=true;
 				break;			
 			case R.id.tag_fantasy:
 			case R.id.tag_horror:
@@ -460,7 +468,19 @@ public class TemplateStoreMainActivity extends ListActivity {
 			case R.id.tag_dungeon_world:
 				this.restoreListStatus();
 				this.loadTag((String)item.getTitle());
-				is_task = false;
+				break;
+			case R.id.tag_best_rated:
+				this.restoreListStatus();
+				this.loadBestRated();
+				break;
+			case R.id.tag_recommended:
+				this.restoreListStatus();
+				loadTag("feature");
+				break;
+			case R.id.tag_newest:
+				this.restoreListStatus();
+				loadLatest();
+				break;
 			default:
 				is_task = false;
 				break;
