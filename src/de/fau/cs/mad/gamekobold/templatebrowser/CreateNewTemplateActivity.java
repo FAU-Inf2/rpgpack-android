@@ -32,6 +32,7 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -296,7 +297,14 @@ public class CreateNewTemplateActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.create_new_template, menu);
+		if(editTemplate) {
+			// menu while editing
+			getMenuInflater().inflate(R.menu.menu_create_template_edit_mode, menu);	
+		}
+		else {
+			// menu while creating
+			getMenuInflater().inflate(R.menu.create_new_template, menu);	
+		}
 		return true;
 	}
 
@@ -306,8 +314,19 @@ public class CreateNewTemplateActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		if(editTemplate) {
+			// editing mode
+			if(id == R.id.menu_item_export_template_to_file) {
+				Intent intent = new Intent(CreateNewTemplateActivity.this, FileBrowserActivity.class);
+				startActivity(intent);
+				return true;
+			}
+		}
+		else {
+			// creation mode
+			if (id == R.id.action_settings) {
+				return true;
+			}			
 		}
 		return super.onOptionsItemSelected(item);
 	}
