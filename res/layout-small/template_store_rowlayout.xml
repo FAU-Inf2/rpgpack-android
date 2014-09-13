@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/templateStoreImg"
-        android:text="@string/template_name"
+        android:text="@string/store_template_name"
         android:textColor="@color/white"
         android:textSize="9sp" />
 
