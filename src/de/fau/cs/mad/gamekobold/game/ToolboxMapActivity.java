@@ -104,6 +104,19 @@ public class ToolboxMapActivity extends Activity{
 					R.drawable.paint_pressed));
 			currPaint = (ImageButton) view;
 		}
+		else if (view == currPaint){
+			String color = view.getTag().toString();
+			mapView.setColor(color);
+			int size = paintLayout.getChildCount();
+			for (int i = 0; i < size; i++) {
+				if (paintLayout.getChildAt(i) instanceof ImageButton) {
+					ImageButton tmp = (ImageButton) paintLayout.getChildAt(i);
+					tmp.setImageDrawable(getResources().getDrawable(
+							R.drawable.paint_unpressed));
+				}
+			}
+			currPaint = null;
+		}
 	}
 
 	public void openMenu(View view) {

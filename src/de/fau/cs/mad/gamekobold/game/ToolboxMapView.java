@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.fau.cs.mad.gamekobold.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -40,7 +41,7 @@ public class ToolboxMapView extends GridView {
 	private ArrayList<Path> undonePaths = new ArrayList<Path>();
 	private float mX, mY;
 	private static final float TOUCH_TOLERANCE = 4;
-	private boolean erase = false;
+	private boolean paint_enabled;
 
 	public ToolboxMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -57,6 +58,7 @@ public class ToolboxMapView extends GridView {
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
 		canvasPaint = new Paint(Paint.DITHER_FLAG);
+		paint_enabled = true;
 	}
 
 	@Override
@@ -84,24 +86,27 @@ public class ToolboxMapView extends GridView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		float x = event.getX();
-		float y = event.getY();
+		if (paint_enabled) {
+			float x = event.getX();
+			float y = event.getY();
 
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			touch_start(x, y);
-			invalidate();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			touch_move(x, y);
-			invalidate();
-			break;
-		case MotionEvent.ACTION_UP:
-			touch_up();
-			invalidate();
-			break;
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				touch_start(x, y);
+				invalidate();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				touch_move(x, y);
+				invalidate();
+				break;
+			case MotionEvent.ACTION_UP:
+				touch_up();
+				invalidate();
+				break;
+			}
 		}
 		return true;
+
 	}
 
 	private void touch_start(float x, float y) {
@@ -133,10 +138,15 @@ public class ToolboxMapView extends GridView {
 	public void setColor(String newColor) {
 
 		paintColor = Color.parseColor(newColor);
-		drawPaint.setColor(paintColor);
-		setErase(false);
-		drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		if (drawPaint.getColor() == paintColor) {
+			paint_enabled = false;
+		} else {
+			drawPaint.setColor(paintColor);
+			paint_enabled = true;
+		}
+
 		invalidate();
+
 	}
 
 	public void setBackground(String image) {
@@ -180,15 +190,8 @@ public class ToolboxMapView extends GridView {
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 	}
 
-	public void setErase(boolean isErase) {
-		erase = isErase;
-		if (erase) {
-			paintColor = getResources().getColor(android.R.color.transparent);
-			drawPaint.setColor(getResources().getColor(android.R.color.transparent));
-			drawPaint
-					.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-		} else {
-			drawPaint.setXfermode(null);
-		}
+	public int[] getSize() {
+		int[] size = { width, height };
+		return size;
 	}
 }
