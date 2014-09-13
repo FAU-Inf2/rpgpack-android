@@ -41,7 +41,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/character_highlighting_circle"
         android:gravity="center"
-        android:text="name"
+        android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />

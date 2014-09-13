@@ -14,6 +14,7 @@
     <string name="choice_prompt">Wähle aus</string>
     <string name="ok">OK</string>
     <string name="empty"></string>
+    <string name="name">Name</string>
 
     <!-- activity_main -->
     <string name="start_game">Spiel starten</string>
@@ -82,6 +83,15 @@
 
     <!-- ItemLayout NewItem Matrix -->
     <string name="text_item_add">+</string>
+    <string name="item_text">Text</string>
+    <string name="modifikator">mod</string>
+    <string name="from_to">von - bis</string>
+    <string name="matrix_item_title">Titel</string>
+    <string name="matrix_item_value">Wert</string>
+    <string name="item_range">Bereich</string>
+    
+    <!-- ItemLayout Character Icon -->
+    <string name="character_icon_textview">TextView</string>
 
     <!-- CreateNewTemplate -->
     <string name="text_create_template">Template erstellen</string>
@@ -216,7 +226,7 @@
     <string name="game_name">Spielname</string>
     <string name="world_name">Name der Spielwelt</string>
     <string name="creation_date">Erstellungsdatum</string>
-    
+
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
 
@@ -266,6 +276,10 @@
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
+    <string name="store_template_name">Template Name</string>
+    <string name="store_world_name">Welt Name</string>
+    <string name="store_template_image">Template Bild</string>
+    <string name="store_added">Hinzugefügt:</string>
 
     <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">Willst Du den Charakter ansehen und ggf. Ändern?</string>
@@ -303,7 +317,6 @@
     <string name="tag_best_rated">Bestbewertet</string>
     <string name="tag_newest">Neu</string>
     <string name="tag_recommended">Empfohlen</string>
-    
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
@@ -338,6 +351,5 @@
 
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
-    
 
 </resources>

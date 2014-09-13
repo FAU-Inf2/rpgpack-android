@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
             android:gravity="center"
-            android:text="value"
+            android:text="@string/matrix_item_value"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/grey" />
 
@@ -50,7 +50,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="range"
+            android:text="@string/item_range"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/grey" />
 
@@ -59,7 +59,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="mod"
+            android:text="@string/modifikator"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/grey" />
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:text="title"
+            android:text="@string/matrix_item_title"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/grey" />
     </LinearLayout>

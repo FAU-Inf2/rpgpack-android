@@ -26,7 +26,7 @@
         android:layout_below="@+id/matr_character_icon_circle"
         android:layout_marginTop="9dp"
         android:gravity="center"
-        android:text="text"
+        android:text="@string/item_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/grey" />
 

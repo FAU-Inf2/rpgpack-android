@@ -11,7 +11,7 @@
         android:layout_alignRight="@+id/textRangeFromTo"
         android:layout_below="@+id/textRangeFromTo"
         android:gravity="center"
-        android:text="mod"
+        android:text="@string/modifikator"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white" />
 
@@ -23,7 +23,7 @@
         android:layout_alignRight="@+id/character_icon_circle"
         android:layout_below="@+id/textValue"
         android:gravity="center"
-        android:text="from - to"
+        android:text="@string/from_to"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white" />
 
@@ -36,7 +36,7 @@
         android:layout_below="@+id/character_icon_circle"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="title"
+        android:text="@string/matrix_item_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" />
 
@@ -49,7 +49,7 @@
         android:layout_alignTop="@+id/character_icon_circle"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="value"
+        android:text="@string/matrix_item_value"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/white" />
 

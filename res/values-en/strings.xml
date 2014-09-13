@@ -14,6 +14,7 @@
     <string name="choice_prompt">Select a choice</string>
     <string name="ok">OK</string>
     <string name="empty"></string>
+    <string name="name">Name</string>
 
     <!-- activity_main -->
     <string name="start_game">Start Game</string>
@@ -82,6 +83,15 @@
 
     <!-- ItemLayout NewItem Matrix -->
     <string name="text_item_add">+</string>
+    <string name="item_text">Text</string>
+    <string name="modifikator">mod</string>
+    <string name="from_to">from - to</string>
+    <string name="matrix_item_title">Title</string>
+    <string name="matrix_item_value">Value</string>
+    <string name="item_range">Range</string>
+    
+    <!-- ItemLayout Character Icon -->
+    <string name="character_icon_textview">TextView</string>
 
     <!-- CreateNewTemplate -->
     <string name="text_create_template">Create Template</string>
@@ -202,10 +212,10 @@
     <string name="hint_1">Hint1&#8230;</string>
     <string name="hint_2">Hint2&#8230;</string>
     <string name="hint_3">Hint3&#8230;</string>
-    
+
     <!-- fragment_character_details -->
-   <string name="character_name">Character Name</string>
-   <string name="three">3</string>
+    <string name="character_name">Character Name</string>
+    <string name="three">3</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Edit Game</string>
@@ -266,6 +276,10 @@
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>
+    <string name="store_template_name">Template Name</string>
+    <string name="store_world_name">World Name</string>
+    <string name="store_template_image">Template Image</string>
+    <string name="store_added">Added:</string>
 
     <!-- ExpandableLIstArrayAdapter -->
     <string name="text_redirect_to_edit_character">Do you want to edit this character?</string>

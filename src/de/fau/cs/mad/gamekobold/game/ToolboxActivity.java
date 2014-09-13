@@ -1,15 +1,10 @@
 package de.fau.cs.mad.gamekobold.game;
 
-import de.fau.cs.mad.gamekobold.MainActivity;
-import de.fau.cs.mad.gamekobold.R;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 public class ToolboxActivity extends SingleFragmentActivity {
 

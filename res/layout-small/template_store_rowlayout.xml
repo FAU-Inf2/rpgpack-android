@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/templateStoreImg"
-        android:text="Template Name"
+        android:text="@string/template_name"
         android:textColor="@color/white"
         android:textSize="9sp" />
 
@@ -25,7 +25,7 @@
         android:layout_marginLeft="6dp"
    
         android:adjustViewBounds="true"
-        android:contentDescription="Template Image"
+        android:contentDescription="@string/store_template_name"
         android:gravity="center"
         android:maxWidth="25dip"
         android:padding="4dp"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tv_store_name"
         android:layout_below="@+id/tv_store_name"
-        android:text="Weltname"
+        android:text="@string/store_world_name"
         android:textColor="@color/white"
         android:textSize="8sp" />
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tv_store_worldname"
         android:layout_below="@+id/tv_store_worldname"
-        android:text="Added:"
+        android:text="@string/store_added"
         android:textColor="@color/white"
         android:textSize="8sp" />
 

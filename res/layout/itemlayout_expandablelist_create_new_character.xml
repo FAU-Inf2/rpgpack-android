@@ -40,7 +40,7 @@
         android:layout_below="@+id/character_icon_circle_border"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="name"
+        android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" />
 
