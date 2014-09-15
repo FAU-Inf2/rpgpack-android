@@ -233,11 +233,10 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 				topFragment.elementName = getResources().getString(
 						R.string.titel_character_generator_welcome);
 			}
-
 			topFragment.isATopFragment = true;
 			currentFragment = topFragment;
 			fragmentTransaction.add(R.id.frame_layout_container,
-					currentFragment);
+					currentFragment, "currentFragment");
 			fragmentTransaction.commit();
 			getFragmentManager().executePendingTransactions();
 		}

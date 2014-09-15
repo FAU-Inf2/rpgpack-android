@@ -28,6 +28,7 @@ import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
+import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
 
 public class CharacterPlayActivity extends SlideoutNavigationActivity implements OnItemSelectedListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -265,7 +266,16 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 
 			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
 
+//			transaction.commit();
+			topFragment = new WelcomePlayCharacterFragment();
+			topFragment.elementName = getResources().getString(
+					R.string.titel_play_character_welcome);
+			topFragment.isATopFragment = true;
+			currentFragment = topFragment;
+			transaction.replace(R.id.frame_layout_container,
+					currentFragment, "currentFragment");
 			transaction.commit();
+			getFragmentManager().executePendingTransactions();
 //			ContainerTable table = characterSheets[position].getRootTable();
 //			super.inflate(table);
 		}
