@@ -126,7 +126,10 @@ public class CreateNewGameFragment extends Fragment {
 			// worldName.setText(curGame.getTemplate().getWorldName());
 			gameDate.setText(curGame.getDate());
 
-			// addImageButton.setImageBitmap(curGame.getIconPath());
+			final Bitmap icon = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), getActivity());
+			if(icon != null) {
+				addImageButton.setImageBitmap(icon);
+			}
 
 			getActivity().setTitle(curGame.getGameName());
 
