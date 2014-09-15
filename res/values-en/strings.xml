@@ -23,6 +23,7 @@
     <string name="manage_charackter">Manage Charakters</string>
     <string name="settings">Settings</string>
     <string name="alljoyn">Alljoyn</string>
+    <string name="leave_toast">Press back again to leave.</string>
 
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>

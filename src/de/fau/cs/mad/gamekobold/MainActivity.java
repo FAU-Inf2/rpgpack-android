@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
+	@SuppressLint("ShowToast")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class MainActivity extends Activity {
 		MatrixTable.appContext = getApplicationContext();
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
-		//leaveToast = Toast.makeText(this, "Press back again to leave",Toast.LENGTH_SHORT);
+		leaveToast = Toast.makeText(this, getString(R.string.leave_toast),Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main4);
 	}
 

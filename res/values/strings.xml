@@ -23,7 +23,8 @@
     <string name="manage_charackter">Charakter verwalten</string>
     <string name="settings">Einstellungen</string>
     <string name="alljoyn">Alljoyn</string>
-
+    <string name="leave_toast">Druecke erneut Zurueck um die App zu verlassen.</string>
+    
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
 
