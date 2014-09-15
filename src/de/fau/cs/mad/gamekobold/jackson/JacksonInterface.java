@@ -7,20 +7,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.game.Game;
@@ -70,6 +68,7 @@ public abstract class JacksonInterface {
 	 * @throws JsonMappingException
 	 * @throws IOException
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public static void saveCharacterSheet(final CharacterSheet sheet, final File jsonFile) throws JsonGenerationException, JsonMappingException, IOException {
 		if(jsonFile == null || sheet == null) {
 			return;
@@ -92,12 +91,36 @@ public abstract class JacksonInterface {
 	/**
 	 * Returns the file pointing to the subDir in the apps directory. The apps directory
 	 * may be on the internal or external storage. If an external storage is mounted it
-	 * will be prefered. Also creates the subDir if it does not exist.
+	 * will be preferred. Also creates the subDir if it does not exist.
 	 * @param subDir The sub directory to get.
 	 * @param context
 	 * @return The file pointing to the subDir in the apps directory.
 	 */
 	private static File getRootDirectoryFor(final String subDir, final Context context) {
+		// file for app root directory
+		File appRootDir = getAppRootDirectory(context);
+		// nullpointer check
+		if(appRootDir == null) {
+			return null;
+		}
+		// File for the requested sub directory
+		final File ret = new File(appRootDir, subDir);
+		// check if sub dir exists
+		if(!ret.exists()) {
+			// if not make it
+			ret.mkdir();
+		}
+		return ret;
+	}
+
+	/**
+	 * Returns the root directory for the app. The apps directory
+	 * may be on the internal or external storage. If an external storage is mounted it
+	 * will be preferred. Also creates the directory if it does not exist.
+	 * @param context
+	 * @return The root directory for this app.
+	 */
+	public static File getAppRootDirectory(final Context context) {
 		if(context == null) {
 			return null;
 		}
@@ -123,14 +146,7 @@ public abstract class JacksonInterface {
 			// if not make it
 			appRootDir.mkdir();
 		}
-		// File for the requested sub directory
-		final File ret = new File(appRootDir, subDir);
-		// check if sub dir exists
-		if(!ret.exists()) {
-			// if not make it
-			ret.mkdir();
-		}
-		return ret;
+		return appRootDir;
 	}
 
 	/**

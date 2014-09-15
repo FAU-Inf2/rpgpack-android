@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,20 +21,34 @@ public class FileBrowser extends DialogFragment {
 	 *
 	 */
 	private class DirectoryFilterClass implements FileFilter {
+		private final String appRootDirectoryAbsPath;
+		public DirectoryFilterClass() {
+			final File rootDir =  JacksonInterface.getAppRootDirectory(getActivity());
+			if(rootDir != null) {
+				appRootDirectoryAbsPath = rootDir.getAbsolutePath();	
+			}
+			else {
+				appRootDirectoryAbsPath = "";
+			}
+		}
+		
 		@Override
 		public boolean accept(File arg0) {
+			if(appRootDirectoryAbsPath.equals(arg0.getAbsolutePath())) {
+				return false;
+			}
 			return arg0.isDirectory();
 		}		
 	};
 	/**
 	 *
 	 */
-	private class FileFilterClass implements FileFilter {
-		@Override
-		public boolean accept(File pathname) {
-			return pathname.isFile();
-		}
-	};
+//	private class FileFilterClass implements FileFilter {
+//		@Override
+//		public boolean accept(File pathname) {
+//			return pathname.isFile();
+//		}
+//	};
 	//
 	//
 	//
