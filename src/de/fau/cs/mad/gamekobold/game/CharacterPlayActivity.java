@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -24,9 +27,11 @@ import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
+import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
 
-public class CharacterPlayActivity extends SlideoutNavigationActivity {
+public class CharacterPlayActivity extends SlideoutNavigationActivity implements OnItemSelectedListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
+	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
 	private CharacterSheet[] characterSheets;
 
 	@Override
@@ -55,7 +60,15 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 			}
 		}
 		if (characterSheets != null) {
-			ContainerTable table = characterSheets[0].getRootTable();
+			ContainerTable table = null;
+			final int charNumberToInflate = intent
+					.getIntExtra(INFLATE_CHARACTER_NUMBER, -1);
+			if(charNumberToInflate != -1){
+				table = characterSheets[charNumberToInflate].getRootTable();
+			}
+			else{
+				table = characterSheets[0].getRootTable();
+			}
 			//TODO create new Table type - Favorite! and add it for inflation!
 			
 			super.inflate(table);
@@ -219,5 +232,48 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 				filePaths);
 		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
+	}
+
+	static int selectedBefore = 0;
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		//inflate new fragments here
+		if(position != selectedBefore){
+			selectedBefore = position;
+			FragmentTransaction transaction = getFragmentManager()
+					.beginTransaction();
+//			transaction.remove(rootFragment);
+
+			String charName = characterSheets[position].getName();
+			Log.d("CharacterPlayActivity", "inflating new rootFragment of char: " + charName
+					+ "; position: " + position);
+			rootFragment = new FolderFragment();
+			rootFragment.isATopFragment = true;
+			rootFragment.editable = false;
+			//following is needed!
+			super.inflate(characterSheets[position].getRootTable());
+//			((FolderFragment) rootFragment).setJacksonTable(characterSheets[position].getRootTable());
+//			super.inflate(characterSheets[position].getRootTable());
+
+//			transaction.add(R.id.navigation_drawer, rootFragment,
+//					"rootFragment");
+			Log.d("CharacterPlayActivity", "replacing rootFragment;" +
+					"new one has " + rootFragment.getElementCount());
+			Log.d("CharacterPlayActivity", "new root is editable " + rootFragment.editable);
+
+			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
+
+			transaction.commit();
+//			ContainerTable table = characterSheets[position].getRootTable();
+//			super.inflate(table);
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

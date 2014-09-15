@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.MeasureSpec;
@@ -40,35 +41,37 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) 
     {   // Ordinary view in Spinner, we use android.R.layout.simple_spinner_item
-        Log.d("CharacterSelectAdapter", "OOOOOOOOOO");
-        Log.d("CharacterSelectAdapter", "getView111");
+        Log.d("CharacterSelectAdapter", "getView");
 
 		final Bitmap icon = ThumbnailLoader.loadThumbnail(sheets[position].getIconPath(),
 				SlideoutNavigationActivity.getAc());
+		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View wholeView = li.inflate(R.layout.character_spinner_row, parent, false);
+		ImageView theImage = (ImageView) wholeView.findViewById(R.id.spinnerImage);
 		ImageView characterImage = new ImageView(SlideoutNavigationActivity.getAc());
-        Log.d("CharacterSelectAdapter", "AAAAAAAA");
 
 //		LayoutParams params = (LayoutParams) characterImage.getLayoutParams();
 //		params.width = 20;
 //		// existing height is ok as is, no need to edit it
 //		characterImage.setLayoutParams(params);
 		characterImage.setAdjustViewBounds(true);
-		characterImage.setScaleType(ScaleType.FIT_XY);
-        Log.d("CharacterSelectAdapter", "BBBBBBBBBB");
+//		characterImage.setScaleType(ScaleType.FIT_XY);
         Drawable drawable = null;
 		if(icon != null){
 //			characterImage = scaleImage(icon);
 			drawable = new BitmapDrawable(context.getResources(), icon);
 //			characterImage.setImageBitmap(icon);
 			characterImage.setImageDrawable(drawable);
+			theImage.setImageDrawable(drawable);
 		}
 		else{
 			String uri = "@drawable/character_icon";
 			int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
 			drawable = context.getResources().getDrawable(imageResource);
-			characterImage.setImageDrawable(drawable);
+//			characterImage.setImageDrawable(drawable);
+			characterImage.setImageResource(imageResource);
+			theImage.setImageResource(imageResource);
 		}
-        Log.d("CharacterSelectAdapter", "CCCCCCCCCCC");
 
 //		LinearLayout.LayoutParams vp = 
 //		        new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -85,11 +88,11 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 //		characterImage.setLayoutParams(vp);
 
         
-        BitmapDrawable bd=(BitmapDrawable) drawable;
-        int height=bd.getBitmap().getHeight();
-        int width=bd.getBitmap().getWidth();
-        Log.d("CharacterSelectAdapter", "MEASURED dimens: width==" + width + "; height==" + height);
-        characterImage.setMaxWidth(width);
+//        BitmapDrawable bd=(BitmapDrawable) drawable;
+//        int height=bd.getBitmap().getHeight();
+//        int width=bd.getBitmap().getWidth();
+//        Log.d("CharacterSelectAdapter", "MEASURED dimens: width==" + width + "; height==" + height);
+//        characterImage.setMaxWidth(width);
         
         int actionBarHeight = -1;
         TypedValue tv = new TypedValue();
@@ -100,11 +103,13 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
         }
         Log.d("CharacterSelectAdapter", "actionBarHeight == " + actionBarHeight);
         
-        LinearLayout ll = new LinearLayout(context);
-        ll.setLayoutParams(new LinearLayout.LayoutParams(actionBarHeight, actionBarHeight));
-        ll.addView(characterImage);
-        
-		return ll;
+//        LinearLayout ll = new LinearLayout(context);
+//        ll.setLayoutParams(new LinearLayout.LayoutParams(actionBarHeight, actionBarHeight));
+//        ll.addView(characterImage);
+//        
+//		return ll;
+//        return characterImage;
+        return wholeView;
 //        return super.getView(position, convertView, parent);   
 		
 		//test
