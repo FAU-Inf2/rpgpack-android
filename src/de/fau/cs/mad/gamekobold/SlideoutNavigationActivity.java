@@ -5,6 +5,8 @@ import java.util.concurrent.CountDownLatch;
 
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.character.FavoriteItemsCharacterFragment;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterSelectAdapter;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -16,25 +18,35 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 import de.fau.cs.mad.gamekobold.template_generator.WelcomeFragment;
 import de.fau.cs.mad.gamekobold.template_generator.WelcomeNewCharacterFragment;
 import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +82,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 	public static SlideoutNavigationActivity theActiveActivity;
 	protected DrawerLayout mDrawerLayout;
 	protected ActionBarDrawerToggle mDrawerToggle;
+	protected CharacterSheet[] characterSheets;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -245,6 +258,30 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		
+		if(getAc() instanceof CharacterPlayActivity){
+			final Intent intent = getIntent();
+			final String[] characterAbsPaths = intent
+					.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
+			characterSheets = new CharacterSheet[characterAbsPaths.length];
+			if (characterAbsPaths != null) {
+				Log.d("CharacterPlayActivity", "characterAbsPath != null");
+				try {
+					int index=0;
+					for(String onePath: characterAbsPaths){
+						characterSheets[index++] = JacksonInterface.loadCharacterSheet(new File(
+								onePath), false);
+					}
+						
+						
+//					characterSheet = JacksonInterface.loadCharacterSheet(new File(
+//							characterAbsPath), false);
+					Log.d("CharacterPlayActivity", "loaded sheets");
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -264,6 +301,7 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 		super.onStart();
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		ActionBar actionBar = getActionBar();
@@ -297,6 +335,96 @@ public class SlideoutNavigationActivity extends FragmentActivity {
 					currentFragment.showDialog();
 				}
 			});
+		}
+		if(getAc() instanceof CharacterPlayActivity){
+			//TODO julian
+			ArrayAdapter<CharacterSheet> characterAdapter =
+					new CharacterSelectAdapter(getAc(), android.R.layout.simple_spinner_item, characterSheets); //selected item will look like a spinner set from XML
+			Spinner spinner = new Spinner(this);
+
+			characterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(characterAdapter);
+
+			
+			//add dropdown menu to select characters
+//			Spinner spinner = new Spinner(this);
+//			final ArrayList<String> spinnerArray = new ArrayList<String>();
+//			final String[] characterNames = new String[characterSheets.length];
+//			int index=0;
+//			for(CharacterSheet oneCharSheet: characterSheets){
+//				characterNames[index] = oneCharSheet.getName();
+//				spinnerArray.add(characterNames[index]);
+//				index++;
+//			}
+//			ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray); //selected item will look like a spinner set from XML
+//			spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//			spinner.setAdapter(spinnerArrayAdapter);
+//			//
+//			// Adapter
+////			SpinnerAdapter adapter =
+////			        ArrayAdapter.createFromResource(this, R.array.actions,
+////			        android.R.layout.simple_spinner_dropdown_item);
+	//
+			// Callback
+			OnNavigationListener callback = new OnNavigationListener() {
+
+				
+//			    String[] items = (String[]) spinnerArray.toArray(); // List items from res
+
+			    @Override
+			    public boolean onNavigationItemSelected(int position, long id) {
+
+			        // Do stuff when navigation item is selected
+
+			        Log.d("CharacterPlayActivity", "selected char: "); // Debug
+
+			        return true;
+
+			    }
+
+			};
+
+//			IcsLinearLayout listNavLayout = (IcsLinearLayout) getLayoutInflater()
+//		            .inflate(R.layout.abs__action_bar_tab_bar_view, null);
+//		    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//		            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+//		    params.gravity = Gravity.CENTER;
+//		    listNavLayout.addView(spinner, params);
+//		    listNavLayout.setGravity(Gravity.RIGHT);		
+			
+			
+			// Action Bar
+			ActionBar actions = getActionBar();
+//			actions.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			actions.setDisplayShowTitleEnabled(false);
+//			actions.setListNavigationCallbacks(characterAdapter, callback);
+//			actions.setCustomView(spinner);
+			RelativeLayout myView = (RelativeLayout) actions.getCustomView();
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+			params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+//			params.addRule(RelativeLayout.RIGHT_OF, titleTxtView.getId());
+			spinner.setLayoutParams(params);
+			//XXX: min API for this call is 17, atm we are developing for 14!!!
+			spinner.setId(View.generateViewId());
+//			spinner.setGravity(Gravity.RIGHT);
+			myView.addView(spinner);
+			
+			//modify action_bar_title params so that its left of spinner
+			RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
+			        RelativeLayout.LayoutParams.WRAP_CONTENT,
+			        RelativeLayout.LayoutParams.WRAP_CONTENT);
+			Log.d("SlideoutNavigationActivity", "Layout set! id spinner: " + spinner.getId());
+			relativeLayoutParams.addRule(RelativeLayout.LEFT_OF,
+			        spinner.getId());
+//			relativeLayoutParams.addRule(RelativeLayout.RIGHT_OF,
+//			        textView[0].getId());
+			titleTxtView.setLayoutParams(relativeLayoutParams);
+//			TableLayout.LayoutParams titleParams = (TableLayout.LayoutParams) titleTxtView.getLayoutParams();
+//			titleParams.addRule(RelativeLayout.RIGHT_OF, titleTxtView.getId());
+			spinner.setLayoutParams(params);
+
+			//TODO julian
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}

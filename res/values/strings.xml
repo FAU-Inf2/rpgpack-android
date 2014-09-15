@@ -6,6 +6,7 @@
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_tools">Werkzeuge</string>
+	<string name="action_character">Charakter wählen</string>
     <string name="action_edit">Editieren</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>

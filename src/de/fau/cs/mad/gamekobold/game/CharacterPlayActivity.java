@@ -1,14 +1,23 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -52,6 +61,71 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 			super.inflate(table);
 		}
 
+//		//use custom adapter
+////        Log.d("CharacterPlayActivity", "constructor of CharacterSelectAdapter will be called");
+//		ArrayAdapter<CharacterSheet> characterAdapter =
+//				new CharacterSelectAdapter(getAc(), android.R.layout.simple_spinner_item, characterSheets); //selected item will look like a spinner set from XML
+//		Spinner spinner = new Spinner(this);
+//
+//		characterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spinner.setAdapter(characterAdapter);
+//
+//		
+//		//add dropdown menu to select characters
+////		Spinner spinner = new Spinner(this);
+////		final ArrayList<String> spinnerArray = new ArrayList<String>();
+////		final String[] characterNames = new String[characterSheets.length];
+////		int index=0;
+////		for(CharacterSheet oneCharSheet: characterSheets){
+////			characterNames[index] = oneCharSheet.getName();
+////			spinnerArray.add(characterNames[index]);
+////			index++;
+////		}
+////		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray); //selected item will look like a spinner set from XML
+////		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+////		spinner.setAdapter(spinnerArrayAdapter);
+////		//
+////		// Adapter
+//////		SpinnerAdapter adapter =
+//////		        ArrayAdapter.createFromResource(this, R.array.actions,
+//////		        android.R.layout.simple_spinner_dropdown_item);
+////
+//		// Callback
+//		OnNavigationListener callback = new OnNavigationListener() {
+//
+//			
+////		    String[] items = (String[]) spinnerArray.toArray(); // List items from res
+//
+//		    @Override
+//		    public boolean onNavigationItemSelected(int position, long id) {
+//
+//		        // Do stuff when navigation item is selected
+//
+//		        Log.d("CharacterPlayActivity", "selected char: "); // Debug
+//
+//		        return true;
+//
+//		    }
+//
+//		};
+//
+////		IcsLinearLayout listNavLayout = (IcsLinearLayout) getLayoutInflater()
+////	            .inflate(R.layout.abs__action_bar_tab_bar_view, null);
+////	    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+////	            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+////	    params.gravity = Gravity.CENTER;
+////	    listNavLayout.addView(spinner, params);
+////	    listNavLayout.setGravity(Gravity.RIGHT);		
+//		
+//		
+//		// Action Bar
+//		ActionBar actions = getActionBar();
+//		actions.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//		actions.setDisplayShowTitleEnabled(false);
+////		actions.setListNavigationCallbacks(characterAdapter, callback);
+////		actions.setCustomView(spinner);
+//		RelativeLayout myView = (RelativeLayout) actions.getCustomView();
+//		myView.addView(spinner, Gravity.RIGHT);
 	}
 
 	@Override
