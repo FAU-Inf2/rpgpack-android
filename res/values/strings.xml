@@ -318,6 +318,7 @@
     <string name="tag_best_rated">Bestbewertet</string>
     <string name="tag_newest">Neu</string>
     <string name="tag_recommended">Empfohlen</string>
+     <string name="buttonStore">Speichern</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>

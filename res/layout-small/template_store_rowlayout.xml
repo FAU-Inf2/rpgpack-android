@@ -14,7 +14,7 @@
         android:layout_toRightOf="@+id/templateStoreImg"
         android:text="Template Name"
         android:textColor="@color/white"
-        android:textSize="9sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/templateStoreImg"
@@ -27,7 +27,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/store_template_name"
         android:gravity="center"
-        android:maxWidth="25dip"
+        android:maxWidth="50dip"
         android:padding="4dp"
         android:scaleType="fitXY"
         android:src="@drawable/game_default_white" />
@@ -40,7 +40,7 @@
         android:layout_below="@+id/tv_store_name"
         android:text="@string/store_world_name"
         android:textColor="@color/white"
-        android:textSize="8sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tv_store_date_author"
@@ -50,6 +50,6 @@
         android:layout_below="@+id/tv_store_worldname"
         android:text="@string/store_added"
         android:textColor="@color/white"
-        android:textSize="8sp" />
+        android:textSize="12sp" />
 
 </RelativeLayout>

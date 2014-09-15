@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -501,7 +502,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		  
 		  searchView.clearFocus();
 		  
-		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
+		  final StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
 	
 		    LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    
@@ -535,7 +536,19 @@ public class TemplateStoreMainActivity extends ListActivity {
 		    TextView description = (TextView) popupView.findViewById(R.id.txt_popup_description);
 		    ImageView image = (ImageView) popupView.findViewById(R.id.img_popup);
 		    RatingBar bar = (RatingBar) popupView.findViewById(R.id.ratingbar_popup);
+		    Button storeButton = (Button) popupView.findViewById(R.id.buttonStore);
 		    
+		    storeButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SaveTemplateTask sTask = new SaveTemplateTask(TemplateStoreMainActivity.this, tmpl);
+					// load charsheet and save template to device
+					sTask.execute();
+				}
+		    	
+		    });
 		    worldname.setText(tmpl.getWorldname());
 		    templatename.setText(tmpl.getName());;
 		    description.setText(tmpl.getDescription());
