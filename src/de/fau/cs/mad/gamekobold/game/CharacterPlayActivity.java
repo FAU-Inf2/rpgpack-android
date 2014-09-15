@@ -18,27 +18,35 @@ import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 
 public class CharacterPlayActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
-	private CharacterSheet characterSheet;
+	private CharacterSheet[] characterSheets;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_template_generator_welcome2);
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		characterSheet = null;
-		final String characterAbsPath = intent
-				.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
-		if (characterAbsPath != null) {
+		final String[] characterAbsPaths = intent
+				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
+		characterSheets = new CharacterSheet[characterAbsPaths.length];
+		if (characterAbsPaths != null) {
+			Log.d("CharacterPlayActivity", "characterAbsPath != null");
 			try {
-				characterSheet = JacksonInterface.loadCharacterSheet(new File(
-						characterAbsPath), false);
-				Log.d("CharacterPlayActivity", "loaded sheet");
+				int index=0;
+				for(String onePath: characterAbsPaths){
+					characterSheets[index++] = JacksonInterface.loadCharacterSheet(new File(
+							onePath), false);
+				}
+					
+					
+//				characterSheet = JacksonInterface.loadCharacterSheet(new File(
+//						characterAbsPath), false);
+				Log.d("CharacterPlayActivity", "loaded sheets");
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
-		if (characterSheet != null) {
-			ContainerTable table = characterSheet.getRootTable();
+		if (characterSheets != null) {
+			ContainerTable table = characterSheets[0].getRootTable();
 			//TODO create new Table type - Favorite! and add it for inflation!
 			
 			super.inflate(table);
@@ -48,19 +56,27 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 
 	@Override
 	public void onPause() {
-		Log.d("CharacterPlayActivity", "onPause, sheet:" + characterSheet);
-		if (characterSheet != null) {
+		Log.d("CharacterPlayActivity", "onPause, sheets:" + characterSheets);
+		if (characterSheets != null) {
 
 			try {
 				// TODO add simple characterAltered Flag to prevent some
 				// unneeded saving
-				Log.d("Trying to save sheet",
-						"path:" + characterSheet.getFileAbsolutePath());
-				// open file
-				final File jsonFile = new File(
-						characterSheet.getFileAbsolutePath());
-				// save
-				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
+//				Log.d("Trying to save sheets",
+//						"path:" + characterSheet.getFileAbsolutePath());
+				Log.d("Trying to save sheets", "");
+
+				// open files
+				for(CharacterSheet charSheet: characterSheets){
+					final File jsonFile = new File(
+							charSheet.getFileAbsolutePath());
+					// save
+					JacksonInterface.saveCharacterSheet(charSheet, jsonFile);
+				}
+//				final File jsonFile = new File(
+//						characterSheet.getFileAbsolutePath());
+//				// save
+//				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -112,16 +128,21 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 	 * @return The created ready to use intent.
 	 */
 	public static Intent createIntentForStarting(Context packageContext,
-			CharacterSheet sheet) {
+			CharacterSheet[] sheets) {
 		Intent intent = new Intent(packageContext, CharacterPlayActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_PLAY_CHARACTER);
 
+		String[] filePaths = new String[sheets.length];
+		int index= 0;
+		for(CharacterSheet oneSheet: sheets){
+			filePaths[index++] = oneSheet.getFileAbsolutePath();
+		}
 		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.getFileAbsolutePath());
+				filePaths);
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.getFileAbsolutePath());
+				filePaths);
 		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
 	}

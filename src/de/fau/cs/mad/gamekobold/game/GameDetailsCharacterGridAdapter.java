@@ -100,5 +100,9 @@ public class GameDetailsCharacterGridAdapter extends
 	public int getCount() {
 		return characters.size();
 	}
+	
+	public List<GameCharacter> getItems(){
+		return characters;
+	}
 
 }
