@@ -50,7 +50,7 @@ public class FolderFragment extends GeneralFragment {
 	public FolderElementAdapter dataAdapter;
 	AlertDialog dialogCreateElement;
 	View dialogViewCreateElement;
-    boolean editable = true;
+    public boolean editable = true;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -179,6 +179,10 @@ public class FolderFragment extends GeneralFragment {
         }
         return results;
     }
+	
+	public int getElementCount(){
+		return allData.size();
+	}
 	
 	/**
 	 * sets the visibilty of checkboxes for this

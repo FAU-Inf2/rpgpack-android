@@ -12,5 +12,15 @@
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="ifRoom"
         android:title="@string/action_tools"/>
+    
+    
+    <!--
+    <item
+        android:id="@+id/action_character"
+        android:icon="@drawable/character_icon"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_character"/>
+
+    -->
 
 </menu>

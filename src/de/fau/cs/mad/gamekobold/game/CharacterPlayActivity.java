@@ -1,66 +1,170 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
+import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
+import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
 
-public class CharacterPlayActivity extends SlideoutNavigationActivity {
+public class CharacterPlayActivity extends SlideoutNavigationActivity implements OnItemSelectedListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
-	private CharacterSheet characterSheet;
+	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
+	private CharacterSheet[] characterSheets;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_template_generator_welcome2);
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		characterSheet = null;
-		final String characterAbsPath = intent
-				.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
-		if (characterAbsPath != null) {
+		final String[] characterAbsPaths = intent
+				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
+		characterSheets = new CharacterSheet[characterAbsPaths.length];
+		if (characterAbsPaths != null) {
+			Log.d("CharacterPlayActivity", "characterAbsPath != null");
 			try {
-				characterSheet = JacksonInterface.loadCharacterSheet(new File(
-						characterAbsPath), false);
-				Log.d("CharacterPlayActivity", "loaded sheet");
+				int index=0;
+				for(String onePath: characterAbsPaths){
+					characterSheets[index++] = JacksonInterface.loadCharacterSheet(new File(
+							onePath), false);
+				}
+					
+					
+//				characterSheet = JacksonInterface.loadCharacterSheet(new File(
+//						characterAbsPath), false);
+				Log.d("CharacterPlayActivity", "loaded sheets");
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
-		if (characterSheet != null) {
-			ContainerTable table = characterSheet.getRootTable();
+		if (characterSheets != null) {
+			ContainerTable table = null;
+			final int charNumberToInflate = intent
+					.getIntExtra(INFLATE_CHARACTER_NUMBER, -1);
+			if(charNumberToInflate != -1){
+				table = characterSheets[charNumberToInflate].getRootTable();
+			}
+			else{
+				table = characterSheets[0].getRootTable();
+			}
 			//TODO create new Table type - Favorite! and add it for inflation!
 			
 			super.inflate(table);
 		}
 
+//		//use custom adapter
+////        Log.d("CharacterPlayActivity", "constructor of CharacterSelectAdapter will be called");
+//		ArrayAdapter<CharacterSheet> characterAdapter =
+//				new CharacterSelectAdapter(getAc(), android.R.layout.simple_spinner_item, characterSheets); //selected item will look like a spinner set from XML
+//		Spinner spinner = new Spinner(this);
+//
+//		characterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		spinner.setAdapter(characterAdapter);
+//
+//		
+//		//add dropdown menu to select characters
+////		Spinner spinner = new Spinner(this);
+////		final ArrayList<String> spinnerArray = new ArrayList<String>();
+////		final String[] characterNames = new String[characterSheets.length];
+////		int index=0;
+////		for(CharacterSheet oneCharSheet: characterSheets){
+////			characterNames[index] = oneCharSheet.getName();
+////			spinnerArray.add(characterNames[index]);
+////			index++;
+////		}
+////		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray); //selected item will look like a spinner set from XML
+////		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+////		spinner.setAdapter(spinnerArrayAdapter);
+////		//
+////		// Adapter
+//////		SpinnerAdapter adapter =
+//////		        ArrayAdapter.createFromResource(this, R.array.actions,
+//////		        android.R.layout.simple_spinner_dropdown_item);
+////
+//		// Callback
+//		OnNavigationListener callback = new OnNavigationListener() {
+//
+//			
+////		    String[] items = (String[]) spinnerArray.toArray(); // List items from res
+//
+//		    @Override
+//		    public boolean onNavigationItemSelected(int position, long id) {
+//
+//		        // Do stuff when navigation item is selected
+//
+//		        Log.d("CharacterPlayActivity", "selected char: "); // Debug
+//
+//		        return true;
+//
+//		    }
+//
+//		};
+//
+////		IcsLinearLayout listNavLayout = (IcsLinearLayout) getLayoutInflater()
+////	            .inflate(R.layout.abs__action_bar_tab_bar_view, null);
+////	    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+////	            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+////	    params.gravity = Gravity.CENTER;
+////	    listNavLayout.addView(spinner, params);
+////	    listNavLayout.setGravity(Gravity.RIGHT);		
+//		
+//		
+//		// Action Bar
+//		ActionBar actions = getActionBar();
+//		actions.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//		actions.setDisplayShowTitleEnabled(false);
+////		actions.setListNavigationCallbacks(characterAdapter, callback);
+////		actions.setCustomView(spinner);
+//		RelativeLayout myView = (RelativeLayout) actions.getCustomView();
+//		myView.addView(spinner, Gravity.RIGHT);
 	}
 
 	@Override
 	public void onPause() {
-		Log.d("CharacterPlayActivity", "onPause, sheet:" + characterSheet);
-		if (characterSheet != null) {
+		Log.d("CharacterPlayActivity", "onPause, sheets:" + characterSheets);
+		if (characterSheets != null) {
 
 			try {
 				// TODO add simple characterAltered Flag to prevent some
 				// unneeded saving
-				Log.d("Trying to save sheet",
-						"path:" + characterSheet.getFileAbsolutePath());
-				// open file
-				final File jsonFile = new File(
-						characterSheet.getFileAbsolutePath());
-				// save
-				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
+//				Log.d("Trying to save sheets",
+//						"path:" + characterSheet.getFileAbsolutePath());
+				Log.d("Trying to save sheets", "");
+
+				// open files
+				for(CharacterSheet charSheet: characterSheets){
+					final File jsonFile = new File(
+							charSheet.getFileAbsolutePath());
+					// save
+					JacksonInterface.saveCharacterSheet(charSheet, jsonFile);
+				}
+//				final File jsonFile = new File(
+//						characterSheet.getFileAbsolutePath());
+//				// save
+//				JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -112,17 +216,74 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity {
 	 * @return The created ready to use intent.
 	 */
 	public static Intent createIntentForStarting(Context packageContext,
-			CharacterSheet sheet) {
+			CharacterSheet[] sheets) {
 		Intent intent = new Intent(packageContext, CharacterPlayActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_PLAY_CHARACTER);
 
+		String[] filePaths = new String[sheets.length];
+		int index= 0;
+		for(CharacterSheet oneSheet: sheets){
+			filePaths[index++] = oneSheet.getFileAbsolutePath();
+		}
 		intent.putExtra(CharacterPlayActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.getFileAbsolutePath());
+				filePaths);
 		intent.putExtra(SlideoutNavigationActivity.EXTRA_CHARACTER_ABS_PATH,
-				sheet.getFileAbsolutePath());
+				filePaths);
 		Log.d("Intent is created!!!!!!", "CREATED!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return intent;
+	}
+
+	static int selectedBefore = 0;
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		//inflate new fragments here
+		if(position != selectedBefore){
+			selectedBefore = position;
+			FragmentTransaction transaction = getFragmentManager()
+					.beginTransaction();
+//			transaction.remove(rootFragment);
+
+			String charName = characterSheets[position].getName();
+			Log.d("CharacterPlayActivity", "inflating new rootFragment of char: " + charName
+					+ "; position: " + position);
+			rootFragment = new FolderFragment();
+			rootFragment.isATopFragment = true;
+			rootFragment.editable = false;
+			//following is needed!
+			super.inflate(characterSheets[position].getRootTable());
+//			((FolderFragment) rootFragment).setJacksonTable(characterSheets[position].getRootTable());
+//			super.inflate(characterSheets[position].getRootTable());
+
+//			transaction.add(R.id.navigation_drawer, rootFragment,
+//					"rootFragment");
+			Log.d("CharacterPlayActivity", "replacing rootFragment;" +
+					"new one has " + rootFragment.getElementCount());
+			Log.d("CharacterPlayActivity", "new root is editable " + rootFragment.editable);
+
+			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
+
+//			transaction.commit();
+			topFragment = new WelcomePlayCharacterFragment();
+			topFragment.elementName = getResources().getString(
+					R.string.titel_play_character_welcome);
+			topFragment.isATopFragment = true;
+			currentFragment = topFragment;
+			transaction.replace(R.id.frame_layout_container,
+					currentFragment, "currentFragment");
+			transaction.commit();
+			getFragmentManager().executePendingTransactions();
+//			ContainerTable table = characterSheets[position].getRootTable();
+//			super.inflate(table);
+		}
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
