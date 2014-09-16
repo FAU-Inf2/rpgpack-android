@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.templatestore;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Environment;
 
 public class Helper {
 	
@@ -22,4 +23,13 @@ public class Helper {
 	        return "undefined";
 	    }
 	}
+	
+	static boolean isExternalStorageWritable() {
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state)) {
+	        return true;
+	    }
+	    return false;
+	}
+
 }

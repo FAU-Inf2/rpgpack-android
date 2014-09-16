@@ -120,8 +120,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 			  super.onPreExecute();
 			  if(initialLoad) {
 			  	 progress = new ProgressDialog(TemplateStoreMainActivity.this);
-		         progress.setTitle("Loading");
-		         progress.setMessage("Wait while loading...");
+		         progress.setTitle(getResources().getString(R.string.loading));
+		         progress.setMessage(getResources().getString(R.string.loading_wait));
 		         progress.setCanceledOnTouchOutside(false);
 		         progress.show();
 		         initialLoad = false;
@@ -197,7 +197,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 					templates = mapper.readValue(response.responseBody, StoreTemplate[].class);
 				} catch(Exception e){
 					Log.e("store", e.getMessage());
-					alertMessage("There was an error processing the result - See log for details");
+					alertMessage(getResources().getString(R.string.error_occured));
 					return;					
 				}
 
@@ -206,7 +206,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    		 
 	    		 if(templates.length == 0) {
 	    			 if(method != "loadMore") {
-	    				 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    				 alertMessage(getResources().getString(R.string.no_templates_found));
 	    			 } else {
 	    				 moreDataAvailable = false;
 	    			 }

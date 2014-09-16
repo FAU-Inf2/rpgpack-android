@@ -321,7 +321,11 @@
     <string name="tag_best_rated">Bestbewertet</string>
     <string name="tag_newest">Neu</string>
     <string name="tag_recommended">Empfohlen</string>
-     <string name="buttonStore">Speichern</string>
+    <string name="buttonStore">Speichern</string>
+    <string name="loading">Laden</string>
+    <string name="loading_wait">Templates werden geladen</string>
+    <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
+    <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
