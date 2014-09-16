@@ -10,6 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -33,7 +37,14 @@ import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
 public class CharacterPlayActivity extends SlideoutNavigationActivity implements OnItemSelectedListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
+	public static String MODE = "MODE";
 	private CharacterSheet[] characterSheets;
+	static int lastCharSelected = 0;
+//	modes mode;
+//	
+//	enum modes{
+//		selection, edit
+//	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +85,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 			
 			super.inflate(table);
 		}
-
+		
 //		//use custom adapter
 ////        Log.d("CharacterPlayActivity", "constructor of CharacterSelectAdapter will be called");
 //		ArrayAdapter<CharacterSheet> characterAdapter =
@@ -141,7 +152,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 //		RelativeLayout myView = (RelativeLayout) actions.getCustomView();
 //		myView.addView(spinner, Gravity.RIGHT);
 	}
-
+	
 	@Override
 	public void onPause() {
 		Log.d("CharacterPlayActivity", "onPause, sheets:" + characterSheets);
@@ -183,6 +194,32 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		else{
 			getMenuInflater().inflate(R.menu.play_actions, menu);
 		}
+		if(inEditMode()){
+			Log.d("CharacterPlayActivity", "adapt menu for edit mode");
+			MenuItem menuItem = menu.findItem(R.id.action_edit_mode);
+		    CharSequence menuTitle = menuItem.getTitle();
+		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
+		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
+		    menuItem.setTitle(styledMenuTitle);
+		    menuItem = menu.findItem(R.id.action_selection_mode);
+		    menuTitle = menuItem.getTitle();
+		    styledMenuTitle = new SpannableString(menuTitle);
+    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
+    		styledMenuTitle.removeSpan(spans);
+		}
+		else if(inSelectionMode()){
+			Log.d("CharacterPlayActivity", "adapt menu for selection mode");
+			MenuItem menuItem = menu.findItem(R.id.action_selection_mode);
+		    CharSequence menuTitle = menuItem.getTitle();
+		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
+		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
+		    menuItem.setTitle(styledMenuTitle);
+		    menuItem = menu.findItem(R.id.action_edit_mode);
+		    menuTitle = menuItem.getTitle();
+		    styledMenuTitle = new SpannableString(menuTitle);
+    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
+    		styledMenuTitle.removeSpan(spans);
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
@@ -199,10 +236,38 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		case R.id.action_tools:
 			openTools();
 			return true;
+		case R.id.action_selection_mode:
+//			Log.d("CharacterPlayActivity", "set selection mode");
+			if(mode==modes.selection){
+				return true;
+			}
+			else{
+				mode = modes.selection;
+				reinflate();
+				invalidateOptionsMenu();
+				return true;
+			}
+		case R.id.action_edit_mode:
+//			Log.d("CharacterPlayActivity", "set edit mode");
+			if(mode==modes.edit){
+				return true;
+			}
+			else{
+				mode = modes.edit;
+				reinflate();
+				invalidateOptionsMenu();
+				return true;
+			}
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putSerializable("MODE", mode);
+		super.onSaveInstanceState(outState);
+	};
 
 	/**
 	 * Creates and returns a new intent with which you can start the
@@ -235,14 +300,14 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		return intent;
 	}
 
-	static int selectedBefore = 0;
+	
 	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		//inflate new fragments here
-		if(position != selectedBefore){
-			selectedBefore = position;
+		if(position != lastCharSelected){
+			lastCharSelected = position;
 			FragmentTransaction transaction = getFragmentManager()
 					.beginTransaction();
 //			transaction.remove(rootFragment);
@@ -252,7 +317,6 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 					+ "; position: " + position);
 			rootFragment = new FolderFragment();
 			rootFragment.isATopFragment = true;
-			rootFragment.editable = false;
 			//following is needed!
 			super.inflate(characterSheets[position].getRootTable());
 //			((FolderFragment) rootFragment).setJacksonTable(characterSheets[position].getRootTable());
@@ -262,7 +326,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 //					"rootFragment");
 			Log.d("CharacterPlayActivity", "replacing rootFragment;" +
 					"new one has " + rootFragment.getElementCount());
-			Log.d("CharacterPlayActivity", "new root is editable " + rootFragment.editable);
+			Log.d("CharacterPlayActivity", "new root is editable " + SlideoutNavigationActivity.theActiveActivity.inEditMode());
 
 			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
 
@@ -280,10 +344,46 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 //			super.inflate(table);
 		}
 	}
-
+	
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void reinflate(){
+		FragmentTransaction transaction = getFragmentManager()
+				.beginTransaction();
+		Log.d("CharacterPlayActivity", "reinflate; editmode == " + getAc().inEditMode()+
+				"; selectionMode == " + getAc().inSelectionMode());
+//		super.inflate(characterSheets[lastCharSelected].getRootTable());
+//		transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
+//		super.inflate(characterSheets[lastCharSelected].getRootTable());
+//		rootFragment = new FolderFragment();
+//		rootFragment.isATopFragment = true;
+//		//following is needed!
+//		rootFragment = new FolderFragment();
+//		rootFragment.isATopFragment = true;
+		//following is needed!
+//		super.inflate(characterSheets[lastCharSelected].getRootTable());
+//		mDrawerLayout.closeDrawers();
+		//TODO: find out why replacing the fragment in the drawer doesnt work as expected
+		//(works for character switching; see onItemSelected above)
+		transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
+//		mDrawerLayout.invalidate();
+
+//		topFragment = new WelcomePlayCharacterFragment();
+//		topFragment.elementName = getResources().getString(
+//				R.string.titel_play_character_welcome);
+//		topFragment.isATopFragment = true;
+//		currentFragment = topFragment;
+//		transaction.replace(R.id.frame_layout_container,
+//				currentFragment, "currentFragment");
+//		transaction.replace(R.id.frame_layout_container, currentFragment, "currentFragment");
+		transaction.replace(R.id.frame_layout_container, currentFragment);
+		transaction.commit();
+		getFragmentManager().executePendingTransactions();
+		mDrawerLayout.invalidate();
+	}
+
 }

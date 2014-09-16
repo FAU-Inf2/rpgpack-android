@@ -86,11 +86,40 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 	protected ActionBarDrawerToggle mDrawerToggle;
 	protected CharacterSheet[] characterSheets;
 	protected Spinner characterSelectSpinner;
-
+//	protected boolean editable = false;
+	protected modes mode = modes.selection;
+	
+	public enum modes{
+		selection, edit
+	}
+	
+	public boolean inEditMode(){
+		return mode==modes.edit?true:false;
+	}
+	
+	public boolean inSelectionMode(){
+		return mode==modes.selection?true:false;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		theActiveActivity = this;
+		if(theActiveActivity instanceof CharacterPlayActivity
+				&& ((CharacterPlayActivity) theActiveActivity).inEditMode()){
+        	mode = modes.edit;
+        }
+        else if(theActiveActivity instanceof CharacterPlayActivity
+        	&& ((CharacterPlayActivity) theActiveActivity).inSelectionMode()){
+        	mode = modes.selection;
+        }
+        else if(theActiveActivity instanceof CharacterEditActivity){
+        	mode = modes.selection;
+        }
+        else{
+    		Log.d("FolderFragment","case not known! set to editable == true");
+        	mode = modes.edit;
+        }
 		/*
 		 * JACKSON START
 		 */
@@ -375,6 +404,24 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			//TODO julian
 		}
 	}
+	
+//	public void checkEditable(){
+//		if(theActiveActivity instanceof CharacterPlayActivity
+//				&& ((CharacterPlayActivity) theActiveActivity).inEditMode()){
+//        	editable = true;
+//        }
+//        else if(theActiveActivity instanceof CharacterPlayActivity
+//        	&& ((CharacterPlayActivity) theActiveActivity).inSelectionMode()){
+//        	editable = false;
+//        }
+//        else if(theActiveActivity instanceof CharacterEditActivity){
+//        	editable = false;
+//        }
+//        else{
+//    		Log.d("FolderFragment","case not known! set to editable == true");
+//    		editable = true;
+//        }
+//	}
 
 	@Override
 	protected void onStart() {

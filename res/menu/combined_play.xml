@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_edit_mode"
+        android:id="@+id/action_edit"
         android:icon="@drawable/edit_icon"
         android:showAsAction="ifRoom"
         android:title="@string/action_edit">
@@ -13,6 +13,13 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_tools"/>
     
+    <item
+        android:id="@+id/action_edit_mode"
+        android:title="@string/action_edit_mode"/>
+    
+    <item
+        android:id="@+id/action_selection_mode"
+        android:title="@string/action_selection_mode"/>
     
     <!--
     <item

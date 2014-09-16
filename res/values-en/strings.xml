@@ -8,6 +8,8 @@
     <string name="action_edit">Edit</string>
     <string name="action_tools">Tools</string>
     <string name="action_character">Select Character</string>
+	<string name="action_edit_mode">Edit-Mode</string>
+	<string name="action_selection_mode">Observe-Modus</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>

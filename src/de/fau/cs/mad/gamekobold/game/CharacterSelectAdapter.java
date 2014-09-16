@@ -32,7 +32,7 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	public CharacterSelectAdapter(Context context, int resource,
 			CharacterSheet[] objects) {
 		super(context, resource, objects);
-        Log.d("CharacterSelectAdapter", "constructor");
+//        Log.d("CharacterSelectAdapter", "constructor");
 		this.sheets = objects;
 		this.context = context;
 		// TODO Auto-generated constructor stub
@@ -41,7 +41,7 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) 
     {   // Ordinary view in Spinner, we use android.R.layout.simple_spinner_item
-        Log.d("CharacterSelectAdapter", "getView");
+//        Log.d("CharacterSelectAdapter", "getView");
 
 		final Bitmap icon = ThumbnailLoader.loadThumbnail(sheets[position].getIconPath(),
 				SlideoutNavigationActivity.getAc());
@@ -101,7 +101,7 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(
             		tv.data,context.getResources().getDisplayMetrics());
         }
-        Log.d("CharacterSelectAdapter", "actionBarHeight == " + actionBarHeight);
+//        Log.d("CharacterSelectAdapter", "actionBarHeight == " + actionBarHeight);
         
 //        LinearLayout ll = new LinearLayout(context);
 //        ll.setLayoutParams(new LinearLayout.LayoutParams(actionBarHeight, actionBarHeight));
@@ -121,7 +121,7 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	@Override
     public View getDropDownView(int position, View convertView, ViewGroup parent)
     {   // This view starts when we click the spinner.
-        Log.d("CharacterSelectAdapter", "getDropDownView");
+//        Log.d("CharacterSelectAdapter", "getDropDownView");
 //		return super.getDropDownView(position, convertView, parent); 
         TextView tv = new TextView(context);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, 

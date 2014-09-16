@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 //import android.support.v4.app.Fragment;
 //import android.support.v4.app.FragmentActivity;
@@ -48,84 +50,69 @@ public class FolderFragment extends GeneralFragment {
 	Button buttonAdd;
 	View mainView;
 	public FolderElementAdapter dataAdapter;
-	AlertDialog dialogCreateElement;
-	View dialogViewCreateElement;
-    public boolean editable = true;
+//	AlertDialog dialogCreateElement;
+//	View dialogViewCreateElement;
+//    public boolean editable = true;
+    public static final int CREATE_DIALOG = 1;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
-        editable = (getActivity() instanceof CharacterEditActivity || getActivity() instanceof CharacterPlayActivity? false:true);
-		Log.d("FolderFragment","onCreate; editable set to: " + editable);
-        // nullcheck needed for jackson inflation. creates allData before onCreate is called
-        if(allData == null) {
-        	allData = new ArrayList<FolderElementData>();
-        }
-        // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
-        if(dataAdapter == null) {
-        	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), editable, R.layout.template_listview_row, allData);
-            /*
-             * JACKSON START
-             */
-            dataAdapter.jacksonTable = jacksonTable;
-            /*
-             * JACKSON END
-             */
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SlideoutNavigationActivity.theActiveActivity);
-        LayoutInflater inflater = SlideoutNavigationActivity.theActiveActivity.getLayoutInflater();
-        dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
-        final EditText nameInput = (EditText) dialogViewCreateElement.findViewById(R.id.enter_name_of_element);
-        nameInput.setSingleLine();
-        alertDialogBuilder.setView(dialogViewCreateElement);
-        alertDialogBuilder.setCancelable(true);
-        ImageButton createTable = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_table);
-        ImageButton createCollection= (ImageButton) dialogViewCreateElement.findViewById(R.id.create_collection);
-        ImageButton createFolder = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_folder);
-        createTable.setOnClickListener(new View.OnClickListener() {
-       	//	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
-			@Override
-			public void onClick(View v) {
-				// check if a name has been set
-				if(nameInput.getText().toString().isEmpty()) {
-					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
-					return;
-				}
-				addItemList(editable, element_type.table, nameInput.getText().toString());
-				dialogCreateElement.cancel();
-				nameInput.setText("");
-			}
-		});
-        createCollection.setOnClickListener(new View.OnClickListener() {
-        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
-			@Override
-			public void onClick(View v) {
-				// check if a name has been set
-				if(nameInput.getText().toString().isEmpty()) {
-					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
-					return;
-				}
-				addItemList(editable, element_type.matrix, nameInput.getText().toString());
-				dialogCreateElement.cancel();
-				nameInput.setText("");
-			}
-		});
-        createFolder.setOnClickListener(new View.OnClickListener() {
-        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
-			@Override
-			public void onClick(View v) {
-				// check if a name has been set
-				if(nameInput.getText().toString().isEmpty()) {
-					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
-					return;
-				}
-				addItemList(editable, element_type.folder, nameInput.getText().toString());
-				dialogCreateElement.cancel();
-				nameInput.setText("");
-			}
-		});
-        dialogCreateElement = alertDialogBuilder.create();
+        setRetainInstance(true);
+        
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SlideoutNavigationActivity.theActiveActivity);
+//        LayoutInflater inflater = SlideoutNavigationActivity.theActiveActivity.getLayoutInflater();
+//        dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
+//        final EditText nameInput = (EditText) dialogViewCreateElement.findViewById(R.id.enter_name_of_element);
+//        nameInput.setSingleLine();
+//        alertDialogBuilder.setView(dialogViewCreateElement);
+//        alertDialogBuilder.setCancelable(true);
+//        ImageButton createTable = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_table);
+//        ImageButton createCollection= (ImageButton) dialogViewCreateElement.findViewById(R.id.create_collection);
+//        ImageButton createFolder = (ImageButton) dialogViewCreateElement.findViewById(R.id.create_folder);
+//        createTable.setOnClickListener(new View.OnClickListener() {
+//       	//	private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
+//			@Override
+//			public void onClick(View v) {
+//				// check if a name has been set
+//				if(nameInput.getText().toString().isEmpty()) {
+//					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				addItemList(editable, element_type.table, nameInput.getText().toString());
+//				dialogCreateElement.cancel();
+//				nameInput.setText("");
+//			}
+//		});
+//        createCollection.setOnClickListener(new View.OnClickListener() {
+//        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
+//			@Override
+//			public void onClick(View v) {
+//				// check if a name has been set
+//				if(nameInput.getText().toString().isEmpty()) {
+//					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				addItemList(editable, element_type.matrix, nameInput.getText().toString());
+//				dialogCreateElement.cancel();
+//				nameInput.setText("");
+//			}
+//		});
+//        createFolder.setOnClickListener(new View.OnClickListener() {
+//        	//private final EditText elementName = (EditText)view.findViewById(R.id.enter_name_of_element);
+//			@Override
+//			public void onClick(View v) {
+//				// check if a name has been set
+//				if(nameInput.getText().toString().isEmpty()) {
+//					Toast.makeText(getActivity(), getResources().getString(R.string.alert_set_element_name), Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				addItemList(editable, element_type.folder, nameInput.getText().toString());
+//				dialogCreateElement.cancel();
+//				nameInput.setText("");
+//			}
+//		});
+//        dialogCreateElement = alertDialogBuilder.create();
     }
 	
 //	public void setAllCheckboxesVisibility(boolean visible){
@@ -201,12 +188,35 @@ public class FolderFragment extends GeneralFragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
 		super.onCreateView(inflater, container, savedInstanceState);
-		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+		Log.d("FolderFragment","onCreateView; editMode == " + SlideoutNavigationActivity.theActiveActivity.inEditMode());
+		// nullcheck needed for jackson inflation. creates allData before onCreate is called
+        if(allData == null) {
+        	allData = new ArrayList<FolderElementData>();
+        }
+        //TODO: check if a problem when nullcheck is commented out; it is because of needed by reinflating
+        //in edit/selection-mode
+        // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
+//        if(dataAdapter == null) {
+        	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), SlideoutNavigationActivity.theActiveActivity.inEditMode(), R.layout.template_listview_row, allData);
+            /*
+             * JACKSON START
+             */
+            dataAdapter.jacksonTable = jacksonTable;
+            /*
+             * JACKSON END
+             */
+//        }
+		if(SlideoutNavigationActivity.theActiveActivity.inEditMode()){
 			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator_add_button, null);
 			TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
+			final FolderFragment ff = this;
 			addRowBelow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
-					dialogCreateElement.show();
+					DialogFragment df = CreateElementDialog.newInstance(SlideoutNavigationActivity.theActiveActivity.inEditMode());
+					df.setTargetFragment(ff, CREATE_DIALOG);
+					FragmentManager fm = getFragmentManager();
+					df.show(fm, "");
+//					dialogCreateElement.show();
 				}
 			});
 			setAddButtonStyle(addRowBelow);
@@ -222,7 +232,10 @@ public class FolderFragment extends GeneralFragment {
 	
 	@Override
 	public void showDialog() {
-		dialogCreateElement.show();
+		DialogFragment df = CreateElementDialog.newInstance(SlideoutNavigationActivity.theActiveActivity.inEditMode());
+		df.setTargetFragment(this, CREATE_DIALOG);
+		FragmentManager fm = getFragmentManager();
+		df.show(fm, "");
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -300,12 +313,8 @@ public class FolderFragment extends GeneralFragment {
 	}
 	
 	public void inflateWithJacksonData(ContainerTable myTable, Activity activity) {
-		//default: not given if editable; take value from class variable
-		inflateWithJacksonData(myTable, activity, editable);
-	}
-	
-	public void inflateWithJacksonData(ContainerTable myTable, Activity activity, boolean editable) {
-		Log.d("FolderFragment","inflating jackson data; editable: " + editable);
+		Log.d("FolderFragment","inflating jackson data; editable: " + SlideoutNavigationActivity.theActiveActivity.inEditMode());
+//		new Throwable().printStackTrace();
 		// set jackson table for this fragment
 		jacksonTable = myTable;
 		// check if there are any sub tables in this folder
@@ -317,7 +326,7 @@ public class FolderFragment extends GeneralFragment {
 			allData = new ArrayList<FolderElementData>();
 		}
 		if(dataAdapter == null) {
-			dataAdapter = new FolderElementAdapter(activity, editable, R.layout.template_listview_row, allData);
+			dataAdapter = new FolderElementAdapter(activity, SlideoutNavigationActivity.theActiveActivity.inEditMode(), R.layout.template_listview_row, allData);
 			dataAdapter.jacksonTable = jacksonTable;
 		}
 		// add data
@@ -326,7 +335,7 @@ public class FolderFragment extends GeneralFragment {
 			// switch type if sub table
 			if(subTable instanceof ContainerTable) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, editable, element_type.folder);
+				newDataItem = new FolderElementData(activity, SlideoutNavigationActivity.theActiveActivity.inEditMode(), element_type.folder);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	
@@ -349,11 +358,11 @@ public class FolderFragment extends GeneralFragment {
 				// call recursive
 				//note: editable must be given because the onCreate was not yet called
 				//and therefore variable "editable" not yet initialized
-				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity, editable);
+				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
 			}
 			else if(subTable instanceof Table) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, editable, element_type.table);
+				newDataItem = new FolderElementData(activity, SlideoutNavigationActivity.theActiveActivity.inEditMode(), element_type.table);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	
@@ -376,7 +385,7 @@ public class FolderFragment extends GeneralFragment {
 			}
 			else if(subTable instanceof MatrixTable) {
 				// create new folder element
-				newDataItem = new FolderElementData(activity, editable, element_type.matrix);
+				newDataItem = new FolderElementData(activity, SlideoutNavigationActivity.theActiveActivity.inEditMode(), element_type.matrix);
 				// set its name
 				if(subTable.tableName == null) {
 					newDataItem.text.setText("");	
