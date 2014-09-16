@@ -562,8 +562,13 @@ public class TemplateStoreMainActivity extends ListActivity {
 			}
 		     */
 		    ImageView img = (ImageView) v.findViewById(R.id.templateStoreImg);
-		    image.setImageDrawable(img.getDrawable());
-		    
+		    if(tmpl.hasImage()) {
+		    	image.setImageBitmap(tmpl.getBm());
+		    } else {
+				Drawable defaultImage = getResources().getDrawable(R.drawable.game_default_white);
+				image.setBackgroundColor(Color.TRANSPARENT);
+				image.setImageDrawable(defaultImage);
+		    }
 		    bar.setRating(tmpl.getRating());
 		    
 		    //popupWindow.showAsDropDown(l, 50, -30);
