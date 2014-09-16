@@ -98,6 +98,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	// also set in createTableHeader !! onCreate is called when orientation is rotated ->
 	// amountColumns = #before change but we recreate the header table with 2 columns
 	int amountColumns = 2;
+//	boolean editable = true;
 //	AlertDialog dialog;
 //	TableLayout dialogTable;
 	SessionMonitorEditText dialogRowCounter = null;
@@ -154,8 +155,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);   
         setRetainInstance(true);
-    	LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+        
+    }
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		Log.d("TableFragment","onCreateView; editMode == " + SlideoutNavigationActivity.theActiveActivity.inEditMode());
+        if(SlideoutNavigationActivity.theActiveActivity.inEditMode()){
 //			Log.d("TableFragment", "inflated for TemplateGenerator");
         	//create the table that will be shown in the dialog
         	mainView = (RelativeLayout) inflater.inflate(R.layout.template_generator_table_view, new LinearLayout(getActivity()), false);
@@ -188,20 +195,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	});
         	setAddButtonStyle(addRowBelow);
         }
-        else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-        		|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+        else{//==!editable
 			Log.d("TableFragment", "inflated for CharacterEditActivity");
         	mainView = (RelativeLayout) inflater.inflate(R.layout.character_edit_table_view, new LinearLayout(getActivity()), false);
         }
 		// removed because we could otherwise not save/load tables with 0 rows
 		//addItemList();
-    }
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
 		// JACKSON START
-		if(SlideoutNavigationActivity.theActiveActivity instanceof TemplateGeneratorActivity){
+		if(SlideoutNavigationActivity.theActiveActivity.inEditMode()){
 			// check for saved rows
 			table.removeAllViews();
 			if(jacksonTable.getRowCount() > 0) {
@@ -244,8 +245,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				addItemList();
 			}
 		}
-		else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+		else{//==!editable
 			// check for saved rows
 			fillListView();
 		}

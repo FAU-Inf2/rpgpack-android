@@ -27,19 +27,16 @@
         
     </TextView>
 	
-
+    <View
+    android:id="@+id/separator"
+    android:layout_marginBottom="20dp"
+    android:layout_marginTop="5dp"
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_below="@+id/textView1"
+    android:background="@android:color/darker_gray"/>
     
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/template_store_main_desc"
-        android:textColor="@color/white" >
-        
-    </TextView>
+
 
 
     
@@ -48,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/separator"
         android:layout_marginTop="24dp" >
     </ListView>
 

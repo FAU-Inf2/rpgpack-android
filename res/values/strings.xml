@@ -6,7 +6,10 @@
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_tools">Werkzeuge</string>
+	<string name="action_character">Charakter wählen</string>
     <string name="action_edit">Editieren</string>
+	<string name="action_edit_mode">Editier-Modus</string>
+	<string name="action_selection_mode">Betrachten-Modus</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
@@ -318,6 +321,11 @@
     <string name="tag_best_rated">Bestbewertet</string>
     <string name="tag_newest">Neu</string>
     <string name="tag_recommended">Empfohlen</string>
+    <string name="buttonStore">Speichern</string>
+    <string name="loading">Laden</string>
+    <string name="loading_wait">Templates werden geladen</string>
+    <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
+    <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>

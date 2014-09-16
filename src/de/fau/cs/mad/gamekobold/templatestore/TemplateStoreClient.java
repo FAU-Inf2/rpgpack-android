@@ -209,4 +209,15 @@ public class TemplateStoreClient extends HttpClient {
 		this.currentPage = page;
 	}
 
+	public ApiResponse getCharsheet(int id) {
+		// TODO Auto-generated method stub
+		this.currentMethod = "latest";
+		try {
+			this.get(this.apiUrl+"/charsheet/"+id);
+		} catch (Exception e) {
+			Log.e("store clients", e.getMessage());
+		}
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
+	}
+
 }

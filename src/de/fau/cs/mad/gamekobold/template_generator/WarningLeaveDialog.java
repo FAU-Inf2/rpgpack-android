@@ -9,10 +9,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class WarningLeaveDialog extends DialogFragment{
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		Log.d("WarningLeaveDialog","onCreate");
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 		alertDialogBuilder.setMessage(getString(R.string.question_exit))
 		.setCancelable(true);

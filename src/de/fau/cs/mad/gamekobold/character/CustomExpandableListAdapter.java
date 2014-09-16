@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.jackson.IEditableContent;
 import de.fau.cs.mad.gamekobold.jackson.Row;
 import de.fau.cs.mad.gamekobold.jackson.Table;
@@ -22,6 +23,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.opengl.Visibility;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
@@ -224,6 +226,12 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 //	    row.setTextSize(R.dimen.text_large);
 	    final CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.group_checkbox);
 	    final CheckBox favorite = (CheckBox) convertView.findViewById(R.id.favorite_checkbox);
+	    if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+	    	checkbox.setVisibility(View.INVISIBLE);
+	    }
+	    else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+	    	favorite.setVisibility(View.INVISIBLE);
+	    }
 	    final Row jacksonRow = mJacksonTable.getRow(groupPosition);
 	    //important: remove listener before setting -> else listener will be called
 	    checkbox.setOnCheckedChangeListener(null);
