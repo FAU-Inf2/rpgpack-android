@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -33,8 +34,8 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 	}
 	
 	protected void onPreExecute() {
-         activity.progress.setTitle("Loading");
-         activity.progress.setMessage("Wait while loading...");
+         activity.progress.setTitle(context.getResources().getString(R.string.loading));
+         activity.progress.setMessage(context.getResources().getString(R.string.loading_wait));
          activity.progress.setCanceledOnTouchOutside(false);
          activity.progress.show();
 	}
