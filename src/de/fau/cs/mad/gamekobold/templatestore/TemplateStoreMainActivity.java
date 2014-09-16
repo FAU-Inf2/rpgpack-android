@@ -57,7 +57,7 @@ public class TemplateStoreMainActivity extends ListActivity {
     private TemplateStoreArrayAdapter adapter;
     private ApiTask task;
     private TemplateStoreClient client = new TemplateStoreClient();
-    private FrameLayout layout_main;
+    FrameLayout layout_main;
     PopupWindow popupWindow = null;
     ProgressDialog progress = null;
     SearchView searchView;

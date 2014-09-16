@@ -15,7 +15,11 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -48,7 +52,39 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 	}
 	
 	@Override
-	protected void onPostExecute(ApiResponse response) {
+	protected void onPostExecute(final ApiResponse response) {
+		activity.progress.dismiss();
+		boolean exists = false;
+		try {
+			exists = Helper.templateExists(storeTmpl.getId(), context, activity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if( exists ) {
+			Builder builder = new AlertDialog.Builder(context).setMessage(
+					context.getResources().getString(R.string.confirm_template_exists));
+			builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					save(response);
+				}
+			}).setNegativeButton(android.R.string.no, new OnClickListener() {
+	
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+				}
+				
+			});
+			builder.create().show();
+		} else {
+			save(response);
+		}		
+
+	}
+	
+	private void save(ApiResponse response) {
 		Template tmpl = new Template();
 		tmpl.setAuthor(storeTmpl.getAuthor());
 		tmpl.setGameName(storeTmpl.getWorldname());
@@ -58,7 +94,7 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		CharacterSheet charsheet = new CharacterSheet();
-		activity.alertMessage(response.responseBody);
+
 		try {
 			charsheet = mapper.readValue(response.responseBody, CharacterSheet.class);
 		} catch (IOException e) {
@@ -75,13 +111,11 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 		
 		tmpl.setCharacterSheet(charsheet);
 		
-		
 		// TODO fallback to internal storage
 		if(Helper.isExternalStorageWritable() && storeTmpl.hasImage()) {
 			// files in getExternalStorageDirectory() are deleted, when uninstalling the app
 		    String root = Environment.getExternalStorageDirectory().toString();
-		    String location = root + "/store_images";
-		    File myDir = new File(location);    
+		    File myDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);//new File(location);    
 		    myDir.mkdirs();
 		    Random generator = new Random();
 		    int n = 100000;
@@ -98,11 +132,12 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 		    } catch (Exception e) {
 		           e.printStackTrace();
 		    }
-			tmpl.setIconPath(location+"/"+fname);
+			tmpl.setIconPath(file.getAbsolutePath());
 		}
 		
 		try {
 			JacksonInterface.saveTemplate(tmpl, context, false);
+			Helper.addIdToFile(storeTmpl.getId(), context);
 			//activity.alertMessage(tmpl.getFileAbsPath()+tmpl.getFileName());
 		} catch (JsonGenerationException e) {
 			Log.e("store", "JsonGenerationException");
@@ -115,8 +150,10 @@ public class SaveTemplateTask extends AsyncTask<Void, Integer, ApiResponse> {
 			Log.e("store", "IOException");
 			e.printStackTrace();
 		}
-		activity.progress.dismiss();
-		//activity.alertMessage(response.responseBody);
+		
+		activity.layout_main.getForeground().setAlpha(0);
+		activity.popupWindow.dismiss();
+		activity.alertMessage(context.getResources().getString(R.string.download_successful));
 	}
 
 }
