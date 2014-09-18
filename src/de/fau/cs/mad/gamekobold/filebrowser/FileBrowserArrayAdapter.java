@@ -68,7 +68,7 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 					@Override
 					public void onClick(View v) {
 						if(receiver != null) {
-							receiver.onDirectoryPicked(file);
+							receiver.onFilePicked(file);
 						}
 					}
 				});	

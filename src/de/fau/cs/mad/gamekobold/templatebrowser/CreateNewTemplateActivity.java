@@ -462,7 +462,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 	}
 
 	@Override
-	public void onDirectoryPicked(File directory) {
+	public void onFilePicked(File directory) {
 		Log.d("CreateNewTemplateActivity", "export:"+directory.getAbsolutePath());
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");

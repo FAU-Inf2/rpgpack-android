@@ -6,7 +6,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -26,10 +28,12 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
-public class TemplateBrowserActivity extends ListActivity {
+public class TemplateBrowserActivity extends ListActivity implements IFileBrowserReceiver {
 	private List<Template> templateList = null;
 	private static Activity myActivity = null;
 	// time stamp of the template directory
@@ -262,6 +266,18 @@ public class TemplateBrowserActivity extends ListActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		else if(id == R.id.menu_item_import_template) {
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
+			if(prev != null) {
+				ft.remove(prev);
+			}
+			ft.addToBackStack(null);
+			DialogFragment fileBrowser = FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE);
+			fileBrowser.setRetainInstance(true);
+			fileBrowser.show(ft, "file_browser_dialog");
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -487,5 +503,18 @@ public class TemplateBrowserActivity extends ListActivity {
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();
 		}
+	}
+	
+	
+
+	@Override
+	public void onFilePicked(File directory) {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
+		if(prev != null) {
+			ft.remove(prev);
+		}
+		ft.commit();
+		// TODO try to import template
 	}
 }
