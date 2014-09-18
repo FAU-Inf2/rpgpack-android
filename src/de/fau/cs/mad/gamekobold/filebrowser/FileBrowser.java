@@ -122,8 +122,12 @@ public class FileBrowser extends DialogFragment {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-				currentDirectory = adapter.getItem(position);
-				loadCurrentDirectory();
+				File clickedItem = adapter.getItem(position);
+				// only descend if it is a directory
+				if(clickedItem.isDirectory()) {
+					currentDirectory = clickedItem; 
+					loadCurrentDirectory();
+				}
 			}
 		});
 		

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
@@ -51,11 +52,13 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 		}
 		final TextView textView1 = (TextView) rowView.findViewById(R.id.textView1);
 		final ImageButton imageButton = (ImageButton) rowView.findViewById(R.id.counter);
+		final ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView1);
 		
 		if(position == 0 && hasParent) {
 			textView1.setText("..");
 			imageButton.setEnabled(false);
 			imageButton.setVisibility(View.INVISIBLE);
+			imageView.setImageResource(R.drawable.ic_menu_archive);
 		}
 		else {
 			final File file = getItem(position);	
@@ -71,11 +74,15 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 							receiver.onFilePicked(file);
 						}
 					}
-				});	
+				});
+				// TODO LICENSE
+				// using icon https://www.iconfinder.com/icons/103509/document_text_icon#size=64 18.09.2014
+				imageView.setImageResource(R.drawable.document_text_48);
 			}
 			else {
 				imageButton.setVisibility(View.INVISIBLE);
 				imageButton.setEnabled(false);
+				imageView.setImageResource(R.drawable.ic_menu_archive);
 			}
 		}
 		return rowView;
