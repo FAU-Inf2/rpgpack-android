@@ -268,15 +268,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			return true;
 		}
 		else if(id == R.id.menu_item_import_template) {
-			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
-			if(prev != null) {
-				ft.remove(prev);
-			}
-			ft.addToBackStack(null);
-			DialogFragment fileBrowser = FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE);
-			fileBrowser.setRetainInstance(true);
-			fileBrowser.show(ft, "file_browser_dialog");
+			showFileBrowserPopup();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -506,16 +498,15 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		}
 	}
 	
+	private void showFileBrowserPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
+	}
 	
 
 	@Override
 	public void onFilePicked(File file) {
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
-		if(prev != null) {
-			ft.remove(prev);
-		}
-		ft.commit();
+		FileBrowser.removeAsPopup(getFragmentManager());
 		// TODO try to import template
 		if(JacksonFileValidator.isValidTemplate(file)) {
 			

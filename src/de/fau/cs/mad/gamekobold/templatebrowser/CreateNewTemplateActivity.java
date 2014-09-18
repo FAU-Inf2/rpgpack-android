@@ -326,17 +326,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		if(editTemplate) {
 			// editing mode
 			if(id == R.id.menu_item_export_template_to_file) {
-//				Intent intent = new Intent(CreateNewTemplateActivity.this, FileBrowserActivity.class);
-//				startActivity(intent);
-				FragmentTransaction ft = getFragmentManager().beginTransaction();
-				Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
-				if(prev != null) {
-					ft.remove(prev);
-				}
-				ft.addToBackStack(null);
-				DialogFragment fileBrowser = FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY);
-				fileBrowser.setRetainInstance(true);
-				fileBrowser.show(ft, "file_browser_dialog");
+				showFileExplorerPopup();
 				return true;
 			}
 		}
@@ -347,6 +337,11 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 			}			
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void showFileExplorerPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_folder), Toast.LENGTH_LONG).show();
 	}
 	
 	private void showPopup() {
@@ -465,13 +460,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 	@Override
 	public void onFilePicked(File directory) {
 		Log.d("CreateNewTemplateActivity", "export:"+directory.getAbsolutePath());
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
-		if(prev != null) {
-			ft.remove(prev);
-		}
-		ft.commit();
-		
+		FileBrowser.removeAsPopup(getFragmentManager());
 		// copy file
 		File templateFile = new File(currentTemplate.getFileAbsPath());
 		try {

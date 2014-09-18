@@ -195,6 +195,8 @@
 	<string name="menu_label_import_template">Importiere ein Template aus einer Datei</string>
 	<string name="toast_exported_template">Template exportiert nach: %s</string>
 	<string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
+	<string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
+	<string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
 
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>

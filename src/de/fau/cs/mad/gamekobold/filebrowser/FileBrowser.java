@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -154,5 +157,25 @@ public class FileBrowser extends DialogFragment {
 		FileBrowser browser = new FileBrowser(mode);
 		browser.setReceiver(receiver);
 		return browser;
+	}
+	
+	public static void showAsPopup(FragmentManager fm, FileBrowser dialog) {
+		FragmentTransaction ft = fm.beginTransaction();
+		Fragment prev = fm.findFragmentByTag("file_browser_dialog");
+		if(prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+		dialog.setRetainInstance(true);
+		dialog.show(ft, "file_browser_dialog");
+	}
+	
+	public static void removeAsPopup(FragmentManager fm) {
+		FragmentTransaction ft = fm.beginTransaction();
+		Fragment prev = fm.findFragmentByTag("file_browser_dialog");
+		if(prev != null) {
+			ft.remove(prev);
+		}
+		ft.commit();
 	}
 }
