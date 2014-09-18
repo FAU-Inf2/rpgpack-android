@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser.Mode;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,15 @@ import android.widget.TextView;
 public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 	private boolean hasParent;
 	private IFileBrowserReceiver receiver;
+	private final FileBrowser.Mode mode;
 	
 	public void setReceiver(IFileBrowserReceiver receiver) {
 		this.receiver = receiver;
 	}
 	
-	public FileBrowserArrayAdapter(Context context, List<File> objects) {
+	public FileBrowserArrayAdapter(Context context, List<File> objects, final FileBrowser.Mode mode) {
 		super(context,R.layout.rowlayout_file_browser, objects);
+		this.mode = mode;
 	}
 	
 	public boolean isHasParent() {
@@ -57,16 +60,23 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 		else {
 			final File file = getItem(position);	
 			textView1.setText(file.getName());
-			imageButton.setEnabled(true);
-			imageButton.setVisibility(View.VISIBLE);
-			imageButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(receiver != null) {
-						receiver.onDirectoryPicked(file);
+			if(file.isDirectory() && mode == Mode.PICK_DIRECTORY ||
+				!file.isDirectory() && mode == Mode.PICK_FILE) {
+				imageButton.setVisibility(View.VISIBLE);
+				imageButton.setEnabled(true);
+				imageButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if(receiver != null) {
+							receiver.onDirectoryPicked(file);
+						}
 					}
-				}
-			});
+				});	
+			}
+			else {
+				imageButton.setVisibility(View.INVISIBLE);
+				imageButton.setEnabled(false);
+			}
 		}
 		return rowView;
 	}

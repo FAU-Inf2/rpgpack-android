@@ -17,6 +17,11 @@ import android.widget.ListView;
 
 public class FileBrowser extends DialogFragment {
 	public static final String ARGUMENT_CURRENT_DIR_ABS_PATH = "ARGUMENT_CURRENT_DIR_ABS_PATH";
+	
+	public enum Mode {
+		PICK_DIRECTORY,
+		PICK_FILE
+	};
 	/**
 	 *
 	 */
@@ -43,19 +48,43 @@ public class FileBrowser extends DialogFragment {
 	/**
 	 *
 	 */
-//	private class FileFilterClass implements FileFilter {
-//		@Override
-//		public boolean accept(File pathname) {
-//			return pathname.isFile();
-//		}
-//	};
+	private class FileFilterClass implements FileFilter {
+		private final String appRootDirectoryAbsPath;
+		public FileFilterClass() {
+			final File rootDir =  JacksonInterface.getAppRootDirectory(getActivity());
+			if(rootDir != null) {
+				appRootDirectoryAbsPath = rootDir.getAbsolutePath();	
+			}
+			else {
+				appRootDirectoryAbsPath = "";
+			}
+		}
+		@Override
+		public boolean accept(File arg0) {
+			if(appRootDirectoryAbsPath.equals(arg0.getAbsolutePath())) {
+				return false;
+			}
+			return true;
+		}
+	};
 	//
 	//
 	//
 	private File currentDirectory = null;
 	private FileBrowserArrayAdapter adapter = null;
-	private DirectoryFilterClass dirFilter;
+	private final FileFilter fileFilter;
 	private IFileBrowserReceiver receiver = null;
+	private final Mode mode;
+	
+	public FileBrowser(final Mode mode) {
+		this.mode = mode;
+		if(mode == Mode.PICK_DIRECTORY) {
+			fileFilter = new DirectoryFilterClass();
+		}
+		else {
+			fileFilter = new FileFilterClass();
+		}
+	}
 	
 	public void setReceiver(IFileBrowserReceiver receiver) {
 		this.receiver = receiver;
@@ -66,7 +95,6 @@ public class FileBrowser extends DialogFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		dirFilter = new DirectoryFilterClass();
 		final Bundle args = getArguments();
 		if(args != null) {
 			final String curDirAbsPath = getArguments().getString(ARGUMENT_CURRENT_DIR_ABS_PATH);
@@ -85,7 +113,7 @@ public class FileBrowser extends DialogFragment {
 		}
 		final View rootView = inflater.inflate(R.layout.fragment_file_browser, container, false);
 		final ListView listView = (ListView)rootView.findViewById(android.R.id.list);
-		adapter = new FileBrowserArrayAdapter(getActivity(), new ArrayList<File>());
+		adapter = new FileBrowserArrayAdapter(getActivity(), new ArrayList<File>(), mode);
 		adapter.setReceiver(receiver);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,7 +133,7 @@ public class FileBrowser extends DialogFragment {
 			return;
 		}
 		adapter.clear();
-		final File[] subDirs = currentDirectory.listFiles(dirFilter);
+		final File[] subDirs = currentDirectory.listFiles(fileFilter);
 		final File parentFile = currentDirectory.getParentFile();
 		if(parentFile != null) {
 			adapter.add(parentFile);
@@ -122,8 +150,8 @@ public class FileBrowser extends DialogFragment {
 		adapter.notifyDataSetChanged();
 	}
 	
-	public static FileBrowser newInstance(IFileBrowserReceiver receiver) {
-		FileBrowser browser = new FileBrowser();
+	public static FileBrowser newInstance(IFileBrowserReceiver receiver, final Mode mode) {
+		FileBrowser browser = new FileBrowser(mode);
 		browser.setReceiver(receiver);
 		return browser;
 	}

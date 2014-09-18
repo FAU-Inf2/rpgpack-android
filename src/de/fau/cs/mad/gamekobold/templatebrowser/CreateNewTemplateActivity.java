@@ -333,7 +333,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
-				DialogFragment fileBrowser = FileBrowser.newInstance(this);
+				DialogFragment fileBrowser = FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY);
 				fileBrowser.setRetainInstance(true);
 				fileBrowser.show(ft, "file_browser_dialog");
 				return true;
