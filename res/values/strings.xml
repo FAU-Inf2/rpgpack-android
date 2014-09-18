@@ -192,6 +192,7 @@
     <string name="row_edit_last_template">Letztes Template bearbeiten&#8230;</string>
     <string name="row_create_new_template">Neues Template erstellen&#8230;</string>
     <string name="menu_label_export_template">Exportiere Template als Datei</string>
+    <string name="menu_label_import_template">Importiere ein Template aus einer Datei</string>
 
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>
