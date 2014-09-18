@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
@@ -473,27 +474,15 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		
 		// copy file
 		File templateFile = new File(currentTemplate.getFileAbsPath());
-		InputStream in = null;
-		OutputStream out = null;
 		try {
-			in = new FileInputStream(templateFile);
-			out = new FileOutputStream(new File(directory, templateFile.getName()));
-			byte[] buffer = new byte[1024];
-			int len;
-			while((len = in.read(buffer)) > 0) {
-				out.write(buffer, 0, len);
-			}
-			Toast.makeText(this, "Exported template. Filename:"+templateFile.getName(), Toast.LENGTH_LONG).show();
+			FileCopyUtility.copyFile(templateFile, new File(directory, templateFile.getName()));
+			Toast.makeText(this,
+					String.format(getString(R.string.toast_exported_template), templateFile.getName()),
+					Toast.LENGTH_LONG).show();
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-		}
-		try {
-			in.close();
-			out.close();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
+			Toast.makeText(this, getString(R.string.toast_exported_template_failed), Toast.LENGTH_LONG).show();
 		}
 	}
 }

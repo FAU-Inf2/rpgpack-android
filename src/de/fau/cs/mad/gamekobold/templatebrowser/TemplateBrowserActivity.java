@@ -30,6 +30,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
+import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
@@ -508,7 +509,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 	
 
 	@Override
-	public void onFilePicked(File directory) {
+	public void onFilePicked(File file) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		Fragment prev = getFragmentManager().findFragmentByTag("file_browser_dialog");
 		if(prev != null) {
@@ -516,5 +517,8 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		}
 		ft.commit();
 		// TODO try to import template
+		if(JacksonFileValidator.isValidTemplate(file)) {
+			
+		}
 	}
 }
