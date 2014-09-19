@@ -75,4 +75,18 @@ public class Helper {
 		
 	}
 
+	public static String readTemplate(String filePath) throws IOException {
+		File f = new File(filePath);
+		if( ! f.canRead())
+			throw new IOException();
+			
+		BufferedReader in = new BufferedReader(new FileReader(filePath));
+		String template = "";
+		String line;
+		while( (line = in.readLine()) != null) {
+			template += line;
+		}
+		in.close();
+		return template;
+	}
 }

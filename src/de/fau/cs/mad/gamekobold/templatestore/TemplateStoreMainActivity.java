@@ -1,15 +1,22 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhaarman.supertooltips.*;
 import com.nhaarman.supertooltips.ToolTipView.OnToolTipViewClickedListener;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -24,9 +31,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore.Files;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,6 +77,7 @@ public class TemplateStoreMainActivity extends ListActivity {
     View footer;
 	private ListView sidebar;
 	private TemplateStoreSidebarArrayAdapter sidebarAdapter;
+	final int ACTIVITY_CHOOSE_FILE = 1;
     
       private class ScrollListener implements OnScrollListener {
 			private int currentScrollState;
@@ -600,4 +610,49 @@ public class TemplateStoreMainActivity extends ListActivity {
 		  this.isLoading = false;
 		  this.moreDataAvailable = true;
 	  }
+	  
+	  public void importTemplate(View v) {
+		  alertMessage("import!");
+		  Intent chooseFile;
+		  Intent intent;
+		  chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+		  chooseFile.setType("text/plain");
+		  chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+		  intent = Intent.createChooser(chooseFile, "Choose Application");
+		  startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
+	  }
+	  
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case ACTIVITY_CHOOSE_FILE: {
+				if (resultCode == RESULT_OK) {
+					Uri uri = data.getData();
+					String filePath = uri.getPath();
+					
+					String tmplStr = null;
+					try {
+						tmplStr = Helper.readTemplate(filePath);
+					} catch (IOException e) {
+						alertMessage("Invalid File selected");
+						Log.e("store", "invalid file seleccted");
+					}
+					alertMessage(tmplStr);
+					ObjectMapper mapper = new ObjectMapper();
+					
+					Template tmpl;
+					try {
+						tmpl = mapper.readValue(tmplStr, Template.class);
+						JacksonInterface.saveTemplate(tmpl, this, false);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						alertMessage("invalid template selected");
+						return;
+					}
+					alertMessage("template stored successsfully");
+				}
+			}
+		}
+	}
 }
