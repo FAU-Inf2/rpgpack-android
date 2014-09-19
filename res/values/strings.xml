@@ -330,6 +330,9 @@
     <string name="download_successful">Das Template wurde erfolgreich auf dem Gerät gespeichert</string>
 	<string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
 	<string name="buttonImport">Importieren</string>
+	<string name="store_invalid_file">Ungültige Datei ausgewählt</string>
+	<string name="store_invalid_template">Ungültiges Template ausgewählt</string>
+	<string name="store_template_import_success">Template wurde erfolgreich importiert</string>
     
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>

@@ -634,7 +634,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 					try {
 						tmplStr = Helper.readTemplate(filePath);
 					} catch (IOException e) {
-						alertMessage("Invalid File selected");
+						alertMessage(getResources().getString(R.string.store_invalid_file));
 						Log.e("store", "invalid file seleccted");
 					}
 					alertMessage(tmplStr);
@@ -647,10 +647,10 @@ public class TemplateStoreMainActivity extends ListActivity {
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-						alertMessage("invalid template selected");
+						alertMessage(getResources().getString(R.string.store_invalid_template));
 						return;
 					}
-					alertMessage("template stored successsfully");
+					alertMessage(getResources().getString(R.string.store_template_import_success));
 				}
 			}
 		}

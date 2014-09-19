@@ -330,6 +330,9 @@
     <string name="download_successful">Template successfully stored on Device</string>
     <string name="confirm_template_exists">Template already saved to device. Replace?</string>
     <string name="buttonImport">Import</string>
+    <string name="store_invalid_file">Invalid file selected</string>
+    <string name="store_invalid_template">Invalid template selected</string>
+    <string name="store_template_import_success">Template was successfully imported</string>
 
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Character Name</string>
