@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -75,18 +76,12 @@ public class FileBrowser extends DialogFragment {
 	//
 	private File currentDirectory = null;
 	private FileBrowserArrayAdapter adapter = null;
-	private final FileFilter fileFilter;
 	private IFileBrowserReceiver receiver = null;
+	private FileFilter fileFilter = null;
 	private final Mode mode;
 	
 	public FileBrowser(final Mode mode) {
 		this.mode = mode;
-		if(mode == Mode.PICK_DIRECTORY) {
-			fileFilter = new DirectoryFilterClass();
-		}
-		else {
-			fileFilter = new FileFilterClass();
-		}
 	}
 	
 	public void setReceiver(IFileBrowserReceiver receiver) {
@@ -181,5 +176,18 @@ public class FileBrowser extends DialogFragment {
 			ft.remove(prev);
 		}
 		ft.commit();
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		if(fileFilter == null) {
+			if(mode == Mode.PICK_DIRECTORY) {
+				fileFilter = new DirectoryFilterClass();
+			}
+			else {
+				fileFilter = new FileFilterClass();
+			}
+		}
+		super.onAttach(activity);
 	}
 }
