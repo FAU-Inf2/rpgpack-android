@@ -89,7 +89,7 @@ public class FileBrowser extends DialogFragment {
 			adapter.setReceiver(receiver);
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final Bundle args = getArguments();
@@ -152,15 +152,7 @@ public class FileBrowser extends DialogFragment {
 	}
 	
 	public void setMode(Mode mode) {
-		if(this.mode != mode) {
-			this.mode = mode;
-			if(mode == Mode.PICK_DIRECTORY) {
-				fileFilter = new DirectoryFilterClass();
-			}
-			else {
-				fileFilter = new FileFilterClass();
-			}
-		}
+		this.mode = mode;
 	}
 	
 	public static FileBrowser newInstance(IFileBrowserReceiver receiver, final Mode mode) {
