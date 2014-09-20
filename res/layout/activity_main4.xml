@@ -86,7 +86,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_main_roundcorner_button"
             android:drawableTop="@drawable/settings"
-            android:onClick="startGame"
+            android:onClick="settings"
             android:paddingBottom="10dip"
             android:paddingTop="20dip"
             android:text="@string/settings"

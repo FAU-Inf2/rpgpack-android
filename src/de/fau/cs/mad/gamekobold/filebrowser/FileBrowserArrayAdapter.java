@@ -79,7 +79,6 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 			else {
 				imageButton.setVisibility(View.INVISIBLE);
 				imageButton.setEnabled(false);
-				
 			}
 			if(file.isDirectory()) {
 				imageView.setImageResource(R.drawable.ic_menu_archive);

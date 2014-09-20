@@ -12,7 +12,6 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
-import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 
 public class MainActivity extends Activity {
@@ -36,7 +35,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void settings(View view) {
-		this.notImplemented();
+		Intent intent = new Intent(MainActivity.this, MainMenu.class);
+		startActivity(intent);
 	}
 
 	public void loadGame(View view) {
