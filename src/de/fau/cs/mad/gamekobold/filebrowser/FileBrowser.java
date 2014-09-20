@@ -78,12 +78,11 @@ public class FileBrowser extends DialogFragment {
 	private FileBrowserArrayAdapter adapter = null;
 	private IFileBrowserReceiver receiver = null;
 	private FileFilter fileFilter = null;
-	private final Mode mode;
+	private Mode mode;
 	
-	public FileBrowser(final Mode mode) {
-		this.mode = mode;
+	public FileBrowser() {
 	}
-	
+
 	public void setReceiver(IFileBrowserReceiver receiver) {
 		this.receiver = receiver;
 		if(adapter != null) {
@@ -129,7 +128,7 @@ public class FileBrowser extends DialogFragment {
 		loadCurrentDirectory();
 		return rootView;
 	}
-	
+
 	private void loadCurrentDirectory() {
 		if(currentDirectory == null) {
 			return;
@@ -152,8 +151,21 @@ public class FileBrowser extends DialogFragment {
 		adapter.notifyDataSetChanged();
 	}
 	
+	public void setMode(Mode mode) {
+		if(this.mode != mode) {
+			this.mode = mode;
+			if(mode == Mode.PICK_DIRECTORY) {
+				fileFilter = new DirectoryFilterClass();
+			}
+			else {
+				fileFilter = new FileFilterClass();
+			}
+		}
+	}
+	
 	public static FileBrowser newInstance(IFileBrowserReceiver receiver, final Mode mode) {
-		FileBrowser browser = new FileBrowser(mode);
+		FileBrowser browser = new FileBrowser();
+		browser.setMode(mode);
 		browser.setReceiver(receiver);
 		return browser;
 	}
