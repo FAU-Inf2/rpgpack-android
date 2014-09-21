@@ -142,22 +142,16 @@ public class MainMenu extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(v == row1) {
-			// button 1 action
 			Log.d("MainMenu", "clicked row1");
-			Intent intent = new Intent(MainMenu.this, GameBrowserActivity.class);
-			startActivity(intent);
+			button1Action();
 		}
 		else if(v == row2) {
-			// button 2 action
 			Log.d("MainMenu", "clicked row2");
-			Intent intent = new Intent(MainMenu.this, CharacterBrowserActivity.class);
-			startActivity(intent);
+			button2Action();
 		}
 		else if(v == row3) {
-			// button 3 action
 			Log.d("MainMenu", "clicked row3");
-			Intent intent = new Intent(MainMenu.this, TemplateBrowserActivity.class);
-			startActivity(intent);
+			button3Action();
 		}
 	}
 
@@ -168,4 +162,32 @@ public class MainMenu extends Activity implements OnClickListener{
 			super.onBackPressed();
 		}
 	}
+	
+	// START EDITING HERE
+	
+	/**
+	 * This gets called when button 1 is clicked.
+	 */
+	private void button1Action() {
+		Intent intent = new Intent(MainMenu.this, GameBrowserActivity.class);
+		startActivity(intent);
+	}
+
+	/**
+	 * This gets called when button 2 is clicked.
+	 */
+	private void button2Action() {
+		Intent intent = new Intent(MainMenu.this, CharacterBrowserActivity.class);
+		startActivity(intent);
+	}
+	
+	/**
+	 * This gets called when button 3 is clicked.
+	 */
+	private void button3Action() {
+		Intent intent = new Intent(MainMenu.this, TemplateBrowserActivity.class);
+		startActivity(intent);
+	}
+	
+	// STOP EDITING HERE
 }
