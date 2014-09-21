@@ -36,7 +36,6 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity implements IFileBrowserReceiver {
 	private List<Template> templateList = null;
-	private static Activity myActivity = null;
 	// time stamp of the template directory
 	// with this we can determine if a template has been deleted / created
 	private long templateFolderTimeStamp = 0;
@@ -47,7 +46,6 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_browser);
 		Log.e("d", "On create!!!");
-		myActivity = this;
 		if (templateList == null) {
 			templateList = new ArrayList<Template>();
 		}
@@ -84,7 +82,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 									"");
 					// check for existence
 					if (templateFileName.equals("")) {
-						Toast.makeText(myActivity, "No template edited",
+						Toast.makeText(TemplateBrowserActivity.this, getString(R.string.toast_no_last_edited_tempalte),
 								Toast.LENGTH_LONG).show();
 					} else {
 						startEditingOfTemplate(templateFileName);
@@ -108,12 +106,8 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 					}
 					else{
 						Intent i = new Intent(TemplateBrowserActivity.this,
-								// TODO HIER
 								CreateNewTemplateActivity.class);
-
 						Log.e("er", "position: " + position);
-
-//						i.putExtra("position", position);
 						try {
 							final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
 								JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
@@ -123,8 +117,6 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 						catch(Throwable e) {
 							e.printStackTrace();
 						}
-//						i.putExtra("template", templateList.get(position));
-//						startActivityForResult(i, 0);
 					}
 				}
 			}
@@ -146,7 +138,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 
 						if (longClickedTemplate.fileAbsolutePath != null) {
 							AlertDialog.Builder builder = new AlertDialog.Builder(
-									myActivity);
+									TemplateBrowserActivity.this);
 							builder.setTitle(getResources().getString(
 									R.string.msg_want_to_delete));
 							builder.setMessage(getResources().getString(
@@ -232,11 +224,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 	protected void onResume() {
 		super.onResume();
 		Log.d("d", "On resume!!!");
-		if (!checkForTemplateDirectoryChange()) {
-			// we only check for single template changes if we are not
-			// reloading the whole list
-			checkForTemplateChanges();
-		}
+		loadTemplateList();
 	}
 
 	@Override
@@ -298,60 +286,36 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		adapter.notifyDataSetChanged();
 	}
 
-	// private void startEditingOfTemplate(Template template) {
-	// String fileName = template.getFileName();
-	// if (!fileName.isEmpty()) {
-	// startEditingOfTemplate(fileName);
-	// }
-	// }
+	private void startEditingOfTemplate(String fileName) {
+		if(fileName.equals("")) {
+			return;
+		}
+		Intent intent = new Intent(TemplateBrowserActivity.this,
+				TemplateGeneratorActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		// flag to distinguish between editing and creating
+		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
+		intent.putExtra(SlideoutNavigationActivity.EXTRA_TEMPLATE_FILE_NAME, fileName);
+		startActivity(intent);
+	}
 
 	/**
-	 * Checks every template for file changes. If a file has been changed the
-	 * template will be reloaded.
+	 * Loads and updates the list of available templates.
+	 */
+	private void loadTemplateList() {
+		if (!checkForTemplateDirectoryChange()) {
+			// we only check for single template changes if we are not
+			// reloading the whole list
+			checkForTemplateChanges();
+		}
+	}
+
+	/**
+	 * Creates and executes a new {@link TemplateListUpdaterTask}.
 	 */
 	private void checkForTemplateChanges() {
-		boolean templateListChanged = false;
-		// iterate over all loaded templates
-		for (int i = 0; i < templateList.size(); i++) {
-			Template templateToCheck;
-			// check for change
-			templateToCheck = templateList.get(i);
-			if (templateToCheck.hasFileTimeStampChanged()) {
-				// file changed so reload it
-				try {
-					// file for template
-					final File templateFile = templateToCheck.getTemplateFile();
-					// load template
-					final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface
-							.loadTemplate(templateFile, true);
-					// check
-					if (loadedTemplate != null) {
-						// take over changes
-						templateToCheck
-								.setTemplateName(loadedTemplate.getTemplateName());
-						templateToCheck.setWorldName(loadedTemplate.getGameName());
-						templateToCheck.setAuthor(loadedTemplate.getAuthor());
-						templateToCheck.setDate(loadedTemplate.getDate());
-//						templateToCheck.setIconID(loadedTemplate.getIconID());
-						templateToCheck
-								.setDescription(loadedTemplate.getDescription());
-						templateToCheck.setTagString(loadedTemplate.getTagString());
-						// update time stamp
-						templateToCheck.setFileTimeStamp(templateFile
-								.lastModified());
-						templateListChanged = true;
-					}
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		// if a tempalte changed
-		if (templateListChanged) {
-			// notify adapter that a change occured
-			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
-			adapter.notifyDataSetChanged();
-		}
+		TemplateListUpdaterTask updaterTask = new TemplateListUpdaterTask();
+		updaterTask.execute();
 	}
 
 	/**
@@ -374,62 +338,104 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		return false;
 	}
 
-	private void startEditingOfTemplate(String fileName) {
-		if (fileName.equals("")) {
-			return;
-		}
-		Intent intent = new Intent(TemplateBrowserActivity.this,
-				TemplateGeneratorActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		// flag to distinguish between editing and creating
-		intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
-		intent.putExtra(SlideoutNavigationActivity.EXTRA_TEMPLATE_FILE_NAME, fileName);
-		startActivity(intent);
-	}
-
-	private class TemplateListLoaderTask extends
-			AsyncTask<Void, Void, List<Template>> {
+	private class TemplateListUpdaterTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog pd;
 
 		@Override
 		protected void onPreExecute() {
-			pd = new ProgressDialog(myActivity);
-			pd.setTitle(getResources().getString(
-					R.string.msg_loading_template_list));
+			// create new progress dialog
+			pd = new ProgressDialog(TemplateBrowserActivity.this);
+			pd.setTitle(getString(R.string.msg_updating_template_list));
 			pd.setMessage(getResources().getString(R.string.msg_please_wait));
 			pd.setCancelable(false);
 			pd.setIndeterminate(true);
+			// show it
+			pd.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			boolean templateListChanged = false;
+			// iterate over all loaded templates
+			for (int i = 0; i < templateList.size(); i++) {
+				Template templateToCheck;
+				// check for change
+				templateToCheck = templateList.get(i);
+				if (templateToCheck.hasFileTimeStampChanged()) {
+					// file changed so reload it
+					try {
+						// file for template
+						final File templateFile = templateToCheck.getTemplateFile();
+						// load template
+						final de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = JacksonInterface
+								.loadTemplate(templateFile, true);
+						// check
+						if (loadedTemplate != null) {
+							// take over changes
+							templateToCheck
+									.setTemplateName(loadedTemplate.getTemplateName());
+							templateToCheck.setWorldName(loadedTemplate.getGameName());
+							templateToCheck.setAuthor(loadedTemplate.getAuthor());
+							templateToCheck.setDate(loadedTemplate.getDate());
+							templateToCheck.setIconPath(loadedTemplate.getIconPath());
+							templateToCheck
+									.setDescription(loadedTemplate.getDescription());
+							templateToCheck.setTagString(loadedTemplate.getTagString());
+							// update time stamp
+							templateToCheck.setFileTimeStamp(templateFile
+									.lastModified());
+							templateListChanged = true;
+						}
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			// if a template changed
+			if (templateListChanged) {
+				// notify adapter that a change occurred
+				TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
+				adapter.notifyDataSetChanged();
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void arg) {
+			// close progess dialog
+			if (pd != null) {
+				pd.dismiss();
+			}
+		}
+	};
+
+	/**
+	 * Loads all templates in the template directory and sets them as the new list to show.
+	 */
+	private class TemplateListLoaderTask extends AsyncTask<Void, Void, List<Template>> {
+		private ProgressDialog pd;
+
+		@Override
+		protected void onPreExecute() {
+			// create new progress dialog
+			pd = new ProgressDialog(TemplateBrowserActivity.this);
+			pd.setTitle(getString(R.string.msg_loading_template_list));
+			pd.setMessage(getResources().getString(R.string.msg_please_wait));
+			pd.setCancelable(false);
+			pd.setIndeterminate(true);
+			// show it
 			pd.show();
 		}
 
 		@Override
 		protected List<Template> doInBackground(Void... params) {
 			List<Template> templateList = new ArrayList<Template>();
-			
-			// FIXME remove as not using!
-			// Template template1 = new Template(
-			// "My First Template",
-			// "Dungeons and Dragons",
-			// "Anna",
-			// "20.05.2014",
-			// 2,
-			// "This is my first try to make my own template! D&D departs from traditional wargaming and assigns each player a specific character to play instead of a military formation. These characters embark upon imaginary adventures within a fantasy setting.");
-			// Template template2 = new Template("The Best Template",
-			// "Vampire the Masquerade", "Anna", "20.05.2014", 3);
-			// Template template3 = new Template("Schwarze Auge Template",
-			// "Das Schwarze Auge", "Anna", "21.05.2014", 4);
-			//
-			// templateList.add(template1);
-			// templateList.add(template2);
-			// templateList.add(template3);
-			
-			
 			/*
 			 * JACKSON START We iterate over all files in the template directory
 			 * and load the data into the list
 			 */
 			File templateDir = JacksonInterface
-					.getTemplateRootDirectory(myActivity);
+					.getTemplateRootDirectory(TemplateBrowserActivity.this);
 			if (templateDir != null) {
 				Log.d("TemplateBrowser",
 						"templateDir:" + templateDir.getAbsolutePath());
@@ -438,8 +444,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 					de.fau.cs.mad.gamekobold.jackson.Template loadedTemplate = null;
 					for (final File file : fileList) {
 						try {
-							loadedTemplate = JacksonInterface.loadTemplate(
-									file, true);
+							loadedTemplate = JacksonInterface.loadTemplate(file, true);
 							if (loadedTemplate != null) {
 								Template temp = new Template(
 										loadedTemplate.getTemplateName(),
@@ -481,14 +486,19 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			// set create new template row to the end of the list
 			templateList.add(new Template(getResources().getString(
 					R.string.row_create_new_template), "", "", "", -1));
-			((TemplateBrowserActivity) myActivity)
-					.setTemplateList(templateList);
+			// set the template list for the current activty
+			setTemplateList(templateList);
+			// close progess dialog
 			if (pd != null) {
 				pd.dismiss();
 			}
 		}
 	}
 
+	/**
+	 * Clears the internal template list and adds all template from the new list. Updates views.
+	 * @param templateList New List of templates.
+	 */
 	public void setTemplateList(List<Template> templateList) {
 		if (templateList != null) {
 			TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
@@ -497,29 +507,42 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			adapter.notifyDataSetChanged();
 		}
 	}
-	
+
+	/**
+	 * Shows the FileBrowser as a popup.
+	 */
 	private void showFileBrowserPopup() {
 		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
 		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
 	}
 
+	/**
+	 * Callback for FileBrowser. This is called when the user picked a file to import.
+	 */
 	@Override
 	public void onFilePicked(File file) {
+		// close file browser popup
 		FileBrowser.removeAsPopup(getFragmentManager());
-		// TODO try to import template
-//		Log.d("picked file!", file.getAbsolutePath());
+		// check if selected file is a template
 		if(JacksonFileValidator.isValidTemplate(file)) {
+			// get template directory
 			File templateRootDir = JacksonInterface.getTemplateRootDirectory(this);
 			try {
+				// try to copy file to template directory
 				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()));
+				// reload template list
+				loadTemplateList();
+				// inform user
 				Toast.makeText(this, getString(R.string.toast_imported_template), Toast.LENGTH_LONG).show();
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+				// failed to import template, inform user
 				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
 			}
 		}
 		else {
+			// file is not a template, inform user
 			Toast.makeText(this, getString(R.string.toast_file_is_not_template), Toast.LENGTH_LONG).show();			
 		}
 	}

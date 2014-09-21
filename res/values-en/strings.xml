@@ -188,6 +188,7 @@
 
     <!-- TemplateBrowserActivity -->
     <string name="msg_loading_template_list">Loading Template list&#8230;</string>
+    <string name="msg_updating_template_list">Updating Template list&#8230;</string>
     <string name="msg_please_wait">Please wait&#8230;</string>
     <string name="row_edit_last_template">Edit last Template&#8230;</string>
     <string name="row_create_new_template">Create new Teamplate&#8230;</string>
@@ -200,7 +201,8 @@
     <string name="toast_imported_template">Imported template.</string>
 	<string name="toast_imported_template_failed">Failed to import template!</string>
 	<string name="toast_file_is_not_template">File is not a template!</string>
-
+	<string name="toast_no_last_edited_tempalte">No last edited template found.</string>
+	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Row</string>
     <string name="text_add_column"> + Column</string>
