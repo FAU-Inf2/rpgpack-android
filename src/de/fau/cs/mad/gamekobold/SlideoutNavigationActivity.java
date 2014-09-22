@@ -482,23 +482,23 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			RelativeLayout customActionBar = (RelativeLayout) getActionBar().getCustomView();
 			if(customActionBar.findViewById(R.layout.character_spinner) == null){
 				//might be attached to "old" actionbar -> release and place here
+				Log.d("SlideoutNavigationActivity", "Character-Spinner added again");
 				if(characterSelectSpinner.getParent() != null){
 					((ViewGroup)characterSelectSpinner.getParent()).removeView(characterSelectSpinner);
 				}
-//				RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) customActionBar.getLayoutParams();
-//				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-//				customActionBar.addView(characterSelectSpinner, params);
-				customActionBar.addView(characterSelectSpinner);
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+				customActionBar.addView(characterSelectSpinner, params);
+//				customActionBar.addView(characterSelectSpinner);
 			}
 			//modify action_bar_title params so that its left of spinner
 			RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
-			        RelativeLayout.LayoutParams.WRAP_CONTENT,
+			        RelativeLayout.LayoutParams.MATCH_PARENT,
 			        RelativeLayout.LayoutParams.WRAP_CONTENT);
 			Log.d("SlideoutNavigationActivity", "Layout set! id spinner: " + characterSelectSpinner.getId());
 			relativeLayoutParams.addRule(RelativeLayout.LEFT_OF,
 					characterSelectSpinner.getId());
-//			relativeLayoutParams.addRule(RelativeLayout.RIGHT_OF,
-//			        textView[0].getId());
+			relativeLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 			titleTxtView.setLayoutParams(relativeLayoutParams);
 		}
 		return super.onPrepareOptionsMenu(menu);
