@@ -9,6 +9,12 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
         -->
+    <item
+        android:id="@+id/action_edit_mode"
+        android:title="@string/edit"
+        android:icon="@drawable/edit_icon"
+        android:showAsAction="ifRoom">
+    </item>
     
     <item
         android:id="@+id/action_editable_mode"
