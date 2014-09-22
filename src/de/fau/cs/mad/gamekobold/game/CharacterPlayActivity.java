@@ -201,32 +201,35 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		MenuItem invisibleItem = menu.findItem(R.id.action_show_invisible);
 		invisibleItem.setCheckable(true);
 		invisibleItem.setChecked(showInvisible);
-		if(inEditMode()){
-			Log.d("CharacterPlayActivity", "adapt menu for edit mode");
-			MenuItem menuItem = menu.findItem(R.id.action_editable_mode);
-		    CharSequence menuTitle = menuItem.getTitle();
-		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
-		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
-		    menuItem.setTitle(styledMenuTitle);
-		    menuItem = menu.findItem(R.id.action_selection_mode);
-		    menuTitle = menuItem.getTitle();
-		    styledMenuTitle = new SpannableString(menuTitle);
-    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
-    		styledMenuTitle.removeSpan(spans);
-		}
-		else if(inSelectionMode()){
-			Log.d("CharacterPlayActivity", "adapt menu for selection mode");
-			MenuItem menuItem = menu.findItem(R.id.action_selection_mode);
-		    CharSequence menuTitle = menuItem.getTitle();
-		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
-		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
-		    menuItem.setTitle(styledMenuTitle);
-		    menuItem = menu.findItem(R.id.action_editable_mode);
-		    menuTitle = menuItem.getTitle();
-		    styledMenuTitle = new SpannableString(menuTitle);
-    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
-    		styledMenuTitle.removeSpan(spans);
-		}
+//		if(inEditMode()){
+//			Log.d("CharacterPlayActivity", "adapt menu for edit mode");
+//			MenuItem menuItem = menu.findItem(R.id.action_editable_mode);
+//		    CharSequence menuTitle = menuItem.getTitle();
+//		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
+//		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
+//		    menuItem.setTitle(styledMenuTitle);
+//		    menuItem = menu.findItem(R.id.action_selection_mode);
+//		    menuTitle = menuItem.getTitle();
+//		    styledMenuTitle = new SpannableString(menuTitle);
+//    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
+//    		styledMenuTitle.removeSpan(spans);
+//		}
+//		else if(inSelectionMode()){
+//			Log.d("CharacterPlayActivity", "adapt menu for selection mode");
+//			MenuItem menuItem = menu.findItem(R.id.action_selection_mode);
+//		    CharSequence menuTitle = menuItem.getTitle();
+//		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
+//		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
+//		    menuItem.setTitle(styledMenuTitle);
+//		    menuItem = menu.findItem(R.id.action_editable_mode);
+//		    menuTitle = menuItem.getTitle();
+//		    styledMenuTitle = new SpannableString(menuTitle);
+//    		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
+//    		styledMenuTitle.removeSpan(spans);
+//		}
+		MenuItem editModeItem = menu.findItem(R.id.action_editable_mode);
+		editModeItem.setCheckable(true);
+		editModeItem.setChecked(inEditMode());
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
@@ -243,28 +246,29 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		case R.id.action_tools:
 			openTools();
 			return true;
-		case R.id.action_selection_mode:
-//			Log.d("CharacterPlayActivity", "set selection mode");
-			if(mode==modes.selection){
-				return true;
-			}
-			else{
-				mode = modes.selection;
-				reinflate();
-				invalidateOptionsMenu();
-				return true;
-			}
+//		case R.id.action_selection_mode:
+////			Log.d("CharacterPlayActivity", "set selection mode");
+//			if(mode==modes.selection){
+//				return true;
+//			}
+//			else{
+//				mode = modes.selection;
+//				reinflate();
+//				invalidateOptionsMenu();
+//				return true;
+//			}
 		case R.id.action_editable_mode:
-//			Log.d("CharacterPlayActivity", "set edit mode");
-			if(mode==modes.edit){
-				return true;
+			if (item.isChecked()) {
+				item.setChecked(false);
+				mode = modes.selection;
 			}
 			else{
+				item.setChecked(true);
 				mode = modes.edit;
-				reinflate();
-				invalidateOptionsMenu();
-				return true;
 			}
+			reinflate();
+			invalidateOptionsMenu();
+			return true;
 		case R.id.action_show_invisible:
 			if (item.isChecked()) {
 				Log.d("CharacterPlayActivity", "showInvisible == false");

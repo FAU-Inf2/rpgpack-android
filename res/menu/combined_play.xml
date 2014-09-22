@@ -15,11 +15,15 @@
     
     <item
         android:id="@+id/action_editable_mode"
-        android:title="@string/action_edit_mode"/>
+        android:title="@string/action_edit_mode"
+        android:checkable="true"
+        android:checked="false"/>
     
+    <!--
     <item
         android:id="@+id/action_selection_mode"
         android:title="@string/action_selection_mode"/>
+        -->
     
     <!--
     <item
