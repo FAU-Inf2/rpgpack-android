@@ -188,7 +188,8 @@
     <string name="hint_your_notes">Deine Notizen&#8230;</string>
 
     <!-- TemplateBrowserActivity -->
-    <string name="msg_loading_template_list">Templateliste wird geladen&#8230;</string>
+    <string name="msg_loading_template_list">Vorlagen werden geladen&#8230;</string>
+    <string name="msg_updating_template_list">Vorlagen werden geupdated&#8230;</string>
     <string name="msg_please_wait">Einen Augenblick bitte&#8230;</string>
     <string name="row_edit_last_template">Letztes Vorlage bearbeiten&#8230;</string>
     <string name="row_create_new_template">Neues Vorlage erstellen&#8230;</string>
@@ -201,6 +202,7 @@
 	<string name="toast_imported_template">Vorlage importiert.</string>
 	<string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
 	<string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
+	<string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
 	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>

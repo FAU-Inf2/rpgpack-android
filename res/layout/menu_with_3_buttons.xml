@@ -14,22 +14,41 @@
         android:weightSum="100" >
 
         <ImageView
-            android:id="@+id/ImageView02"
+            android:id="@+id/row1_imageView"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
             android:adjustViewBounds="true"
-            android:src="@drawable/menu_gradient_shape" />
+            android:src="@color/light_yellow" />
 
-        <TextView
-            android:id="@+id/TextView02"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="95"
-            android:ems="10"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/white" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/row1_textView_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/row1_textView_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -41,22 +60,41 @@
         android:weightSum="100" >
 
         <ImageView
-            android:id="@+id/ImageView01"
+            android:id="@+id/row2_imageView"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
             android:adjustViewBounds="true"
-            android:src="@drawable/menu_gradient_shape" />
+            android:src="@color/orange" />
 
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="95"
-            android:ems="10"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/white" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="95"
+                    android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/row2_textView_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/row2_textView_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -68,25 +106,41 @@
         android:weightSum="100" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/row3_imageView"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="5"
             android:adjustViewBounds="true"
-            android:src="@drawable/menu_gradient_shape" />
+            android:src="@color/peter_river" />
 
-        <TextView
-            android:id="@+id/TextView1"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="95"
-            android:ems="10"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/white" >
+            android:orientation="vertical" >
 
-            <requestFocus />
-        </TextView>
+            <TextView
+                android:id="@+id/row3_textView_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/row3_textView_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
