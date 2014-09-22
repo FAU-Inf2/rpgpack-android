@@ -21,6 +21,8 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_character"/>
     -->
+    
+	<item android:id="@+id/action_show_invisible" android:checkable="true" android:checked="false" android:title="@string/action_show_invisible"></item>
 
     
 </menu>

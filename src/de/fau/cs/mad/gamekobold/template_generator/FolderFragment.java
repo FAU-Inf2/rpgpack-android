@@ -10,6 +10,7 @@ import de.fau.cs.mad.gamekobold.jackson.Table;
 import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 
 import java.util.ArrayList;
 
@@ -331,6 +332,7 @@ public class FolderFragment extends GeneralFragment {
 		}
 		// add data
 		for(final AbstractTable subTable : jacksonTable.subTables) {
+			Log.d("INFLATING", "subtables");
 			FolderElementData newDataItem;
 			// switch type if sub table
 			if(subTable instanceof ContainerTable) {
@@ -344,21 +346,27 @@ public class FolderFragment extends GeneralFragment {
 					newDataItem.text.setText(subTable.tableName);
 				}
 				// add data holder to adapter
-				allData.add(newDataItem);
-				// set data holder jackson Table
-				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
-				newDataItem.checked = subTable.isSelected();
-				newDataItem.favorite = subTable.isFavorite();
-				// create fragment
-				newDataItem.childFragment = new FolderFragment();
-				newDataItem.childFragment.elementName = subTable.tableName;
-				newDataItem.childFragment.fragment_parent = this;
-				//((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
-				// call recursive
-				//note: editable must be given because the onCreate was not yet called
-				//and therefore variable "editable" not yet initialized
-				((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
+				Log.d("INFLATING", "subTable == " + subTable.tableName +
+						"; isSelected == " + subTable.isSelected());
+				if((SlideoutNavigationActivity.getAc().onlySelected && subTable.isSelected())
+						|| !SlideoutNavigationActivity.getAc().onlySelected
+						|| SlideoutNavigationActivity.getAc().showInvisible){
+					allData.add(newDataItem);
+					// set data holder jackson Table
+					newDataItem.jacksonTable = subTable;
+					Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+					newDataItem.checked = subTable.isSelected();
+					newDataItem.favorite = subTable.isFavorite();
+					// create fragment
+					newDataItem.childFragment = new FolderFragment();
+					newDataItem.childFragment.elementName = subTable.tableName;
+					newDataItem.childFragment.fragment_parent = this;
+					//((FolderFragment) newDataItem.childFragment).jacksonTable = (ContainerTable)subTable;
+					// call recursive
+					//note: editable must be given because the onCreate was not yet called
+					//and therefore variable "editable" not yet initialized
+					((FolderFragment) newDataItem.childFragment).inflateWithJacksonData((ContainerTable)subTable, activity);
+				}
 			}
 			else if(subTable instanceof Table) {
 				// create new folder element
@@ -371,17 +379,24 @@ public class FolderFragment extends GeneralFragment {
 					newDataItem.text.setText(subTable.tableName);
 				}
 				// add data holder to adapter
-				allData.add(newDataItem);
-				// set data holder jackson Table
-				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
-				newDataItem.checked = subTable.isSelected();
-				newDataItem.favorite = subTable.isFavorite();
-				// create fragment
-				newDataItem.childFragment = new TableFragment();
-				newDataItem.childFragment.elementName = subTable.tableName;
-				newDataItem.childFragment.fragment_parent = this;
-				((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);
+				Log.d("INFLATING", "subTable == " + subTable.tableName +
+						"; isSelected == " + subTable.isSelected());
+				if((SlideoutNavigationActivity.getAc().onlySelected && subTable.isSelected())
+						|| !SlideoutNavigationActivity.getAc().onlySelected
+						|| SlideoutNavigationActivity.getAc().showInvisible){
+					allData.add(newDataItem);
+					// set data holder jackson Table
+					newDataItem.jacksonTable = subTable;
+					Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+					newDataItem.checked = subTable.isSelected();
+					newDataItem.favorite = subTable.isFavorite();
+					// create fragment
+					newDataItem.childFragment = new TableFragment();
+					newDataItem.childFragment.elementName = subTable.tableName;
+					newDataItem.childFragment.fragment_parent = this;
+					((TableFragment) newDataItem.childFragment).jacksonInflate((Table)subTable, activity);
+
+				}
 			}
 			else if(subTable instanceof MatrixTable) {
 				// create new folder element
@@ -394,18 +409,25 @@ public class FolderFragment extends GeneralFragment {
 					newDataItem.text.setText(subTable.tableName);
 				}
 				// add data holder to adapter
-				allData.add(newDataItem);
-				// set data holder jackson Table
-				newDataItem.jacksonTable = subTable;
-				Log.d("INFLATING", "setting checked to "+subTable.isSelected());
-				newDataItem.checked = subTable.isSelected();
-				newDataItem.favorite = subTable.isFavorite();
-				// create fragment
-				// TODO add matrix inflation
-				newDataItem.childFragment = new MatrixFragment();
-				newDataItem.childFragment.elementName = subTable.tableName;
-				newDataItem.childFragment.fragment_parent = this;
-				((MatrixFragment) newDataItem.childFragment).jacksonInflate((MatrixTable)subTable, activity);
+				Log.d("INFLATING", "subTable == " + subTable.tableName +
+						"; isSelected == " + subTable.isSelected());
+				if((SlideoutNavigationActivity.getAc().onlySelected && subTable.isSelected())
+						|| !SlideoutNavigationActivity.getAc().onlySelected
+						|| SlideoutNavigationActivity.getAc().showInvisible){
+					allData.add(newDataItem);
+					// set data holder jackson Table
+					newDataItem.jacksonTable = subTable;
+					Log.d("INFLATING", "setting checked to "+subTable.isSelected());
+					newDataItem.checked = subTable.isSelected();
+					newDataItem.favorite = subTable.isFavorite();
+					// create fragment
+					// TODO add matrix inflation
+					newDataItem.childFragment = new MatrixFragment();
+					newDataItem.childFragment.elementName = subTable.tableName;
+					newDataItem.childFragment.fragment_parent = this;
+					((MatrixFragment) newDataItem.childFragment).jacksonInflate((MatrixTable)subTable, activity);
+
+				}
 			}
 			dataAdapter.notifyDataSetChanged();
 		}

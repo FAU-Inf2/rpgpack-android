@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.text.SpannableString;
@@ -50,6 +51,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_template_generator_welcome2);
 		super.onCreate(savedInstanceState);
+		onlySelected = true;
 		Intent intent = getIntent();
 		final String[] characterAbsPaths = intent
 				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
@@ -194,6 +196,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		else{
 			getMenuInflater().inflate(R.menu.play_actions, menu);
 		}
+		MenuItem invisibleItem = menu.findItem(R.id.action_show_invisible);
+		invisibleItem.setCheckable(true);
+		invisibleItem.setChecked(showInvisible);
 		if(inEditMode()){
 			Log.d("CharacterPlayActivity", "adapt menu for edit mode");
 			MenuItem menuItem = menu.findItem(R.id.action_edit_mode);
@@ -258,6 +263,19 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 				invalidateOptionsMenu();
 				return true;
 			}
+		case R.id.action_show_invisible:
+			if (item.isChecked()) {
+				Log.d("CharacterPlayActivity", "showInvisible == false");
+				item.setChecked(false);
+				SlideoutNavigationActivity.getAc().showInvisible = item.isChecked();
+				reinflate();
+			} else {
+				Log.d("CharacterPlayActivity", "showInvisible == true");
+				item.setChecked(true);
+				SlideoutNavigationActivity.getAc().showInvisible = item.isChecked();
+				reinflate();
+			}
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -10,6 +10,7 @@
     <string name="action_edit">Editieren</string>
 	<string name="action_edit_mode">Editier-Modus</string>
 	<string name="action_selection_mode">Betrachten-Modus</string>
+	<string name="action_show_invisible">Unsichtbare Elemente anzeigen</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>

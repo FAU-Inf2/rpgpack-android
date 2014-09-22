@@ -88,6 +88,8 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 	protected Spinner characterSelectSpinner;
 //	protected boolean editable = false;
 	protected modes mode = modes.selection;
+	public boolean onlySelected = false;
+	public boolean showInvisible = false;
 	
 	public enum modes{
 		selection, edit

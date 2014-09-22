@@ -209,31 +209,35 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				jacksonInflateWithData = true;
 				// adjust row count
 				final int jacksonRowNum = jacksonTable.getRowCount();
-				while(table.getChildCount() < jacksonRowNum) {
+//				while(table.getChildCount() < jacksonRowNum) {
+				for(int rowNum=0; rowNum < jacksonRowNum; rowNum++){
 					final int columnCount = jacksonTable.getNumberOfColumns();
-			        TableRow row = new TableRow(getActivity());
-			        registerForContextMenu(row);
-			        table.addView(row);
-					for(int i = 0 ; i < columnCount; i++) {
-						final int rowIndex = table.getChildCount()-1;
-						final ColumnHeader header = jacksonTable.getColumnHeader(i);
-						View newElement = null;
-						if(header.isString()) {
-							newElement = initTextField(row, jacksonTable.getEntry(i, rowIndex));
+					Log.d("TableFragment", "loading row " + rowNum + "; isSelected == " + jacksonTable.getRow(rowNum).isSelected());
+//					if(jacksonTable.getRow(rowNum).isSelected()){
+						TableRow row = new TableRow(getActivity());
+						registerForContextMenu(row);
+						table.addView(row);
+						for(int i = 0 ; i < columnCount; i++) {
+							final int rowIndex = table.getChildCount()-1;
+							final ColumnHeader header = jacksonTable.getColumnHeader(i);
+							View newElement = null;
+							if(header.isString()) {
+								newElement = initTextField(row, jacksonTable.getEntry(i, rowIndex));
+							}
+							else if(header.isCheckBox()) {
+								newElement = initCheckBox(jacksonTable.getEntry(i, rowIndex));
+							}
+							else {
+								newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex), i, rowIndex);
+							}
+							row.addView(newElement);
+							final int width = getNeededWidth(i);
+							final int height = getNeededHeight(rowIndex, row);
+							final LayoutParams lparams = new LayoutParams(width, height);
+							newElement.setLayoutParams(lparams);
 						}
-						else if(header.isCheckBox()) {
-							newElement = initCheckBox(jacksonTable.getEntry(i, rowIndex));
-						}
-						else {
-							newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex), i, rowIndex);
-						}
-						row.addView(newElement);
-						final int width = getNeededWidth(i);
-						final int height = getNeededHeight(rowIndex, row);
-						final LayoutParams lparams = new LayoutParams(width, height);
-					    newElement.setLayoutParams(lparams);
-					}
-					Log.d("TableFragment", "added row");
+						Log.d("TableFragment", "added row");
+//					}
 				}
 				while(table.getChildCount() > jacksonRowNum) {
 					removeRow((TableRow)table.getChildAt(table.getChildCount()-1));
@@ -309,15 +313,28 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //			IEditableContent jacksonEntry = jacksonTable.getEntry(i, 0);
 			headlines[i] = jacksonTable.getColumnHeader(i).getContent();
 		}
-		
-		String[] groupList = new String[jacksonRowNum];
-		String[][] itemValues = new String[jacksonRowNum][];
-		content_type[][] contentList = new content_type[jacksonRowNum][];
-		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+		String[] groupList;
+		String[][] itemValues;
+		content_type[][] contentList;
+		int amountSelected = 0;
+		if(SlideoutNavigationActivity.getAc().onlySelected && !SlideoutNavigationActivity.getAc().showInvisible){
+			for(int i=0; i<jacksonRowNum; i++){
+				if(jacksonTable.getRow(i).isSelected()){
+					amountSelected++;
+				}
+			}
+		}
+		else{
+			amountSelected = jacksonRowNum;
+		}
+		groupList = new String[amountSelected];
+		itemValues = new String[amountSelected][];
+		contentList = new content_type[amountSelected][];
+		for(int rowIndex=0; rowIndex<amountSelected; rowIndex++){
 			groupList[rowIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
 		}
 		
-		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+		for(int rowIndex=0; rowIndex<amountSelected; rowIndex++){
 			itemValues[rowIndex] = new String[jacksonTableColumnNumber];
 			contentList[rowIndex] = new content_type[jacksonTableColumnNumber];
 			for(int columnIndex=0; columnIndex<jacksonTableColumnNumber; columnIndex++){
@@ -1632,6 +1649,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	 * @param headerRow The TableRow for the header
 	 */
 	private void jacksonLoadTableHeader(final TableRow headerRow) {
+		Log.d("TableFragment","jacksonLoadTableHeader");
 		final int jacksonTableColumnNumber = jacksonTable.getNumberOfColumns();
 		// check if we got any saved columns (they are only created if user goes into table!)
 		// so if there are no saved columns or we didn't load any data we add the default columns 
