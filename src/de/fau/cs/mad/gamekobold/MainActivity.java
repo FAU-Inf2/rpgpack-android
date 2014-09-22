@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +12,6 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
-import de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 
 public class MainActivity extends Activity {
@@ -35,7 +35,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void settings(View view) {
-		this.notImplemented();
+		Intent intent = new Intent(MainActivity.this, MainMenu.class);
+		startActivity(intent);
 	}
 
 	public void loadGame(View view) {
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
+	@SuppressLint("ShowToast")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,7 +80,7 @@ public class MainActivity extends Activity {
 		MatrixTable.appContext = getApplicationContext();
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		getActionBar().setCustomView(R.layout.main_actionbar);
-		//leaveToast = Toast.makeText(this, "Press back again to leave",Toast.LENGTH_SHORT);
+		leaveToast = Toast.makeText(this, getString(R.string.leave_toast),Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main4);
 	}
 

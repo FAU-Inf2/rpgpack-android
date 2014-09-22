@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_dark"
+    android:orientation="vertical"
+    android:weightSum="3" >
+
+    <LinearLayout
+        android:id="@+id/row1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:weightSum="100" >
+
+        <ImageView
+            android:id="@+id/ImageView02"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:adjustViewBounds="true"
+            android:src="@drawable/menu_gradient_shape" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="95"
+            android:ems="10"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:weightSum="100" >
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:adjustViewBounds="true"
+            android:src="@drawable/menu_gradient_shape" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="95"
+            android:ems="10"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:weightSum="100" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:adjustViewBounds="true"
+            android:src="@drawable/menu_gradient_shape" />
+
+        <TextView
+            android:id="@+id/TextView1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="95"
+            android:ems="10"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/white" >
+
+            <requestFocus />
+        </TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

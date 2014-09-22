@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import de.fau.cs.mad.gamekobold.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.filebrowser.FileBrowserActivity;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
+import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
-public class TemplateBrowserActivity extends ListActivity {
+public class TemplateBrowserActivity extends ListActivity implements IFileBrowserReceiver {
 	private List<Template> templateList = null;
 	private static Activity myActivity = null;
 	// time stamp of the template directory
@@ -263,6 +267,10 @@ public class TemplateBrowserActivity extends ListActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		else if(id == R.id.menu_item_import_template) {
+			showFileBrowserPopup();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -487,6 +495,32 @@ public class TemplateBrowserActivity extends ListActivity {
 			adapter.clear();
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();
+		}
+	}
+	
+	private void showFileBrowserPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onFilePicked(File file) {
+		FileBrowser.removeAsPopup(getFragmentManager());
+		// TODO try to import template
+//		Log.d("picked file!", file.getAbsolutePath());
+		if(JacksonFileValidator.isValidTemplate(file)) {
+			File templateRootDir = JacksonInterface.getTemplateRootDirectory(this);
+			try {
+				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()));
+				Toast.makeText(this, getString(R.string.toast_imported_template), Toast.LENGTH_LONG).show();
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
+			}
+		}
+		else {
+			Toast.makeText(this, getString(R.string.toast_file_is_not_template), Toast.LENGTH_LONG).show();			
 		}
 	}
 }

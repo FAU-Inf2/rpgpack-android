@@ -1,15 +1,22 @@
 package de.fau.cs.mad.gamekobold.templatestore;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhaarman.supertooltips.*;
 import com.nhaarman.supertooltips.ToolTipView.OnToolTipViewClickedListener;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -24,9 +31,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore.Files;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +43,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -56,7 +66,7 @@ public class TemplateStoreMainActivity extends ListActivity {
     private TemplateStoreArrayAdapter adapter;
     private ApiTask task;
     private TemplateStoreClient client = new TemplateStoreClient();
-    private FrameLayout layout_main;
+    FrameLayout layout_main;
     PopupWindow popupWindow = null;
     ProgressDialog progress = null;
     SearchView searchView;
@@ -67,6 +77,7 @@ public class TemplateStoreMainActivity extends ListActivity {
     View footer;
 	private ListView sidebar;
 	private TemplateStoreSidebarArrayAdapter sidebarAdapter;
+	final int ACTIVITY_CHOOSE_FILE = 1;
     
       private class ScrollListener implements OnScrollListener {
 			private int currentScrollState;
@@ -119,8 +130,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 			  super.onPreExecute();
 			  if(initialLoad) {
 			  	 progress = new ProgressDialog(TemplateStoreMainActivity.this);
-		         progress.setTitle("Loading");
-		         progress.setMessage("Wait while loading...");
+		         progress.setTitle(getResources().getString(R.string.loading));
+		         progress.setMessage(getResources().getString(R.string.loading_wait));
 		         progress.setCanceledOnTouchOutside(false);
 		         progress.show();
 		         initialLoad = false;
@@ -196,7 +207,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 					templates = mapper.readValue(response.responseBody, StoreTemplate[].class);
 				} catch(Exception e){
 					Log.e("store", e.getMessage());
-					alertMessage("There was an error processing the result - See log for details");
+					alertMessage(getResources().getString(R.string.error_occured));
 					return;					
 				}
 
@@ -205,7 +216,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 	    		 
 	    		 if(templates.length == 0) {
 	    			 if(method != "loadMore") {
-	    				 alertMessage("Sorry, es wurden keine Templates gefunden");
+	    				 alertMessage(getResources().getString(R.string.no_templates_found));
 	    			 } else {
 	    				 moreDataAvailable = false;
 	    			 }
@@ -501,7 +512,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		  
 		  searchView.clearFocus();
 		  
-		  StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
+		  final StoreTemplate tmpl = (StoreTemplate) getListAdapter().getItem(position);
 	
 		    LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
 		    
@@ -535,7 +546,19 @@ public class TemplateStoreMainActivity extends ListActivity {
 		    TextView description = (TextView) popupView.findViewById(R.id.txt_popup_description);
 		    ImageView image = (ImageView) popupView.findViewById(R.id.img_popup);
 		    RatingBar bar = (RatingBar) popupView.findViewById(R.id.ratingbar_popup);
+		    Button storeButton = (Button) popupView.findViewById(R.id.buttonStore);
 		    
+		    storeButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SaveTemplateTask sTask = new SaveTemplateTask(TemplateStoreMainActivity.this, tmpl);
+					// load charsheet and save template to device
+					sTask.execute();
+				}
+		    	
+		    });
 		    worldname.setText(tmpl.getWorldname());
 		    templatename.setText(tmpl.getName());;
 		    description.setText(tmpl.getDescription());
@@ -549,8 +572,13 @@ public class TemplateStoreMainActivity extends ListActivity {
 			}
 		     */
 		    ImageView img = (ImageView) v.findViewById(R.id.templateStoreImg);
-		    image.setImageDrawable(img.getDrawable());
-		    
+		    if(tmpl.hasImage()) {
+		    	image.setImageBitmap(tmpl.getBm());
+		    } else {
+				Drawable defaultImage = getResources().getDrawable(R.drawable.game_default_white);
+				image.setBackgroundColor(Color.TRANSPARENT);
+				image.setImageDrawable(defaultImage);
+		    }
 		    bar.setRating(tmpl.getRating());
 		    
 		    //popupWindow.showAsDropDown(l, 50, -30);
@@ -582,4 +610,49 @@ public class TemplateStoreMainActivity extends ListActivity {
 		  this.isLoading = false;
 		  this.moreDataAvailable = true;
 	  }
+	  
+	  public void importTemplate(View v) {
+		  alertMessage("import!");
+		  Intent chooseFile;
+		  Intent intent;
+		  chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+		  chooseFile.setType("text/plain");
+		  chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+		  intent = Intent.createChooser(chooseFile, "Choose Application");
+		  startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
+	  }
+	  
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case ACTIVITY_CHOOSE_FILE: {
+				if (resultCode == RESULT_OK) {
+					Uri uri = data.getData();
+					String filePath = uri.getPath();
+					
+					String tmplStr = null;
+					try {
+						tmplStr = Helper.readTemplate(filePath);
+					} catch (IOException e) {
+						alertMessage(getResources().getString(R.string.store_invalid_file));
+						Log.e("store", "invalid file seleccted");
+					}
+					alertMessage(tmplStr);
+					ObjectMapper mapper = new ObjectMapper();
+					
+					Template tmpl;
+					try {
+						tmpl = mapper.readValue(tmplStr, Template.class);
+						JacksonInterface.saveTemplate(tmpl, this, false);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						alertMessage(getResources().getString(R.string.store_invalid_template));
+						return;
+					}
+					alertMessage(getResources().getString(R.string.store_template_import_success));
+				}
+			}
+		}
+	}
 }

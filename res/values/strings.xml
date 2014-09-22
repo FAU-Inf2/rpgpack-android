@@ -6,7 +6,10 @@
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_tools">Werkzeuge</string>
+	<string name="action_character">Charakter wählen</string>
     <string name="action_edit">Editieren</string>
+	<string name="action_edit_mode">Editier-Modus</string>
+	<string name="action_selection_mode">Betrachten-Modus</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
@@ -23,7 +26,8 @@
     <string name="manage_charackter">Charakter verwalten</string>
     <string name="settings">Einstellungen</string>
     <string name="alljoyn">Alljoyn</string>
-
+    <string name="leave_toast">Druecke erneut Zurueck um die App zu verlassen.</string>
+    
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
 
@@ -185,9 +189,18 @@
     <!-- TemplateBrowserActivity -->
     <string name="msg_loading_template_list">Templateliste wird geladen&#8230;</string>
     <string name="msg_please_wait">Einen Augenblick bitte&#8230;</string>
-    <string name="row_edit_last_template">Letztes Template bearbeiten&#8230;</string>
-    <string name="row_create_new_template">Neues Template erstellen&#8230;</string>
-
+    <string name="row_edit_last_template">Letztes Vorlage bearbeiten&#8230;</string>
+    <string name="row_create_new_template">Neues Vorlage erstellen&#8230;</string>
+    <string name="menu_label_export_template">Exportiere Vorlage als Datei</string>
+	<string name="menu_label_import_template">Importiere ein Vorlage aus einer Datei</string>
+	<string name="toast_exported_template">Vorlage exportiert nach: %s</string>
+	<string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
+	<string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
+	<string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
+	<string name="toast_imported_template">Vorlage importiert.</string>
+	<string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
+	<string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
+	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>
     <string name="text_add_column"> + Spalte</string>
@@ -317,7 +330,19 @@
     <string name="tag_best_rated">Bestbewertet</string>
     <string name="tag_newest">Neu</string>
     <string name="tag_recommended">Empfohlen</string>
-
+    <string name="buttonStore">Speichern</string>
+    <string name="loading">Laden</string>
+    <string name="loading_wait">Templates werden geladen</string>
+    <string name="loading_wait_single">Template wird geladen</string>
+    <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
+    <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
+    <string name="download_successful">Das Template wurde erfolgreich auf dem Gerät gespeichert</string>
+	<string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
+	<string name="buttonImport">Importieren</string>
+	<string name="store_invalid_file">Ungültige Datei ausgewählt</string>
+	<string name="store_invalid_template">Ungültiges Template ausgewählt</string>
+	<string name="store_template_import_success">Template wurde erfolgreich importiert</string>
+    
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
     <string name="hint_character_lvl">lvl</string>

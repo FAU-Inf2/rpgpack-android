@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_item_export_template_to_file" android:title="Export template to file"></item>
-    
-
+    <item android:id="@+id/menu_item_export_template_to_file" android:title="@string/menu_label_export_template"></item>
 </menu>

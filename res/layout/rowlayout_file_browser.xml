@@ -16,7 +16,8 @@
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        android:maxWidth="50dip"
+        android:maxHeight="35dp"
+        android:maxWidth="35dp"
         android:padding="4dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_menu_archive" />
