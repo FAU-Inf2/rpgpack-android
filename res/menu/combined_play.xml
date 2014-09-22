@@ -14,7 +14,7 @@
         android:title="@string/action_tools"/>
     
     <item
-        android:id="@+id/action_edit_mode"
+        android:id="@+id/action_editable_mode"
         android:title="@string/action_edit_mode"/>
     
     <item

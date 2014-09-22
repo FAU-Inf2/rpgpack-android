@@ -4,6 +4,8 @@ package de.fau.cs.mad.gamekobold.template_generator;
 import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.*;
+import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
+import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.jackson.Table;
@@ -13,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.opengl.Visibility;
 import android.support.v4.view.GravityCompat;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -228,6 +231,12 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
                 	holder.elementName = (TextView) view.findViewById(R.id.text);
                 	CheckBox cb = (CheckBox) view.findViewById(R.id.element_checkbox);
                 	CheckBox favorite = (CheckBox) view.findViewById(R.id.favorite_checkbox);
+                	if(SlideoutNavigationActivity.getAc() instanceof CharacterEditActivity){
+                		favorite.setVisibility(View.INVISIBLE);
+                	}
+                	else if(SlideoutNavigationActivity.getAc() instanceof CharacterPlayActivity){
+                		cb.setVisibility(View.INVISIBLE);
+                	}
                 	holder.box = cb;
                 	holder.favorite = favorite;
                 	//XXX: wahrs noetig: favorite setzen

@@ -10,7 +10,8 @@
         android:id="@+id/element_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/favorite_checkbox" />
+        android:gravity="left"
+         />
     
     <CheckBox
         android:id="@+id/favorite_checkbox"

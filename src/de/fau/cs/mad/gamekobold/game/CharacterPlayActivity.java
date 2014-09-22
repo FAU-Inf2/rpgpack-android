@@ -41,6 +41,8 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 	public static String MODE = "MODE";
 	private CharacterSheet[] characterSheets;
 	static int lastCharSelected = 0;
+	private boolean favoritesInSlideoutShown = false;
+
 //	modes mode;
 //	
 //	enum modes{
@@ -201,7 +203,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		invisibleItem.setChecked(showInvisible);
 		if(inEditMode()){
 			Log.d("CharacterPlayActivity", "adapt menu for edit mode");
-			MenuItem menuItem = menu.findItem(R.id.action_edit_mode);
+			MenuItem menuItem = menu.findItem(R.id.action_editable_mode);
 		    CharSequence menuTitle = menuItem.getTitle();
 		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
 		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
@@ -219,7 +221,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		    SpannableString styledMenuTitle = new SpannableString(menuTitle);
 		    styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(), 0);
 		    menuItem.setTitle(styledMenuTitle);
-		    menuItem = menu.findItem(R.id.action_edit_mode);
+		    menuItem = menu.findItem(R.id.action_editable_mode);
 		    menuTitle = menuItem.getTitle();
 		    styledMenuTitle = new SpannableString(menuTitle);
     		Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(), UnderlineSpan.class);
@@ -252,7 +254,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 				invalidateOptionsMenu();
 				return true;
 			}
-		case R.id.action_edit_mode:
+		case R.id.action_editable_mode:
 //			Log.d("CharacterPlayActivity", "set edit mode");
 			if(mode==modes.edit){
 				return true;
@@ -275,6 +277,11 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 				SlideoutNavigationActivity.getAc().showInvisible = item.isChecked();
 				reinflate();
 			}
+			return true;
+		case R.id.action_edit:
+			favoritesInSlideoutShown = !favoritesInSlideoutShown;
+			rootFragment.setCheckboxVisibility(favoritesInSlideoutShown);
+			Log.d("CharacterPlayActivity", "favorites shown == " + favoritesInSlideoutShown);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
