@@ -485,6 +485,9 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 				if(characterSelectSpinner.getParent() != null){
 					((ViewGroup)characterSelectSpinner.getParent()).removeView(characterSelectSpinner);
 				}
+//				RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) customActionBar.getLayoutParams();
+//				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+//				customActionBar.addView(characterSelectSpinner, params);
 				customActionBar.addView(characterSelectSpinner);
 			}
 			//modify action_bar_title params so that its left of spinner

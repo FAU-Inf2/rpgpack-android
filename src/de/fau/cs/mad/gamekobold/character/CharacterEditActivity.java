@@ -117,7 +117,8 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 @Override
 	 public boolean onPrepareOptionsMenu(Menu menu) {
 		 menu.clear();
-		 if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)) {
+		 if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)
+				 && !SlideoutNavigationActivity.getAc().inEditMode()) {
 			 getMenuInflater().inflate(R.menu.character_editor_slideout_opened, menu);
 		 }
 		 else{
@@ -140,10 +141,12 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 if (item.isChecked()) {
 					item.setChecked(false);
 					mode = modes.selection;
+					rootFragment.dataAdapter.setEditable(false);
 				}
 				else{
 					item.setChecked(true);
 					mode = modes.edit;
+					rootFragment.dataAdapter.setEditable(true);
 				}
 				reinflate();
 				invalidateOptionsMenu();
