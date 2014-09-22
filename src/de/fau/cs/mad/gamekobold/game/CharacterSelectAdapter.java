@@ -8,10 +8,13 @@ import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -19,7 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -40,82 +45,41 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) 
-    {   // Ordinary view in Spinner, we use android.R.layout.simple_spinner_item
+    {
 //        Log.d("CharacterSelectAdapter", "getView");
-
 		final Bitmap icon = ThumbnailLoader.loadThumbnail(sheets[position].getIconPath(),
 				SlideoutNavigationActivity.getAc());
 		LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View wholeView = li.inflate(R.layout.character_spinner_row, parent, false);
 		ImageView theImage = (ImageView) wholeView.findViewById(R.id.spinnerImage);
-		ImageView characterImage = new ImageView(SlideoutNavigationActivity.getAc());
-
-//		LayoutParams params = (LayoutParams) characterImage.getLayoutParams();
-//		params.width = 20;
-//		// existing height is ok as is, no need to edit it
-//		characterImage.setLayoutParams(params);
-		characterImage.setAdjustViewBounds(true);
-//		characterImage.setScaleType(ScaleType.FIT_XY);
-        Drawable drawable = null;
 		if(icon != null){
-//			characterImage = scaleImage(icon);
-			drawable = new BitmapDrawable(context.getResources(), icon);
-//			characterImage.setImageBitmap(icon);
-			characterImage.setImageDrawable(drawable);
+			Drawable drawable = new BitmapDrawable(context.getResources(), icon);
 			theImage.setImageDrawable(drawable);
 		}
 		else{
 			String uri = "@drawable/character_icon";
 			int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
-			drawable = context.getResources().getDrawable(imageResource);
-//			characterImage.setImageDrawable(drawable);
-			characterImage.setImageResource(imageResource);
 			theImage.setImageResource(imageResource);
+
 		}
-
-//		LinearLayout.LayoutParams vp = 
-//		        new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//		theImage.setAdjustViewBounds(true);
+//		theImage.setScaleType(ScaleType.FIT_CENTER);
 		
-//		LayoutParams params = (LayoutParams) characterImage.getLayoutParams();
-//        Log.d("CharacterSelectAdapter", "dimens: width==" + params.width + "; height==" + params.height);
-//        drawable.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-//		int width = drawable.getMeasuredWidth();
-//		int height = drawable.getMeasuredHeight();
-//        Log.d("CharacterSelectAdapter", "MEASURED dimens: width==" + width + "; height==" + height);
+        //margin comes from parent to we have to subtract that
+		Window window = SlideoutNavigationActivity.getAc().getWindow();
+	    View v = window.getDecorView();
+	    int resId = SlideoutNavigationActivity.getAc().getResources().getIdentifier("action_bar_container", "id", "android");
+	    View actionBarView = v.findViewById(resId);
+        LinearLayout actionBarParent = (LinearLayout) actionBarView.getParent();
+		ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) actionBarParent.getLayoutParams();
+//        Log.d("CharacterSelectAdapter", "actionBarHeight method == " + getActionBarHeight());
+//        Log.d("CharacterSelectAdapter", "actionBar padding top == " + actionBarView.getPaddingTop());
+//        Log.d("CharacterSelectAdapter", "actionBar padding bot == " + actionBarView.getPaddingBottom());
+//        Log.d("CharacterSelectAdapter", "actionBar margin top == " + pxToDp(lp.topMargin));
+//        Log.d("CharacterSelectAdapter", "actionBar margin bottom == " + pxToDp(lp.bottomMargin));
 
-//		LinearLayout.LayoutParams vp = 
-//		        new LinearLayout.LayoutParams(width, LayoutParams.WRAP_CONTENT);
-//		characterImage.setLayoutParams(vp);
-
-        
-//        BitmapDrawable bd=(BitmapDrawable) drawable;
-//        int height=bd.getBitmap().getHeight();
-//        int width=bd.getBitmap().getWidth();
-//        Log.d("CharacterSelectAdapter", "MEASURED dimens: width==" + width + "; height==" + height);
-//        characterImage.setMaxWidth(width);
-        
-        int actionBarHeight = -1;
-        TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-        {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(
-            		tv.data,context.getResources().getDisplayMetrics());
-        }
-//        Log.d("CharacterSelectAdapter", "actionBarHeight == " + actionBarHeight);
-        
-//        LinearLayout ll = new LinearLayout(context);
-//        ll.setLayoutParams(new LinearLayout.LayoutParams(actionBarHeight, actionBarHeight));
-//        ll.addView(characterImage);
-//        
-//		return ll;
-//        return characterImage;
-        return wholeView;
-//        return super.getView(position, convertView, parent);   
-		
-		//test
-//		TextView text = new TextView(context);
-//		text.setText("a");
-//		return text;
+		scaleImage(theImage, (getActionBarHeight()-pxToDp(lp.topMargin)-pxToDp(lp.bottomMargin)));
+        return theImage;
     }
 	
 	@Override
@@ -130,56 +94,80 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
         return tv;
     }
 	
-	private ImageView scaleImage(Bitmap bitmap)
+	private void scaleImage(ImageView view, int boundBoxInDp)
 	{
-	    // Get current dimensions AND the desired bounding box
+	    // Get the ImageView and its bitmap
+	    Drawable drawing = view.getDrawable();
+	    Bitmap bitmap = ((BitmapDrawable)drawing).getBitmap();
+
+	    // Get current dimensions
 	    int width = bitmap.getWidth();
 	    int height = bitmap.getHeight();
-	    int bounding = dpToPx(250);
-	    Log.i("Test", "original width = " + Integer.toString(width));
-	    Log.i("Test", "original height = " + Integer.toString(height));
-	    Log.i("Test", "bounding = " + Integer.toString(bounding));
 
 	    // Determine how much to scale: the dimension requiring less scaling is
 	    // closer to the its side. This way the image always stays inside your
-	    // bounding box AND either x/y axis touches it.  
-	    float xScale = ((float) bounding) / width;
-	    float yScale = ((float) bounding) / height;
+	    // bounding box AND either x/y axis touches it.
+	    float xScale = ((float) boundBoxInDp) / width;
+	    float yScale = ((float) boundBoxInDp) / height;
 	    float scale = (xScale <= yScale) ? xScale : yScale;
-	    Log.i("Test", "xScale = " + Float.toString(xScale));
-	    Log.i("Test", "yScale = " + Float.toString(yScale));
-	    Log.i("Test", "scale = " + Float.toString(scale));
 
 	    // Create a matrix for the scaling and add the scaling data
 	    Matrix matrix = new Matrix();
 	    matrix.postScale(scale, scale);
 
-	    // Create a new bitmap and convert it to a format understood by the ImageView 
+	    // Create a new bitmap and convert it to a format understood by the ImageView
 	    Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-	    width = scaledBitmap.getWidth(); // re-use
-	    height = scaledBitmap.getHeight(); // re-use
 	    BitmapDrawable result = new BitmapDrawable(scaledBitmap);
-	    Log.i("Test", "scaled width = " + Integer.toString(width));
-	    Log.i("Test", "scaled height = " + Integer.toString(height));
+	    width = scaledBitmap.getWidth();
+	    height = scaledBitmap.getHeight();
 
 	    // Apply the scaled bitmap
-	    ImageView view = new ImageView(context);
 	    view.setImageDrawable(result);
 
 	    // Now change ImageView's dimensions to match the scaled image
-	    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams(); 
+	    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
 	    params.width = width;
 	    params.height = height;
 	    view.setLayoutParams(params);
-
-	    Log.i("Test", "done");
-	    return view;
 	}
 
-	private int dpToPx(int dp)
-	{
-	    float density = context.getResources().getDisplayMetrics().density;
-	    return Math.round((float)dp * density);
+//	private int dpToPx(int dp)
+//	{
+//	    float density = context.getApplicationContext().getResources().getDisplayMetrics().density;
+//	    return Math.round((float)dp * density);
+//	}
+	
+	private int pxToDp(int px) {
+	    DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+	    return dp;
 	}
+	
+	public int getActionBarHeight() {
+		int actionBarHeight = 0;
+		TypedValue tv = new TypedValue();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			if (SlideoutNavigationActivity.getAc().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv,
+					true))
+				actionBarHeight = TypedValue.complexToDimensionPixelSize(
+						tv.data, SlideoutNavigationActivity.getAc().getResources().getDisplayMetrics());
+		} else {
+			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,
+					SlideoutNavigationActivity.getAc().getResources().getDisplayMetrics());
+		}
+		return actionBarHeight;
+		//commented out 2 other ways to get action bar dimensions
+		//method 1
+//	    final TypedArray styledAttributes = getContext().getTheme().obtainStyledAttributes(
+//	            new int[] { android.R.attr.actionBarSize });
+//	    actionBarHeight = (int) styledAttributes.getDimension(0, 0);
+//	    styledAttributes.recycle();
+	    //method 2
+//	    Window window = SlideoutNavigationActivity.theActiveActivity.getWindow();
+//	    View v = window.getDecorView();
+//	    int resId = SlideoutNavigationActivity.theActiveActivity.
+//	    		getResources().getIdentifier("action_bar_container", "id", "android");
 
+	}
+	
 }
