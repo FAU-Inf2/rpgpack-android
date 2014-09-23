@@ -144,7 +144,7 @@ public class ToolboxMapView extends GridView {
 	public void setColor(String newColor) {
 
 		paintColor = Color.parseColor(newColor);
-		if (drawPaint.getColor() == paintColor) {
+		if (drawPaint.getColor() == paintColor && paint_enabled == true) {
 			paint_enabled = false;
 		} else {
 			drawPaint.setColor(paintColor);
