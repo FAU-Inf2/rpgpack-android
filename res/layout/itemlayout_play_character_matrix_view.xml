@@ -67,4 +67,13 @@
         android:scaleType="fitXY"
         android:src="@drawable/shape_circle_matrix_green" />
 
+    <CheckBox
+        android:id="@+id/favorite_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/character_icon_circle"
+        android:layout_toRightOf="@+id/textValue"
+        android:button="@android:drawable/btn_star"
+        android:focusable="false" />
+
 </RelativeLayout>

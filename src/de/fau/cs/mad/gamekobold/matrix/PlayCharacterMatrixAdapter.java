@@ -9,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
 public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
@@ -41,7 +45,7 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
 			convertView = inflater.inflate(
 					R.layout.itemlayout_play_character_matrix_view, parent,
 					false);
-			MatrixItem curItem = items.get(position);
+			final MatrixItem curItem = items.get(position);
 
 			if (curItem.isSelected()) {
 
@@ -62,14 +66,43 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
 				itemRange.setText(curItem.getRangeMin() + " - "
 						+ curItem.getRangeMax());
 				iModificator.setText(curItem.getModificator());
+
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				favoriteItem
+						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+							@Override
+							public void onCheckedChanged(
+									CompoundButton buttonView, boolean isChecked) {
+
+								curItem.setFavorite(isChecked);
+								// TODO Benni save isFavorite for current
+								// Matrix
+								// Item
+								if (isChecked) {
+									Toast.makeText(
+											context,
+											curItem.getItemName()
+													+ context
+															.getResources()
+															.getString(
+																	R.string.msg_added_to_matrix_favorite),
+											Toast.LENGTH_SHORT).show();
+								}
+
+							}
+						});
+
 			} else {
 				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
-				
+
 			}
 			// or reuse
 		} else {
 
-			MatrixItem curItem = items.get(position);
+			final MatrixItem curItem = items.get(position);
 			if (curItem.isSelected()) {
 				TextView itemName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
@@ -103,9 +136,38 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
 						itemModificator.setTextColor(context.getResources()
 								.getColor(R.color.white));
 				}
+
+				CheckBox favoriteItem = (CheckBox) convertView
+						.findViewById(R.id.favorite_checkbox);
+				favoriteItem.setChecked(curItem.isFavorite());
+
+				favoriteItem.setEnabled(true);
+				favoriteItem
+						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+							@Override
+							public void onCheckedChanged(
+									CompoundButton buttonView, boolean isChecked) {
+
+								curItem.setFavorite(isChecked);
+								// TODO Benni save isFavorite for current
+								// Matrix
+								// Item
+								if (isChecked) {
+									Toast.makeText(
+											context,
+											curItem.getItemName()
+													+ context
+															.getResources()
+															.getString(
+																	R.string.msg_added_to_matrix_favorite),
+											Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+
 			} else {
 				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
-				
+
 			}
 		}
 		return convertView;

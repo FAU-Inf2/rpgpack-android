@@ -10,28 +10,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import android.util.Log;
 
+/**
+ * This class represents one game group. All played characters are in
+ * <code>characterList</code>.
+ * 
+ */
 public class Game implements Serializable {
 	private String gameName;
 	private String author;
 	private String date = null;
 	private List<String> tagList;
 	private String description;
-
-	//TODO dte check this! because of notifydatasetchanged()
 	private List<GameCharacter> characterList;
 	private String iconPath;
-
 	private String fileAbsolutePath;
-
 	private long fileTimeStamp;
-	
-	public Game(String gameName,
-				String author,
-				String date,
-				List<String> tagList,
-				String description,
-				List<GameCharacter> characterList,
-				String iconPath) {
+
+	public Game(String gameName, String author, String date,
+			List<String> tagList, String description,
+			List<GameCharacter> characterList, String iconPath) {
 		this(gameName, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
@@ -87,7 +84,6 @@ public class Game implements Serializable {
 		return true;
 	}
 
-
 	public String getGameName() {
 		return gameName;
 	}
@@ -125,7 +121,7 @@ public class Game implements Serializable {
 	}
 
 	public String getDescription() {
-		if(description == null) {
+		if (description == null) {
 			description = "";
 		}
 		return description;
@@ -140,35 +136,33 @@ public class Game implements Serializable {
 		return characterList;
 	}
 
-	//TODO dte check this!!!!
 	@JsonProperty("characters")
 	public void setCharakterList(List<GameCharacter> characterList) {
-		Log.e("CharacterList", "Setting CharacterList to " + characterList.size());
+		Log.e("CharacterList",
+				"Setting CharacterList to " + characterList.size());
 		this.characterList.clear();
 		this.characterList.addAll(characterList);
-		return; 
+		return;
 	}
 
 	public String getIconPath() {
 		return iconPath;
 	}
 
-	@JsonProperty("icon") 
+	@JsonProperty("icon")
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
 
-	
 	public String getFileAbsolutePath() {
 		return fileAbsolutePath;
 	}
-	
+
 	@JsonIgnore
 	public void setFileAbsolutePath(String fileAbsolutePath) {
 		this.fileAbsolutePath = fileAbsolutePath;
 	}
 
-	
 	public long getFileTimeStamp() {
 		return fileTimeStamp;
 	}
