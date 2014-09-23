@@ -21,8 +21,9 @@
             android:background="@null"
             android:maxHeight="100dp"
             android:maxWidth="100dp"
+            android:padding="8dp"
             android:scaleType="fitXY"
-            android:src="@drawable/addphoto" />
+            android:src="@drawable/newphoto_add_black" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -53,7 +54,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
-            <!--    <ImageButton
+                <!--
+                    <ImageButton
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +64,7 @@
                     android:layout_marginRight="23dp"
                     android:background="@null"
                     android:src="@android:drawable/ic_notification_clear_all" />
- -->
+                -->
 
             </RelativeLayout>
 
@@ -104,11 +106,8 @@
                     android:background="@null"
                     android:text="@string/change_color_label"
                     android:textColor="@color/white" />
-
             </RelativeLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
 
     <Button
