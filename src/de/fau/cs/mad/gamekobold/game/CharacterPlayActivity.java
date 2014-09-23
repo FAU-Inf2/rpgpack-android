@@ -38,7 +38,6 @@ import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
 public class CharacterPlayActivity extends SlideoutNavigationActivity implements OnItemSelectedListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
-	public static String MODE = "MODE";
 	private CharacterSheet[] characterSheets;
 	static int lastCharSelected = 0;
 	private boolean favoritesInSlideoutShown = false;
@@ -57,37 +56,42 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		Intent intent = getIntent();
 		final String[] characterAbsPaths = intent
 				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
-		characterSheets = new CharacterSheet[characterAbsPaths.length];
-		if (characterAbsPaths != null) {
-			Log.d("CharacterPlayActivity", "characterAbsPath != null");
-			try {
-				int index=0;
-				for(String onePath: characterAbsPaths){
-					characterSheets[index++] = JacksonInterface.loadCharacterSheet(new File(
-							onePath), false);
-				}
-					
-					
-//				characterSheet = JacksonInterface.loadCharacterSheet(new File(
-//						characterAbsPath), false);
-				Log.d("CharacterPlayActivity", "loaded sheets");
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+		if(savedInstanceState != null){
+			characterSheets = (CharacterSheet[]) savedInstanceState.getParcelableArray("characterSheets");
 		}
-		if (characterSheets != null) {
-			ContainerTable table = null;
-			final int charNumberToInflate = intent
-					.getIntExtra(INFLATE_CHARACTER_NUMBER, -1);
-			if(charNumberToInflate != -1){
-				table = characterSheets[charNumberToInflate].getRootTable();
+		else{
+			characterSheets = new CharacterSheet[characterAbsPaths.length];
+			if (characterAbsPaths != null) {
+				Log.d("CharacterPlayActivity", "characterAbsPath != null");
+				try {
+					int index=0;
+					for(String onePath: characterAbsPaths){
+						characterSheets[index++] = JacksonInterface.loadCharacterSheet(new File(
+								onePath), false);
+					}
+
+
+					//				characterSheet = JacksonInterface.loadCharacterSheet(new File(
+					//						characterAbsPath), false);
+					Log.d("CharacterPlayActivity", "loaded sheets");
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
-			else{
-				table = characterSheets[0].getRootTable();
+			if (characterSheets != null) {
+				ContainerTable table = null;
+				final int charNumberToInflate = intent
+						.getIntExtra(INFLATE_CHARACTER_NUMBER, -1);
+				if(charNumberToInflate != -1){
+					table = characterSheets[charNumberToInflate].getRootTable();
+				}
+				else{
+					table = characterSheets[0].getRootTable();
+				}
+				//TODO create new Table type - Favorite! and add it for inflation!
+
+				super.inflate(table);
 			}
-			//TODO create new Table type - Favorite! and add it for inflation!
-			
-			super.inflate(table);
 		}
 		
 //		//use custom adapter
@@ -296,8 +300,8 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable("MODE", mode);
 		super.onSaveInstanceState(outState);
+		outState.putParcelableArray("characterSheets", characterSheets);
 	};
 
 	/**

@@ -39,7 +39,7 @@ public class TemplateGeneratorActivity extends SlideoutNavigationActivity {
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		// getFragmentManager().putFragment(outState, "currentFragment",
 		// currentFragment);
 		outState.putBoolean("activityExistedBefore", true);
