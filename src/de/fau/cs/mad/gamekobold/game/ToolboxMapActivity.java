@@ -149,17 +149,19 @@ public class ToolboxMapActivity extends Activity {
 		popup.show();
 	}
 
-	private Bitmap getBitmapFromPath(String path) throws IOException {
-		final BitmapFactory.Options options = new BitmapFactory.Options();
+	private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+		
+		ParcelFileDescriptor parcelFileDescriptor =
+	             getContentResolver().openFileDescriptor(uri, "r");
+		FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		Bitmap image = BitmapFactory.decodeFile(path, options);
-
+		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
 		options.inSampleSize = calculateInSampleSize(options, mWidth, mHeight);
-
 		options.inJustDecodeBounds = false;
-
-		image = BitmapFactory.decodeFile(path, options);
-
+		image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+		Log.i("string image", image.toString());
+		parcelFileDescriptor.close();
 		return image;
 	}
 
@@ -169,9 +171,8 @@ public class ToolboxMapActivity extends Activity {
 		case 1: {
 			if (resultCode == RESULT_OK) {
 				Uri uri = data.getData();
-				String path = uri.getPath();
 				try {
-					mapView.setFileToBackground(getBitmapFromPath(path));
+					mapView.setFileToBackground(getBitmapFromUri(uri));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
