@@ -107,6 +107,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 		theActiveActivity = this;
 		if(savedInstanceState != null){
 			mode = (modes) savedInstanceState.getSerializable("mode");
+			showInvisible = savedInstanceState.getBoolean("showInvisible");
 		}
 		else{
 			//if no mode is saved -> take default one
@@ -608,6 +609,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 	 public void onSaveInstanceState(Bundle savedInstanceState) {
 	   super.onSaveInstanceState(savedInstanceState);
 	   savedInstanceState.putSerializable("mode", mode);
+	   savedInstanceState.putBoolean("showInvisible", showInvisible);
 	 }
 
 	/**
