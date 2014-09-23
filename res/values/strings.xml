@@ -392,6 +392,11 @@
     
     <!-- CharacterMenu -->
     <string name="menu_new_character">Neuer Charakter</string>
-    <string name="menu_edit_character">Charakter bearbeiten</string>
+    <string name="menu_edit_characters">Charaktere bearbeiten</string>
+    
+    <!-- TemplateMenu -->
+    <string name="menu_new_template">Neue Vorlage</string>
+    <string name="menu_edit_templates">Vorlagen bearbeiten</string>
+    <string name="menu_download_templates">Vorlagen herunterladen</string>
     
 </resources>

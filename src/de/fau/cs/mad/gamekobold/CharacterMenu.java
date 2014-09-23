@@ -7,7 +7,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setTitle(getString(R.string.menu_your_characters));
 		// gradient colors
 		// button 1 gradient color
 		int[] gradient1 = {
@@ -37,7 +37,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 		setButton1DescriptionText("Beschreibung");
 		
 		// button 2
-		setButton2MainText(getString(R.string.menu_edit_character));
+		setButton2MainText(getString(R.string.menu_edit_characters));
 		setButton2DescriptionText("Beschreibung");
 
 		// button 3
