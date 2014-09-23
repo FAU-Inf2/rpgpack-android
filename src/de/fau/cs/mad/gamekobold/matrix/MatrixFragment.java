@@ -42,7 +42,6 @@ public class MatrixFragment extends GeneralFragment {
 	public List<MatrixItem> itemsList = null;
 	public List<MatrixItem> playMatrixItems = null;
 
-	// dte check adapter type!
 	MatrixViewArrayAdapter adapterCreateTemplate;
 	NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
 	PlayCharacterMatrixAdapter adapterPlay;
