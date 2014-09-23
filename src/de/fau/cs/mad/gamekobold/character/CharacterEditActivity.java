@@ -36,19 +36,26 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 super.onCreate(savedInstanceState);
 		 Intent intent = getIntent();
 		 characterSheet = null;
-		 final String characterAbsPath = intent.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
-		 Log.d("CharacterEditActivity", "onCreate absPath:"+ characterAbsPath);
-		 if(characterAbsPath != null) {
-			 try {
-				 characterSheet = JacksonInterface.loadCharacterSheet(new File(characterAbsPath), false);
-				 Log.d("CharacterEditActivity", "loaded sheet");
-			 }
-			 catch(Throwable e) {
-				 e.printStackTrace();
-			 }
+		 if(savedInstanceState != null){
+			 Log.d("CharacterEditActivity", "got saved characterSheet");
+			 characterSheet = savedInstanceState.getParcelable("characterSheet");
 		 }
-		 if(characterSheet != null) {
-			 super.inflate(characterSheet.getRootTable());
+		 else{
+			 final String characterAbsPath = intent.getStringExtra(EXTRA_CHARACTER_ABS_PATH);
+			 Log.d("CharacterEditActivity", "onCreate absPath:"+ characterAbsPath);
+			 if(characterAbsPath != null) {
+				 try {
+					 characterSheet = JacksonInterface.loadCharacterSheet(new File(characterAbsPath), false);
+					 Log.d("CharacterEditActivity", "loaded sheet");
+				 }
+				 catch(Throwable e) {
+					 e.printStackTrace();
+				 }
+			 }
+			 if(characterSheet != null) {
+				 Log.d("CharacterEditActivity", "inflated sheet");
+				 super.inflate(characterSheet.getRootTable());
+			 }
 		 }
 		 //enable all checkboxes except in slideout-menu
 		 //use an asynctask to allow inflation of folders/tables/matrices
@@ -211,5 +218,11 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			startActivity(intent);
 //			super.onBackPressed();
 		}
+	 
+	 @Override
+	 public void onSaveInstanceState(Bundle savedInstanceState) {
+	   super.onSaveInstanceState(savedInstanceState);
+	   savedInstanceState.putParcelable("characterSheet", characterSheet);
+	 }
 
 }

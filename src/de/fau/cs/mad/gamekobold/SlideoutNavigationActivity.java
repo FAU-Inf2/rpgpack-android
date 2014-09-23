@@ -204,6 +204,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 				"rootFragment");
 		// create it because we need its data for slideoutmenu
 		if (rootFragment == null) {
+			Log.d("SlideoutNavigationActivity", "rootFragment == null");
 			rootFragment = new FolderFragment();
 			rootFragment.isATopFragment = true;
 			/*
