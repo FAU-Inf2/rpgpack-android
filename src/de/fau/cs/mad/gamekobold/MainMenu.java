@@ -9,7 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class MainMenu extends AbstractThreeButtonMenu{
+public class MainMenu extends AbstractThreeButtonMenu {
 	// toast for managing double press to exit feature
 	private Toast leaveToast = null;
 
@@ -46,16 +46,16 @@ public class MainMenu extends AbstractThreeButtonMenu{
 
 		// Set the texts
 		// button 1
-		setButton1MainText("Game Browser");
-		setButton1DescriptionText("foo");
+		setButton1MainText(getString(R.string.menu_your_games));
+		setButton1DescriptionText("Beschreibung");
 		
 		// button 2
-		setButton2MainText("Character Browser");
-		setButton2DescriptionText("foo");
+		setButton2MainText(getString(R.string.menu_your_characters));
+		setButton2DescriptionText("Beschreibung");
 
 		// button 3
-		setButton3MainText("Template Browser");
-		setButton3DescriptionText("foo");
+		setButton3MainText(getString(R.string.menu_your_templates));
+		setButton3DescriptionText("Beschreibung");
 
 		// set the colors for the gradients
 		setButton1Color(gradient1);
@@ -76,7 +76,7 @@ public class MainMenu extends AbstractThreeButtonMenu{
 	 */
 	@Override
 	protected void button1Action() {
-		Intent intent = new Intent(MainMenu.this, GameBrowserActivity.class);
+		Intent intent = new Intent(MainMenu.this, GameMenu.class);
 		startActivity(intent);
 	}
 

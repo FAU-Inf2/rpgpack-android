@@ -379,4 +379,13 @@
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Value:</string>
 
+    <!-- MainMenu -->
+    <string name="menu_your_games">Your games</string>
+    <string name="menu_your_characters">Your characters</string>
+    <string name="menu_your_templates">Your templates</string>
+    
+    <!-- GameMenu -->
+    <string name="menu_new_game">New game</string>
+    <string name="menu_continue_game">Continue game</string>
+    <string name="menu_alljoyn">Alljoyn</string>
 </resources>
