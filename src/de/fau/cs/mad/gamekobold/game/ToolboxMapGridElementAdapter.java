@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint.Style;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -25,21 +31,21 @@ import de.fau.cs.mad.gamekobold.R.drawable;
 public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private final ArrayList<Integer> dotsList;
+	private final ArrayList<GradientDrawable> dotsList;
 	private LayoutInflater mInflater;
-	private boolean drag_active;
 
 	public ToolboxMapGridElementAdapter(Context context,
-			ArrayList<Integer> dots, boolean drag_active) {
+			ArrayList<GradientDrawable> dots) {
 		mContext = context;
 		dotsList = dots;
 		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.drag_active = drag_active;
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
+		
+		
 		View squareContainerView = convertView;
 
 		if (squareContainerView == null) {
@@ -52,12 +58,11 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 			final ImageView pieceView = (ImageView) squareContainerView
 					.findViewById(R.id.map_piece);
 			if (dotsList.get(position) != null) {
-				pieceView.setImageResource(dotsList.get(position));
+				pieceView.setImageDrawable(dotsList.get(position));
 				pieceView.setTag(position);
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
-						if (drag_active){
 						final ClipData data = ClipData.newPlainText("position",
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
@@ -66,9 +71,6 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 						v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
 						return true;
-						}
-						else 
-							return false;
 					}
 				});
 				}
@@ -93,6 +95,10 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 		return position;
 	}
 
+	private void createDrawable(int color) {
+		
+	}
+	
 	class MyDragListener implements OnDragListener {
 
 		private Context context;
@@ -103,8 +109,6 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 		@Override
 		public boolean onDrag(View v, DragEvent event) {
-			int action = event.getAction();
-
 			switch (event.getAction()) {
 			case DragEvent.ACTION_DRAG_STARTED:
 				// Log.v("Test", "Entered start");
@@ -130,12 +134,6 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 				break;
 			}
 			return true;
-		}
-
-		public boolean movementValid() {
-
-			return false;
-
 		}
 	}
 

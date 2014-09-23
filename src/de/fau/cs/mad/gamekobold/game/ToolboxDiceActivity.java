@@ -35,7 +35,6 @@ public class ToolboxDiceActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_game_toolbox_dice);
 		setGridView();
 		tv_sum = (TextView) findViewById(R.id.tv_sum);

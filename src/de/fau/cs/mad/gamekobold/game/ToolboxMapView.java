@@ -42,6 +42,7 @@ public class ToolboxMapView extends GridView {
 	private float mX, mY;
 	private static final float TOUCH_TOLERANCE = 4;
 	private boolean paint_enabled;
+	private boolean defaultbg;
 
 	public ToolboxMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -59,6 +60,7 @@ public class ToolboxMapView extends GridView {
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
 		canvasPaint = new Paint(Paint.DITHER_FLAG);
 		paint_enabled = true;
+		defaultbg = true;
 	}
 
 	@Override
@@ -66,9 +68,13 @@ public class ToolboxMapView extends GridView {
 		super.onSizeChanged(w, h, oldw, oldh);
 		this.width = w;
 		this.height = h;
-		int id = getContext().getResources().getIdentifier(background,
-				"drawable", getContext().getPackageName());
-		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
+		int id;
+		if (defaultbg) {
+			id = getContext().getResources().getIdentifier(background,
+					"drawable", getContext().getPackageName());
+			canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
+			
+		}		
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		drawCanvas = new Canvas(canvasBitmap);
 	}
@@ -149,6 +155,14 @@ public class ToolboxMapView extends GridView {
 
 	}
 
+	public void setFileToBackground(Bitmap bmp) {
+		this.background = bmp.toString();
+		canvasBitmap = bmp;
+		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		defaultbg = false;
+		invalidate();
+	}
+
 	public void setBackground(String image) {
 		this.background = image;
 		Context context = getContext();
@@ -156,6 +170,7 @@ public class ToolboxMapView extends GridView {
 				context.getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		defaultbg = true;
 		invalidate();
 	}
 
