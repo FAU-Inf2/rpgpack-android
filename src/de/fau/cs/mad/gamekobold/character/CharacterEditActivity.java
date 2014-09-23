@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.character;
 
 import java.io.File;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity.modes;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -115,9 +117,16 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 @Override
 	 public boolean onPrepareOptionsMenu(Menu menu) {
 		 menu.clear();
-		 if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)) {
+		 if(SlideoutNavigationActivity.getAc().getDrawerLayout().isDrawerOpen(GravityCompat.START)
+				 && !SlideoutNavigationActivity.getAc().inEditMode()) {
+			 getMenuInflater().inflate(R.menu.character_editor_slideout_opened, menu);
+		 }
+		 else{
 			 getMenuInflater().inflate(R.menu.character_editor, menu);
 		 }
+		 MenuItem editMode = menu.findItem(R.id.action_editable_mode);
+		 editMode.setCheckable(true);
+		 editMode.setChecked(inEditMode());
 		 return super.onPrepareOptionsMenu(menu);
 	 }
 	 
@@ -128,8 +137,34 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 if (id == R.id.action_edit_mode) {
 			 setCheckboxVisibilityInSlideoutmenu(!editMode);
 		 }
+		 else if (id == R.id.action_editable_mode) {
+			 if (item.isChecked()) {
+					item.setChecked(false);
+					mode = modes.selection;
+					rootFragment.dataAdapter.setEditable(false);
+				}
+				else{
+					item.setChecked(true);
+					mode = modes.edit;
+					rootFragment.dataAdapter.setEditable(true);
+				}
+				reinflate();
+				invalidateOptionsMenu();
+		 }
 		 return super.onOptionsItemSelected(item);
 	 }
+	 
+	 public void reinflate(){
+			FragmentTransaction transaction = getFragmentManager()
+					.beginTransaction();
+			Log.d("CharacterPlayActivity", "reinflate; editmode == " + getAc().inEditMode()+
+					"; selectionMode == " + getAc().inSelectionMode());
+			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
+			transaction.replace(R.id.frame_layout_container, currentFragment);
+			transaction.commit();
+			getFragmentManager().executePendingTransactions();
+			mDrawerLayout.invalidate();
+		}
 	 
 	 private class SetCheckboxVisibilityTask extends AsyncTask<Boolean, Void, Boolean> {
 			@Override

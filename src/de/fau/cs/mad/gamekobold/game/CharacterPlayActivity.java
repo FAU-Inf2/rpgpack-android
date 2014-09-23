@@ -261,10 +261,12 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 			if (item.isChecked()) {
 				item.setChecked(false);
 				mode = modes.selection;
+				rootFragment.dataAdapter.setEditable(false);
 			}
 			else{
 				item.setChecked(true);
 				mode = modes.edit;
+				rootFragment.dataAdapter.setEditable(true);
 			}
 			reinflate();
 			invalidateOptionsMenu();

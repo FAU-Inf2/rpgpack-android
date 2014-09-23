@@ -51,6 +51,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	 * else -> TextView
 	 */
 	private boolean editable = true;
+	public boolean reinflateNeeded = false;
 
 	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
@@ -213,8 +214,8 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
-        if (convertView == null) {
-    		Log.d("FolderElementAdapter", "convertview == NULL!!!");
+        if (convertView == null || reinflateNeeded) {
+    		Log.d("FolderElementAdapter", "convertview == NULL or reinflating");
             // If it hasn't, set up everything:
             LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
             ViewHolder holder = new ViewHolder();
@@ -340,6 +341,14 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 			 oneDatum.checkBoxVisible = visible;
 		 }
 		 notifyDataSetChanged();
+    }
+    
+    public void setEditable(boolean value){
+    	if(editable != value){
+    		editable = value;
+    		reinflateNeeded = true;
+    		notifyDataSetInvalidated();
+    	}
     }
     
 }
