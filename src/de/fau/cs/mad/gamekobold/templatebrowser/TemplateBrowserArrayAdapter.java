@@ -26,12 +26,13 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 		this.objects = objects;
 	}
 
-	// needed for viewConvertion so that the system knows that there are different layouts in the adapter
+	// needed for viewConvertion so that the system knows that there are
+	// different layouts in the adapter
 	// 0 for template. 1 for "new template" and "edit last template" items
 	@Override
 	public int getItemViewType(int position) {
 		// if "edit" or "create"
-		if(position >= getCount() - 2) {
+		if (position >= getCount() - 2) {
 			// return 1
 			return 1;
 		}
@@ -42,9 +43,9 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 	// we got 2 types: normal items and the last two ones
 	@Override
 	public int getViewTypeCount() {
-	    return 2; // Count of different layouts
+		return 2; // Count of different layouts
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -70,7 +71,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 			// JACKSON for editing last created template
 			else if (position == getCount() - 2) {
 				rowView = inflater.inflate(
-						R.layout.rowlayout_newtemplate_template_browser,
+						R.layout.rowlayout_edittemplate_template_browser,
 						parent, false);
 
 				Log.e("er", "Position, getCount: " + getCount());
@@ -104,28 +105,32 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 						+ ", " + curTemplate.getDate());
 
 				// load image bitmap
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
-				if(icon != null) {
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(
+						curTemplate.getIconPath(), context);
+				if (icon != null) {
 					imageView.setImageBitmap(icon);
 				}
 			}
 		} else {
-			// check for last 2 lines -> edit last template, create new template.
+			// check for last 2 lines -> edit last template, create new
+			// template.
 			// they use an other layout
-			if(position >= getCount() - 2) {
-				rowView = inflater.inflate( R.layout.rowlayout_newtemplate_template_browser,
+			if (position >= getCount() - 2) {
+				rowView = inflater.inflate(
+						R.layout.rowlayout_newtemplate_template_browser,
 						parent, false);
 				TextView tName = (TextView) rowView
 						.findViewById(R.id.textView1);
 				Template curTemplate = objects.get(position);
 				tName.setText(curTemplate.getTemplateName());
-			}
-			else {
+			} else {
 				rowView = inflater.inflate(R.layout.rowlayout_template_browser,
-						parent, false);				
+						parent, false);
 
-				TextView tName = (TextView) rowView.findViewById(R.id.textView1);
-				TextView tWorld = (TextView) rowView.findViewById(R.id.textView2);
+				TextView tName = (TextView) rowView
+						.findViewById(R.id.textView1);
+				TextView tWorld = (TextView) rowView
+						.findViewById(R.id.textView2);
 				TextView tAdditionalInfo = (TextView) rowView
 						.findViewById(R.id.textView3);
 
@@ -136,17 +141,17 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 				tName.setText(curTemplate.getTemplateName());
 				tWorld.setText(curTemplate.getWorldName());
-				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor() + ", "
-						+ curTemplate.getDate());
+				tAdditionalInfo.setText("Von: " + curTemplate.getAuthor()
+						+ ", " + curTemplate.getDate());
 
 				// load image bitmap
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), context);
-				if(icon == null) {
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(
+						curTemplate.getIconPath(), context);
+				if (icon == null) {
 					TemplateIcons templateIcons = TemplateIcons.getInstance();
 					imageView.setImageResource(Integer.valueOf(templateIcons
 							.getTempalteIcon(0)));
-				}
-				else {
+				} else {
 					imageView.setImageBitmap(icon);
 				}
 			}

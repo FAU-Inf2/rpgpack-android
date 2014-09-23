@@ -24,7 +24,7 @@
         android:layout_below="@+id/textViewGameName"
         android:text="Template"
         android:textColor="@color/light_grey"
-        android:textSize="14sp"  />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textViewDate"
@@ -34,7 +34,7 @@
         android:layout_below="@+id/textViewWorldName"
         android:text="Date"
         android:textColor="@color/light_grey"
-        android:textSize="14sp"  />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/bracket_grey1_small_image"
@@ -63,14 +63,12 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="6dp"
-   
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_template_browser_circle_green"
         android:gravity="center"
         android:maxWidth="50dip"
-        android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/game_default_white" />
+        android:src="@drawable/group_white" />
+    <!-- android:background="@drawable/shape_template_browser_circle_green" -->
 
     <ImageView
         android:id="@+id/imageViewCharacterCountIcon"
@@ -82,6 +80,6 @@
         android:gravity="center"
         android:maxWidth="30dip"
         android:padding="4dp"
-        android:src="@drawable/person_without_plus" />
+        android:src="@drawable/character_white" />
 
 </RelativeLayout>
