@@ -388,4 +388,8 @@
     <string name="menu_new_game">New game</string>
     <string name="menu_continue_game">Continue game</string>
     <string name="menu_alljoyn">Alljoyn</string>
+    
+    <!-- CharacterMenu -->
+    <string name="menu_new_character">New character</string>
+    <string name="menu_edit_character">Edit character</string>
 </resources>

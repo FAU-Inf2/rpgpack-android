@@ -389,4 +389,9 @@
     <string name="menu_new_game">Neues Spiel</string>
     <string name="menu_continue_game">Spiel fortsetzen</string>
     <string name="menu_alljoyn">Alljoyn</string>
+    
+    <!-- CharacterMenu -->
+    <string name="menu_new_character">Neuer Charakter</string>
+    <string name="menu_edit_character">Charakter bearbeiten</string>
+    
 </resources>

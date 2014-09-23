@@ -1,7 +1,5 @@
 package de.fau.cs.mad.gamekobold;
 
-import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
-import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -85,7 +83,7 @@ public class MainMenu extends AbstractThreeButtonMenu {
 	 */
 	@Override
 	protected void button2Action() {
-		Intent intent = new Intent(MainMenu.this, CharacterBrowserActivity.class);
+		Intent intent = new Intent(MainMenu.this, CharacterMenu.class);
 		startActivity(intent);
 	}
 
