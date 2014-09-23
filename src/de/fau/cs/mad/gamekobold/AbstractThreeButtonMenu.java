@@ -20,6 +20,12 @@ public abstract class AbstractThreeButtonMenu extends Activity implements OnClic
 	private GradientDrawable row1Gradient = null, row2Gradient = null, row3Gradient = null;
 	private TextView row1Main = null, row2Main = null, row3Main = null;
 	private TextView row1Description = null, row2Description = null, row3Description = null;
+	
+	@Override
+	public void setTitle(int resid) {
+		TextView textViewTitle = (TextView)getActionBar().getCustomView().findViewById(R.id.mytext);
+		textViewTitle.setText(resid);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,7 @@ public class TemplateMenu  extends AbstractThreeButtonMenu {
 		final int startColor = getResources().getColor(R.color.menu_templates_start_color);
 		final int endColor = getResources().getColor(R.color.menu_templates_end_color);
 		final int[] midColors = getMidGradientColors(startColor, endColor);
-		
+		setTitle(R.string.menu_your_templates);
 		// gradient colors
 		// button 1 gradient color
 		int[] gradient1 = {

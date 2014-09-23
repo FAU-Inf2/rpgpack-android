@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_weight="95"
+            android:background="@drawable/menu_button_lower_border"
             android:orientation="vertical" >
 
             <TextView
@@ -72,6 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_weight="95"
+                    android:background="@drawable/menu_button_lower_border"
                     android:orientation="vertical" >
 
             <TextView

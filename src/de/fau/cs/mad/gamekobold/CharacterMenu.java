@@ -9,7 +9,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 		final int startColor = getResources().getColor(R.color.menu_characters_start_color);
 		final int endColor = getResources().getColor(R.color.menu_characters_end_color);
 		final int[] midColors = getMidGradientColors(startColor, endColor);
-		
+		setTitle(R.string.menu_your_characters);
 		// gradient colors
 		// button 1 gradient color
 		int[] gradient1 = {
