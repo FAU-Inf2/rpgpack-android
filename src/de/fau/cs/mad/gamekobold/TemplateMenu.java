@@ -40,15 +40,15 @@ public class TemplateMenu  extends AbstractThreeButtonMenu {
 		// Set the texts
 		// button 1
 		setButton1MainText(getString(R.string.menu_new_template));
-		setButton1DescriptionText("Beschreibung");
+		setButton1DescriptionText(getString(R.string.menu_new_template_description));
 		
 		// button 2
 		setButton2MainText(getString(R.string.menu_edit_templates));
-		setButton2DescriptionText("Beschreibung");
+		setButton2DescriptionText(getString(R.string.menu_edit_templates_description));
 
 		// button 3
 		setButton3MainText(getString(R.string.menu_download_templates));
-		setButton3DescriptionText("Beschreibung");
+		setButton3DescriptionText(getString(R.string.menu_download_templates_description));
 
 		// set the colors for the gradients
 		setButton1Color(gradient1);

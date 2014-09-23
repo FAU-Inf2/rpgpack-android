@@ -43,15 +43,15 @@ public class MainMenu extends AbstractThreeButtonMenu {
 		// Set the texts
 		// button 1
 		setButton1MainText(getString(R.string.menu_your_games));
-		setButton1DescriptionText("Beschreibung");
+		setButton1DescriptionText(getString(R.string.menu_your_games_description));
 		
 		// button 2
 		setButton2MainText(getString(R.string.menu_your_characters));
-		setButton2DescriptionText("Beschreibung");
+		setButton2DescriptionText(getString(R.string.menu_your_characters_description));
 
 		// button 3
 		setButton3MainText(getString(R.string.menu_your_templates));
-		setButton3DescriptionText("Beschreibung");
+		setButton3DescriptionText(getString(R.string.menu_your_templates_description));
 
 		// set the colors for the gradients
 		setButton1Color(gradient1);
