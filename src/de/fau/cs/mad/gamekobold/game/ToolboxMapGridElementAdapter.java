@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.drawable;
@@ -33,19 +35,19 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	private Context mContext;
 	private final ArrayList<GradientDrawable> dotsList;
 	private LayoutInflater mInflater;
+	private String tag;
 
 	public ToolboxMapGridElementAdapter(Context context,
-			ArrayList<GradientDrawable> dots) {
+			ArrayList<GradientDrawable> dots, String tag) {
 		mContext = context;
 		dotsList = dots;
+		this.tag = tag;
 		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		
-		
 		View squareContainerView = convertView;
 
 		if (squareContainerView == null) {
@@ -60,6 +62,8 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 			if (dotsList.get(position) != null) {
 				pieceView.setImageDrawable(dotsList.get(position));
 				pieceView.setTag(position);
+				pieceView.setContentDescription(tag);
+				Log.i("Drawable", dotsList.get(position).toString());
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
@@ -67,15 +71,14 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
 								pieceView);
-						
-						v.setVisibility(View.INVISIBLE);
+						if (tag == "grid")
+							v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
 						return true;
 					}
 				});
-				}
 			}
-			
+		}
 
 		return squareContainerView;
 	}
@@ -96,9 +99,9 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	}
 
 	private void createDrawable(int color) {
-		
+
 	}
-	
+
 	class MyDragListener implements OnDragListener {
 
 		private Context context;
@@ -121,20 +124,60 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 			case DragEvent.ACTION_DROP:
 				// Log.v("Test", "Entered drop");
 				final View view = (View) event.getLocalState();
-				if (view != null) {
-					final ViewGroup owner = (ViewGroup) view.getParent();
-					owner.removeView(view);
+				if (view != null && (view instanceof ImageView)) {
+					ImageView castedView = (ImageView) view;
 					final FrameLayout container = (FrameLayout) v;
-					view.setVisibility(View.VISIBLE);
-					container.addView(view);
-				}				
+					if (castedView.getContentDescription().toString() == "item"){
+						Drawable copyImg = castedView.getDrawable();
+						addImagetoContainer(container, 1, copyImg);
+					}
+					else if (castedView.getContentDescription().toString() == "grid"){
+						final ViewGroup owner = (ViewGroup) view.getParent();
+						owner.removeView(view);
+						view.setVisibility(View.VISIBLE);
+						container.addView(view);
+					}
+					
+
+
+
+
+
+
+
+				}
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
+				break;
 			default:
 				break;
 			}
 			return true;
 		}
+	}
+
+	private View addImagetoContainer(View inputView, final int position,
+			Drawable drawable) {
+
+		final ImageView pieceView = (ImageView) inputView
+				.findViewById(R.id.map_piece);
+		pieceView.setImageDrawable(drawable);
+		pieceView.setTag(position);
+		pieceView.setContentDescription("grid");
+		pieceView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				final ClipData data = ClipData.newPlainText("position",
+						position + "");
+				final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
+						pieceView);
+				v.setVisibility(View.INVISIBLE);
+				v.startDrag(data, pieceDragShadowBuilder, v, 0);
+				return true;
+			}
+		});
+
+		return inputView;
 	}
 
 }

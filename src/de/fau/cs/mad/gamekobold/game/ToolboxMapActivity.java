@@ -58,6 +58,7 @@ public class ToolboxMapActivity extends Activity {
 	private int[] testColor = { R.color.red, R.color.green, R.color.blue,
 			R.color.black, R.color.orange };
 	private ArrayList<GradientDrawable> dotsList = new ArrayList();
+	private ArrayList<GradientDrawable> justItems = new ArrayList();
 	private int mNumCells;
 	private int mNumLines;
 	private int mNumColumns;
@@ -65,6 +66,7 @@ public class ToolboxMapActivity extends Activity {
 	private float density;
 	private boolean drag_active;
 	private ToolboxMapGridElementAdapter mAdapter;
+	private ToolboxMapGridElementAdapter mAdapterItems;
 
 	private CharacterSheet[] characterSheets;
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -77,7 +79,7 @@ public class ToolboxMapActivity extends Activity {
 		setContentView(R.layout.activity_game_toolbox_map);
 		mapView = (ToolboxMapView) findViewById(R.id.map);
 		initTest();
-		loadCharinfo();
+		//loadCharinfo();
 		createCells();
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
@@ -208,7 +210,7 @@ public class ToolboxMapActivity extends Activity {
 		density = getResources().getDisplayMetrics().density;
 		cell_size = (int) ((float) getResources().getDimension(
 				R.dimen.game_toolbox_map_cellsize) / density);
-		mWidth = displaymetrics.widthPixels / density;
+		mWidth = displaymetrics.widthPixels / density - (90 + cell_size);
 		mHeight = displaymetrics.heightPixels / density - (90 + cell_size);
 		mNumColumns = (int) (mWidth / cell_size);
 		mNumLines = (int) (mHeight / cell_size);
@@ -228,16 +230,25 @@ public class ToolboxMapActivity extends Activity {
 			if (i < testColor.length) {
 				Log.i("testfarbe:", "" + testColor[i]);
 				dotsList.set(i, createDrawable(testColor[i]));
+				justItems.add(i, createDrawable(testColor[i]));
 			}
 		}
+		dotsList.set(testColor.length, createDrawable(R.color.black));
+		justItems.add(testColor.length, createDrawable(R.color.black));
 
+		mAdapterItems = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this, justItems, "item");
 		mAdapter = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this,
-				dotsList);
+				dotsList, "grid");
+		GridView gridView = (GridView) findViewById(R.id.map_items);
+		gridView.setNumColumns(mNumColumns);
+		gridView.setAdapter(mAdapterItems);
+		
 		mapView.setNumColumns(mNumColumns);
 		mapView.setAdapter(mAdapter);
 		mapView.setBackgroundResource(R.drawable.forest);
 	}
 
+	//Remember to remove the getResources, when loading from charsheet
 	public GradientDrawable createDrawable(int color) {
 		int colorFromRes = getResources().getColor(color);
 		GradientDrawable newItem = new GradientDrawable();
@@ -293,13 +304,6 @@ public class ToolboxMapActivity extends Activity {
 			for (CharacterSheet characterSheet : characterSheets){
 				colors.add(characterSheet.getColor());
 			}
-			/*final int charNumberToInflate = intent.getIntExtra(
-					INFLATE_CHARACTER_NUMBER, -1);
-			if (charNumberToInflate != -1) {
-				table = characterSheets[charNumberToInflate].getRootTable();
-			} else {
-				table = characterSheets[0].getRootTable();
-			}*/
 		}
 		Log.i("colors", colors.toString());
 	}
