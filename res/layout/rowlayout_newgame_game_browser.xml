@@ -16,7 +16,7 @@
         android:maxWidth="50dip"
         android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/addphoto_grey" />
+        android:src="@drawable/group_grey" />
 
     <TextView
         android:id="@+id/textViewNewGame"

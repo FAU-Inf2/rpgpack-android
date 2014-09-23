@@ -1,11 +1,18 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint.Style;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -18,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.drawable;
@@ -25,17 +33,17 @@ import de.fau.cs.mad.gamekobold.R.drawable;
 public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private final ArrayList<Integer> dotsList;
+	private final ArrayList<GradientDrawable> dotsList;
 	private LayoutInflater mInflater;
-	private boolean drag_active;
+	private String tag;
 
 	public ToolboxMapGridElementAdapter(Context context,
-			ArrayList<Integer> dots, boolean drag_active) {
+			ArrayList<GradientDrawable> dots, String tag) {
 		mContext = context;
 		dotsList = dots;
+		this.tag = tag;
 		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.drag_active = drag_active;
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -52,28 +60,25 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 			final ImageView pieceView = (ImageView) squareContainerView
 					.findViewById(R.id.map_piece);
 			if (dotsList.get(position) != null) {
-				pieceView.setImageResource(dotsList.get(position));
+				pieceView.setImageDrawable(dotsList.get(position));
 				pieceView.setTag(position);
+				pieceView.setContentDescription(tag);
+				Log.i("Drawable", dotsList.get(position).toString());
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
-						if (drag_active){
 						final ClipData data = ClipData.newPlainText("position",
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
 								pieceView);
-						
-						v.setVisibility(View.INVISIBLE);
+						if (tag == "grid")
+							v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
 						return true;
-						}
-						else 
-							return false;
 					}
 				});
-				}
 			}
-			
+		}
 
 		return squareContainerView;
 	}
@@ -93,6 +98,10 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 		return position;
 	}
 
+	private void createDrawable(int color) {
+
+	}
+
 	class MyDragListener implements OnDragListener {
 
 		private Context context;
@@ -103,8 +112,6 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 		@Override
 		public boolean onDrag(View v, DragEvent event) {
-			int action = event.getAction();
-
 			switch (event.getAction()) {
 			case DragEvent.ACTION_DRAG_STARTED:
 				// Log.v("Test", "Entered start");
@@ -117,26 +124,60 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 			case DragEvent.ACTION_DROP:
 				// Log.v("Test", "Entered drop");
 				final View view = (View) event.getLocalState();
-				if (view != null) {
-					final ViewGroup owner = (ViewGroup) view.getParent();
-					owner.removeView(view);
+				if (view != null && (view instanceof ImageView)) {
+					ImageView castedView = (ImageView) view;
 					final FrameLayout container = (FrameLayout) v;
-					view.setVisibility(View.VISIBLE);
-					container.addView(view);
-				}				
+					if (castedView.getContentDescription().toString() == "item"){
+						Drawable copyImg = castedView.getDrawable();
+						addImagetoContainer(container, 1, copyImg);
+					}
+					else if (castedView.getContentDescription().toString() == "grid"){
+						final ViewGroup owner = (ViewGroup) view.getParent();
+						owner.removeView(view);
+						view.setVisibility(View.VISIBLE);
+						container.addView(view);
+					}
+					
+
+
+
+
+
+
+
+				}
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
+				break;
 			default:
 				break;
 			}
 			return true;
 		}
+	}
 
-		public boolean movementValid() {
+	private View addImagetoContainer(View inputView, final int position,
+			Drawable drawable) {
 
-			return false;
+		final ImageView pieceView = (ImageView) inputView
+				.findViewById(R.id.map_piece);
+		pieceView.setImageDrawable(drawable);
+		pieceView.setTag(position);
+		pieceView.setContentDescription("grid");
+		pieceView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				final ClipData data = ClipData.newPlainText("position",
+						position + "");
+				final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
+						pieceView);
+				v.setVisibility(View.INVISIBLE);
+				v.startDrag(data, pieceDragShadowBuilder, v, 0);
+				return true;
+			}
+		});
 
-		}
+		return inputView;
 	}
 
 }

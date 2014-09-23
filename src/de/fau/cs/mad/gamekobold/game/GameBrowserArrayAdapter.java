@@ -97,7 +97,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				bitmap = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), context);
 				if(bitmap == null) {
 					// set some default game icon
-					imageViewGameIcon.setImageResource(R.drawable.game_default_white);
+					imageViewGameIcon.setImageResource(R.drawable.group_white);
 				}
 				else {
 					// set game icon

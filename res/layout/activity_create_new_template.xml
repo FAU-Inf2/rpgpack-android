@@ -54,9 +54,9 @@
             android:layout_marginLeft="5dip"
             android:layout_marginTop="5dip"
             android:adjustViewBounds="true"
-            android:padding="5dp"
+            android:padding="8dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/addphoto_grey" />
+            android:src="@drawable/newphoto_add_grey" />
 
         <EditText
             android:id="@+id/templateName"

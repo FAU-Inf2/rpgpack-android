@@ -87,42 +87,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.matrix_textModificator);
 
-				final MatrixItem curItem = items.get(position);
-				CheckBox favoriteItem = (CheckBox) convertView
-						.findViewById(R.id.favorite_checkbox);
-				favoriteItem.setChecked(curItem.isFavorite());
-
-				if (!selectedMatrixItems.contains(curItem)) {
-					favoriteItem.setChecked(false);
-					favoriteItem.setEnabled(false);
-				} else {
-					favoriteItem.setEnabled(true);
-					favoriteItem
-							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-								@Override
-								public void onCheckedChanged(
-										CompoundButton buttonView,
-										boolean isChecked) {
-
-									curItem.setFavorite(isChecked);
-									// TODO Benni save isFavorite for current
-									// Matrix
-									// Item
-									if (isChecked) {
-										Toast.makeText(
-												context,
-												curItem.getItemName()
-														+ context
-														.getResources()
-														.getString(
-																R.string.msg_added_to_matrix_favorite),
-												Toast.LENGTH_SHORT).show();
-									}
-
-								}
-							});
-
-				}
+				MatrixItem curItem = items.get(position);
 
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
@@ -183,10 +148,6 @@ public class NewCharacterMatrixViewArrayAdapter extends
 						.contains(curItem) ? context.getResources().getColor(
 						R.color.background_green) : context.getResources()
 						.getColor(android.R.color.transparent));
-
-				if (!selectedMatrixItems.contains(curItem)) {
-					favoriteItem.setChecked(false);
-				}
 			}
 		} else {
 			// or reuse
@@ -211,41 +172,8 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.matrix_textModificator);
 
-				final MatrixItem curItem = items.get(position);
-				CheckBox favoriteItem = (CheckBox) convertView
-						.findViewById(R.id.favorite_checkbox);
-				favoriteItem.setChecked(curItem.isFavorite());
-
-				if (!selectedMatrixItems.contains(curItem)) {
-					favoriteItem.setChecked(false);
-					favoriteItem.setEnabled(false);
-				} else {
-					favoriteItem.setEnabled(true);
-					favoriteItem
-							.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-								@Override
-								public void onCheckedChanged(
-										CompoundButton buttonView,
-										boolean isChecked) {
-
-									curItem.setFavorite(isChecked);
-									// TODO Benni save isFavorite for current
-									// Matrix
-									// Item
-									if (isChecked) {
-										Toast.makeText(
-												context,
-												curItem.getItemName()
-														+ context
-																.getResources()
-																.getString(
-																		R.string.msg_added_to_matrix_favorite),
-												Toast.LENGTH_SHORT).show();
-									}
-								}
-							});
-				}
-
+				 MatrixItem curItem = items.get(position);
+				
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 				/*

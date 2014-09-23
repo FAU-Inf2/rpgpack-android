@@ -94,7 +94,9 @@
         <!-- Toolbox Activities -->
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity"
+            android:screenOrientation="landscape" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
@@ -104,9 +106,9 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
-        
+
         <!--  -->
-        
+
         <activity
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

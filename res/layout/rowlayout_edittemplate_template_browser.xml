@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/background_dark" >
+    android:layout_height="wrap_content" >
 
     <ImageView
         android:id="@+id/imageView1"
@@ -17,38 +16,17 @@
         android:maxWidth="50dip"
         android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/template_white" />
-    <!-- android:background="@drawable/shape_template_browser_circle_green" -->
+        android:src="@drawable/template_edit_grey" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/imageView1"
-        android:text="Text"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:text="Description"
-        android:textColor="@color/light_grey" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginBottom="8dp"
-        android:text="Text"
-        android:textColor="@color/light_grey" />
+        android:textColor="@color/grey"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/counter"
@@ -59,11 +37,5 @@
         android:layout_marginRight="8dp"
         android:src="@drawable/bracket_grey1_small"
         android:textColor="@color/black" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-    </ImageView>
 
 </RelativeLayout>
