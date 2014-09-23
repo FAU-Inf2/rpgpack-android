@@ -22,13 +22,11 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -604,8 +602,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 	 * returned CountDownLatch!
 	 */
 	private class jacksonLoadTemplateAsync extends
-			AsyncTask<String, Void, Template> {
-		private ProgressDialog pd;
+			AsyncTaskWithProgressDialog<String, Void, Template> {
 		// context used for async loading
 		private Context appContext;
 		private CountDownLatch countDownLatch;
@@ -619,15 +616,9 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 		@Override
 		protected void onPreExecute() {
 			Log.d("jacksonLoadTemplateAsync", "loading template");
-			if (appContext == null || countDownLatch == null) {
-				return;
-			}
-			pd = new ProgressDialog(myActivity);
-			pd.setTitle(getString(R.string.loading_template));
-			pd.setMessage(getString(R.string.wait));
-			pd.setCancelable(false);
-			pd.setIndeterminate(true);
-			pd.show();
+			super.onPreExecute(SlideoutNavigationActivity.this,
+								getString(R.string.loading_template),
+								getString(R.string.wait));
 		}
 
 		@Override
@@ -647,42 +638,27 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			return template;
 		}
 
-		// TODO redo ?
 		@Override
 		protected void onPostExecute(Template result) {
-			// wrong set up
-			if (appContext == null || countDownLatch == null) {
-				if (pd != null) {
-					pd.dismiss();
-				}
-				return;
-			}
+			// call super later to wait for inflation
 			// no result
 			if (result == null) {
 				Toast.makeText(myActivity,
 						getString(R.string.loading_template_failure),
 						Toast.LENGTH_LONG).show();
-				if (pd != null) {
-					pd.dismiss();
+			}
+			else {
+				myTemplate = result;
+				try {
+					countDownLatch.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				return;
+				myActivity.inflate(myTemplate.getCharacterSheet().getRootTable());
+				myActivity.countDownLatch = null;	
 			}
-			myTemplate = result;
-			try {
-				countDownLatch.await();
-			} catch (InterruptedException e) {
-				if (pd != null) {
-					pd.dismiss();
-				}
-				return;
-			}
-			// myActivity.inflate();
-			myActivity.inflate(myTemplate.getCharacterSheet().getRootTable());
-			if (pd != null) {
-				pd.dismiss();
-			}
-			myActivity.countDownLatch = null;
+			//discard progress dialog
+			super.onPostExecute(result);
 		}
 	}
-
 }

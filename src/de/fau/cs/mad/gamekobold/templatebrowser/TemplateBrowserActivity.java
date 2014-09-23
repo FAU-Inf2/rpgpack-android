@@ -9,11 +9,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
@@ -338,19 +337,12 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		return false;
 	}
 
-	private class TemplateListUpdaterTask extends AsyncTask<Void, Void, Void> {
-		private ProgressDialog pd;
-
+	private class TemplateListUpdaterTask extends AsyncTaskWithProgressDialog<Void, Void, Void> {
 		@Override
 		protected void onPreExecute() {
-			// create new progress dialog
-			pd = new ProgressDialog(TemplateBrowserActivity.this);
-			pd.setTitle(getString(R.string.msg_updating_template_list));
-			pd.setMessage(getResources().getString(R.string.msg_please_wait));
-			pd.setCancelable(false);
-			pd.setIndeterminate(true);
-			// show it
-			pd.show();
+			super.onPreExecute(TemplateBrowserActivity.this,
+								getString(R.string.msg_updating_template_list),
+								getString(R.string.msg_please_wait));
 		}
 
 		@Override
@@ -400,31 +392,19 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			return null;
 		}
 		
-		@Override
-		protected void onPostExecute(Void arg) {
-			// close progess dialog
-			if (pd != null) {
-				pd.dismiss();
-			}
-		}
+		// no onPostExecute needed. Progress dialog will automatically closed
 	};
 
 	/**
 	 * Loads all templates in the template directory and sets them as the new list to show.
 	 */
-	private class TemplateListLoaderTask extends AsyncTask<Void, Void, List<Template>> {
-		private ProgressDialog pd;
-
+	private class TemplateListLoaderTask extends AsyncTaskWithProgressDialog<Void, Void, List<Template>> {
+		
 		@Override
 		protected void onPreExecute() {
-			// create new progress dialog
-			pd = new ProgressDialog(TemplateBrowserActivity.this);
-			pd.setTitle(getString(R.string.msg_loading_template_list));
-			pd.setMessage(getResources().getString(R.string.msg_please_wait));
-			pd.setCancelable(false);
-			pd.setIndeterminate(true);
-			// show it
-			pd.show();
+			super.onPreExecute(TemplateBrowserActivity.this,
+								getString(R.string.msg_loading_template_list),
+								getString(R.string.msg_please_wait));
 		}
 
 		@Override
@@ -476,6 +456,8 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 
 		@Override
 		protected void onPostExecute(List<Template> templateList) {
+			// discard progress dialog
+			super.onPostExecute(templateList);
 			// should not happen but who knows
 			if (templateList == null) {
 				templateList = new ArrayList<Template>();
@@ -488,10 +470,6 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 					R.string.row_create_new_template), "", "", "", -1));
 			// set the template list for the current activty
 			setTemplateList(templateList);
-			// close progess dialog
-			if (pd != null) {
-				pd.dismiss();
-			}
 		}
 	}
 

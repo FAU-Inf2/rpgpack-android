@@ -38,6 +38,8 @@ import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
+@Deprecated
+// TODO no longer needed. CreateNewTemplate is used for creation and editing/details
 public class TemplateDetailsActivity extends Activity {
 	private Template curTemplate;
 	private CharacterGridArrayAdapter adapter;
