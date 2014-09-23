@@ -94,7 +94,9 @@
         <!-- Toolbox Activities -->
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity" >
+        <activity
+            android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity"
+            android:screenOrientation="landscape" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
@@ -104,15 +106,14 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
         </activity>
-        
+
         <!--  -->
-        
+
         <activity
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden"
-             >
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -127,7 +128,8 @@
             android:name=".characterbrowser.CharacterBrowserActivity"
             android:label="@string/title_activity_character_browser" >
         </activity>
-        <activity android:name="MainMenu"></activity>
+        <activity android:name="MainMenu" >
+        </activity>
     </application>
 
 </manifest>
