@@ -1,6 +1,10 @@
 package de.fau.cs.mad.gamekobold;
 
+import de.fau.cs.mad.gamekobold.game.CreateNewGameActivity;
+import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class GameMenu extends AbstractThreeButtonMenu {
 	@Override
@@ -51,23 +55,21 @@ public class GameMenu extends AbstractThreeButtonMenu {
 		setButton2Color(gradient2);
 		setButton3Color(gradient3);
 	}
-	
+
 	@Override
 	protected void button1Action() {
-		// TODO Auto-generated method stub
-		
+		Intent i = new Intent(GameMenu.this, CreateNewGameActivity.class);
+		startActivity(i);
 	}
 
 	@Override
 	protected void button2Action() {
-		// TODO Auto-generated method stub
-		
+		Intent i = new Intent(GameMenu.this, GameBrowserActivity.class);
+		startActivity(i);
 	}
 
 	@Override
 	protected void button3Action() {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(GameMenu.this, "Alljoyn", Toast.LENGTH_LONG).show();
 	}
-
 }

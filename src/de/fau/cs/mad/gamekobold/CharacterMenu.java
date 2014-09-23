@@ -1,6 +1,10 @@
 package de.fau.cs.mad.gamekobold;
 
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
+import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class CharacterMenu extends AbstractThreeButtonMenu {
 	@Override
@@ -54,19 +58,25 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button1Action() {
-		// TODO Auto-generated method stub
-		
+		// create new character
+		Intent i = new Intent(CharacterMenu.this,
+				TemplateBrowserActivity.class);
+		//TODO: translate
+		Toast.makeText(CharacterMenu.this, "Please pick a template", Toast.LENGTH_LONG).show();
+		i.putExtra(TemplateBrowserActivity.CREATE_CHAR_DIRECT, true);
+		startActivity(i);
 	}
 
 	@Override
 	protected void button2Action() {
-		// TODO Auto-generated method stub
-		
+		// edit character
+		Intent i = new Intent(CharacterMenu.this,
+				CharacterBrowserActivity.class);
+		startActivity(i);
 	}
 
 	@Override
 	protected void button3Action() {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(CharacterMenu.this, "Alljoyn", Toast.LENGTH_LONG).show();
 	}
 }
