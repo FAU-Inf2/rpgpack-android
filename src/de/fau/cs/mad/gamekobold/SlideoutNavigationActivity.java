@@ -105,21 +105,27 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		theActiveActivity = this;
-		if(theActiveActivity instanceof CharacterPlayActivity
-				&& ((CharacterPlayActivity) theActiveActivity).inEditMode()){
-        	mode = modes.edit;
-        }
-        else if(theActiveActivity instanceof CharacterPlayActivity
-        	&& ((CharacterPlayActivity) theActiveActivity).inSelectionMode()){
-        	mode = modes.selection;
-        }
-        else if(theActiveActivity instanceof CharacterEditActivity){
-        	mode = modes.selection;
-        }
-        else{
-    		Log.d("FolderFragment","case not known! set to editable == true");
-        	mode = modes.edit;
-        }
+		if(savedInstanceState != null){
+			mode = (modes) savedInstanceState.getSerializable("mode");
+		}
+		else{
+			//if no mode is saved -> take default one
+			if(theActiveActivity instanceof CharacterPlayActivity
+					&& ((CharacterPlayActivity) theActiveActivity).inEditMode()){
+				mode = modes.edit;
+			}
+			else if(theActiveActivity instanceof CharacterPlayActivity
+					&& ((CharacterPlayActivity) theActiveActivity).inSelectionMode()){
+				mode = modes.selection;
+			}
+			else if(theActiveActivity instanceof CharacterEditActivity){
+				mode = modes.selection;
+			}
+			else{
+				Log.d("FolderFragment","case not known! set to editable == true");
+				mode = modes.edit;
+			}
+		}
 		/*
 		 * JACKSON START
 		 */
@@ -597,6 +603,12 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+	 public void onSaveInstanceState(Bundle savedInstanceState) {
+	   super.onSaveInstanceState(savedInstanceState);
+	   savedInstanceState.putSerializable("mode", mode);
+	 }
 
 	/**
 	 * Class for loading a template asynchronously. Shows a ProgressDialog,
