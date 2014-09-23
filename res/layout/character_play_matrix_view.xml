@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_horizontal"
+        android:text="PLAY CHARACTER!!!!!!!!!!"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/background_green" />
+    <!-- "@string/hint_select_items" -->
+
+    <GridView
+        android:id="@+id/gridViewM"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
+        android:numColumns="3" >
+    </GridView>
+
+</FrameLayout>

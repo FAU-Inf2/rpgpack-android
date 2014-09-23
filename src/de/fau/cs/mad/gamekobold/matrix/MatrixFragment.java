@@ -72,10 +72,8 @@ public class MatrixFragment extends GeneralFragment {
 					new LinearLayout(getActivity()), false);
 			Toast.makeText(getActivity(), "TEMPLATE GENERATOR",
 					Toast.LENGTH_LONG).show();
-		}
-		// edited: show same in play and in character-edit-mode
-		else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
+
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
 			Log.d("MatrixFragment", "inflated for CharacterEditActivity");
 			rootView = (FrameLayout) inflater.inflate(
 					R.layout.character_edit_matrix_view, new LinearLayout(
@@ -86,10 +84,10 @@ public class MatrixFragment extends GeneralFragment {
 		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
 			Log.d("MatrixFragment", "inflated for CharacterPLAYActivity");
 			rootView = (FrameLayout) inflater.inflate(
-					R.layout.fragment_matrix_view, new LinearLayout(
+					R.layout.character_play_matrix_view, new LinearLayout(
 							getActivity()), false);
-			Toast.makeText(getActivity(), "PLAY CHARACTER!!!!!!!!!!!",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "PLAY CHARACTER", Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 
@@ -198,8 +196,7 @@ public class MatrixFragment extends GeneralFragment {
 			});
 
 			// Character generator mode
-		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
+		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity) {
 			Toast.makeText(getActivity(), "CHARACTER GENERATOR!",
 					Toast.LENGTH_SHORT).show();
 
@@ -329,7 +326,7 @@ public class MatrixFragment extends GeneralFragment {
 					.show();
 
 			gridView = (GridView) rootView
-					.findViewById(R.id.gridViewMatrixItem);
+					.findViewById(R.id.gridViewM);
 			// check needed for jackson data loading
 			if (itemsList == null) {
 				itemsList = new ArrayList<MatrixItem>();
