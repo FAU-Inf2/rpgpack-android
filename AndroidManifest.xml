@@ -113,7 +113,8 @@
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -128,8 +129,11 @@
             android:name=".characterbrowser.CharacterBrowserActivity"
             android:label="@string/title_activity_character_browser" >
         </activity>
-        <activity android:name="MainMenu" >
-        </activity>
+        <activity android:name="MainMenu"></activity>
+        <activity android:name="GameMenu"></activity>
+        <activity android:name="CharacterMenu"></activity>
+        <activity android:name="TemplateMenu"></activity>
+        <activity android:name="DownloadTemplateMenu"></activity>
     </application>
 
 </manifest>

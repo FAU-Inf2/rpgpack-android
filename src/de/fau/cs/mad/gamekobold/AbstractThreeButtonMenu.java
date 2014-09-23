@@ -20,6 +20,12 @@ public abstract class AbstractThreeButtonMenu extends Activity implements OnClic
 	private GradientDrawable row1Gradient = null, row2Gradient = null, row3Gradient = null;
 	private TextView row1Main = null, row2Main = null, row3Main = null;
 	private TextView row1Description = null, row2Description = null, row3Description = null;
+	
+	@Override
+	public void setTitle(int resid) {
+		TextView textViewTitle = (TextView)getActionBar().getCustomView().findViewById(R.id.mytext);
+		textViewTitle.setText(resid);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,22 @@ public abstract class AbstractThreeButtonMenu extends Activity implements OnClic
 		row1Main.setPaintFlags(row1Main.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		row2Main.setPaintFlags(row1Main.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		row3Main.setPaintFlags(row1Main.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+	}
+	
+	public static int[] getMidGradientColors(int startColor, int endColor) {
+		int redStep = (Color.red(startColor) - Color.red(endColor))/3;
+		int greenStep = (Color.green(startColor) - Color.green(endColor))/3;
+		int blueStep = (Color.blue(startColor) - Color.blue(endColor))/3;
+		
+		int ret[] = {
+				Color.rgb(Color.red(startColor)-redStep,
+						Color.green(startColor)-greenStep,
+						Color.blue(startColor)-blueStep),
+				Color.rgb(Color.red(startColor)-2*redStep,
+						Color.green(startColor)-2*greenStep,
+						Color.blue(startColor)-2*blueStep)	
+		};
+		return ret;
 	}
 
 	/**

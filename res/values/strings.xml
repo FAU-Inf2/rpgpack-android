@@ -380,5 +380,43 @@
 
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
+    
+    <!-- MainMenu -->
+    <string name="menu_your_games">Deine Spiele</string>
+    <string name="menu_your_characters">Deine Charaktere</string>
+    <string name="menu_your_templates">Deine Vorlagen</string>
+    <string name="menu_your_games_description">Beschreibung fuer Spiele</string>
+	<string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
+	<string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>    
 
+    <!-- GameMenu -->
+    <string name="menu_new_game">Neues Spiel</string>
+    <string name="menu_continue_game">Spiel fortsetzen</string>
+    <string name="menu_alljoyn">Alljoyn</string>
+    <string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
+    <string name="menu_continue_game_description">Beschreibung fuer weiter spielen</string>
+    <string name="menu_alljoyn_description">Beschreibung fuer Alljoyn</string>
+    
+    <!-- CharacterMenu -->
+    <string name="menu_new_character">Neuer Charakter</string>
+    <string name="menu_edit_characters">Charaktere bearbeiten</string>
+    <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
+    <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    
+    <!-- TemplateMenu -->
+    <string name="menu_new_template">Neue Vorlage</string>
+    <string name="menu_edit_templates">Vorlagen bearbeiten</string>
+    <string name="menu_download_templates">Vorlagen herunterladen</string>
+    <string name="menu_new_template_description">Beschreibung fuer neue Vorlage</string>
+    <string name="menu_edit_templates_description">Beschreibung fuer Vorlage editieren</string>
+    <string name="menu_download_templates_description">Beschreibung fuer Vorlagen herunterladen</string>
+    
+    <!-- DownloadTemplateMenu -->
+    <string name="menu_template_store">Vorlagen-Store</string>
+    <string name="menu_template_import">Vorlage importieren</string>
+    <string name="menu_scan_qrcode">QR-Code scannen</string>
+    <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
+        <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
+    <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
+    
 </resources>
