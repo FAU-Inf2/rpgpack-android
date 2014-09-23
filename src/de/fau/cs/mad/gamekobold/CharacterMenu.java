@@ -1,34 +1,36 @@
 package de.fau.cs.mad.gamekobold;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 public class CharacterMenu extends AbstractThreeButtonMenu {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(getString(R.string.menu_your_characters));
+		final int startColor = getResources().getColor(R.color.menu_characters_start_color);
+		final int endColor = getResources().getColor(R.color.menu_characters_end_color);
+		final int[] midColors = getMidGradientColors(startColor, endColor);
+		
 		// gradient colors
 		// button 1 gradient color
 		int[] gradient1 = {
 			// start color
-			Color.rgb(0, 255, 0),
+			startColor,
 			// end color
-			Color.rgb(0, 203, 0)
+			midColors[0]
 		};
 		// button 2 gradient color
 		int[] gradient2 = {
 			// start color
-			Color.rgb(0, 203, 0),
+			midColors[0],
 			// end color
-			Color.rgb(0, 151, 0)
+			midColors[1]
 		};
 		// button 3 gradient color
 		int[] gradient3 = {
 			// start color
-			Color.rgb(0, 151, 0),
+			midColors[1],
 			// end color
-			Color.rgb(0, 100, 0)
+			endColor
 		};
 
 		// Set the texts

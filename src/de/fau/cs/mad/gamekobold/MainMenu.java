@@ -2,7 +2,6 @@ package de.fau.cs.mad.gamekobold;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -22,23 +21,23 @@ public class MainMenu extends AbstractThreeButtonMenu {
 		// button 1 gradient color
 		int[] gradient1 = {
 			// start color
-			Color.rgb(255, 0, 0),
+			getResources().getColor(R.color.menu_games_start_color),
 			// end color
-			Color.rgb(100, 0, 0)
+			getResources().getColor(R.color.menu_games_end_color)
 		};
 		// button 2 gradient color
 		int[] gradient2 = {
 			// start color
-			Color.rgb(0, 255, 0),
+			getResources().getColor(R.color.menu_characters_start_color),
 			// end color
-			Color.rgb(0, 100, 0)
+			getResources().getColor(R.color.menu_characters_end_color)
 		};
 		// button 3 gradient color
 		int[] gradient3 = {
 			// start color
-			Color.rgb(0, 0, 255),
+			getResources().getColor(R.color.menu_templates_start_color),
 			// end color
-			Color.rgb(0, 0, 100)
+			getResources().getColor(R.color.menu_templates_end_color)
 		};
 
 		// Set the texts

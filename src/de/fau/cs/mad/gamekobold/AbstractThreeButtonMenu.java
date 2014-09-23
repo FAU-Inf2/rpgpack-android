@@ -69,6 +69,22 @@ public abstract class AbstractThreeButtonMenu extends Activity implements OnClic
 		row2Main.setPaintFlags(row1Main.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		row3Main.setPaintFlags(row1Main.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 	}
+	
+	public static int[] getMidGradientColors(int startColor, int endColor) {
+		int redStep = (Color.red(startColor) - Color.red(endColor))/3;
+		int greenStep = (Color.green(startColor) - Color.green(endColor))/3;
+		int blueStep = (Color.blue(startColor) - Color.blue(endColor))/3;
+		
+		int ret[] = {
+				Color.rgb(Color.red(startColor)-redStep,
+						Color.green(startColor)-greenStep,
+						Color.blue(startColor)-blueStep),
+				Color.rgb(Color.red(startColor)-2*redStep,
+						Color.green(startColor)-2*greenStep,
+						Color.blue(startColor)-2*blueStep)	
+		};
+		return ret;
+	}
 
 	/**
 	 * Sets the colors for the provided {@link GradientDrawable}. Calls {@link GradientDrawable#setColor(int)} on API level < 16.

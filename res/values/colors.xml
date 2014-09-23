@@ -36,5 +36,14 @@
     <color name="button_grey">#525d6b</color>
     <color name="cold_green">#00AF64</color>
     <color name="trans">#80000000</color>
-
+    
+    <!-- Menu colors -->
+    <color name="menu_games_start_color">#FF0000</color>
+    <color name="menu_games_end_color">#550000</color>
+    <color name="menu_characters_start_color">#00FF00</color>
+    <color name="menu_characters_end_color">#005500</color>
+    <color name="menu_templates_start_color">#0000FF</color>
+    <color name="menu_templates_end_color">#000055</color>
+    
+    
 </resources>
