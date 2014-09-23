@@ -131,6 +131,7 @@
         <activity android:name="GameMenu"></activity>
         <activity android:name="CharacterMenu"></activity>
         <activity android:name="TemplateMenu"></activity>
+        <activity android:name="DownloadTemplateMenu"></activity>
     </application>
 
 </manifest>

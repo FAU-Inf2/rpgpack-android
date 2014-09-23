@@ -1,19 +1,17 @@
 package de.fau.cs.mad.gamekobold;
 
-import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class TemplateMenu extends AbstractThreeButtonMenu {
+public class DownloadTemplateMenu  extends AbstractThreeButtonMenu {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final int startColor = getResources().getColor(R.color.menu_templates_start_color);
 		final int endColor = getResources().getColor(R.color.menu_templates_end_color);
 		final int[] midColors = getMidGradientColors(startColor, endColor);
-		setTitle(R.string.menu_your_templates);
+		setTitle(R.string.menu_download_templates);
 		// gradient colors
 		// button 1 gradient color
 		int[] gradient1 = {
@@ -39,16 +37,16 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 
 		// Set the texts
 		// button 1
-		setButton1MainText(getString(R.string.menu_new_template));
-		setButton1DescriptionText(getString(R.string.menu_new_template_description));
+		setButton1MainText(getString(R.string.menu_template_store));
+		setButton1DescriptionText(getString(R.string.menu_template_store_description));
 		
 		// button 2
-		setButton2MainText(getString(R.string.menu_edit_templates));
-		setButton2DescriptionText(getString(R.string.menu_edit_templates_description));
+		setButton2MainText(getString(R.string.menu_template_import));
+		setButton2DescriptionText(getString(R.string.menu_template_import_description));
 
 		// button 3
-		setButton3MainText(getString(R.string.menu_download_templates));
-		setButton3DescriptionText(getString(R.string.menu_download_templates_description));
+		setButton3MainText(getString(R.string.menu_scan_qrcode));
+		setButton3DescriptionText(getString(R.string.menu_scan_qrcode_description));
 
 		// set the colors for the gradients
 		setButton1Color(gradient1);
@@ -58,23 +56,18 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button1Action() {
-		Intent i = new Intent(TemplateMenu.this,
-				CreateNewTemplateActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(DownloadTemplateMenu.this,
+				TemplateStoreMainActivity.class);
+		startActivity(intent);
 	}
 
 	@Override
 	protected void button2Action() {
-		Intent i = new Intent(TemplateMenu.this,
-				TemplateBrowserActivity.class);
-		startActivity(i);
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	protected void button3Action() {
-		Intent intent = new Intent(TemplateMenu.this,
-				DownloadTemplateMenu.class);
-		startActivity(intent);
+		// TODO Auto-generated method stub
 	}
-
 }
