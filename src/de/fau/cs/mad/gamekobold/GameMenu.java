@@ -59,12 +59,14 @@ public class GameMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button1Action() {
+		// Start create new game activity
 		Intent i = new Intent(GameMenu.this, CreateNewGameActivity.class);
 		startActivity(i);
 	}
 
 	@Override
 	protected void button2Action() {
+		// Start game browser
 		Intent i = new Intent(GameMenu.this, GameBrowserActivity.class);
 		startActivity(i);
 	}

@@ -1,10 +1,18 @@
 package de.fau.cs.mad.gamekobold;
 
+import java.io.File;
+import java.io.IOException;
+
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
+import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class DownloadTemplateMenu  extends AbstractThreeButtonMenu {
+public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IFileBrowserReceiver{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +64,7 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button1Action() {
+		// start template store
 		Intent intent = new Intent(DownloadTemplateMenu.this,
 				TemplateStoreMainActivity.class);
 		startActivity(intent);
@@ -63,11 +72,49 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button2Action() {
-		// TODO Auto-generated method stub
+		// show file browser for template import from file
+		showFileBrowserPopup();
 	}
 
 	@Override
 	protected void button3Action() {
-		// TODO Auto-generated method stub
+		Toast.makeText(DownloadTemplateMenu.this, "QR-Code scan", Toast.LENGTH_LONG).show();
+	}
+	
+	/**
+	 * Shows the FileBrowser as a popup.
+	 */
+	private void showFileBrowserPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
+	}
+	
+	/**
+	 * Callback for FileBrowser. This is called when the user picked a file to import.
+	 */
+	@Override
+	public void onFilePicked(File file) {
+		// close file browser popup
+		FileBrowser.removeAsPopup(getFragmentManager());
+		// check if selected file is a template
+		if(JacksonFileValidator.isValidTemplate(file)) {
+			// get template directory
+			File templateRootDir = JacksonInterface.getTemplateRootDirectory(this);
+			try {
+				// try to copy file to template directory
+				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()));
+				// inform user
+				Toast.makeText(this, getString(R.string.toast_imported_template), Toast.LENGTH_LONG).show();
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+				// failed to import template, inform user
+				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
+			}
+		}
+		else {
+			// file is not a template, inform user
+			Toast.makeText(this, getString(R.string.toast_file_is_not_template), Toast.LENGTH_LONG).show();			
+		}
 	}
 }

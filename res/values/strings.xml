@@ -415,7 +415,7 @@
     <string name="menu_template_import">Vorlage importieren</string>
     <string name="menu_scan_qrcode">QR-Code scannen</string>
     <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
-    <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren</string>
+        <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
     <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
     
 </resources>

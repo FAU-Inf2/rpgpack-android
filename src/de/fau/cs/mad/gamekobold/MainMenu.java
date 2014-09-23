@@ -72,6 +72,7 @@ public class MainMenu extends AbstractThreeButtonMenu {
 	 */
 	@Override
 	protected void button1Action() {
+		// Go to Game sub menu
 		Intent intent = new Intent(MainMenu.this, GameMenu.class);
 		startActivity(intent);
 	}
@@ -81,6 +82,7 @@ public class MainMenu extends AbstractThreeButtonMenu {
 	 */
 	@Override
 	protected void button2Action() {
+		// Go to Character sub menu
 		Intent intent = new Intent(MainMenu.this, CharacterMenu.class);
 		startActivity(intent);
 	}
@@ -90,6 +92,7 @@ public class MainMenu extends AbstractThreeButtonMenu {
 	 */
 	@Override
 	protected void button3Action() {
+		// Go to template sub menu
 		Intent intent = new Intent(MainMenu.this, TemplateMenu.class);
 		startActivity(intent);
 	}

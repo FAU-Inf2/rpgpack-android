@@ -2,7 +2,6 @@ package de.fau.cs.mad.gamekobold;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
-import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -58,6 +57,7 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button1Action() {
+		// Start create new template activity
 		Intent i = new Intent(TemplateMenu.this,
 				CreateNewTemplateActivity.class);
 		startActivity(i);
@@ -65,6 +65,7 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button2Action() {
+		// Start template browser
 		Intent i = new Intent(TemplateMenu.this,
 				TemplateBrowserActivity.class);
 		startActivity(i);
@@ -72,6 +73,7 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button3Action() {
+		// Start download template sub menu
 		Intent intent = new Intent(TemplateMenu.this,
 				DownloadTemplateMenu.class);
 		startActivity(intent);
