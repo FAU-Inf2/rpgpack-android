@@ -1,4 +1,4 @@
-package de.fau.cs.mad.gamekobold;
+package de.fau.cs.mad.gamekobold.filebrowser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,15 +12,21 @@ public class FileCopyUtility {
 	 * 
 	 * @param from
 	 * @param to
+	 * @param overwriteIfExists
 	 * @throws IOException
+	 * @throws FileWouldOverwriteException
 	 */
-	public static void copyFile(File from, File to) throws IOException {
+	public static void copyFile(File from, File to, boolean overwriteIfExists) throws IOException, FileWouldOverwriteException {
 		if(from == null || to == null) { 
 			return;
 		}
 		// check if from == to
 		if(from.getAbsolutePath().equals(to.getAbsolutePath())) {
 			return;
+		}
+		// check if we would overwrite a file
+		if(!overwriteIfExists && to.exists()) {
+			throw new FileWouldOverwriteException(to);
 		}
 		InputStream in = null;
 		OutputStream out = null;

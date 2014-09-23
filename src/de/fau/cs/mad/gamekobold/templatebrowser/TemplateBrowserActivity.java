@@ -24,10 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
-import de.fau.cs.mad.gamekobold.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
+import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -507,7 +508,7 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			File templateRootDir = JacksonInterface.getTemplateRootDirectory(this);
 			try {
 				// try to copy file to template directory
-				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()));
+				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()), false);
 				// reload template list
 				loadTemplateList();
 				// inform user
@@ -515,6 +516,12 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			}
 			catch(IOException e) {
 				e.printStackTrace();
+				// failed to import template, inform user
+				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
+			} catch (FileWouldOverwriteException e) {
+				// we would overwrite an existing file
+				e.printStackTrace();
+				// TODO show popup and let user decide
 				// failed to import template, inform user
 				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
 			}

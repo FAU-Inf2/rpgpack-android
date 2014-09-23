@@ -418,4 +418,7 @@
     <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
     <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
     
+    <!-- AlertDialog FileAlreadyExists -->
+    <string name="msg_file_with_same_name_already_exists">A file with the same name already exists!</string>
+    <string name="question_overwrite_file">Overwrite file?</string>
 </resources>

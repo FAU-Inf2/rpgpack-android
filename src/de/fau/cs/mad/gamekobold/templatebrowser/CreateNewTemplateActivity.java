@@ -31,11 +31,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.fau.cs.mad.gamekobold.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -459,12 +459,12 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		// copy file
 		File templateFile = new File(currentTemplate.getFileAbsPath());
 		try {
-			FileCopyUtility.copyFile(templateFile, new File(directory, templateFile.getName()));
+			FileCopyUtility.copyFile(templateFile, new File(directory, templateFile.getName()), true);
 			Toast.makeText(this,
 					String.format(getString(R.string.toast_exported_template), templateFile.getName()),
 					Toast.LENGTH_LONG).show();
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			e.printStackTrace();
 			Toast.makeText(this, getString(R.string.toast_exported_template_failed), Toast.LENGTH_LONG).show();
 		}
