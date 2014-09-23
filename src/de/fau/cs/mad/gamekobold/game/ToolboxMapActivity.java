@@ -54,6 +54,7 @@ public class ToolboxMapActivity extends Activity {
 	Activity mContext;
 	float mWidth;
 	float mHeight;
+	private ArrayList<Integer> colors = new ArrayList(); 
 	private int[] testColor = { R.color.red, R.color.green, R.color.blue,
 			R.color.black, R.color.orange };
 	private ArrayList<GradientDrawable> dotsList = new ArrayList();
@@ -65,6 +66,10 @@ public class ToolboxMapActivity extends Activity {
 	private boolean drag_active;
 	private ToolboxMapGridElementAdapter mAdapter;
 
+	private CharacterSheet[] characterSheets;
+	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
+	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -72,6 +77,7 @@ public class ToolboxMapActivity extends Activity {
 		setContentView(R.layout.activity_game_toolbox_map);
 		mapView = (ToolboxMapView) findViewById(R.id.map);
 		initTest();
+		loadCharinfo();
 		createCells();
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
@@ -150,16 +156,19 @@ public class ToolboxMapActivity extends Activity {
 	}
 
 	private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-		
-		ParcelFileDescriptor parcelFileDescriptor =
-	             getContentResolver().openFileDescriptor(uri, "r");
-		FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+
+		ParcelFileDescriptor parcelFileDescriptor = getContentResolver()
+				.openFileDescriptor(uri, "r");
+		FileDescriptor fileDescriptor = parcelFileDescriptor
+				.getFileDescriptor();
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
+				options);
 		options.inSampleSize = calculateInSampleSize(options, mWidth, mHeight);
 		options.inJustDecodeBounds = false;
-		image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+		image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
+				options);
 		Log.i("string image", image.toString());
 		parcelFileDescriptor.close();
 		return image;
@@ -260,6 +269,39 @@ public class ToolboxMapActivity extends Activity {
 
 		return inSampleSize;
 
+	}
+
+	public void loadCharinfo() {
+		Intent intent = getIntent();
+		final String[] characterAbsPaths = intent
+				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
+		characterSheets = new CharacterSheet[characterAbsPaths.length];
+		if (characterAbsPaths != null) {
+			Log.d("CharacterPlayActivity", "characterAbsPath != null");
+			try {
+				int index = 0;
+				for (String onePath : characterAbsPaths) {
+					characterSheets[index++] = JacksonInterface
+							.loadCharacterSheet(new File(onePath), false);
+				}
+				Log.d("CharacterPlayActivity", "loaded sheets");
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+		if (characterSheets != null) {
+			for (CharacterSheet characterSheet : characterSheets){
+				colors.add(characterSheet.getColor());
+			}
+			/*final int charNumberToInflate = intent.getIntExtra(
+					INFLATE_CHARACTER_NUMBER, -1);
+			if (charNumberToInflate != -1) {
+				table = characterSheets[charNumberToInflate].getRootTable();
+			} else {
+				table = characterSheets[0].getRootTable();
+			}*/
+		}
+		Log.i("colors", colors.toString());
 	}
 
 }
