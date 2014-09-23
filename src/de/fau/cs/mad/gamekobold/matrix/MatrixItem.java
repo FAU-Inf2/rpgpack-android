@@ -4,6 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
 
+/**
+ * This class represents an item in the special so called matrix view (UI). This
+ * view allows to represent a lot of independent elements at the same time.
+ * Matrix Item will be used typically for a RPG Character Attribute like
+ * Strength, Health, Dexterity etc.
+ * 
+ */
 public class MatrixItem extends SelectAndFavorableItem {
 	private String itemName;
 	private String value;
@@ -13,7 +20,9 @@ public class MatrixItem extends SelectAndFavorableItem {
 	private String description;
 	private int visibility;
 
-	// needed for jackson
+	/**
+	 * needed for jackson, set values to default values
+	 */
 	public MatrixItem() {
 		this.itemName = "";
 		this.value = "";
