@@ -74,13 +74,4 @@
             android:textColor="@color/grey" />
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/favorite_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/matrix_character_icon_circle"
-        android:button="@android:drawable/btn_star"
-        android:focusable="false" />
-
 </RelativeLayout>

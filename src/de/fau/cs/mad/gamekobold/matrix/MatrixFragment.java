@@ -74,9 +74,9 @@ public class MatrixFragment extends GeneralFragment {
 			Toast.makeText(getActivity(), "TEMPLATE GENERATOR",
 					Toast.LENGTH_LONG).show();
 		}
-		//edited: show same in play and in character-edit-mode
+		// edited: show same in play and in character-edit-mode
 		else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
 			Log.d("MatrixFragment", "inflated for CharacterEditActivity");
 			rootView = (FrameLayout) inflater.inflate(
 					R.layout.character_edit_matrix_view, new LinearLayout(
@@ -200,7 +200,7 @@ public class MatrixFragment extends GeneralFragment {
 
 			// Character generator mode
 		} else if (SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity
-				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
+				|| SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity) {
 			Toast.makeText(getActivity(), "CHARACTER GENERATOR!",
 					Toast.LENGTH_SHORT).show();
 
@@ -248,7 +248,8 @@ public class MatrixFragment extends GeneralFragment {
 
 						if (selectedItems.contains(curMatrixItem)) {
 							curMatrixItem.setSelected(false);
-							curMatrixItem.setFavorite(false);
+							// remove to play mode
+							// curMatrixItem.setFavorite(false);
 
 							selectedItems.remove(curMatrixItem);
 
@@ -258,7 +259,9 @@ public class MatrixFragment extends GeneralFragment {
 							adapterCreateCharacter.notifyDataSetChanged();
 
 						} else {
-							curMatrixItem.setFavorite(false);
+							// remove to play mode
+							// curMatrixItem.setFavorite(false);
+
 							curMatrixItem.setSelected(true);
 
 							// show popup to set current value
