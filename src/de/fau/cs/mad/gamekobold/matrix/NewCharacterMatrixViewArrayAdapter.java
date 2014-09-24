@@ -20,6 +20,10 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.Row;
 
+/**
+ * This class handles matrix elements we want to display on character creation.
+ * 
+ */
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> {
 	public static final int FLAG_FROM = 1; // Binary 00001
@@ -172,8 +176,16 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				TextView itemModificator = (TextView) convertView
 						.findViewById(R.id.matrix_textModificator);
 
-				 MatrixItem curItem = items.get(position);
-				
+				Log.d("NewCharacterMatrixViewADAPTER SIZE", "" + items.size());
+				Log.d("NewCharacterMatrixViewADAPTER POSITION", "" + position);
+
+				MatrixItem curItem = items.get(position);
+
+				Log.d("NewCharacterMatrixViewADAPTER curItem NAME", ""
+						+ curItem.getItemName());
+				Log.d("NewCharacterMatrixViewADAPTER itemName is null?", ""
+						+ (itemName == null));
+
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 				/*

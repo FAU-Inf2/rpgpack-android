@@ -17,6 +17,12 @@ import de.fau.cs.mad.gamekobold.R;
 
 public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_ITEM_NAME = "KEY_SAVE_ITEM_NAME";
+	private static final String KEY_SAVE_RANGE_FROM = "KEY_SAVE_RANGE_FROM";
+	private static final String KEY_SAVE_RANGE_TO = "KEY_SAVE_RANGE_TO";
+	private static final String KEY_SAVE_DEFAULT_VALUE = "KEY_SAVE_DEFAULT_VALUE";
+	private static final String KEY_SAVE_MODIFICATOR = "KEY_SAVE_MODIFICATOR";
+	private static final String KEY_SAVE_DESCRIPTION = "KEY_SAVE_DESCRIPTION";
+
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -36,22 +42,27 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-		
-		if (savedInstanceState != null) {
-			// TODO ate not working!
-			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
-				itemName.setText((savedInstanceState
-						.getString(KEY_SAVE_ITEM_NAME)));
-				Log.d("OnCREATE !!!!!!!!SETTING STRING TO:",
-						savedInstanceState.getString(KEY_SAVE_ITEM_NAME));
 
-			}
+		// Restore the fragment's state here
+		if (savedInstanceState != null) {
+			matrixFragment = (MatrixFragment) getFragmentManager().getFragment(
+					savedInstanceState, "matrixFragment");
 		}
-		
-		
-		
 	}
+
+	// // restore instance state on onActivityCreated
+	// public void onActivityCreated(Bundle savedInstanceState) {
+	// super.onActivityCreated(savedInstanceState);
+	// Log.d("onActivityCreated savedInstanceState is NULL?", "" +
+	// (savedInstanceState == null));
+	// if (savedInstanceState != null) {
+	// // Restore the fragment's state here
+	// if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
+	// itemName.setText((savedInstanceState
+	// .getString(KEY_SAVE_ITEM_NAME)));
+	// }
+	// }
+	// }
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -110,16 +121,30 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				switchMod.setChecked(false);
 		}
 
-		Log.d("savedInstanceState is NULL?", "" + (savedInstanceState == null));
-
 		if (savedInstanceState != null) {
-			// TODO ate not working!
 			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
 				itemName.setText((savedInstanceState
 						.getString(KEY_SAVE_ITEM_NAME)));
-				Log.d("!!!!!!!!SETTING STRING TO:",
-						savedInstanceState.getString(KEY_SAVE_ITEM_NAME));
-
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_RANGE_FROM)) {
+				rangeMin.setText((savedInstanceState
+						.getString(KEY_SAVE_RANGE_FROM)));
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_RANGE_TO)) {
+				rangeMax.setText((savedInstanceState
+						.getString(KEY_SAVE_RANGE_TO)));
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_DEFAULT_VALUE)) {
+				defaultVal.setText((savedInstanceState
+						.getString(KEY_SAVE_DEFAULT_VALUE)));
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_MODIFICATOR)) {
+				modificator.setText((savedInstanceState
+						.getString(KEY_SAVE_MODIFICATOR)));
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_DESCRIPTION)) {
+				description.setText((savedInstanceState
+						.getString(KEY_SAVE_DESCRIPTION)));
 			}
 		}
 
@@ -183,7 +208,14 @@ public class AddNewItemDialogFragment extends DialogFragment {
 						if (editItem == null) {
 							final MatrixItem newItem = new MatrixItem(name,
 									defValue, min, max, mod, desc, vis);
+
+							Log.d("newItem is NULL?", "" + (newItem == null));
+							Log.d("matrixFragment is NULL?", ""
+									+ (matrixFragment == null));
+
 							matrixFragment.addMatrixItem(newItem);
+							matrixFragment.adapterCreateTemplate
+									.notifyDataSetChanged();
 						} else {
 							editItem.setItemName(name);
 							editItem.setValue(defValue);
@@ -231,19 +263,34 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		// Save the fragment's state
 		outState.putString(KEY_SAVE_ITEM_NAME, itemName.getText().toString());
-	}
+		outState.putString(KEY_SAVE_RANGE_FROM, rangeMin.getText().toString());
+		outState.putString(KEY_SAVE_RANGE_TO, rangeMax.getText().toString());
+		outState.putString(KEY_SAVE_DEFAULT_VALUE, defaultVal.getText()
+				.toString());
+		outState.putString(KEY_SAVE_MODIFICATOR, modificator.getText()
+				.toString());
+		outState.putString(KEY_SAVE_DESCRIPTION, description.getText()
+				.toString());
 
-	// There's a bug in the compatibility library that can cause dismissing
-	// after the rotation. Note that there are reports that
-	// getDialog().setOnDismissListener(null); causes a crash on some devices.
-	// The workaround is to call getDialog().setDismissMessage(null); instead.
-	// Issue 17423: DialogFragment dismissed on orientation change when
-	// setRetainInstance(true) is set (compatibility library)
-	@Override
-	public void onDestroyView() {
-		if (getDialog() != null && getRetainInstance())
-			getDialog().setDismissMessage(null);
-		super.onDestroyView();
+		// Save the fragment's instance
+		getFragmentManager().putFragment(outState, "matrixFragment",
+				matrixFragment);
+
 	}
+	// // There's a bug in the compatibility library that can cause dismissing
+	// // after the rotation. Note that there are reports that
+	// // getDialog().setOnDismissListener(null); causes a crash on some
+	// devices.
+	// // The workaround is to call getDialog().setDismissMessage(null);
+	// instead.
+	// // Issue 17423: DialogFragment dismissed on orientation change when
+	// // setRetainInstance(true) is set (compatibility library)
+	// @Override
+	// public void onDestroyView() {
+	// if (getDialog() != null && getRetainInstance())
+	// getDialog().setDismissMessage(null);
+	// super.onDestroyView();
+	// }
 }

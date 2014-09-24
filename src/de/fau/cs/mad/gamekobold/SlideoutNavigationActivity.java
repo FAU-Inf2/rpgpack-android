@@ -203,6 +203,11 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			 }
 		} else {
 			Log.d("SlideoutNavigationActivity", "got savedInstance");
+			
+			Toast.makeText(myActivity,
+					"GOT SAVED INSTANCE!!!!!!!!!!!!!!!!!!",
+					Toast.LENGTH_LONG).show();
+			
 		}
 		/*
 		 * JACKSON END
