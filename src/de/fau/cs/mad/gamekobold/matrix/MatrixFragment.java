@@ -38,15 +38,15 @@ public class MatrixFragment extends GeneralFragment {
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
 	public static final int FLAG_MOD = 8; // Binary 01000
-	GridView gridView;
+	public GridView gridView;
 	public List<MatrixItem> itemsList = null;
 	public List<MatrixItem> playMatrixItems = null;
 
-	MatrixViewArrayAdapter adapterCreateTemplate;
-	NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
-	PlayCharacterMatrixAdapter adapterPlay;
+	public MatrixViewArrayAdapter adapterCreateTemplate;
+	public NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
+	public PlayCharacterMatrixAdapter adapterPlay;
 
-	View rootView;
+	public View rootView;
 
 	/*
 	 * JACKSON START
@@ -325,8 +325,7 @@ public class MatrixFragment extends GeneralFragment {
 			Toast.makeText(getActivity(), "CHARACTER PLAY!", Toast.LENGTH_SHORT)
 					.show();
 
-			gridView = (GridView) rootView
-					.findViewById(R.id.gridViewM);
+			gridView = (GridView) rootView.findViewById(R.id.gridViewM);
 			// check needed for jackson data loading
 			if (itemsList == null) {
 				itemsList = new ArrayList<MatrixItem>();
@@ -405,7 +404,11 @@ public class MatrixFragment extends GeneralFragment {
 		showPopup();
 	}
 
-	public void addMatrixItem(MatrixItem newItem) {
+	public void addMatrixItem( MatrixItem newItem) {
+		if (adapterCreateTemplate == null) {
+			adapterCreateTemplate = new MatrixViewArrayAdapter(getActivity(),
+					itemsList);
+		}
 		// adapter.getCount >= 1
 		adapterCreateTemplate.insert(newItem,
 				adapterCreateTemplate.getCount() - 1);
