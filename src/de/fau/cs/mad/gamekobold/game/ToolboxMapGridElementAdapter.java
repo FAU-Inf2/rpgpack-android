@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.game;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -13,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Handler;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -36,6 +39,9 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	private final ArrayList<GradientDrawable> dotsList;
 	private LayoutInflater mInflater;
 	private String tag;
+
+	private static final int MIN_CLICK_DURATION = 100;
+	private long startClickTime;
 
 	public ToolboxMapGridElementAdapter(Context context,
 			ArrayList<GradientDrawable> dots, String tag) {
@@ -64,6 +70,7 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 				pieceView.setTag(position);
 				pieceView.setContentDescription(tag);
 				Log.i("Drawable", dotsList.get(position).toString());
+
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
@@ -74,9 +81,29 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 						if (tag == "grid")
 							v.setVisibility(View.INVISIBLE);
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
+						switch (event.getAction() & MotionEvent.ACTION_MASK) {
+
+						case MotionEvent.ACTION_DOWN:
+							startClickTime = Calendar.getInstance()
+									.getTimeInMillis();
+							break;
+						case MotionEvent.ACTION_MOVE:
+
+							break;
+						case MotionEvent.ACTION_UP:
+							long clickDuration = Calendar.getInstance()
+									.getTimeInMillis() - startClickTime;
+							if (clickDuration >= MIN_CLICK_DURATION) {
+								final ViewGroup owner = (ViewGroup) v
+										.getParent();
+								owner.removeView(v);
+							}
+							break;
+						}
 						return true;
 					}
 				});
+
 			}
 		}
 
@@ -127,24 +154,15 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 				if (view != null && (view instanceof ImageView)) {
 					ImageView castedView = (ImageView) view;
 					final FrameLayout container = (FrameLayout) v;
-					if (castedView.getContentDescription().toString() == "item"){
+					if (castedView.getContentDescription().toString() == "item") {
 						Drawable copyImg = castedView.getDrawable();
 						addImagetoContainer(container, 1, copyImg);
-					}
-					else if (castedView.getContentDescription().toString() == "grid"){
+					} else if (castedView.getContentDescription().toString() == "grid") {
 						final ViewGroup owner = (ViewGroup) view.getParent();
 						owner.removeView(view);
 						view.setVisibility(View.VISIBLE);
 						container.addView(view);
 					}
-					
-
-
-
-
-
-
-
 				}
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
@@ -173,6 +191,16 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 						pieceView);
 				v.setVisibility(View.INVISIBLE);
 				v.startDrag(data, pieceDragShadowBuilder, v, 0);
+				return true;
+			}
+		});
+
+		pieceView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View view) {
+				final ViewGroup owner = (ViewGroup) view.getParent();
+				owner.removeView(view);
 				return true;
 			}
 		});
