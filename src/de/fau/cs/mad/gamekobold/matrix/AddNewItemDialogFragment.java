@@ -53,20 +53,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		}
 	}
 
-	// // restore instance state on onActivityCreated
-	// public void onActivityCreated(Bundle savedInstanceState) {
-	// super.onActivityCreated(savedInstanceState);
-	// Log.d("onActivityCreated savedInstanceState is NULL?", "" +
-	// (savedInstanceState == null));
-	// if (savedInstanceState != null) {
-	// // Restore the fragment's state here
-	// if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
-	// itemName.setText((savedInstanceState
-	// .getString(KEY_SAVE_ITEM_NAME)));
-	// }
-	// }
-	// }
-
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -286,20 +272,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		} // Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
-
 	}
-	// // There's a bug in the compatibility library that can cause dismissing
-	// // after the rotation. Note that there are reports that
-	// // getDialog().setOnDismissListener(null); causes a crash on some
-	// devices.
-	// // The workaround is to call getDialog().setDismissMessage(null);
-	// instead.
-	// // Issue 17423: DialogFragment dismissed on orientation change when
-	// // setRetainInstance(true) is set (compatibility library)
-	// @Override
-	// public void onDestroyView() {
-	// if (getDialog() != null && getRetainInstance())
-	// getDialog().setDismissMessage(null);
-	// super.onDestroyView();
-	// }
+
 }
