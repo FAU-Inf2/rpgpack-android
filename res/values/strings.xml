@@ -234,8 +234,8 @@
     <string name="character_name">Charakter Name</string>
     <string name="three">3</string>
     <string name="menu_export_character">Charakter in eine Datei exportieren</string>
-    <string name="toast_exported_Character">Charakter exportiert nach: %1$s</string>
-	<string name="toast_exported_Character_failed">Exportieren fehlgeschlagen!</string>
+    <string name="toast_exported_character">Charakter exportiert nach: %1$s</string>
+	<string name="toast_exported_character_failed">Exportieren fehlgeschlagen!</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
