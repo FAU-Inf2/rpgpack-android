@@ -62,8 +62,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 		// create new character
 		Intent i = new Intent(CharacterMenu.this,
 				TemplateBrowserActivity.class);
-		//TODO: translate
-		Toast.makeText(CharacterMenu.this, "Please pick a template", Toast.LENGTH_LONG).show();
+		Toast.makeText(CharacterMenu.this, getString(R.string.toast_please_pick_a_template), Toast.LENGTH_LONG).show();
 		i.putExtra(TemplateBrowserActivity.CREATE_CHAR_DIRECT, true);
 		startActivity(i);
 	}

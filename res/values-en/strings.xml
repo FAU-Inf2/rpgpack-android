@@ -402,6 +402,7 @@
     <string name="menu_edit_characters">Edit characters</string>
     <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
     <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    <string name="toast_please_pick_a_template">Please pick a template.</string>
     
 	<!-- TemplateMenu -->
     <string name="menu_new_template">New template</string>

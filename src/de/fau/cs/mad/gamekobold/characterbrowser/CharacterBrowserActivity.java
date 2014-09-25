@@ -9,7 +9,6 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -17,7 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CharacterBrowserActivity extends ListActivity {
@@ -33,23 +31,12 @@ public class CharacterBrowserActivity extends ListActivity {
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-				if(position < adapter.getCount()-1) {
-					// edit character 
-					Intent i = new Intent(CharacterBrowserActivity.this,
-							CharacterDetailsActivity.class);
-					final CharacterSheet clickedChar = adapter.getItem(position);
-					i.putExtra("CharacterSheet", clickedChar);
-					startActivity(i);
-				}
-				else {
-					// create new character
-					Intent i = new Intent(CharacterBrowserActivity.this,
-							TemplateBrowserActivity.class);
-					//TODO: translate
-					Toast.makeText(CharacterBrowserActivity.this, "Please pick a template", Toast.LENGTH_LONG).show();
-					i.putExtra(TemplateBrowserActivity.CREATE_CHAR_DIRECT, true);
-					startActivity(i);
-				}
+				// edit character
+				Intent i = new Intent(CharacterBrowserActivity.this,
+						CharacterDetailsActivity.class);
+				final CharacterSheet clickedChar = adapter.getItem(position);
+				i.putExtra("CharacterSheet", clickedChar);
+				startActivity(i);
 			}
 		});
 		
@@ -104,7 +91,6 @@ public class CharacterBrowserActivity extends ListActivity {
 		adapter.clear();
 		loadCharacterList();
 		Collections.sort(adapter.getList());
-		adapter.add(new CharacterSheet("Create new character"));
 		adapter.notifyDataSetChanged();
 	}
 	
