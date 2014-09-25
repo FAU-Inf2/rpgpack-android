@@ -172,18 +172,6 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 				Log.d("MainTemplateGenerator", "Character edit mode!");
 				editCharacterMode = true;
 				// we are in edit character mode
-				String templateFileName = intent
-						.getStringExtra(EXTRA_TEMPLATE_FILE_NAME);
-					// we are editing an old one, so load it
-					// get file name
-//					String templateFileName = intent
-//							.getStringExtra(EDIT_TEMPLATE_FILE_NAME);
-				// create new async task
-				jacksonLoadTemplateAsync task = new jacksonLoadTemplateAsync();
-				// do the setup
-				countDownLatch = task.doSetup(this);
-				// start
-				task.execute(templateFileName);
 			}
 //				else{
 //					Log.d("SlideoutNavigationActivity", "mode to inflate not recognized!");
