@@ -299,7 +299,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				bitmap = ThumbnailLoader.loadThumbnail(path, this);
 
 		}
-		else if(requestCode == PICK_FROM_CAMERA){
+		else if(requestCode == PICK_FROM_CAMERA) {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
 			//path = iconUri.getPath();
@@ -311,7 +311,6 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		if(bitmap != null) {
 			characterIconButton.setImageBitmap(bitmap);
 		}
-		// TODO store image path for later use
 		sheet.setIconPath(path);
 		characterAltered = true;
 	}
@@ -353,7 +352,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				Toast.makeText(this,
 						String.format(getString(R.string.toast_exported_character), targetFile.getName()),
 						Toast.LENGTH_LONG).show();
-			}
+		}
 		catch(FileWouldOverwriteException e) {
 			e.printStackTrace();
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);

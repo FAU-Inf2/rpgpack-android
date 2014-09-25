@@ -405,6 +405,8 @@
     <string name="menu_edit_characters">Edit characters</string>
     <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
     <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    <string name="menu_import_character_from_file">Import character</string>
+    <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
     <string name="toast_please_pick_a_template">Please pick a template.</string>
     
 	<!-- TemplateMenu -->
@@ -426,4 +428,9 @@
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">A file with the same name already exists!</string>
     <string name="question_overwrite_file">Overwrite file?</string>
+    
+    <!-- Character import -->
+  	<string name="toast_imported_character">Imported character.</string>
+	<string name="toast_imported_character_failed">Failed to import character!</string>
+	<string name="toast_file_is_not_character">File is not a valid character!</string>
 </resources>

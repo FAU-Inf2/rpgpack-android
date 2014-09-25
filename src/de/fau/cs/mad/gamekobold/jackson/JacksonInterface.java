@@ -176,6 +176,14 @@ public abstract class JacksonInterface {
 	public static File getCharacterRootDirectory(final Context context) {
 		return getRootDirectoryFor(CHARACTER_ROOT_FOLDER_NAME, context);
 	}
+	
+	public static File getCharacterImportDirectory(final Context context) {
+		File ret = new File(getCharacterRootDirectory(context), "imported");
+		if(!ret.exists()) {
+			ret.mkdir();
+		}
+		return ret;
+	}
 	/**
 	 * Checks whether the file for the template exists on the file system.
 	 * @param context
