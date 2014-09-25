@@ -283,7 +283,6 @@ public class GameDetailsFragment extends Fragment {
 				.newInstance(game, true);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
-
 	}
 
 	// handling back-button

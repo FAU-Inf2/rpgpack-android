@@ -195,7 +195,7 @@
     <string name="row_create_new_template">Create new Teamplate&#8230;</string>
     <string name="menu_label_export_template">Export template as file</string>
     <string name="menu_label_import_template">Import template from a file</string>
-    <string name="toast_exported_template">Exportet template to: %s</string>
+    <string name="toast_exported_template">Exported template to: %1$s</string>
     <string name="toast_exported_template_failed">Failed to export!</string>
     <string name="toast_fileexplorer_msg_pick_folder">Please pick a folder.</string>
     <string name="toast_fileexplorer_msg_pick_template">Please pick a template to import.</string>
@@ -203,7 +203,7 @@
 	<string name="toast_imported_template_failed">Failed to import template!</string>
 	<string name="toast_file_is_not_template">File is not a template!</string>
 	<string name="toast_no_last_edited_tempalte">No last edited template found.</string>
-	<string name="template_item_adapter_author_date_label" formatted="false">By %s, %s</string>
+	<string name="template_item_adapter_author_date_label">By %1$s, %2$s</string>
 	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Row</string>
