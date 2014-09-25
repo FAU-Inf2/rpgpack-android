@@ -84,12 +84,7 @@ public class FileBrowserArrayAdapter extends ArrayAdapter<File>{
 				imageView.setImageResource(R.drawable.ic_menu_archive);
 			}
 			else {
-				// using icon https://www.iconfinder.com/icons/103509/document_text_icon#size=64 (last visited:18.09.2014)
-				// under license: creative commons Attribution-ShareAlike 3.0 Unported
-				// http://creativecommons.org/licenses/by-sa/3.0/legalcode (last visited:19.09.2014)
-				// http://creativecommons.org/licenses/by-sa/3.0/ (last visited:19.09.2014)
-				// no changes made
-				imageView.setImageResource(R.drawable.document_text_48);
+				imageView.setImageResource(R.drawable.template);
 			}
 		}
 		return rowView;
