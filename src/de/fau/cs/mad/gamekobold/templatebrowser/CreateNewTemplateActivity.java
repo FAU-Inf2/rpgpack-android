@@ -3,7 +3,7 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -158,6 +158,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		});
 
 		createTemplateButton.setOnClickListener(new OnClickListener() {
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
 				// check if the template name is empty

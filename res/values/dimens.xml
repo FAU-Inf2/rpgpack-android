@@ -15,7 +15,7 @@
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_large">18sp</dimen>
     <dimen name="text_xl">22sp</dimen>
-    <dimen name="text_xxl">26dp</dimen>
+    <dimen name="text_xxl">26sp</dimen>
     <dimen name="popup_width">300dp</dimen>
     <dimen name="popup_height">410dp</dimen>
     

@@ -4,7 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -273,6 +273,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
 		createGameButton.setOnClickListener(new OnClickListener() {
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
 
