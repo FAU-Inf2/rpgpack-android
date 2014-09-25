@@ -1,5 +1,7 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -22,6 +24,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_DEFAULT_VALUE = "KEY_SAVE_DEFAULT_VALUE";
 	private static final String KEY_SAVE_MODIFICATOR = "KEY_SAVE_MODIFICATOR";
 	private static final String KEY_SAVE_DESCRIPTION = "KEY_SAVE_DESCRIPTION";
+	private static final String KEY_SAVE_ITEMTOEDIT = "KEY_SAVE_ITEMTOEDIT";
 
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
@@ -145,6 +148,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 			if (savedInstanceState.containsKey(KEY_SAVE_DESCRIPTION)) {
 				description.setText((savedInstanceState
 						.getString(KEY_SAVE_DESCRIPTION)));
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_ITEMTOEDIT)) {
+				editItem = (MatrixItem) savedInstanceState
+						.getSerializable(KEY_SAVE_ITEMTOEDIT);
 			}
 		}
 
@@ -273,8 +280,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				.toString());
 		outState.putString(KEY_SAVE_DESCRIPTION, description.getText()
 				.toString());
-
-		// Save the fragment's instance
+		if (editItem != null) {
+			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
+					(Serializable) editItem);
+		} // Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
 
