@@ -165,7 +165,7 @@
     <string name="back">Back</string>
     <string name="msg_want_to_delete">Do you really want to delete this Template?</string>
     <string name="msg_yes_to_delete">Choose YES to delete the Template.</string>
-    <string name="edit_character">Charakter bearbeiten</string>
+    <string name="edit_character">Edit character</string>
 
     <!-- alertdialog_template_generator_add_new_element -->
     <string name="text_element_name">Element Name:</string>
