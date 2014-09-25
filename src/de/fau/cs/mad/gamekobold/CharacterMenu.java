@@ -64,6 +64,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu {
 				TemplateBrowserActivity.class);
 		Toast.makeText(CharacterMenu.this, getString(R.string.toast_please_pick_a_template), Toast.LENGTH_LONG).show();
 		i.putExtra(TemplateBrowserActivity.CREATE_CHAR_DIRECT, true);
+		i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(i);
 	}
 
