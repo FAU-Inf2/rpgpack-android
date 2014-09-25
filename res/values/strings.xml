@@ -117,8 +117,6 @@
     <string name="warning_set_name">Dein Template braucht einen Namen!</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
-    <string name="msg_file_already_exists">Für dieses Template existiert bereits eine Datei!</string>
-    <string name="msg_yes_to_overwrite">Klicke auf JA um diese Datei zu Überschreiben.</string>
 
     <!-- FolderElementAdapter -->
     <string name="question_delete">Element löschen?</string>
