@@ -7,6 +7,10 @@ import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
+import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
+import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
+import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
+import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import android.app.Activity;
@@ -22,6 +26,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,8 +36,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class CharacterDetailsActivity extends Activity implements ColorPickerDialogInterface{
+public class CharacterDetailsActivity extends Activity implements ColorPickerDialogInterface, IFileBrowserReceiver{
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
@@ -198,6 +204,13 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_character_details_activity, menu);
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		/*if (id == R.id.action_settings) {
@@ -205,6 +218,10 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		}*/
 		if(id == android.R.id.home) {
 			onBackPressed();
+			return true;
+		}
+		else if(id == R.id.action_export_character) {
+			showFileExplorerPopup();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -314,5 +331,53 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			return cursor.getString(column_index);
 		} else
 			return null;
+	}
+
+	@Override
+	public void onFilePicked(File directory) {
+		FileBrowser.removeAsPopup(getFragmentManager());
+		exportCharacterAsFile(directory, false);
+	}
+
+	private void showFileExplorerPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_folder), Toast.LENGTH_LONG).show();
+	}
+
+	private void exportCharacterAsFile(final File characterFolder, boolean overwriteIfExists) {
+		// copy file
+		final File characterFile = new File(sheet.getFileAbsolutePath());
+		final File targetFile = new File(characterFolder, characterFile.getName());
+		try {
+			FileCopyUtility.copyFile(characterFile, targetFile, overwriteIfExists);
+				Toast.makeText(this,
+						String.format(getString(R.string.toast_exported_character), targetFile.getName()),
+						Toast.LENGTH_LONG).show();
+			}
+		catch(FileWouldOverwriteException e) {
+			e.printStackTrace();
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.question_overwrite_file).setTitle(R.string.msg_file_with_same_name_already_exists);
+			builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+					dialog.dismiss();
+				}
+			});
+			builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// overwrite file
+					exportCharacterAsFile(characterFolder, true);
+					dialog.dismiss();
+				}
+			});
+			builder.create().show();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Toast.makeText(this, getString(R.string.toast_exported_character_failed), Toast.LENGTH_LONG).show();
+		}
 	}
 }

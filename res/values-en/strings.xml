@@ -193,7 +193,7 @@
     <string name="msg_please_wait">Please wait&#8230;</string>
     <string name="row_edit_last_template">Edit last Template&#8230;</string>
     <string name="row_create_new_template">Create new Teamplate&#8230;</string>
-    <string name="menu_label_export_template">Export template as file</string>
+    <string name="menu_label_export_template">Export template as a file</string>
     <string name="menu_label_import_template">Import template from a file</string>
     <string name="toast_exported_template">Exported template to: %1$s</string>
     <string name="toast_exported_template_failed">Failed to export!</string>
@@ -233,7 +233,10 @@
     <!-- fragment_character_details -->
     <string name="character_name">Character Name</string>
     <string name="three">3</string>
-
+    <string name="menu_export_character">Export character as a file</string>
+    <string name="toast_exported_character">Exported character to: %1$s</string>
+    <string name="toast_exported_character_failed">Failed to export!</string>
+    
     <!-- fragment_game_details -->
     <string name="text_change_game">Edit Game</string>
     <string name="text_play_game">Play</string>
