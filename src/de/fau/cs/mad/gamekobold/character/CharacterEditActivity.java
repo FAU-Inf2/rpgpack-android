@@ -81,6 +81,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(newToggler);
+		 Log.d("CharacterPlayActivity", "onCreate setCheckboxVisibilityInSlideoutmenu");
 		 setCheckboxVisibilityInSlideoutmenu(false);
 	 }
 	 

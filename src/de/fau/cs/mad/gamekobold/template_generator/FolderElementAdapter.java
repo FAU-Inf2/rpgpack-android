@@ -58,15 +58,16 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
-        this.editable = editable;
+//        this.editable = editable;
+        this.editable = SlideoutNavigationActivity.getAc().inEditMode();
         checkBoxesVisible = (SlideoutNavigationActivity.getAc() instanceof CharacterEditActivity)?true:false;
-        //set to false for slideout menu
-        boolean thisIsRoot = SlideoutNavigationActivity.getAc().getRootFragment().dataAdapter
-				== this?true:false;
-		Log.d("FolderElementAdapter", "thisIsRoot == " + thisIsRoot);
-		if(thisIsRoot){
-			checkBoxesVisible = false;
-		}
+        //set to false for slideout menu; doesnt work; set in oncreate of activity now
+//        boolean thisIsRoot = SlideoutNavigationActivity.getAc().getRootFragment().dataAdapter
+//				== this?true:false;
+		Log.d("FolderElementAdapter", "FolderElementAdapter onCreate");
+//		if(thisIsRoot){
+//			checkBoxesVisible = false;
+//		}
 //        favoritesVisible = (SlideoutNavigationActivity.getAc() instanceof CharacterPlayActivity)?true:false;
         favoritesVisible = false;
     }
@@ -95,11 +96,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	 */
 	@Override
 	public int getItemViewType(int position) {
-		boolean thisIsRoot = SlideoutNavigationActivity.getAc().getRootFragment().dataAdapter
-				== this?true:false;
-		if(!thisIsRoot){
-			Log.d("FolderElementAdapter", "getItemViewType; checkBoxesVisible == " + checkBoxesVisible);
-		}
 		if(editable){
 			return 4;
 		}
@@ -259,7 +255,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
             ViewHolder holder = new ViewHolder();
             //distinguish slightly between how an inflated row should looke like
 //    		Log.d("FolderElementAdapter", "getView; editable: " + editable + "; checking: " + allowCheckingItems);
-//    		Log.d("FolderElementAdapter", "getItemViewType(viewPosition) == " + getItemViewType(viewPosition));
+    		Log.d("FolderElementAdapter", "getItemViewType(viewPosition) == " + getItemViewType(viewPosition));
         	if(getItemViewType(viewPosition) == 4){
             		view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
                 	holder.elementName = (EditText) view.findViewById(R.id.text);
@@ -275,7 +271,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
                 		favorite.setVisibility(View.INVISIBLE);
                 	}
                 	else if(SlideoutNavigationActivity.getAc() instanceof CharacterPlayActivity){
-        				Log.d("FolderElementAdapter", "instanceof CharacterPlayActivity!");
                 		cb.setVisibility(View.INVISIBLE);
                 	}
                 	holder.box = cb;
