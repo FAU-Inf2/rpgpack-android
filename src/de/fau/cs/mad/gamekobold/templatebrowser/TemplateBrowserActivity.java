@@ -14,8 +14,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,16 +27,28 @@ import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class TemplateBrowserActivity extends ListActivity {
+	public static final String CREATE_CHAR_DIRECT = "CREATE_CHAR_DIRECT";
+	
 	private List<Template> templateList = null;
 	// time stamp of the template directory
 	// with this we can determine if a template has been deleted / created
 	private long templateFolderTimeStamp = 0;
-	public static final String CREATE_CHAR_DIRECT = "CREATE_CHAR_DIRECT";
+	// flag to distinguish if we are picking a template for character creation
+	private boolean mode_pickTemplateForCharacterCreation = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_browser);
+		
+		//check if we came here from character browser
+		//and want to create a character from this template directly
+		final Intent intent = getIntent();
+		final Bundle extras = intent.getExtras();
+		if (extras != null) {
+			mode_pickTemplateForCharacterCreation = extras.getBoolean(CREATE_CHAR_DIRECT, false);
+		}
+		
 		Log.e("d", "On create!!!");
 		if (templateList == null) {
 			templateList = new ArrayList<Template>();
@@ -47,12 +57,21 @@ public class TemplateBrowserActivity extends ListActivity {
 		// newTemplate-intent
 		final TemplateBrowserArrayAdapter adapter = new TemplateBrowserArrayAdapter(
 				this, templateList);
+		adapter.setModeOnlyTemplates(mode_pickTemplateForCharacterCreation);
 		setListAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-
+				// if we are only picking a tempalte for character creation
+				if(mode_pickTemplateForCharacterCreation){
+					Intent i = new Intent(TemplateBrowserActivity.this,
+							CreateNewCharacterActivity.class);
+					i.putExtra("templateFileName", templateList.get(position).getFileName());
+					startActivity(i);
+					return;
+				}
+				// normal browser mode
 				// is it last row?
 				// JACKSON start : for editing last created template
 				if (position == adapter.getCount() - 1) {
@@ -75,33 +94,17 @@ public class TemplateBrowserActivity extends ListActivity {
 				}
 				// JACKSON end
 				else {
-					//check if we came here from character browser
-					//and want to create a character from this template directly
-					final Intent intent = getIntent();
-					final Bundle extras = intent.getExtras();
-					boolean createCharDirectly = false;
-					if (extras != null) {
-						createCharDirectly = extras.getBoolean(CREATE_CHAR_DIRECT);
-					}
-					if(createCharDirectly){
-						Intent i = new Intent(TemplateBrowserActivity.this,
-								CreateNewCharacterActivity.class);
-						i.putExtra("templateFileName", templateList.get(position).getFileName());
+					Intent i = new Intent(TemplateBrowserActivity.this,
+							CreateNewTemplateActivity.class);
+					Log.e("er", "position: " + position);
+					try {
+						final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
+							JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
+						i.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jacksonTemplate);
 						startActivity(i);
 					}
-					else{
-						Intent i = new Intent(TemplateBrowserActivity.this,
-								CreateNewTemplateActivity.class);
-						Log.e("er", "position: " + position);
-						try {
-							final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
-								JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
-							i.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jacksonTemplate);
-							startActivity(i);
-						}
-						catch(Throwable e) {
-							e.printStackTrace();
-						}
+					catch(Throwable e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -224,24 +227,24 @@ public class TemplateBrowserActivity extends ListActivity {
 		Log.e("d", "On stop!!!");
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
 //		getMenuInflater().inflate(R.menu.template_browser, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle action bar item clicks here. The action bar will
+//		// automatically handle clicks on the Home/Up button, so long
+//		// as you specify a parent activity in AndroidManifest.xml.
 //		int id = item.getItemId();
 //		if (id == R.id.action_settings) {
 //			return true;
 //		}		
-		return super.onOptionsItemSelected(item);
-	}
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -444,9 +447,11 @@ public class TemplateBrowserActivity extends ListActivity {
 			if (templateList == null) {
 				templateList = new ArrayList<Template>();
 			}
-			// JACKSON add a new entry for editing the last created template
-			templateList.add(new Template(getResources().getString(
-					R.string.row_edit_last_template), "", "", "", -1));
+			if(!mode_pickTemplateForCharacterCreation) {
+				// JACKSON add a new entry for editing the last created template
+				templateList.add(new Template(getResources().getString(
+						R.string.row_edit_last_template), "", "", "", -1));
+			}
 			// set the template list for the current activity
 			setTemplateList(templateList);
 		}

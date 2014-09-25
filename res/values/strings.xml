@@ -203,6 +203,7 @@
 	<string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
 	<string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
 	<string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
+	<string name="template_item_adapter_author_date_label" formatted="false">Von %s, %s</string>
 	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>

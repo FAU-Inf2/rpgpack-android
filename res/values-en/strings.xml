@@ -203,6 +203,7 @@
 	<string name="toast_imported_template_failed">Failed to import template!</string>
 	<string name="toast_file_is_not_template">File is not a template!</string>
 	<string name="toast_no_last_edited_tempalte">No last edited template found.</string>
+	<string name="template_item_adapter_author_date_label" formatted="false">By %s, %s</string>
 	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Row</string>
