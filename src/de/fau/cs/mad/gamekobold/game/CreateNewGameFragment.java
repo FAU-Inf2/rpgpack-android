@@ -479,6 +479,12 @@ public class CreateNewGameFragment extends Fragment {
 			// disable editing if in info mode
 			if(infoMode) {
 				editTextInfo.setEnabled(false);
+				if(cGame != null) {
+					if(cGame.getDescription().isEmpty()) {
+						// change hint if the description is empty
+						editTextInfo.setHint(R.string.no_description_found);
+					}
+				}
 			}
 			Log.d("curGame is null?", "" + (cGame == null));
 			if(cGame != null) {
