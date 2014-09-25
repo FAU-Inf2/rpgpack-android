@@ -16,18 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity.modes;
-import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity;
 
 public class CharacterEditActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 	/**
 	 * in editMode -> checkboxes in slideout-menu are shown -> set with setCheckboxVisibilityInSlideoutmenu(boolean)
 	 */
-	private boolean editMode = false;
+	private boolean checkBoxesShown = false;
 	private CharacterSheet characterSheet;
 
 	 @Override
@@ -73,7 +70,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 @Override
 			 public void onDrawerClosed(View drawerView) {
 				 mDrawerToggle.onDrawerClosed(drawerView);
-				 setCheckboxVisibilityInSlideoutmenu(false);
+//				 setCheckboxVisibilityInSlideoutmenu(false);
 			 }
 			 @Override
 			 public void onDrawerOpened(View drawerView) {
@@ -81,7 +78,8 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(newToggler);
-
+		 Log.d("CharacterPlayActivity", "onCreate setCheckboxVisibilityInSlideoutmenu");
+		 setCheckboxVisibilityInSlideoutmenu(false);
 	 }
 	 
 	 @Override
@@ -108,7 +106,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	  * @param visible
 	  */
 	 private void setCheckboxVisibiltyExceptSlideoutmenu(boolean visible){
-		 rootFragment.setCheckboxVisibilityBelow(true);
+		 rootFragment.setCheckboxVisibilityBelow(visible);
 	 }
 	 
 	 /**
@@ -116,7 +114,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	  * @param visible
 	  */
 	 private void setCheckboxVisibilityInSlideoutmenu(boolean visible){
-		 editMode = visible;
+		 checkBoxesShown = visible;
 		 rootFragment.setCheckboxVisibility(visible);
 	 }
 
@@ -142,7 +140,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		 int id = item.getItemId();
 		 if (id == R.id.action_edit_mode) {
-			 setCheckboxVisibilityInSlideoutmenu(!editMode);
+			 setCheckboxVisibilityInSlideoutmenu(!checkBoxesShown);
 		 }
 		 else if (id == R.id.action_editable_mode) {
 			 if (item.isChecked()) {
@@ -176,6 +174,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 private class SetCheckboxVisibilityTask extends AsyncTask<Boolean, Void, Boolean> {
 			@Override
 			protected void onPostExecute(Boolean visible) {
+				Log.d("CharacterEditActivity", "setCheckboxVisibiltyExceptSlideoutmenu to "+ visible.booleanValue());
 				setCheckboxVisibiltyExceptSlideoutmenu(visible.booleanValue());
 			}
 			@Override
@@ -197,27 +196,12 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	  */
 	 public static Intent createIntentForStarting(Context packageContext, CharacterSheet sheet) {
 		 	Intent intent = new Intent(packageContext, CharacterEditActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			// set flag so we do not use template mode
 			intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, MODE_EDIT_CARACTER);
 			intent.putExtra(CharacterEditActivity.EXTRA_CHARACTER_ABS_PATH,
 					sheet.getFileAbsolutePath());
 			return intent;
 	 }
-	 
-	 @Override
-		public void onBackPressed() {
-			//note: we should have reachen this character-edit mode from character-browser
-			//so we should go back there and not to the step inbetween (picking template
-			//to create a character from)
-			Log.d("CreateNewCharacterActivity", "onBackPressed called!");
-			Intent intent = new Intent(CharacterEditActivity.this,
-					CharacterBrowserActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-//			super.onBackPressed();
-		}
 	 
 	 @Override
 	 public void onSaveInstanceState(Bundle savedInstanceState) {

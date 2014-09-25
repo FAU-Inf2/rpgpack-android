@@ -60,6 +60,7 @@ public class TemplateMenu extends AbstractThreeButtonMenu {
 		// Start create new template activity
 		Intent i = new Intent(TemplateMenu.this,
 				CreateNewTemplateActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(i);
 	}
 

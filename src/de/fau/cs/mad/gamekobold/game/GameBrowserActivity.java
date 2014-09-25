@@ -1,6 +1,5 @@
 package de.fau.cs.mad.gamekobold.game;
 
-import de.fau.cs.mad.gamekobold.MainActivity;
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Fragment;
 import android.content.Intent;

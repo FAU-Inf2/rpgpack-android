@@ -105,7 +105,9 @@
     <string name="hint_world_name">Name der Welt&#8230;</string>
     <string name="toast_create_template_now">Erstelle nun dein Template!</string>
     <string name="toast_edit_template_now">Editiere nun dein Template!</string>
-
+    <string name="msg_template_file_already_exists">Es existiert bereits eine Vorlage mit dem gleichem Datei Namen.</string>
+    <string name="msg_yes_to_overwrite_no_to_edit">Klicke auf Ja um die Datei zu ueberschreiben oder auf Nein um den Namen zu aendern.</string>
+    
     <string-array name="image_picker_items">
         <item>von Kamera</item>
         <item>von SD-Karte</item>
@@ -115,8 +117,6 @@
     <string name="warning_set_name">Dein Template braucht einen Namen!</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
-    <string name="msg_file_already_exists">Für dieses Template existiert bereits eine Datei!</string>
-    <string name="msg_yes_to_overwrite">Klicke auf JA um diese Datei zu Überschreiben.</string>
 
     <!-- FolderElementAdapter -->
     <string name="question_delete">Element löschen?</string>
@@ -195,7 +195,7 @@
     <string name="row_create_new_template">Neues Vorlage erstellen&#8230;</string>
     <string name="menu_label_export_template">Exportiere Vorlage als Datei</string>
 	<string name="menu_label_import_template">Importiere ein Vorlage aus einer Datei</string>
-	<string name="toast_exported_template">Vorlage exportiert nach: %s</string>
+	<string name="toast_exported_template">Vorlage exportiert nach: %1$s</string>
 	<string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
 	<string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
 	<string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
@@ -203,6 +203,7 @@
 	<string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
 	<string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
 	<string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
+	<string name="template_item_adapter_author_date_label">Von %1$s, %2$s</string>
 	
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>
@@ -232,6 +233,9 @@
     <!-- fragment_character_details -->
     <string name="character_name">Charakter Name</string>
     <string name="three">3</string>
+    <string name="menu_export_character">Charakter in eine Datei exportieren</string>
+    <string name="toast_exported_character">Charakter exportiert nach: %1$s</string>
+	<string name="toast_exported_character_failed">Exportieren fehlgeschlagen!</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
@@ -402,6 +406,9 @@
     <string name="menu_edit_characters">Charaktere bearbeiten</string>
     <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
     <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    <string name="menu_import_character_from_file">Importiere einen Charakter</string>
+    <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
+    <string name="toast_please_pick_a_template">Bitte waehle eine Vorlage.</string>
     
     <!-- TemplateMenu -->
     <string name="menu_new_template">Neue Vorlage</string>
@@ -422,4 +429,9 @@
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">Eine Datei mit dem selben Namen existiert bereits!</string>
     <string name="question_overwrite_file">Datei ueberschreiben?</string>
+    
+    <!-- Character import -->
+  	<string name="toast_imported_character">Charakter importiert.</string>
+	<string name="toast_imported_character_failed">Importieren fehlgeschlagen!</string>
+	<string name="toast_file_is_not_character">Datei ist kein Charakter!</string>
 </resources>

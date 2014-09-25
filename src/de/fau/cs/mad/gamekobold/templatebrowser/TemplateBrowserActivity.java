@@ -1,7 +1,6 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,25 +23,32 @@ import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
-import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
-import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
-import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
-import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
-public class TemplateBrowserActivity extends ListActivity implements IFileBrowserReceiver {
+public class TemplateBrowserActivity extends ListActivity {
+	public static final String CREATE_CHAR_DIRECT = "CREATE_CHAR_DIRECT";
+	
 	private List<Template> templateList = null;
 	// time stamp of the template directory
 	// with this we can determine if a template has been deleted / created
 	private long templateFolderTimeStamp = 0;
-	public static final String CREATE_CHAR_DIRECT = "CREATE_CHAR_DIRECT";
+	// flag to distinguish if we are picking a template for character creation
+	private boolean mode_pickTemplateForCharacterCreation = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_browser);
+		
+		//check if we came here from character browser
+		//and want to create a character from this template directly
+		final Intent intent = getIntent();
+		final Bundle extras = intent.getExtras();
+		if (extras != null) {
+			mode_pickTemplateForCharacterCreation = extras.getBoolean(CREATE_CHAR_DIRECT, false);
+		}
+		
 		Log.e("d", "On create!!!");
 		if (templateList == null) {
 			templateList = new ArrayList<Template>();
@@ -53,24 +57,24 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		// newTemplate-intent
 		final TemplateBrowserArrayAdapter adapter = new TemplateBrowserArrayAdapter(
 				this, templateList);
+		adapter.setModeOnlyTemplates(mode_pickTemplateForCharacterCreation);
 		setListAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-
-				// is it last row?
-				if (position == adapter.getCount() - 1) {
-
-					Log.e("er", "Position, getCount: " + adapter.getCount());
-
+				// if we are only picking a tempalte for character creation
+				if(mode_pickTemplateForCharacterCreation){
 					Intent i = new Intent(TemplateBrowserActivity.this,
-							CreateNewTemplateActivity.class);
+							CreateNewCharacterActivity.class);
+					i.putExtra("templateFileName", templateList.get(position).getFileName());
 					startActivity(i);
-
+					return;
 				}
+				// normal browser mode
+				// is it last row?
 				// JACKSON start : for editing last created template
-				else if (position == adapter.getCount() - 2) {
+				if (position == adapter.getCount() - 1) {
 					// get shared preferences
 					SharedPreferences pref = getSharedPreferences(
 							SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,
@@ -90,33 +94,17 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 				}
 				// JACKSON end
 				else {
-					//check if we came here from character browser
-					//and want to create a character from this template directly
-					final Intent intent = getIntent();
-					final Bundle extras = intent.getExtras();
-					boolean createCharDirectly = false;
-					if (extras != null) {
-						createCharDirectly = extras.getBoolean(CREATE_CHAR_DIRECT);
-					}
-					if(createCharDirectly){
-						Intent i = new Intent(TemplateBrowserActivity.this,
-								CreateNewCharacterActivity.class);
-						i.putExtra("templateFileName", templateList.get(position).getFileName());
+					Intent i = new Intent(TemplateBrowserActivity.this,
+							CreateNewTemplateActivity.class);
+					Log.e("er", "position: " + position);
+					try {
+						final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
+							JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
+						i.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jacksonTemplate);
 						startActivity(i);
 					}
-					else{
-						Intent i = new Intent(TemplateBrowserActivity.this,
-								CreateNewTemplateActivity.class);
-						Log.e("er", "position: " + position);
-						try {
-							final de.fau.cs.mad.gamekobold.jackson.Template jacksonTemplate = 
-								JacksonInterface.loadTemplate(new File(templateList.get(position).fileAbsolutePath), true);
-							i.putExtra(de.fau.cs.mad.gamekobold.jackson.Template.PARCELABLE_STRING, jacksonTemplate);
-							startActivity(i);
-						}
-						catch(Throwable e) {
-							e.printStackTrace();
-						}
+					catch(Throwable e) {
+						e.printStackTrace();
 					}
 				}
 			}
@@ -239,28 +227,24 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 		Log.e("d", "On stop!!!");
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.template_browser, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		else if(id == R.id.menu_item_import_template) {
-			showFileBrowserPopup();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.template_browser, menu);
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// Handle action bar item clicks here. The action bar will
+//		// automatically handle clicks on the Home/Up button, so long
+//		// as you specify a parent activity in AndroidManifest.xml.
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}		
+//		return super.onOptionsItemSelected(item);
+//	}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -463,13 +447,12 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			if (templateList == null) {
 				templateList = new ArrayList<Template>();
 			}
-			// JACKSON add a new entry for editing the last created template
-			templateList.add(new Template(getResources().getString(
-					R.string.row_edit_last_template), "", "", "", -1));
-			// set create new template row to the end of the list
-			templateList.add(new Template(getResources().getString(
-					R.string.row_create_new_template), "", "", "", -1));
-			// set the template list for the current activty
+			if(!mode_pickTemplateForCharacterCreation) {
+				// JACKSON add a new entry for editing the last created template
+				templateList.add(new Template(getResources().getString(
+						R.string.row_edit_last_template), "", "", "", -1));
+			}
+			// set the template list for the current activity
 			setTemplateList(templateList);
 		}
 	}
@@ -484,51 +467,6 @@ public class TemplateBrowserActivity extends ListActivity implements IFileBrowse
 			adapter.clear();
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();
-		}
-	}
-
-	/**
-	 * Shows the FileBrowser as a popup.
-	 */
-	private void showFileBrowserPopup() {
-		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
-		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
-	}
-
-	/**
-	 * Callback for FileBrowser. This is called when the user picked a file to import.
-	 */
-	@Override
-	public void onFilePicked(File file) {
-		// close file browser popup
-		FileBrowser.removeAsPopup(getFragmentManager());
-		// check if selected file is a template
-		if(JacksonFileValidator.isValidTemplate(file)) {
-			// get template directory
-			File templateRootDir = JacksonInterface.getTemplateRootDirectory(this);
-			try {
-				// try to copy file to template directory
-				FileCopyUtility.copyFile(file, new File(templateRootDir, file.getName()), false);
-				// reload template list
-				loadTemplateList();
-				// inform user
-				Toast.makeText(this, getString(R.string.toast_imported_template), Toast.LENGTH_LONG).show();
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-				// failed to import template, inform user
-				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
-			} catch (FileWouldOverwriteException e) {
-				// we would overwrite an existing file
-				e.printStackTrace();
-				// TODO show popup and let user decide
-				// failed to import template, inform user
-				Toast.makeText(this, getString(R.string.toast_imported_template_failed), Toast.LENGTH_LONG).show();
-			}
-		}
-		else {
-			// file is not a template, inform user
-			Toast.makeText(this, getString(R.string.toast_file_is_not_template), Toast.LENGTH_LONG).show();			
 		}
 	}
 }

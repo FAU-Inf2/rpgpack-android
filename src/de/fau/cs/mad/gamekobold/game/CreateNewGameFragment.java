@@ -4,7 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -273,6 +273,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
 		createGameButton.setOnClickListener(new OnClickListener() {
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
 
@@ -479,6 +480,12 @@ public class CreateNewGameFragment extends Fragment {
 			// disable editing if in info mode
 			if(infoMode) {
 				editTextInfo.setEnabled(false);
+				if(cGame != null) {
+					if(cGame.getDescription().isEmpty()) {
+						// change hint if the description is empty
+						editTextInfo.setHint(R.string.no_description_found);
+					}
+				}
 			}
 			Log.d("curGame is null?", "" + (cGame == null));
 			if(cGame != null) {

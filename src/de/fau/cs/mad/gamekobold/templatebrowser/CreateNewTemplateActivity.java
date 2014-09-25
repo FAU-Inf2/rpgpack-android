@@ -1,10 +1,9 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -159,6 +158,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		});
 
 		createTemplateButton.setOnClickListener(new OnClickListener() {
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
 				// check if the template name is empty
@@ -204,9 +204,9 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 						final AlertDialog.Builder builder = new AlertDialog.Builder(
 							myActivity);
 						builder.setTitle(getResources().getString(
-							R.string.msg_file_already_exists));
+							R.string.msg_template_file_already_exists));
 						builder.setMessage(getResources().getString(
-							R.string.msg_yes_to_overwrite));
+							R.string.msg_yes_to_overwrite_no_to_edit));
 						builder.setNegativeButton(
 							getResources().getString(R.string.no),
 							new DialogInterface.OnClickListener() {
@@ -305,10 +305,10 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 			// menu while editing
 			getMenuInflater().inflate(R.menu.menu_create_template_edit_mode, menu);	
 		}
-		else {
-			// menu while creating
-			getMenuInflater().inflate(R.menu.create_new_template, menu);	
-		}
+//		else {
+//			// menu while creating
+//			getMenuInflater().inflate(R.menu.create_new_template, menu);	
+//		}
 		return true;
 	}
 
@@ -325,12 +325,12 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 				return true;
 			}
 		}
-		else {
-			// creation mode
-			if (id == R.id.action_settings) {
-				return true;
-			}			
-		}
+//		else {
+//			// creation mode
+//			if (id == R.id.action_settings) {
+//				return true;
+//			}			
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 	

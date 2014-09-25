@@ -1,6 +1,5 @@
 package de.fau.cs.mad.gamekobold.colorpicker;
 
-import java.util.Random;
 import de.fau.cs.mad.gamekobold.R;
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,7 +8,6 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +75,6 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    ImageView triangle = (ImageView)view.findViewById(R.id.imageView1);
 	    triangle.setColorFilter(getActivity().getResources().getColor(R.color.background_light), Mode.SRC_ATOP);
 	    // shuffle colors
-	    shuffleArray(colors);
 	    // create button list
 	    buttons = new ImageButton[12];
 	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);
@@ -157,19 +154,5 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 		ColorPickerDialog newInstance = new ColorPickerDialog();
 		newInstance.targetButton = targetButton;
 		return newInstance;
-	}
-	// Implementing Fisher–Yates shuffle
-	// From http://stackoverflow.com/a/1520212
-	private static void shuffleArray(int[] ar)
-	{
-		Random rnd = new Random();
-	    for (int i = ar.length - 1; i > 0; i--)
-	    {
-	    	int index = rnd.nextInt(i + 1);
-	    	// Simple swap
-	    	int a = ar[index];
-	    	ar[index] = ar[i];
-	    	ar[i] = a;
-	    }
 	}
 }

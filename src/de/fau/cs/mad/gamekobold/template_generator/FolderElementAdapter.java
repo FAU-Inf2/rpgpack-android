@@ -51,13 +51,25 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	 * else -> TextView
 	 */
 	private boolean editable = true;
-	public boolean reinflateNeeded = false;
+	private boolean checkBoxesVisible = false;
+	private boolean favoritesVisible = false;
 
 	public FolderElementAdapter(Activity context, boolean editable, int textViewResourceId, ArrayList<FolderElementData> objects) {
 		super(context, textViewResourceId, objects);
         allData = new ArrayList<FolderElementData>();
         allData = objects;
-        this.editable = editable;
+//        this.editable = editable;
+        this.editable = SlideoutNavigationActivity.getAc().inEditMode();
+        checkBoxesVisible = (SlideoutNavigationActivity.getAc() instanceof CharacterEditActivity)?true:false;
+        //set to false for slideout menu; doesnt work; set in oncreate of activity now
+//        boolean thisIsRoot = SlideoutNavigationActivity.getAc().getRootFragment().dataAdapter
+//				== this?true:false;
+		Log.d("FolderElementAdapter", "FolderElementAdapter onCreate");
+//		if(thisIsRoot){
+//			checkBoxesVisible = false;
+//		}
+//        favoritesVisible = (SlideoutNavigationActivity.getAc() instanceof CharacterPlayActivity)?true:false;
+        favoritesVisible = false;
     }
 
 	
@@ -75,14 +87,36 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	    return allData.size();
 	}
 	
+	/**
+	 * @return 0 -> nothing visible <br>
+	 * 1 -> checkboxes visible <br>
+	 * 2 -> favorites visible <br>
+	 * 3 -> both <br>
+	 * 4 -> editable-mode
+	 */
 	@Override
 	public int getItemViewType(int position) {
-	    return getItem(position).checkBoxVisible?1:0;     
+		if(editable){
+			return 4;
+		}
+		else if(checkBoxesVisible && favoritesVisible){
+			return 3;
+		}
+		else if(checkBoxesVisible){
+			return 1;
+		}
+		else if(favoritesVisible){
+			return 2;
+		}
+		else{
+			return 0;
+		}
+//	    return getItem(position).checkBoxVisible?1:0;     
 	}
 	
 	@Override
 	public int getViewTypeCount() {
-	    return 2;
+	    return 5;
 	}
 
 	@Override
@@ -214,14 +248,15 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition);
         View view = null;
         // Check to see if this row has already been painted once.
-        if (convertView == null || reinflateNeeded) {
+        if (convertView == null) {
     		Log.d("FolderElementAdapter", "convertview == NULL or reinflating");
             // If it hasn't, set up everything:
             LayoutInflater inflator = SlideoutNavigationActivity.getAc().getLayoutInflater();
             ViewHolder holder = new ViewHolder();
             //distinguish slightly between how an inflated row should looke like
 //    		Log.d("FolderElementAdapter", "getView; editable: " + editable + "; checking: " + allowCheckingItems);
-            if(editable){
+    		Log.d("FolderElementAdapter", "getItemViewType(viewPosition) == " + getItemViewType(viewPosition));
+        	if(getItemViewType(viewPosition) == 4){
             		view = inflator.inflate(R.layout.template_listview_row_editable, new LinearLayout(SlideoutNavigationActivity.getAc()), false);
                 	holder.elementName = (EditText) view.findViewById(R.id.text);
             }
@@ -337,17 +372,28 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
      * set visibilty of the checkboxes (all data items handled by this adapter)
      */
     public void setCheckboxVisibility(boolean visible){
-    	for(FolderElementData oneDatum: allData){
-			 oneDatum.checkBoxVisible = visible;
-		 }
-		 notifyDataSetChanged();
+//    	for(FolderElementData oneDatum: allData){
+//			 oneDatum.checkBoxVisible = visible;
+//		 }
+//		notifyDataSetChanged();
+    	if(checkBoxesVisible != visible){
+    		boolean thisIsRoot = SlideoutNavigationActivity.getAc().getRootFragment().dataAdapter
+    				== this?true:false;
+    		if(!thisIsRoot){
+    			Log.d("FolderElementAdapter", "setCheckboxVisibility to " + visible);
+    		}
+    		//		Log.d("FolderElementAdapter", "setCheckboxVisibility rootFragment? " + thisIsRoot);
+    		//		new Throwable().printStackTrace();
+    		//		Log.d("FolderElementAdapter", "checkBoxesVisible SET TO " + visible);
+    		checkBoxesVisible = visible;
+    		notifyDataSetChanged();
+    	}
     }
     
     public void setEditable(boolean value){
     	if(editable != value){
     		editable = value;
-    		reinflateNeeded = true;
-    		notifyDataSetInvalidated();
+    		notifyDataSetChanged();
     	}
     }
     

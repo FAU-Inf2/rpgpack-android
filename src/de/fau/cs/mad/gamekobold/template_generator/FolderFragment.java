@@ -61,6 +61,7 @@ public class FolderFragment extends GeneralFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         
+        
 //        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SlideoutNavigationActivity.theActiveActivity);
 //        LayoutInflater inflater = SlideoutNavigationActivity.theActiveActivity.getLayoutInflater();
 //        dialogViewCreateElement = inflater.inflate(R.layout.alertdialog_template_generator_add_new_element, null);
@@ -190,14 +191,13 @@ public class FolderFragment extends GeneralFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 
 		super.onCreateView(inflater, container, savedInstanceState);
 		Log.d("FolderFragment","onCreateView; editMode == " + SlideoutNavigationActivity.theActiveActivity.inEditMode());
-		// nullcheck needed for jackson inflation. creates allData before onCreate is called
-        if(allData == null) {
+		if(allData == null) {
         	allData = new ArrayList<FolderElementData>();
         }
         //TODO: check if a problem when nullcheck is commented out; it is because of needed by reinflating
         //in edit/selection-mode
         // nullcheck needed for jackson inflation. creates dataAdapter before onCreate is called
-//        if(dataAdapter == null) {
+        if(dataAdapter == null) {
         	dataAdapter = new FolderElementAdapter((SlideoutNavigationActivity)getActivity(), SlideoutNavigationActivity.theActiveActivity.inEditMode(), R.layout.template_listview_row, allData);
             /*
              * JACKSON START
@@ -206,7 +206,16 @@ public class FolderFragment extends GeneralFragment {
             /*
              * JACKSON END
              */
-//        }
+        }
+        if(SlideoutNavigationActivity.getAc().inEditMode()){
+        	dataAdapter.setEditable(true);
+        }
+        else{
+        	dataAdapter.setEditable(false);
+        }
+//        dataAdapter.setCheckboxVisibility(SlideoutNavigationActivity.getAc().onlySelected)
+		
+		// nullcheck needed for jackson inflation. creates allData before onCreate is called
 		if(SlideoutNavigationActivity.theActiveActivity.inEditMode()){
 			view = (LinearLayout) inflater.inflate(R.layout.activity_template_generator_add_button, null);
 			TextView addRowBelow = (TextView)view.findViewById(R.id.add_below);
