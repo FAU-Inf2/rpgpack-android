@@ -305,10 +305,10 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 			// menu while editing
 			getMenuInflater().inflate(R.menu.menu_create_template_edit_mode, menu);	
 		}
-		else {
-			// menu while creating
-			getMenuInflater().inflate(R.menu.create_new_template, menu);	
-		}
+//		else {
+//			// menu while creating
+//			getMenuInflater().inflate(R.menu.create_new_template, menu);	
+//		}
 		return true;
 	}
 
@@ -325,12 +325,12 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 				return true;
 			}
 		}
-		else {
-			// creation mode
-			if (id == R.id.action_settings) {
-				return true;
-			}			
-		}
+//		else {
+//			// creation mode
+//			if (id == R.id.action_settings) {
+//				return true;
+//			}			
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 	
