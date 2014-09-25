@@ -27,7 +27,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	/**
 	 * in editMode -> checkboxes in slideout-menu are shown -> set with setCheckboxVisibilityInSlideoutmenu(boolean)
 	 */
-	private boolean editMode = false;
+	private boolean checkBoxesShown = false;
 	private CharacterSheet characterSheet;
 
 	 @Override
@@ -73,7 +73,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 @Override
 			 public void onDrawerClosed(View drawerView) {
 				 mDrawerToggle.onDrawerClosed(drawerView);
-				 setCheckboxVisibilityInSlideoutmenu(false);
+//				 setCheckboxVisibilityInSlideoutmenu(false);
 			 }
 			 @Override
 			 public void onDrawerOpened(View drawerView) {
@@ -81,7 +81,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 			 }
 		 };
 		 mDrawerLayout.setDrawerListener(newToggler);
-
+		 setCheckboxVisibilityInSlideoutmenu(false);
 	 }
 	 
 	 @Override
@@ -108,7 +108,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	  * @param visible
 	  */
 	 private void setCheckboxVisibiltyExceptSlideoutmenu(boolean visible){
-		 rootFragment.setCheckboxVisibilityBelow(true);
+		 rootFragment.setCheckboxVisibilityBelow(visible);
 	 }
 	 
 	 /**
@@ -116,7 +116,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	  * @param visible
 	  */
 	 private void setCheckboxVisibilityInSlideoutmenu(boolean visible){
-		 editMode = visible;
+		 checkBoxesShown = visible;
 		 rootFragment.setCheckboxVisibility(visible);
 	 }
 
@@ -142,7 +142,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		 int id = item.getItemId();
 		 if (id == R.id.action_edit_mode) {
-			 setCheckboxVisibilityInSlideoutmenu(!editMode);
+			 setCheckboxVisibilityInSlideoutmenu(!checkBoxesShown);
 		 }
 		 else if (id == R.id.action_editable_mode) {
 			 if (item.isChecked()) {
@@ -176,6 +176,7 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 private class SetCheckboxVisibilityTask extends AsyncTask<Boolean, Void, Boolean> {
 			@Override
 			protected void onPostExecute(Boolean visible) {
+				Log.d("CharacterEditActivity", "setCheckboxVisibiltyExceptSlideoutmenu to "+ visible.booleanValue());
 				setCheckboxVisibiltyExceptSlideoutmenu(visible.booleanValue());
 			}
 			@Override

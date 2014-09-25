@@ -196,8 +196,9 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		menu.clear();
 		if (SlideoutNavigationActivity.getAc().getDrawerLayout()
 				.isDrawerOpen(GravityCompat.START)) {
-			//getMenuInflater().inflate(R.menu.character_editor, menu);
-			getMenuInflater().inflate(R.menu.combined_play, menu);
+			//XXX: later use line thats commented out -> has edit button to show favorite stars
+			//getMenuInflater().inflate(R.menu.combined_play, menu);
+			getMenuInflater().inflate(R.menu.play_actions, menu);
 		}
 		else{
 			getMenuInflater().inflate(R.menu.play_actions, menu);
@@ -279,12 +280,12 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 			if (item.isChecked()) {
 				Log.d("CharacterPlayActivity", "showInvisible == false");
 				item.setChecked(false);
-				SlideoutNavigationActivity.getAc().showInvisible = item.isChecked();
+				SlideoutNavigationActivity.getAc().showInvisible = false;
 				reinflate();
 			} else {
 				Log.d("CharacterPlayActivity", "showInvisible == true");
 				item.setChecked(true);
-				SlideoutNavigationActivity.getAc().showInvisible = item.isChecked();
+				SlideoutNavigationActivity.getAc().showInvisible = true;
 				reinflate();
 			}
 			return true;

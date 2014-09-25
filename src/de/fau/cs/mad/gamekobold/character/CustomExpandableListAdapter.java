@@ -228,6 +228,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	    final CheckBox favorite = (CheckBox) convertView.findViewById(R.id.favorite_checkbox);
 	    if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterPlayActivity){
 	    	checkbox.setVisibility(View.INVISIBLE);
+	    	//XXX: show favorites again when implemented
+	    	favorite.setVisibility(View.INVISIBLE);
 	    }
 	    else if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
 	    	favorite.setVisibility(View.INVISIBLE);
