@@ -1,6 +1,6 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
-import de.fau.cs.mad.gamekobold.MainActivity;
+import de.fau.cs.mad.gamekobold.MainMenu;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import android.app.AlertDialog;
@@ -49,11 +49,9 @@ public class WarningLeaveDialog extends DialogFragment{
 				/*
 				 * JACKSON END
 				 */
-				Intent intent = new Intent(getActivity(), MainActivity.class);
+				Intent intent = new Intent(getActivity(), MainMenu.class);
 				startActivity(intent);
-				//((TemplateGeneratorActivity) TemplateGeneratorActivity.theActiveActivity).superBackPressed();
 			}});
-		
 		// when you done
 		return alertDialog;
 	}

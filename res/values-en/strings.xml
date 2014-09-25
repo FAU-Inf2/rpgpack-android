@@ -105,6 +105,8 @@
     <string name="hint_world_name">World Name&#8230;</string>
     <string name="toast_create_template_now">Now create a new Template!</string>
     <string name="toast_edit_template_now">Now edit your template!</string>
+    <string name="msg_template_file_already_exists">A template already exists with the same file name.</string>
+    <string name="msg_yes_to_overwrite_no_to_edit">Click YES to overwrite the file or NO to edit your name.</string>
 
     <string-array name="image_picker_items">
         <item>from Camera</item>

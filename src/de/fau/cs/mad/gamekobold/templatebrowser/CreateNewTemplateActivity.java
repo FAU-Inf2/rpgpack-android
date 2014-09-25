@@ -203,9 +203,9 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 						final AlertDialog.Builder builder = new AlertDialog.Builder(
 							myActivity);
 						builder.setTitle(getResources().getString(
-							R.string.msg_file_already_exists));
+							R.string.msg_template_file_already_exists));
 						builder.setMessage(getResources().getString(
-							R.string.msg_yes_to_overwrite));
+							R.string.msg_yes_to_overwrite_no_to_edit));
 						builder.setNegativeButton(
 							getResources().getString(R.string.no),
 							new DialogInterface.OnClickListener() {

@@ -105,7 +105,9 @@
     <string name="hint_world_name">Name der Welt&#8230;</string>
     <string name="toast_create_template_now">Erstelle nun dein Template!</string>
     <string name="toast_edit_template_now">Editiere nun dein Template!</string>
-
+    <string name="msg_template_file_already_exists">Es existiert bereits eine Vorlage mit dem gleichem Datei Namen.</string>
+    <string name="msg_yes_to_overwrite_no_to_edit">Klicke auf Ja um die Datei zu ueberschreiben oder auf Nein um den Namen zu aendern.</string>
+    
     <string-array name="image_picker_items">
         <item>von Kamera</item>
         <item>von SD-Karte</item>
