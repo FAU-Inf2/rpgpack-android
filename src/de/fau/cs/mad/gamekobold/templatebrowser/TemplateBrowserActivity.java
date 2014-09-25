@@ -1,7 +1,6 @@
 package de.fau.cs.mad.gamekobold.templatebrowser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +25,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
-import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
-import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
-import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
-import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
@@ -60,17 +54,8 @@ public class TemplateBrowserActivity extends ListActivity {
 					int position, long id) {
 
 				// is it last row?
-				if (position == adapter.getCount() - 1) {
-
-					Log.e("er", "Position, getCount: " + adapter.getCount());
-
-					Intent i = new Intent(TemplateBrowserActivity.this,
-							CreateNewTemplateActivity.class);
-					startActivity(i);
-
-				}
 				// JACKSON start : for editing last created template
-				else if (position == adapter.getCount() - 2) {
+				if (position == adapter.getCount() - 1) {
 					// get shared preferences
 					SharedPreferences pref = getSharedPreferences(
 							SlideoutNavigationActivity.SHARED_PREFERENCES_FILE_NAME,
@@ -242,7 +227,7 @@ public class TemplateBrowserActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.template_browser, menu);
+//		getMenuInflater().inflate(R.menu.template_browser, menu);
 		return true;
 	}
 
@@ -251,10 +236,10 @@ public class TemplateBrowserActivity extends ListActivity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}		
+//		int id = item.getItemId();
+//		if (id == R.id.action_settings) {
+//			return true;
+//		}		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -462,10 +447,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			// JACKSON add a new entry for editing the last created template
 			templateList.add(new Template(getResources().getString(
 					R.string.row_edit_last_template), "", "", "", -1));
-			// set create new template row to the end of the list
-			templateList.add(new Template(getResources().getString(
-					R.string.row_create_new_template), "", "", "", -1));
-			// set the template list for the current activty
+			// set the template list for the current activity
 			setTemplateList(templateList);
 		}
 	}

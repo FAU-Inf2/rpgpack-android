@@ -28,11 +28,11 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 	// needed for viewConvertion so that the system knows that there are
 	// different layouts in the adapter
-	// 0 for template. 1 for "new template" and "edit last template" items
+	// 0 for template. 1 for "edit last template" items
 	@Override
 	public int getItemViewType(int position) {
-		// if "edit" or "create"
-		if (position >= getCount() - 2) {
+		// if "edit last template"
+		if (position == getCount() - 1) {
 			// return 1
 			return 1;
 		}
@@ -54,22 +54,8 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 		View rowView;
 		if (convertView == null) {
-			// if it is the last row -> create new template
+			// if it is the last row -> edit last template
 			if (position == getCount() - 1) {
-				rowView = inflater.inflate(
-						R.layout.rowlayout_newtemplate_template_browser,
-						parent, false);
-
-				Log.e("er", "Position, getCount: " + getCount());
-
-				TextView tName = (TextView) rowView
-						.findViewById(R.id.textView1);
-				Template curTemplate = objects.get(position);
-				tName.setText(curTemplate.getTemplateName());
-
-			}
-			// JACKSON for editing last created template
-			else if (position == getCount() - 2) {
 				rowView = inflater.inflate(
 						R.layout.rowlayout_edittemplate_template_browser,
 						parent, false);
@@ -81,7 +67,6 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				Template curTemplate = objects.get(position);
 				tName.setText(curTemplate.getTemplateName());
 			}
-			// JACKSON end
 			else {
 				Log.e("er", "position: " + position);
 
@@ -115,9 +100,9 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 			// check for last 2 lines -> edit last template, create new
 			// template.
 			// they use an other layout
-			if (position >= getCount() - 2) {
+			if (position == getCount() - 1) {
 				rowView = inflater.inflate(
-						R.layout.rowlayout_newtemplate_template_browser,
+						R.layout.rowlayout_edittemplate_template_browser,
 						parent, false);
 				TextView tName = (TextView) rowView
 						.findViewById(R.id.textView1);
