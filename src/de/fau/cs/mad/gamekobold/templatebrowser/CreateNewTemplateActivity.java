@@ -3,6 +3,8 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.DuplicateFormatFlagsException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,7 +37,10 @@ import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
+import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
+import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
+import de.fau.cs.mad.gamekobold.filebrowser.TemplateExportTask;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -468,5 +473,20 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 			e.printStackTrace();
 			Toast.makeText(this, getString(R.string.toast_exported_template_failed), Toast.LENGTH_LONG).show();
 		}
+	}
+
+	//TODO integrate with app
+	private void exportTemplate(final File templateFile, final File targetFile, boolean overrideIfExists) throws FileWouldOverwriteException, FileTargetIsSourceException {
+		if(templateFile == null || targetFile == null) {
+			throw new NullPointerException();
+		}
+		if(templateFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+			throw new FileTargetIsSourceException(targetFile);
+		}
+		if(targetFile.exists() && !overrideIfExists) {
+			throw new FileWouldOverwriteException(targetFile);
+		}
+		TemplateExportTask exportTask = new TemplateExportTask();
+		exportTask.execute(new File[] {templateFile, targetFile});
 	}
 }
