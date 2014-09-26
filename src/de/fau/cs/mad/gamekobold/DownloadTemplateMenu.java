@@ -3,6 +3,9 @@ package de.fau.cs.mad.gamekobold;
 import java.io.File;
 import java.io.IOException;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
@@ -14,6 +17,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat.IntentReader;
+import android.util.Log;
 import android.widget.Toast;
 
 public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IFileBrowserReceiver{
@@ -82,7 +87,8 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 
 	@Override
 	protected void button3Action() {
-		Toast.makeText(DownloadTemplateMenu.this, "QR-Code scan", Toast.LENGTH_LONG).show();
+		IntentIntegrator integrator = new IntentIntegrator(this);
+		integrator.initiateScan();
 	}
 
 	/**
@@ -146,6 +152,17 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 				}
 			});
 			builder.create().show();
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		// QR-Code scan
+		IntentResult qrscanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if(qrscanResult != null) {
+			// scan successful
+			// to get the decoded data use qrscanResult.getContents()
+			Log.d("QR-CodeScan", qrscanResult.getContents());
 		}
 	}
 }
