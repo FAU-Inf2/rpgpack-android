@@ -160,12 +160,14 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 		// QR-Code scan
 		IntentResult qrscanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if(qrscanResult != null) {
-			// scan successful
-			Log.d("QR-CodeScan", qrscanResult.getContents());
 			// to get the decoded data use qrscanResult.getContents()
 			// potentialURL could be a url to download a template.
 			// you should check if it is valid or some other qr/barcode.
 			final String potentialURL = qrscanResult.getContents();
+			if(potentialURL != null) {
+				// scan successful
+				Log.d("QR-CodeScan", qrscanResult.getContents());
+			}
 		}
 	}
 }
