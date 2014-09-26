@@ -1,5 +1,7 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
@@ -11,7 +13,7 @@ import de.fau.cs.mad.gamekobold.jackson.SelectAndFavorableItem;
  * Strength, Health, Dexterity etc.
  * 
  */
-public class MatrixItem extends SelectAndFavorableItem {
+public class MatrixItem extends SelectAndFavorableItem implements Serializable {
 	private String itemName;
 	private String value;
 	private int rangeMin;
