@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
-public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> {
+public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> implements Serializable{
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100

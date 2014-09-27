@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -25,6 +26,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MODIFICATOR = "KEY_SAVE_MODIFICATOR";
 	private static final String KEY_SAVE_DESCRIPTION = "KEY_SAVE_DESCRIPTION";
 	private static final String KEY_SAVE_ITEMTOEDIT = "KEY_SAVE_ITEMTOEDIT";
+	private static final String KEY_SAVE_ADAPTER = "KEY_SAVE_ADAPTER";
 
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
@@ -35,17 +37,19 @@ public class AddNewItemDialogFragment extends DialogFragment {
 			description;
 	public MatrixFragment matrixFragment;
 	public MatrixItem editItem = null;
+	public ArrayAdapter curAdapter;
 
-	public static AddNewItemDialogFragment newInstance(MatrixFragment receiver) {
+	public static AddNewItemDialogFragment newInstance(MatrixFragment receiver,
+			ArrayAdapter adapter) {
 		AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 		fragment.matrixFragment = receiver;
+		fragment.curAdapter = adapter;
 		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// Restore the fragment's state here
 		if (savedInstanceState != null) {
 			matrixFragment = (MatrixFragment) getFragmentManager().getFragment(
@@ -139,6 +143,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				editItem = (MatrixItem) savedInstanceState
 						.getSerializable(KEY_SAVE_ITEMTOEDIT);
 			}
+			if (savedInstanceState.containsKey(KEY_SAVE_ADAPTER)) {
+				curAdapter = (ArrayAdapter) savedInstanceState
+						.getSerializable(KEY_SAVE_ADAPTER);
+			}
 		}
 
 		builder.setView(view);
@@ -206,9 +214,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							Log.d("matrixFragment is NULL?", ""
 									+ (matrixFragment == null));
 
-							matrixFragment.addMatrixItem(newItem);
-							matrixFragment.adapterCreateTemplate
-									.notifyDataSetChanged();
+							matrixFragment.addMatrixItem(newItem, curAdapter);
+							// matrixFragment.adapterCreateTemplate
+							// .notifyDataSetChanged();
+						//	matrixFragment.curAdapter.notifyDataSetChanged();
 						} else {
 							editItem.setItemName(name);
 							editItem.setValue(defValue);
@@ -217,8 +226,9 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							editItem.setModificator(mod);
 							editItem.setDescription(desc);
 							editItem.setVisibility(vis);
-							matrixFragment.adapterCreateTemplate
-									.notifyDataSetChanged();
+							// matrixFragment.adapterCreateTemplate
+							// .notifyDataSetChanged();
+						//	matrixFragment.curAdapter.notifyDataSetChanged();
 						}
 					}
 				});
@@ -269,7 +279,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		if (editItem != null) {
 			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
 					(Serializable) editItem);
-		} // Save the fragment's instance
+		} 
+		outState.putSerializable(KEY_SAVE_ADAPTER,
+				(Serializable) curAdapter);
+		// Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
 	}
