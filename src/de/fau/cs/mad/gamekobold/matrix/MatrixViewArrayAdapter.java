@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.content.Context;
@@ -15,7 +16,8 @@ import de.fau.cs.mad.gamekobold.R;
  * This class handles matrix elements we want to display on template creation.
  * 
  */
-public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
+public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
+		Serializable {
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
