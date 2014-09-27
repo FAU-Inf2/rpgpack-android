@@ -61,7 +61,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				getActivity());
-
 		View view = getActivity().getLayoutInflater().inflate(
 				R.layout.dialog_fragment_setting_matrix_value, null);
 
@@ -88,6 +87,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 		}
 
+		// set default popup value to the current matrix value
+		editTextMatrixValue.setText(matrixItem.getValue());
 		alertDialogBuilder.setView(view);
 		alertDialogBuilder.setTitle(getResources().getString(
 				R.string.string_set_matrix_value));
