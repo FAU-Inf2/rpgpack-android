@@ -49,7 +49,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setRetainInstance(true);
 
 		// Restore the fragment's state here
 		if (savedInstanceState != null) {
@@ -191,19 +190,4 @@ public class SettingValueDialogFragment extends DialogFragment {
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
 	}
-
-	// // There's a bug in the compatibility library that can cause dismissing
-	// // after the rotation. Note that there are reports that
-	// // getDialog().setOnDismissListener(null); causes a crash on some
-	// devices.
-	// // The workaround is to call getDialog().setDismissMessage(null);
-	// instead.
-	// // Issue 17423: DialogFragment dismissed on orientation change when
-	// // setRetainInstance(true) is set (compatibility library)
-	// @Override
-	// public void onDestroyView() {
-	// if (getDialog() != null && getRetainInstance())
-	// getDialog().setDismissMessage(null);
-	// super.onDestroyView();
-	// }
 }
