@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -21,13 +22,19 @@ import de.fau.cs.mad.gamekobold.R;
 
 public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_VALUE = "KEY_SAVE_MATRIX_VALUE";
+	private static final String KEY_SAVE_MATRIX_ITEM = "KEY_SAVE_MATRIX_ITEM";
+	private static final String KEY_SAVE_SEL_ITEMS = "KEY_SAVE_SEL_ITEMS";
+	private static final String KEY_SAVE_ADAPTER = "KEY_SAVE_ADAPTER";
+
 	private EditText editTextMatrixValue;
 	protected ArrayAdapter<MatrixItem> selectedItemsAdapter;
 	protected ArrayList<MatrixItem> selectedItems;
 	public MatrixItem matrixItem = null;
+	public MatrixFragment matrixFragment;
 
-	public static SettingValueDialogFragment newInstance() {
+	public static SettingValueDialogFragment newInstance(MatrixFragment receiver) {
 		SettingValueDialogFragment frag = new SettingValueDialogFragment();
+		frag.matrixFragment = receiver;
 		return frag;
 	}
 
@@ -40,9 +47,15 @@ public class SettingValueDialogFragment extends DialogFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle saveInstanceState) {
-		super.onCreate(saveInstanceState);
-		setRetainInstance(true);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// setRetainInstance(true);
+
+		// Restore the fragment's state here
+		if (savedInstanceState != null) {
+			matrixFragment = (MatrixFragment) getFragmentManager().getFragment(
+					savedInstanceState, "matrixFragment");
+		}
 	}
 
 	@Override
@@ -56,19 +69,24 @@ public class SettingValueDialogFragment extends DialogFragment {
 		editTextMatrixValue = (EditText) view
 				.findViewById(R.id.editTextMatrixValue);
 
-		Log.d("savedInstanceState? STRING??????", ""
-				+ (savedInstanceState == null));
-
 		if (savedInstanceState != null) {
-			Log.d("savedInstanceState, STRING IS DA!!!!!!", ""
-					+ savedInstanceState.getString(KEY_SAVE_MATRIX_VALUE));
-
-			// TODO ate not working!
 			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_VALUE)) {
 				editTextMatrixValue.setText((savedInstanceState
 						.getString(KEY_SAVE_MATRIX_VALUE)));
-
 			}
+			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_ITEM)) {
+				matrixItem = (MatrixItem) savedInstanceState
+						.getSerializable(KEY_SAVE_MATRIX_ITEM);
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
+				selectedItems = (ArrayList<MatrixItem>) savedInstanceState
+						.getSerializable(KEY_SAVE_SEL_ITEMS);
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
+				selectedItemsAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
+						.getSerializable(KEY_SAVE_ADAPTER);
+			}
+
 		}
 
 		alertDialogBuilder.setView(view);
@@ -119,7 +137,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 						matrixItem.setValue(editTextMatrixValue.getText()
 								.toString());
 						selectedItems.add(matrixItem);
-
 						selectedItemsAdapter.notifyDataSetChanged();
 
 					}
@@ -162,20 +179,31 @@ public class SettingValueDialogFragment extends DialogFragment {
 		super.onSaveInstanceState(outState);
 		outState.putString(KEY_SAVE_MATRIX_VALUE, editTextMatrixValue.getText()
 				.toString());
-		Log.d("onSaveInstanceState, STRING IS DA!!!!!!", editTextMatrixValue
-				.getText().toString());
+
+		outState.putSerializable(KEY_SAVE_MATRIX_ITEM,
+				(Serializable) matrixItem);
+		outState.putSerializable(KEY_SAVE_SEL_ITEMS,
+				(Serializable) selectedItems);
+		outState.putSerializable(KEY_SAVE_ADAPTER,
+				(Serializable) selectedItemsAdapter);
+
+		// Save the fragment's instance
+		getFragmentManager().putFragment(outState, "matrixFragment",
+				matrixFragment);
 	}
 
-	// There's a bug in the compatibility library that can cause dismissing
-	// after the rotation. Note that there are reports that
-	// getDialog().setOnDismissListener(null); causes a crash on some devices.
-	// The workaround is to call getDialog().setDismissMessage(null); instead.
-	// Issue 17423: DialogFragment dismissed on orientation change when
-	// setRetainInstance(true) is set (compatibility library)
-	@Override
-	public void onDestroyView() {
-		if (getDialog() != null && getRetainInstance())
-			getDialog().setDismissMessage(null);
-		super.onDestroyView();
-	}
+	// // There's a bug in the compatibility library that can cause dismissing
+	// // after the rotation. Note that there are reports that
+	// // getDialog().setOnDismissListener(null); causes a crash on some
+	// devices.
+	// // The workaround is to call getDialog().setDismissMessage(null);
+	// instead.
+	// // Issue 17423: DialogFragment dismissed on orientation change when
+	// // setRetainInstance(true) is set (compatibility library)
+	// @Override
+	// public void onDestroyView() {
+	// if (getDialog() != null && getRetainInstance())
+	// getDialog().setDismissMessage(null);
+	// super.onDestroyView();
+	// }
 }

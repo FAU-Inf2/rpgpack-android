@@ -465,54 +465,56 @@ public class MatrixFragment extends GeneralFragment {
 				if (adapterPlay == null) {
 					adapterPlay = new PlayCharacterMatrixAdapter(getActivity(),
 							playMatrixItems);
-					// adapter.jacksonTable = jacksonTable;
 				}
 
 				gridView.setAdapter(adapterPlay);
 
-//				gridView.setOnItemClickListener(new OnItemClickListener() {
-//					@Override
-//					public void onItemClick(AdapterView<?> adapterView,
-//							View view, int position, long id) {
-//						// TODO Benni save new values
-//						showPopupForEditing(adapterPlay.getItem(position),
-//								adapterPlay);
-//					}
-//				});
-//
-//				gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//					@Override
-//					public boolean onItemLongClick(AdapterView<?> adapterView,
-//							View view, final int position, long id) {
-//						Log.d("LONG CLICK", "pos:" + position);
-//
-//						AlertDialog.Builder builder = new AlertDialog.Builder(
-//								getActivity());
-//						builder.setTitle(getResources().getString(
-//								R.string.msg_delete_item));
-//						builder.setMessage(getResources().getString(
-//								R.string.msg_yes_to_item_delete));
-//						builder.setNegativeButton(
-//								getResources().getString(R.string.no),
-//								new DialogInterface.OnClickListener() {
-//									@Override
-//									public void onClick(DialogInterface dialog,
-//											int which) {
-//									}
-//								});
-//						builder.setPositiveButton(
-//								getResources().getString(R.string.yes),
-//								new DialogInterface.OnClickListener() {
-//									@Override
-//									public void onClick(DialogInterface dialog,
-//											int which) {
-//										removeMatrixItem(position, adapterPlay);
-//									}
-//								});
-//						builder.create().show();
-//						return true;
-//					}
-//				});
+				final ArrayList<MatrixItem> selItems = new ArrayList<MatrixItem>();
+
+				// to set new value for a matrix item in play mode directly
+				gridView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapterView,
+							View view, int position, long id) {
+						showSetValuePopup(adapterPlay.getItem(position),
+								adapterPlay, selItems);
+					}
+				});
+
+				// gridView.setOnItemLongClickListener(new
+				// AdapterView.OnItemLongClickListener() {
+				// @Override
+				// public boolean onItemLongClick(AdapterView<?> adapterView,
+				// View view, final int position, long id) {
+				// Log.d("LONG CLICK", "pos:" + position);
+				//
+				// AlertDialog.Builder builder = new AlertDialog.Builder(
+				// getActivity());
+				// builder.setTitle(getResources().getString(
+				// R.string.msg_delete_item));
+				// builder.setMessage(getResources().getString(
+				// R.string.msg_yes_to_item_delete));
+				// builder.setNegativeButton(
+				// getResources().getString(R.string.no),
+				// new DialogInterface.OnClickListener() {
+				// @Override
+				// public void onClick(DialogInterface dialog,
+				// int which) {
+				// }
+				// });
+				// builder.setPositiveButton(
+				// getResources().getString(R.string.yes),
+				// new DialogInterface.OnClickListener() {
+				// @Override
+				// public void onClick(DialogInterface dialog,
+				// int which) {
+				// removeMatrixItem(position, adapterPlay);
+				// }
+				// });
+				// builder.create().show();
+				// return true;
+				// }
+				// });
 			}
 
 		}
@@ -574,7 +576,7 @@ public class MatrixFragment extends GeneralFragment {
 			ArrayAdapter<MatrixItem> adapter,
 			ArrayList<MatrixItem> selectedItems) {
 		SettingValueDialogFragment settingValueDialogFragment = SettingValueDialogFragment
-				.newInstance();
+				.newInstance(this);
 		settingValueDialogFragment.show(getFragmentManager(), "dialog");
 		settingValueDialogFragment.matrixItem = item;
 		settingValueDialogFragment.passAdapter(adapter);

@@ -50,7 +50,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// Restore the fragment's state here
 		if (savedInstanceState != null) {
 			matrixFragment = (MatrixFragment) getFragmentManager().getFragment(
