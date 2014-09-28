@@ -13,7 +13,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 /**
- * This class handles matrix elements we want to display on template creation.
+ * This class handles matrix elements we want to display on template creation / or on template editing.
  * 
  */
 public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
@@ -151,6 +151,16 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
 						.findViewById(R.id.textModificator);
 
 				MatrixItem curItem = items.get(position);
+				
+				Log.d("MatrixViewArrayAdapter items size?", ""
+						+ items.size());
+				
+				Log.d("MatrixViewArrayAdapter curItem is null?", ""
+						+ (curItem == null));
+				
+				Log.d("MatrixViewArrayAdapter curItem NAME", ""
+						+ curItem.getItemName());
+				
 				itemName.setText(curItem.getItemName());
 				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
 						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
@@ -168,6 +178,14 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
 					itemModificator.setText(curItem.getModificator());
 					// // set modificator text color: blue for positive red for
 					// // negative
+					
+					Log.d("MatrixViewArrayAdapter curItem is null?", ""
+							+ (curItem == null));
+					Log.d("MatrixViewArrayAdapter curItem.getModificator is null?", ""
+							+ (curItem.getModificator() == null));
+					Log.d("MatrixViewArrayAdapter curItem.getModificator is empty?", ""
+							+ (curItem.getModificator() == ""));
+					
 					if (!curItem.getModificator().isEmpty()) {
 
 						if (Integer.valueOf(curItem.getModificator()) > 0) {

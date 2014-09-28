@@ -89,8 +89,10 @@ public class MatrixFragment extends GeneralFragment {
 
 				// set create new item to the end, it will not appear in
 				// jacksonTable.entries
+				// FIXME comment is not correct, last fake item appears also in
+				// jacksonTable.entries and make problems!!!!
 				MatrixItem addNewMatrixItem = new MatrixItem(getResources()
-						.getString(R.string.new_matrix_item), "+", null);
+						.getString(R.string.new_matrix_item), "+", "");
 				itemsList.add(addNewMatrixItem);
 
 			}
@@ -601,11 +603,12 @@ public class MatrixFragment extends GeneralFragment {
 			Log.e("MATRIX ITEM", i + " j " + ma.getItemName());
 		}
 
-		// add the "new item" entry
-		final MatrixItem newElement = new MatrixItem(appContext.getResources()
-				.getString(R.string.text_new_element), "+", null);
-		newElement.setSelected(false);
-		itemsList.add(newElement);
+//		// add the "new item" entry
+//		// FIXME is not correct!!!!!
+//		final MatrixItem newElement = new MatrixItem(appContext.getResources()
+//				.getString(R.string.text_new_element), "+", "");
+//		newElement.setSelected(false);
+//		itemsList.add(newElement);
 	}
 
 	public void setJacksonTable(MatrixTable myTable) {
