@@ -11,13 +11,10 @@ import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
-import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.templatestore.ApiResponse;
-import de.fau.cs.mad.gamekobold.templatestore.ApiTaskParams;
-import de.fau.cs.mad.gamekobold.templatestore.StoreTemplate;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreClient;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.app.AlertDialog;
@@ -26,7 +23,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat.IntentReader;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,7 +31,6 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 	  
 	  private class ApiTask extends AsyncTask<String, Integer, ApiResponse> {
 			 
-		  private String method; 
 		  
 		  protected void onPreExecute() {
 			  super.onPreExecute();
@@ -49,7 +44,6 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 
 		@Override
 		protected ApiResponse doInBackground(String... params) {
-			// TODO Auto-generated method stub
 			TemplateStoreClient client = new TemplateStoreClient();
 			return client.getTemplateQR(params[0]);
 		}
