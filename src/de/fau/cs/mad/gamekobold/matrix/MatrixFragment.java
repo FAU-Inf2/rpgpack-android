@@ -65,6 +65,8 @@ public class MatrixFragment extends GeneralFragment {
 		setRetainInstance(true);
 	}
 
+	// TODO ate refactor!!!!!!!
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
