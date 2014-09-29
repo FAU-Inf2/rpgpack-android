@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -66,8 +67,6 @@ public class ToolboxMapView extends GridView {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		this.width = w;
-		this.height = h;
 		int id;
 		if (defaultbg) {
 			id = getContext().getResources().getIdentifier(background,
@@ -77,6 +76,9 @@ public class ToolboxMapView extends GridView {
 		}		
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		drawCanvas = new Canvas(canvasBitmap);
+		width = w;
+		height = h;
+		Log.i("froooom", "" + width + "");
 	}
 
 	@Override
@@ -155,9 +157,20 @@ public class ToolboxMapView extends GridView {
 
 	}
 
+	public void rotateBackground(Bitmap bmp){
+		Matrix matrix = new Matrix();
+		matrix.postRotate(90);
+		canvasBitmap = Bitmap.createBitmap(bmp, 0, 0, 
+				bmp.getWidth(), bmp.getHeight(), 
+		                              matrix, true);
+	}
+	
 	public void setFileToBackground(Bitmap bmp) {
 		this.background = bmp.toString();
 		canvasBitmap = bmp;
+		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()){
+			rotateBackground(canvasBitmap);
+		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		defaultbg = false;
 		invalidate();
@@ -169,17 +182,22 @@ public class ToolboxMapView extends GridView {
 		int id = context.getResources().getIdentifier(image, "drawable",
 				context.getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
+		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()){
+			rotateBackground(canvasBitmap);
+		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Log.i("Bitmaph","" +canvasBitmap.getHeight());
+		Log.i("Bitmapw","" +canvasBitmap.getWidth());
 		defaultbg = true;
 		invalidate();
 	}
 
 	public int getH() {
-		return this.height;
+		return height;
 	}
 
 	public int getW() {
-		return this.width;
+		return width;
 	}
 
 	public void undoLastStep() {

@@ -274,6 +274,7 @@
     <string name="map_rock">Stein</string>
     <string name="map_draw">zeichnen</string>
     <string name="map_add">+</string>
+    <string name="choose_image">Wähle ein Bild aus</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Liste mischen</string>

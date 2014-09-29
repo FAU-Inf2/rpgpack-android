@@ -91,7 +91,7 @@
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
         </activity>
@@ -108,8 +108,7 @@
             android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateHidden"
-             >
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -124,17 +123,21 @@
             android:name=".characterbrowser.CharacterBrowserActivity"
             android:label="@string/title_activity_character_browser" >
         </activity>
-        <activity android:name="MainMenu">
+        <activity android:name="MainMenu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="GameMenu"></activity>
-        <activity android:name="CharacterMenu"></activity>
-        <activity android:name="TemplateMenu"></activity>
-        <activity android:name="DownloadTemplateMenu"></activity>
+        <activity android:name="GameMenu" >
+        </activity>
+        <activity android:name="CharacterMenu" >
+        </activity>
+        <activity android:name="TemplateMenu" >
+        </activity>
+        <activity android:name="DownloadTemplateMenu" >
+        </activity>
     </application>
 
 </manifest>

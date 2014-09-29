@@ -39,15 +39,17 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	private final ArrayList<GradientDrawable> dotsList;
 	private LayoutInflater mInflater;
 	private String tag;
+	ImageView trash;
 
-	private static final int MIN_CLICK_DURATION = 100;
+	private static final int MIN_CLICK_DURATION = 2000;
 	private long startClickTime;
 
 	public ToolboxMapGridElementAdapter(Context context,
-			ArrayList<GradientDrawable> dots, String tag) {
+			ArrayList<GradientDrawable> dots, String tag, ImageView trash) {
 		mContext = context;
 		dotsList = dots;
 		this.tag = tag;
+		this.trash = trash;
 		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -69,7 +71,6 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 				pieceView.setImageDrawable(dotsList.get(position));
 				pieceView.setTag(position);
 				pieceView.setContentDescription(tag);
-				Log.i("Drawable", dotsList.get(position).toString());
 
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
 					@Override
@@ -78,10 +79,14 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 								position + "");
 						final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
 								pieceView);
-						if (tag == "grid")
+						if (tag == "grid"){
 							v.setVisibility(View.INVISIBLE);
+							trash.setVisibility(View.VISIBLE);
+						}
+						startClickTime = Calendar.getInstance()
+								.getTimeInMillis();
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
-						switch (event.getAction() & MotionEvent.ACTION_MASK) {
+						/*switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
 						case MotionEvent.ACTION_DOWN:
 							startClickTime = Calendar.getInstance()
@@ -91,15 +96,8 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 							break;
 						case MotionEvent.ACTION_UP:
-							long clickDuration = Calendar.getInstance()
-									.getTimeInMillis() - startClickTime;
-							if (clickDuration >= MIN_CLICK_DURATION) {
-								final ViewGroup owner = (ViewGroup) v
-										.getParent();
-								owner.removeView(v);
-							}
 							break;
-						}
+						}*/
 						return true;
 					}
 				});
@@ -159,11 +157,20 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 						addImagetoContainer(container, 1, copyImg);
 					} else if (castedView.getContentDescription().toString() == "grid") {
 						final ViewGroup owner = (ViewGroup) view.getParent();
+						long clickDuration = Calendar.getInstance()
+								.getTimeInMillis() - startClickTime;
+						Log.i("Time", clickDuration + "");
+						if (clickDuration >= MIN_CLICK_DURATION) {
+							owner.removeView(v);
+						}
+						else{
 						owner.removeView(view);
 						view.setVisibility(View.VISIBLE);
 						container.addView(view);
+						}
 					}
 				}
+				trash.setVisibility(View.INVISIBLE);
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
 				break;
@@ -189,12 +196,16 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 						position + "");
 				final DragShadowBuilder pieceDragShadowBuilder = new DragShadowBuilder(
 						pieceView);
+				trash.setVisibility(View.VISIBLE);
+				startClickTime = Calendar.getInstance()
+						.getTimeInMillis();
 				v.setVisibility(View.INVISIBLE);
 				v.startDrag(data, pieceDragShadowBuilder, v, 0);
 				return true;
 			}
 		});
 
+		/*
 		pieceView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -203,7 +214,7 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 				owner.removeView(view);
 				return true;
 			}
-		});
+		}); */
 
 		return inputView;
 	}

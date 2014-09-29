@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -30,12 +31,14 @@ import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLayoutChangeListener;
 import android.view.WindowManager;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,8 +47,9 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
-public class ToolboxMapActivity extends Activity {
+public class ToolboxMapActivity extends Activity implements OnDragListener {
 
 	private ImageButton currPaint;
 	private ToolboxMapView mapView;
@@ -54,7 +58,9 @@ public class ToolboxMapActivity extends Activity {
 	Activity mContext;
 	float mWidth;
 	float mHeight;
-	private ArrayList<Integer> colors = new ArrayList(); 
+	int mWidthPx;
+	int mHeightPx;
+	private ArrayList<Integer> colors = new ArrayList();
 	private int[] testColor = { R.color.red, R.color.green, R.color.blue,
 			R.color.black, R.color.orange };
 	private ArrayList<GradientDrawable> dotsList = new ArrayList();
@@ -67,6 +73,8 @@ public class ToolboxMapActivity extends Activity {
 	private boolean drag_active;
 	private ToolboxMapGridElementAdapter mAdapter;
 	private ToolboxMapGridElementAdapter mAdapterItems;
+	private boolean first = true;
+	private ImageView trash;
 
 	private CharacterSheet[] characterSheets;
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -78,9 +86,25 @@ public class ToolboxMapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_toolbox_map);
 		mapView = (ToolboxMapView) findViewById(R.id.map);
-		initTest();
-		//loadCharinfo();
-		createCells();
+		mapView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+
+	        @Override
+	        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight,
+	                int oldBottom) {
+	            // its possible that the layout is not complete in which case
+	            // we will get all zero values for the positions, so ignore the event
+	            if (left == 0 && top == 0 && right == 0 && bottom == 0) {
+	                return;
+	            }
+
+	            if (first){
+	            	initTest();
+		    		createCells();
+		    		first = false;
+	            }
+	            
+	        }
+	    });
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
@@ -143,8 +167,9 @@ public class ToolboxMapActivity extends Activity {
 					Intent chooseFile;
 					Intent intent;
 					chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-					chooseFile.setType("file/*");
-					intent = Intent.createChooser(chooseFile, "Choose a file");
+					chooseFile.setType("images/*");
+					intent = Intent.createChooser(chooseFile,
+							getString(R.string.choose_image));
 					startActivityForResult(intent, 1);
 				default:
 					bg = "forest";
@@ -167,11 +192,15 @@ public class ToolboxMapActivity extends Activity {
 		options.inJustDecodeBounds = true;
 		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
 				options);
-		options.inSampleSize = calculateInSampleSize(options, mWidth, mHeight);
+		options.inSampleSize = calculateInSampleSize(options, mWidthPx, mHeightPx);
 		options.inJustDecodeBounds = false;
 		image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
 				options);
-		Log.i("string image", image.toString());
+		Log.i("ImageHeight, ImageWidth,actualHeight, actualWidth", options.inSampleSize + " " + options.outHeight + " " + options.outWidth + " " + mHeightPx + " " + mWidthPx);
+		if (options.inSampleSize < 2
+				&& (options.outHeight < mHeightPx || options.outWidth < mWidthPx)) {
+			image = null;
+		}
 		parcelFileDescriptor.close();
 		return image;
 	}
@@ -183,7 +212,13 @@ public class ToolboxMapActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				Uri uri = data.getData();
 				try {
-					mapView.setFileToBackground(getBitmapFromUri(uri));
+					if (getBitmapFromUri(uri) != null) {
+						mapView.setFileToBackground(getBitmapFromUri(uri));
+					} else {
+						Toast.makeText(getApplicationContext(),
+								"Bild zu klein",
+								Toast.LENGTH_LONG).show();
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -203,6 +238,7 @@ public class ToolboxMapActivity extends Activity {
 	}
 
 	protected void initTest() {
+		mapView.setBackgroundResource(R.drawable.forest);
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		WindowManager wm = (WindowManager) getApplicationContext()
 				.getSystemService(Context.WINDOW_SERVICE);
@@ -210,13 +246,18 @@ public class ToolboxMapActivity extends Activity {
 		density = getResources().getDisplayMetrics().density;
 		cell_size = (int) ((float) getResources().getDimension(
 				R.dimen.game_toolbox_map_cellsize) / density);
-		mWidth = displaymetrics.widthPixels / density - (90 + cell_size);
-		mHeight = displaymetrics.heightPixels / density - (90 + cell_size);
+		mWidthPx = mapView.getW();
+		mHeightPx = mapView.getH();
+		mWidth = mWidthPx / density;
+		mHeight = mHeightPx / density;
 		mNumColumns = (int) (mWidth / cell_size);
 		mNumLines = (int) (mHeight / cell_size);
 		mNumCells = mNumLines * mNumColumns;
+		trash = (ImageView) findViewById(R.id.trash); 
+		trash.setVisibility(View.INVISIBLE);
+		trash.setOnDragListener(this);
+		
 		Log.i("Width", "" + mWidth);
-
 		Log.i("Height", "" + mHeight);
 		Log.i("Cells", "" + mNumCells);
 		Log.i("mNumColumns", "" + mNumColumns);
@@ -228,27 +269,25 @@ public class ToolboxMapActivity extends Activity {
 			dotsList.add(null);
 
 			if (i < testColor.length) {
-				Log.i("testfarbe:", "" + testColor[i]);
-				dotsList.set(i, createDrawable(testColor[i]));
 				justItems.add(i, createDrawable(testColor[i]));
 			}
 		}
 		dotsList.set(testColor.length, createDrawable(R.color.black));
 		justItems.add(testColor.length, createDrawable(R.color.black));
 
-		mAdapterItems = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this, justItems, "item");
+		mAdapterItems = new ToolboxMapGridElementAdapter(
+				ToolboxMapActivity.this, justItems, "item", trash);
 		mAdapter = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this,
-				dotsList, "grid");
+				dotsList, "grid", trash);
 		GridView gridView = (GridView) findViewById(R.id.map_items);
 		gridView.setNumColumns(mNumColumns);
 		gridView.setAdapter(mAdapterItems);
-		
+
 		mapView.setNumColumns(mNumColumns);
 		mapView.setAdapter(mAdapter);
-		mapView.setBackgroundResource(R.drawable.forest);
 	}
 
-	//Remember to remove the getResources, when loading from charsheet
+	// Remember to remove the getResources, when loading from charsheet
 	public GradientDrawable createDrawable(int color) {
 		int colorFromRes = getResources().getColor(color);
 		GradientDrawable newItem = new GradientDrawable();
@@ -263,20 +302,18 @@ public class ToolboxMapActivity extends Activity {
 		final float height = options.outHeight;
 		final float width = options.outWidth;
 		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
+		/*if ((height * 2 > reqHeight) && (width * 2 > reqWidth)) {
 
 			final float halfHeight = height / 2;
 			final float halfWidth = width / 2;
 
 			// Calculate the largest inSampleSize value that is a power of 2 and
 			// keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight
-					&& (halfWidth / inSampleSize) > reqWidth) {
+			// height and width larger than the requested height and width.*/
+			while ((height / (inSampleSize*2)) > reqHeight
+					&& (width / (inSampleSize*2)) > reqWidth) {
 				inSampleSize *= 2;
 			}
-		}
 
 		return inSampleSize;
 
@@ -301,11 +338,43 @@ public class ToolboxMapActivity extends Activity {
 			}
 		}
 		if (characterSheets != null) {
-			for (CharacterSheet characterSheet : characterSheets){
+			for (CharacterSheet characterSheet : characterSheets) {
 				colors.add(characterSheet.getColor());
 			}
 		}
 		Log.i("colors", colors.toString());
 	}
 
+
+
+@Override
+public boolean onDrag(View v, DragEvent event) {
+	switch (event.getAction()) {
+	case DragEvent.ACTION_DRAG_STARTED:
+		// Log.v("Test", "Entered start");
+		break;
+	case DragEvent.ACTION_DRAG_ENTERED:
+		// Log.v("Test", "Entered drag");
+		break;
+	case DragEvent.ACTION_DRAG_EXITED:
+		break;
+	case DragEvent.ACTION_DROP:
+		Log.v("Test", "Entered drop");
+		final View view = (View) event.getLocalState();
+		if (view != null && (view instanceof ImageView)) {
+			ImageView castedView = (ImageView) view;
+			if (castedView.getContentDescription().toString() == "grid") {
+				final ViewGroup owner = (ViewGroup) view.getParent();
+				owner.removeView(v);
+			}
+		}
+		break;
+	case DragEvent.ACTION_DRAG_ENDED:
+		trash.setVisibility(View.INVISIBLE);
+		break;
+	default:
+		break;
+	}
+	return true;
+}
 }
