@@ -180,6 +180,16 @@ public class MatrixFragment extends GeneralFragment {
 				rootView = inflater.inflate(R.layout.fragment_matrix_view,
 						new LinearLayout(getActivity()), false);
 
+				TextView textView = (TextView) rootView
+						.findViewById(R.id.textView1);
+				
+				textView.setText(getResources().getString(
+						R.string.hint_edit_items));
+				FrameLayout frameLayout = (FrameLayout) rootView
+						.findViewById(R.id.container);
+				frameLayout.setBackgroundColor(getResources().getColor(
+						R.color.background));
+
 				gridView = (GridView) rootView
 						.findViewById(R.id.gridViewMatrixItem);
 				// check needed for jackson data loading
