@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:gravity="center_horizontal"
-        android:text="PLAY CHARACTER!!!!!!!!!!"
+        android:text="PLAY CHARACTER!"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/background_green" />
@@ -22,7 +22,7 @@
         android:id="@+id/gridViewM"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="40dp"
         android:numColumns="3" >
     </GridView>
 

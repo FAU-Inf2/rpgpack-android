@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold;
 import java.io.File;
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -12,16 +13,64 @@ import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.jackson.Template;
+import de.fau.cs.mad.gamekobold.templatestore.ApiResponse;
+import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreClient;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat.IntentReader;
 import android.util.Log;
 import android.widget.Toast;
 
 public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IFileBrowserReceiver{
+	  private ProgressDialog progress;
+	  
+	  private class ApiTask extends AsyncTask<String, Integer, ApiResponse> {
+			 
+		  
+		  protected void onPreExecute() {
+			  super.onPreExecute();
+	
+			  progress = new ProgressDialog(DownloadTemplateMenu.this);
+		      progress.setTitle(getResources().getString(R.string.loading));
+		      progress.setMessage(getResources().getString(R.string.loading_wait));
+		      progress.setCanceledOnTouchOutside(false);
+		      progress.show();
+		  }
+
+		@Override
+		protected ApiResponse doInBackground(String... params) {
+			TemplateStoreClient client = new TemplateStoreClient();
+			return client.getTemplateQR(params[0]);
+		}
+		
+		protected void onPostExecute(ApiResponse response) {
+	    	 if(progress != null && progress.isShowing()) {
+	    		 progress.dismiss();
+	    	 }
+	    	 if(response.resultCode == 200) {
+	    		 ObjectMapper mapper = new ObjectMapper();
+	    		 Template template = null;
+	    			try {
+	    				template = mapper.readValue(response.responseBody, Template.class);
+	    				JacksonInterface.saveTemplate(template, DownloadTemplateMenu.this, false);
+	    			} catch (IOException e) {
+	    				Log.e("store", "invalid template");
+	    				alertMessage(getResources().getString(R.string.error_occured));
+	    				return;
+	    			}
+	    			alertMessage(getResources().getString(R.string.download_successful));
+	    		 
+	    	 } else {
+	    		 alertMessage(response.toString());
+	    	 }
+		}
+	  }
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -164,10 +213,29 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 			// potentialURL could be a url to download a template.
 			// you should check if it is valid or some other qr/barcode.
 			final String potentialURL = qrscanResult.getContents();
-			if(potentialURL != null) {
+			
+			if(potentialURL != null && potentialURL.startsWith("http://192.168.2.110/")) {
 				// scan successful
-				Log.d("QR-CodeScan", qrscanResult.getContents());
+				Log.d("QR-CodeScan", potentialURL);
+				ApiTask task = new ApiTask();
+				task.execute(potentialURL);
+				
+			} else {
+				alertMessage("An Error occurred");
 			}
 		}
+	}
+	
+	public void alertMessage(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Add the buttons
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		builder.setMessage(message);
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 }

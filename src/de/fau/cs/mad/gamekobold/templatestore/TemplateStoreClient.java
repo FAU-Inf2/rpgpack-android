@@ -219,5 +219,14 @@ public class TemplateStoreClient extends HttpClient {
 		}
 		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
 	}
+	
+	public ApiResponse getTemplateQR(String url) {
+		try {
+			this.get(url);
+		} catch (Exception e) {
+			Log.e("QR Code", e.getMessage());
+		}
+		return new ApiResponse(this.statusCode, this.reasonPhrase, this.responseBody);
+	}
 
 }

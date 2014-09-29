@@ -359,7 +359,9 @@
 
     <!-- character_edit_matrix_view -->
 
-    <string name="hint_select_items">Wähle Attribute für Deinen Charakter!</string>
+    <string name="hint_select_items">Konfiguriere Deinen Charakter indem Du die passende Attribute auswählst oder neu erstellst!</string>
+    <string name="hint_edit_items">Konfiguriere Deinen Charakter indem Du die vorhandene Attribute editierst oder fehlende neu erstellst!</string>
+    <string name="hint_create_items">Erstelle hier die benötigten Attribute für Deine Vorlage!</string>
 
     <!-- activity_character_generator_welcome -->
     <string name="character_generator_welcome">Willkommen im Charakter-Generator! \n \n Um Deinen eigenen Charakter zu erstellen öffne einfach das Menü und wähle die Elemente, die Deinem Charakter zugeordnet sind!</string>

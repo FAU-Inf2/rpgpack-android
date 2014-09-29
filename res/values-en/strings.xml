@@ -8,9 +8,9 @@
     <string name="action_edit">Edit</string>
     <string name="action_tools">Tools</string>
     <string name="action_character">Select Character</string>
-	<string name="action_edit_mode">Edit-Mode</string>
-	<string name="action_selection_mode">Observe-Mode</string>
-	<string name="action_show_invisible">Show Invisible Elements</string>
+    <string name="action_edit_mode">Edit-Mode</string>
+    <string name="action_selection_mode">Observe-Mode</string>
+    <string name="action_show_invisible">Show Invisible Elements</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
@@ -94,7 +94,7 @@
     <string name="matrix_item_title">Title</string>
     <string name="matrix_item_value">Value</string>
     <string name="item_range">Range</string>
-    
+
     <!-- ItemLayout Character Icon -->
     <string name="character_icon_textview">TextView</string>
 
@@ -200,11 +200,11 @@
     <string name="toast_fileexplorer_msg_pick_folder">Please pick a folder.</string>
     <string name="toast_fileexplorer_msg_pick_template">Please pick a template to import.</string>
     <string name="toast_imported_template">Imported template.</string>
-	<string name="toast_imported_template_failed">Failed to import template!</string>
-	<string name="toast_file_is_not_template">File is not a template!</string>
-	<string name="toast_no_last_edited_tempalte">No last edited template found.</string>
-	<string name="template_item_adapter_author_date_label">By %1$s, %2$s</string>
-	
+    <string name="toast_imported_template_failed">Failed to import template!</string>
+    <string name="toast_file_is_not_template">File is not a template!</string>
+    <string name="toast_no_last_edited_tempalte">No last edited template found.</string>
+    <string name="template_item_adapter_author_date_label">By %1$s, %2$s</string>
+
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Row</string>
     <string name="text_add_column"> + Column</string>
@@ -236,7 +236,7 @@
     <string name="menu_export_character">Export character as a file</string>
     <string name="toast_exported_character">Exported character to: %1$s</string>
     <string name="toast_exported_character_failed">Failed to export!</string>
-    
+
     <!-- fragment_game_details -->
     <string name="text_change_game">Edit Game</string>
     <string name="text_play_game">Play</string>
@@ -358,7 +358,9 @@
     <string name="character_game_notices">Notes</string>
 
     <!-- character_edit_matrix_view -->
-    <string name="hint_select_items">Select attributes for your character!</string>
+    <string name="hint_select_items">Select attributes for your character or create some new!</string>
+    <string name="hint_edit_items">Edit some attributes for your Character or create some new!</string>
+    <string name="hint_create_items">Create attributes for your template here!</string>
 
     <!-- activity_character_generator_welcome -->
     <string name="character_generator_welcome">Welcome to the Character Generator!\n \n To create your own character just open the menu and choose the elements!</string>
@@ -390,17 +392,17 @@
     <string name="menu_your_characters">Your characters</string>
     <string name="menu_your_templates">Your templates</string>
     <string name="menu_your_games_description">Beschreibung fuer Spiele</string>
-	<string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
-	<string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>
-    
+    <string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
+    <string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>
+
     <!-- GameMenu -->
     <string name="menu_new_game">New game</string>
     <string name="menu_continue_game">Continue game</string>
     <string name="menu_alljoyn">Alljoyn</string>
-	<string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
+    <string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
     <string name="menu_continue_game_description">Beschreibung fuer weiter spielen</string>
     <string name="menu_alljoyn_description">Beschreibung fuer Alljoyn</string>
-    
+
     <!-- CharacterMenu -->
     <string name="menu_new_character">New character</string>
     <string name="menu_edit_characters">Edit characters</string>
@@ -409,15 +411,15 @@
     <string name="menu_import_character_from_file">Import character</string>
     <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
     <string name="toast_please_pick_a_template">Please pick a template.</string>
-    
-	<!-- TemplateMenu -->
+
+    <!-- TemplateMenu -->
     <string name="menu_new_template">New template</string>
     <string name="menu_edit_templates">Edit templates</string>
     <string name="menu_download_templates">Download templates</string>
     <string name="menu_new_template_description">Beschreibung fuer neue Vorlage</string>
     <string name="menu_edit_templates_description">Beschreibung fuer Vorlage editieren</string>
     <string name="menu_download_templates_description">Beschreibung fuer Vorlagen herunterladen</string>
-    
+
     <!-- DownloadTemplateMenu -->
     <string name="menu_template_store">Template-Store</string>
     <string name="menu_template_import">Import template</string>
@@ -425,13 +427,14 @@
     <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
     <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
     <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
-    
+
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">A file with the same name already exists!</string>
     <string name="question_overwrite_file">Overwrite file?</string>
-    
+
     <!-- Character import -->
-  	<string name="toast_imported_character">Imported character.</string>
-	<string name="toast_imported_character_failed">Failed to import character!</string>
-	<string name="toast_file_is_not_character">File is not a valid character!</string>
+    <string name="toast_imported_character">Imported character.</string>
+    <string name="toast_imported_character_failed">Failed to import character!</string>
+    <string name="toast_file_is_not_character">File is not a valid character!</string>
+
 </resources>

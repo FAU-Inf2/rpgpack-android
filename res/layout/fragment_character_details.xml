@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@color/a_green" >
+        android:background="@color/background_green" >
 
         <ImageButton
             android:id="@+id/imageButton1"
