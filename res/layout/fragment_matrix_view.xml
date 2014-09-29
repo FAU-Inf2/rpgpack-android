@@ -7,10 +7,23 @@
     tools:context="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity"
     tools:ignore="MergeRootFrame" >
 
+     <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/hint_create_items"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/background_green" />
+    
     <GridView
         android:id="@+id/gridViewMatrixItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+           android:layout_marginTop="40dp"
         android:numColumns="3" >
     </GridView>
 

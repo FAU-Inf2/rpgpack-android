@@ -26,7 +26,7 @@ import de.fau.cs.mad.gamekobold.jackson.Row;
  * 
  */
 public class NewCharacterMatrixViewArrayAdapter extends
-		ArrayAdapter<MatrixItem> implements Serializable{
+		ArrayAdapter<MatrixItem> implements Serializable {
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -156,7 +156,11 @@ public class NewCharacterMatrixViewArrayAdapter extends
 			}
 		} else {
 			// or reuse
+			//FIXME have to inflate here too because of null pointer exception! both cases are the same now!
 			if (position == getCount() - 1) {
+				convertView = inflater.inflate(
+						R.layout.itemlayout_new_character_new_item_matrix_view,
+						parent, false);
 				MatrixItem curItem = items.get(position);
 
 				TextView itemName = (TextView) convertView
@@ -166,6 +170,9 @@ public class NewCharacterMatrixViewArrayAdapter extends
 				itemName.setText(curItem.getItemName());
 				itemValue.setText(curItem.getValue());
 			} else {
+				convertView = inflater.inflate(
+						R.layout.itemlayout_newcharacter_matrix_view, parent,
+						false);
 				TextView itemName = (TextView) convertView
 						.findViewById(R.id.matrix_textItemTitle);
 				TextView itemValue = (TextView) convertView
