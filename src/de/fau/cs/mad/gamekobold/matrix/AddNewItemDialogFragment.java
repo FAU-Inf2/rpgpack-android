@@ -78,13 +78,14 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		defaultVal = (EditText) view.findViewById(R.id.defaultValue);
 		modificator = (EditText) view.findViewById(R.id.modificator);
 		description = (EditText) view.findViewById(R.id.description);
-
+		// get all Switches
 		switchFrom = (Switch) view.findViewById(R.id.switchRangeFrom);
 		switchTo = (Switch) view.findViewById(R.id.switchRangeTo);
 		switchValue = (Switch) view.findViewById(R.id.switchDefaultValue);
 		switchMod = (Switch) view.findViewById(R.id.switchModificator);
 
-		// check for editItem
+		// check for editItem, if it is not null, we will edit this matrix item
+		// and now have to recover its values into popup UI
 		if (editItem != null) {
 			// insert values from editItem into views
 			itemName.setText(editItem.getItemName());
@@ -171,7 +172,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 						// However, we still need this because on older versions
 						// of Android unless we
 						// pass a handler the button doesn't get instantiated
-
 					}
 				});
 
@@ -190,7 +190,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(final DialogInterface dialog) {
-
 				Button positiveButton = ((AlertDialog) dialog)
 						.getButton(DialogInterface.BUTTON_POSITIVE);
 
@@ -218,19 +217,21 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				@Override
 				public void onClick(View v) {
 					Boolean wantToCloseDialog = false;
-					// Do stuff, possibly set wantToCloseDialog to true then...
 					// Check the setting values
 					final String name = itemName.getEditableText().toString();
 					if (name.equals("")) {
+						// item name is not set, show warning
 						Toast.makeText(
 								getActivity(),
 								getResources().getString(
 										R.string.warning_set_matrixitem_name),
 								Toast.LENGTH_SHORT).show();
 					} else {
+						// item name is set, dialog could be closed
 						wantToCloseDialog = true;
 					}
-					// save new item and close dialog else dialog stays open.
+					// save new item (or new values for an edit item) and close
+					// dialog else dialog stays open.
 					if (wantToCloseDialog) {
 						final String defValue = defaultVal.getEditableText()
 								.toString();
@@ -246,7 +247,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 						}
 
 						String mod = modificator.getEditableText().toString();
-
 						final String desc = description.getEditableText()
 								.toString();
 
@@ -261,15 +261,12 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							vis = vis | FLAG_MOD;
 
 						if (editItem == null) {
+							//add new matrix item
 							final MatrixItem newItem = new MatrixItem(name,
 									defValue, min, max, mod, desc, vis);
-
-							Log.d("newItem is NULL?", "" + (newItem == null));
-							Log.d("matrixFragment is NULL?", ""
-									+ (matrixFragment == null));
-
 							matrixFragment.addMatrixItem(newItem, curAdapter);
 						} else {
+							//matrix item exists already, edit it values
 							editItem.setItemName(name);
 							editItem.setValue(defValue);
 							editItem.setRangeMin(min);
@@ -278,7 +275,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							editItem.setDescription(desc);
 							editItem.setVisibility(vis);
 						}
-
 						// close dialog
 						dismiss();
 					}
@@ -300,6 +296,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				.toString());
 		outState.putString(KEY_SAVE_DESCRIPTION, description.getText()
 				.toString());
+		//if it is an item to edit, save it
 		if (editItem != null) {
 			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
 					(Serializable) editItem);
