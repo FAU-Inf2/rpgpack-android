@@ -677,13 +677,6 @@ public class MatrixFragment extends GeneralFragment {
 		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
 
-		// FIXME getEntries() returns n-1 elements!!! we need all n!!!!
-		int i = 0;
-		for (MatrixItem ma : itemsList) {
-			i++;
-			Log.e("MATRIX ITEM", i + " j " + ma.getItemName());
-		}
-
 		// // add the "new item" entry
 		// // FIXME is not correct!!!!!
 		// final MatrixItem newElement = new

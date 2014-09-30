@@ -35,6 +35,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 
 	private EditText itemName, rangeMin, rangeMax, defaultVal, modificator,
 			description;
+	private Switch switchFrom, switchTo, switchValue, switchMod;
 	public MatrixFragment matrixFragment;
 	public MatrixItem editItem = null;
 	public ArrayAdapter curAdapter;
@@ -78,13 +79,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		modificator = (EditText) view.findViewById(R.id.modificator);
 		description = (EditText) view.findViewById(R.id.description);
 
-		final Switch switchFrom = (Switch) view
-				.findViewById(R.id.switchRangeFrom);
-		final Switch switchTo = (Switch) view.findViewById(R.id.switchRangeTo);
-		final Switch switchValue = (Switch) view
-				.findViewById(R.id.switchDefaultValue);
-		final Switch switchMod = (Switch) view
-				.findViewById(R.id.switchModificator);
+		switchFrom = (Switch) view.findViewById(R.id.switchRangeFrom);
+		switchTo = (Switch) view.findViewById(R.id.switchRangeTo);
+		switchValue = (Switch) view.findViewById(R.id.switchDefaultValue);
+		switchMod = (Switch) view.findViewById(R.id.switchModificator);
 
 		// check for editItem
 		if (editItem != null) {
@@ -114,6 +112,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				switchMod.setChecked(false);
 		}
 
+		// recover saved values
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
 				itemName.setText((savedInstanceState
@@ -167,17 +166,72 @@ public class AddNewItemDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						// TODO Check for null values
-						final String name = itemName.getEditableText()
-								.toString();
-						if (name.equals("")) {
-							Toast.makeText(
-									getActivity(),
-									getResources()
-											.getString(
-													R.string.warning_set_matrixitem_name),
-									Toast.LENGTH_SHORT).show();
-							return;
-						}
+						// Do nothing here because we override this button later
+						// to change the close behaviour.
+						// However, we still need this because on older versions
+						// of Android unless we
+						// pass a handler the button doesn't get instantiated
+
+					}
+				});
+
+		builder.setNegativeButton(getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						// User cancelled the dialog
+						AddNewItemDialogFragment.this.getDialog().cancel();
+					}
+				});
+
+		// Create the AlertDialog object and return it
+		final AlertDialog dialog = builder.create();
+
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(final DialogInterface dialog) {
+
+				Button positiveButton = ((AlertDialog) dialog)
+						.getButton(DialogInterface.BUTTON_POSITIVE);
+
+				// set OK button color here
+				positiveButton.setBackgroundColor(getActivity().getResources()
+						.getColor(R.color.bright_green));
+				positiveButton.invalidate();
+			}
+		});
+		dialog.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		return dialog;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart(); // super.onStart() is where dialog.show() is actually
+							// called on the underlying dialog, so we have to do
+							// it after this point
+		AlertDialog d = (AlertDialog) getDialog();
+		if (d != null) {
+			Button positiveButton = (Button) d
+					.getButton(Dialog.BUTTON_POSITIVE);
+			positiveButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Boolean wantToCloseDialog = false;
+					// Do stuff, possibly set wantToCloseDialog to true then...
+					// Check the setting values
+					final String name = itemName.getEditableText().toString();
+					if (name.equals("")) {
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.warning_set_matrixitem_name),
+								Toast.LENGTH_SHORT).show();
+					} else {
+						wantToCloseDialog = true;
+					}
+					// save new item and close dialog else dialog stays open.
+					if (wantToCloseDialog) {
 						final String defValue = defaultVal.getEditableText()
 								.toString();
 						int min = 0;
@@ -215,9 +269,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 									+ (matrixFragment == null));
 
 							matrixFragment.addMatrixItem(newItem, curAdapter);
-							// matrixFragment.adapterCreateTemplate
-							// .notifyDataSetChanged();
-						//	matrixFragment.curAdapter.notifyDataSetChanged();
 						} else {
 							editItem.setItemName(name);
 							editItem.setValue(defValue);
@@ -226,41 +277,14 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							editItem.setModificator(mod);
 							editItem.setDescription(desc);
 							editItem.setVisibility(vis);
-							// matrixFragment.adapterCreateTemplate
-							// .notifyDataSetChanged();
-						//	matrixFragment.curAdapter.notifyDataSetChanged();
 						}
+
+						// close dialog
+						dismiss();
 					}
-				});
-
-		builder.setNegativeButton(getString(R.string.cancel),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						// User cancelled the dialog
-						AddNewItemDialogFragment.this.getDialog().cancel();
-					}
-				});
-
-		// Create the AlertDialog object and return it
-		final AlertDialog dialog = builder.create();
-
-		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-			@Override
-			public void onShow(final DialogInterface dialog) {
-
-				Button positiveButton = ((AlertDialog) dialog)
-						.getButton(DialogInterface.BUTTON_POSITIVE);
-
-				// set OK button color here
-				positiveButton.setBackgroundColor(getActivity().getResources()
-						.getColor(R.color.bright_green));
-				positiveButton.invalidate();
-			}
-		});
-		dialog.getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-		return dialog;
+				}
+			});
+		}
 	}
 
 	@Override
@@ -279,9 +303,8 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		if (editItem != null) {
 			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
 					(Serializable) editItem);
-		} 
-		outState.putSerializable(KEY_SAVE_ADAPTER,
-				(Serializable) curAdapter);
+		}
+		outState.putSerializable(KEY_SAVE_ADAPTER, (Serializable) curAdapter);
 		// Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
