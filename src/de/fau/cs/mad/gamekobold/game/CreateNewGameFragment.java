@@ -49,10 +49,7 @@ import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
-	// private List<String> tagList;
-
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
-
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
@@ -116,23 +113,15 @@ public class CreateNewGameFragment extends Fragment {
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getSerializableExtra(
 					EXTRA_GAME_TO_EDIT);
-			Log.i("curGame is null?", "" + (curGame == null));
-			Log.i("worldName is null?", "" + (worldName == null));
 
-			// curGame.removeCharacter(curGame.getCharakterList().get(
-			// curGame.getCharakterList().size() - 1));
 			gameName.setText(curGame.getGameName());
-			// FIXME Null Pointer Exception!
-			// worldName.setText(curGame.getTemplate().getWorldName());
 			gameDate.setText(curGame.getDate());
 
 			final Bitmap icon = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), getActivity());
 			if(icon != null) {
 				addImageButton.setImageBitmap(icon);
 			}
-
 			getActivity().setTitle(curGame.getGameName());
-
 		}
 
 		expandableListAdapter = new ExpandableListArrayAdapter(getActivity(),

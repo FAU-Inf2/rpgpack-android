@@ -69,7 +69,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			convertView = inflater.inflate(
 					R.layout.rowlayout_expandablelist_character, null);
 		}
-
 	
 		// initialize values assigned to the items in the grid.
 		final int spacingDp = 10;
@@ -92,11 +91,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		final int rowCount = (int) Math.ceil((templates.get(templatePosition)
 				.getCharacters().size() + 0d)
 				/ colCount);
-		Log.d("templates.get(templatePosition)getCharacters().size()", ""
-				+ templates.get(templatePosition).getCharacters().size());
-
-		Log.d("COL COUNT", "" + colCount);
-		Log.d("ROW COUNT", "" + rowCount);
 
 		// calculate the height for the current grid
 		final int GRID_HEIGHT = Math.round(rowCount * (ROW_HEIGHT + SPACING));
@@ -106,7 +100,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		// set the height of the current grid
 		gridView.getLayoutParams().height = GRID_HEIGHT;
 
-		// CharacterGridAdapter adapter;
 		if (this.adapterCache.containsKey(templatePosition)) {
 			adapter = this.adapterCache.get(templatePosition);
 		} else {
@@ -121,10 +114,9 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				// Log.e("Position in gridview", ""+position);
+
 				// add to picked character
 				if (position != adapterView.getChildCount() - 1) {
-
 					curGameCharacter = (GameCharacter) adapterView
 							.getItemAtPosition(position);
 

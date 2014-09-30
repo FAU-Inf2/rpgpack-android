@@ -56,6 +56,8 @@
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity" >
         </activity>
+        <activity android:name="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" >
+        </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
