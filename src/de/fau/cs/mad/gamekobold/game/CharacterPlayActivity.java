@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.character.FavoriteTable;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -87,8 +88,13 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 					table = characterSheets[charNumberToInflate].getRootTable();
 				} else {
 					table = characterSheets[0].getRootTable();
+					table.addTable(new FavoriteTable("Favorites"));
 				}
-				// TODO create new Table type - Favorite! and add it for
+				
+				//hier muss noch ein Eintrag für favoriten rein!
+				
+				
+				// TODO ate create new Table type - Favorite! and add it for
 				// inflation!
 
 				super.inflate(table);

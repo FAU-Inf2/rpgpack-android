@@ -191,11 +191,6 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			 }
 		} else {
 			Log.d("SlideoutNavigationActivity", "got savedInstance");
-			
-			Toast.makeText(myActivity,
-					"GOT SAVED INSTANCE!!!!!!!!!!!!!!!!!!",
-					Toast.LENGTH_LONG).show();
-			
 		}
 		/*
 		 * JACKSON END
@@ -308,7 +303,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 						
 //					characterSheet = JacksonInterface.loadCharacterSheet(new File(
 //							characterAbsPath), false);
-					Log.d("CharacterPlayActivity", "loaded sheets");
+					Log.d("SlideoutNavigationActivity", "loaded sheets");
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
