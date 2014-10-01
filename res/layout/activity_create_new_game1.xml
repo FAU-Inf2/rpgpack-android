@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+
+    <ImageButton
+        android:id="@+id/buttonAddIcon"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="left|fill_vertical"
+        android:layout_margin="8dp"
+
+        android:adjustViewBounds="true"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/newphoto_add_black" />
+    <!-- android:background="@drawable/shape_templatedetails_roundcorner_iconbutton" -->
+
+    <Button
+        android:id="@+id/buttonCreateGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_green"
+        android:text="@string/save_game"
+        android:textColor="@color/white" />
+
+    <fragment android:name="de.cs.fau.mad.gamekobold.characterbrowser.CharacterBrowserFragment"
+            android:id="@+id/list"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/gameDateText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonInfoPopup"
+        android:layout_alignLeft="@+id/worldNameText"
+        android:layout_toLeftOf="@+id/buttonInfoPopup"
+        android:ems="10"
+        android:hint="@string/hint_1"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/buttonInfoPopup"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignRight="@+id/gameNameText"
+        android:layout_below="@+id/worldNameText"
+        android:layout_margin="5dp"
+        android:background="@drawable/info2_white"
+        android:scaleType="fitXY" />
+
+    <EditText
+        android:id="@+id/gameNameText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/buttonAddIcon"
+        android:ems="10"
+        android:hint="@string/hint_game_name"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="16sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <GridView
+        android:id="@+id/pickedCharacterGridView"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/buttonInfoPopup"
+        android:background="@drawable/character_grid_border"
+        android:numColumns="4" >
+    </GridView>
+
+    <EditText
+        android:id="@+id/worldNameText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/gameNameText"
+        android:layout_below="@+id/gameNameText"
+        android:ems="10"
+        android:hint="@string/hint_1"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</RelativeLayout>

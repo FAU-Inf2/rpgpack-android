@@ -6,6 +6,6 @@ public class CreateNewGameActivity extends SingleFragmentActivity {
 
 	@Override
 	protected Fragment createFragment() {
-		return new CreateNewGameFragment();
+		return new CreateNewGameFragment1();
 	}
 }

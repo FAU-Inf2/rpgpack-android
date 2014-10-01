@@ -3,6 +3,11 @@ package de.fau.cs.mad.gamekobold;
 import java.io.File;
 import java.io.IOException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
@@ -11,11 +16,6 @@ import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.JacksonFileValidator;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
 public class CharacterMenu extends AbstractThreeButtonMenu implements IFileBrowserReceiver {
 	@Override

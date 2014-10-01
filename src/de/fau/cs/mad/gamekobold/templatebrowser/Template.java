@@ -3,9 +3,11 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 
 /**
  * This class represents a container for a RPG Character template. RPG Character
@@ -178,5 +180,14 @@ public class Template implements Serializable {
 
 	public void setTagString(String tagString) {
 		this.tagString = tagString;
+	}
+
+	public boolean addCharacter(CharacterSheet sheet) {
+		GameCharacter gc = new GameCharacter(sheet.getName(),
+				String.valueOf(sheet.getFileTimeStamp()),
+				new LinkedList<String>(), sheet.getDescription(),
+				sheet.getFileAbsolutePath());
+		characters.add(gc);
+		return true;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,18 +41,22 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserArrayAdapter;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
-public class CreateNewGameFragment extends Fragment {
+public class CreateNewGameFragment1 extends Fragment {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
+
+	private CharacterBrowserArrayAdapter adapter = null;
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
@@ -63,6 +68,7 @@ public class CreateNewGameFragment extends Fragment {
 	private GridView pickedCharacterGridView;
 	private Button createGameButton;
 	private ImageButton addImageButton;
+	private ListView characterList;
 	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
 	private Button infoButton;
@@ -134,7 +140,7 @@ public class CreateNewGameFragment extends Fragment {
 				.passAdapterForPickedGrid(pickedCharacterGridAdapter);
 		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-		
+
 		pickedCharacterGridView
 				.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -362,7 +368,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		return view;
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);

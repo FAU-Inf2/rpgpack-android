@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 			convertView = inflater.inflate(
 					R.layout.rowlayout_expandablelist_character, null);
 		}
-	
+
 		// initialize values assigned to the items in the grid.
 		final int spacingDp = 10;
 		final int colWidthDp = 100;
@@ -87,7 +88,7 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		final int colCount = (int) Math
 				.floor((parent.getWidth() - (2 * SPACING))
 						/ (COL_WIDTH + SPACING));
-		
+
 		final int rowCount = (int) Math.ceil((templates.get(templatePosition)
 				.getCharacters().size() + 0d)
 				/ colCount);
@@ -148,12 +149,17 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 							.get(templatePosition);
 					Intent intent = new Intent(context,
 							CreateNewCharacterActivity.class);
-					// TODO bei den anderen auch curTemplate.getFileName()
 					intent.putExtra("templateFileName",
 							curClickedTemplate.getFileName());
+					intent.putExtra("template",
+							curClickedTemplate);
+					
 					context.startActivity(intent);
+					// TODO notify adapter!
+					// to be sure, that new character will appear in expandable
+					// list
+					//adapter.notifyDataSetChanged();
 				}
-
 			}
 		});
 

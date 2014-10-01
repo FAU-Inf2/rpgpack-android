@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
+public class CharacterGridAdapter extends ArrayAdapter<GameCharacter>  {
 	private Context context;
 
 	// list of highlighted characters
@@ -93,12 +94,13 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
-				bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-				if(bitmap == null) {
+				bitmap = ThumbnailLoader.loadThumbnail(
+						curCharacter.getIconPath(), context);
+				if (bitmap == null) {
 					// set some default game icon
-					characterIconImageView.setImageResource(R.drawable.person_without_plus);
-				}
-				else {
+					characterIconImageView
+							.setImageResource(R.drawable.person_without_plus);
+				} else {
 					// set game icon
 					characterIconImageView.setImageBitmap(bitmap);
 				}
@@ -139,12 +141,13 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
 
-				bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-				if(bitmap == null) {
+				bitmap = ThumbnailLoader.loadThumbnail(
+						curCharacter.getIconPath(), context);
+				if (bitmap == null) {
 					// set some default game icon
-					characterIconImageView.setImageResource(R.drawable.person_without_plus);
-				}
-				else {
+					characterIconImageView
+							.setImageResource(R.drawable.person_without_plus);
+				} else {
 					// set game icon
 					characterIconImageView.setImageBitmap(bitmap);
 				}
