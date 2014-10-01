@@ -69,7 +69,6 @@ public class CreateNewGameFragment1 extends Fragment {
 	private Button createGameButton;
 	private ImageButton addImageButton;
 	private ListView characterList;
-	private ExpandableListView expandableTemplateList;
 	private GameCharacter curCharacter;
 	private Button infoButton;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
@@ -99,14 +98,12 @@ public class CreateNewGameFragment1 extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_create_new_game, parent,
+		View view = inflater.inflate(R.layout.fragment_create_new_game1, parent,
 				false);
 
 		// for back-button
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		expandableTemplateList = (ExpandableListView) view
-				.findViewById(R.id.expandableTemplateList);
 		gameName = (EditText) view.findViewById(R.id.gameNameText);
 		worldName = (EditText) view.findViewById(R.id.worldNameText);
 		gameDate = (EditText) view.findViewById(R.id.gameDateText);
@@ -138,7 +135,6 @@ public class CreateNewGameFragment1 extends Fragment {
 				curGame);
 		expandableListAdapter
 				.passAdapterForPickedGrid(pickedCharacterGridAdapter);
-		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView
@@ -230,65 +226,65 @@ public class CreateNewGameFragment1 extends Fragment {
 
 		});
 
-		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
-		createGameButton.setOnClickListener(new OnClickListener() {
-			@SuppressLint("SimpleDateFormat")
-			@Override
-			public void onClick(View v) {
-
-				if (gameName.getEditableText().toString().equals("")) {
-					Toast.makeText(
-							getActivity(),
-							getResources().getString(
-									R.string.warning_set_gamename),
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				Toast.makeText(
-						getActivity(),
-						getActivity().getResources().getString(
-								R.string.warning_set_gamename)
-								+ " "
-								+ gameName.getEditableText().toString()
-								+ " "
-								+ getActivity().getResources().getString(
-										R.string.warning_set_gamename),
-						Toast.LENGTH_SHORT).show();
-
-				// now it goes to GameDetailsFragment
-				// Save and start GameDetailsActivity
-
-				try {
-					if (curGame.getDate() == null) {
-						// set creation date
-						final SimpleDateFormat format = new SimpleDateFormat(
-								"dd.MM.yyyy");
-						final Date date = new Date();
-						curGame.setDate(format.format(date));
-					}
-					// save game
-					JacksonInterface.saveGame(curGame, getActivity());
-					// check if we are editing a game
-					if (getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
-						// if so we were already in the details fragment-> just
-						// go back
-						getActivity().onBackPressed();
-					} else {
-						// if not we want to got to the details fragment ->
-						// start it
-						Intent i = new Intent(getActivity(),
-								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								curGame.getGameName());
-						startActivity(i);
-					}
-
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
+//		createGameButton.setOnClickListener(new OnClickListener() {
+//			@SuppressLint("SimpleDateFormat")
+//			@Override
+//			public void onClick(View v) {
+//
+//				if (gameName.getEditableText().toString().equals("")) {
+//					Toast.makeText(
+//							getActivity(),
+//							getResources().getString(
+//									R.string.warning_set_gamename),
+//							Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//
+//				Toast.makeText(
+//						getActivity(),
+//						getActivity().getResources().getString(
+//								R.string.warning_set_gamename)
+//								+ " "
+//								+ gameName.getEditableText().toString()
+//								+ " "
+//								+ getActivity().getResources().getString(
+//										R.string.warning_set_gamename),
+//						Toast.LENGTH_SHORT).show();
+//
+//				// now it goes to GameDetailsFragment
+//				// Save and start GameDetailsActivity
+//
+//				try {
+//					if (curGame.getDate() == null) {
+//						// set creation date
+//						final SimpleDateFormat format = new SimpleDateFormat(
+//								"dd.MM.yyyy");
+//						final Date date = new Date();
+//						curGame.setDate(format.format(date));
+//					}
+//					// save game
+//					JacksonInterface.saveGame(curGame, getActivity());
+//					// check if we are editing a game
+//					if (getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
+//						// if so we were already in the details fragment-> just
+//						// go back
+//						getActivity().onBackPressed();
+//					} else {
+//						// if not we want to got to the details fragment ->
+//						// start it
+//						Intent i = new Intent(getActivity(),
+//								GameDetailsActivity.class);
+//						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+//								curGame.getGameName());
+//						startActivity(i);
+//					}
+//
+//				} catch (Throwable e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.select_dialog_item, getResources()

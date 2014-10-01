@@ -10,7 +10,9 @@ import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.fau.cs.mad.gamekobold.R;
@@ -21,7 +23,7 @@ import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 
-public class CharacterBrowserFragment extends ListFragment{
+public class CharacterBrowserFragment extends ListFragment {
 	private CharacterBrowserArrayAdapter adapter = null;
 	private List<CharacterSheet> characters;
 
@@ -33,10 +35,17 @@ public class CharacterBrowserFragment extends ListFragment{
 		setListAdapter(adapter);
 	}
 
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//			Bundle savedInstanceState) {
+//		// Inflate the layout for this fragment
+//		return inflater.inflate(R.layout.fragment_character_browser, container, false);
+//	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
@@ -49,7 +58,7 @@ public class CharacterBrowserFragment extends ListFragment{
 				startActivity(i);
 			}
 		});
-		
+
 		getListView().setOnItemLongClickListener(
 				new AdapterView.OnItemLongClickListener() {
 					@Override
@@ -82,9 +91,8 @@ public class CharacterBrowserFragment extends ListFragment{
 												int which) {
 											// remove character from all games
 											ArrayList<Game> games = new ArrayList<Game>();
-											games.addAll(GameLab
-													.get(getActivity())
-													.getGames());
+											games.addAll(GameLab.get(
+													getActivity()).getGames());
 
 											ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
 											// check if character to delete
