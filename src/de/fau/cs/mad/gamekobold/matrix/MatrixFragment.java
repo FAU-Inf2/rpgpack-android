@@ -39,15 +39,16 @@ public class MatrixFragment extends GeneralFragment {
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
 	public static final int FLAG_MOD = 8; // Binary 01000
-	public GridView gridView;
+	private GridView gridView;
 	public List<MatrixItem> itemsList = null;
-	public List<MatrixItem> playMatrixItems = null;
+	private List<MatrixItem> playMatrixItems = null;
+	private MatrixItem addNewMatrixItem;
 
-	public MatrixViewArrayAdapter adapterCreateTemplate;
-	public NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
-	public PlayCharacterMatrixAdapter adapterPlay;
+	private MatrixViewArrayAdapter adapterCreateTemplate;
+	private NewCharacterMatrixViewArrayAdapter adapterCreateCharacter;
+	private PlayCharacterMatrixAdapter adapterPlay;
 
-	public View rootView;
+	private View rootView;
 
 	/*
 	 * JACKSON START
@@ -182,7 +183,7 @@ public class MatrixFragment extends GeneralFragment {
 
 				TextView textView = (TextView) rootView
 						.findViewById(R.id.textView1);
-				
+
 				textView.setText(getResources().getString(
 						R.string.hint_edit_items));
 				FrameLayout frameLayout = (FrameLayout) rootView
@@ -192,6 +193,14 @@ public class MatrixFragment extends GeneralFragment {
 
 				gridView = (GridView) rootView
 						.findViewById(R.id.gridViewMatrixItem);
+				
+				// check it the last item is not a fake one, add it 
+				if (!(itemsList.get(itemsList.size() - 1).getValue().equals("+"))) {
+					addNewMatrixItem = new MatrixItem(getResources().getString(
+							R.string.new_matrix_item), "+", "");
+					itemsList.add(addNewMatrixItem);
+				}
+				
 				// check needed for jackson data loading
 				if (itemsList == null) {
 					itemsList = new ArrayList<MatrixItem>();
@@ -202,12 +211,11 @@ public class MatrixFragment extends GeneralFragment {
 					// FIXME comment is not correct, last fake item appears also
 					// in
 					// jacksonTable.entries and make problems!!!!
-					MatrixItem addNewMatrixItem = new MatrixItem(getResources()
-							.getString(R.string.new_matrix_item), "+", "");
+					addNewMatrixItem = new MatrixItem(getResources().getString(
+							R.string.new_matrix_item), "+", "");
 					itemsList.add(addNewMatrixItem);
-
 				}
-
+				
 				if (adapterCreateTemplate == null) {
 					adapterCreateTemplate = new MatrixViewArrayAdapter(
 							getActivity(), itemsList);
@@ -293,6 +301,11 @@ public class MatrixFragment extends GeneralFragment {
 					jacksonTable.entries = itemsList;
 				}
 
+				// check it the last item is a fake one, remove it 
+				if (itemsList.get(itemsList.size() - 1).getValue().equals("+")) {
+					itemsList.remove(itemsList.get(itemsList.size() - 1));
+				}
+
 				if (adapterCreateCharacter == null) {
 					adapterCreateCharacter = new NewCharacterMatrixViewArrayAdapter(
 							getActivity(), itemsList);
@@ -314,14 +327,14 @@ public class MatrixFragment extends GeneralFragment {
 					@Override
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long id) {
-						if (position == itemsList.size() - 1) {
-							Toast.makeText(
-									getActivity(),
-									"Neues Element wird in Deinem Character erstellt!",
-									Toast.LENGTH_SHORT).show();
-
-							showPopup(adapterCreateCharacter);
-						} else {
+//						if (position == itemsList.size() - 1) {
+//							Toast.makeText(
+//									getActivity(),
+//									"Neues Element wird in Deinem Character erstellt!",
+//									Toast.LENGTH_SHORT).show();
+//
+//							showPopup(adapterCreateCharacter);
+//						} else {
 
 							MatrixItem curMatrixItem = itemsList.get(position);
 
@@ -346,7 +359,7 @@ public class MatrixFragment extends GeneralFragment {
 								// newCharacter.addMatrixItem(curMatrixItem);
 							}
 						}
-					}
+				//	}
 				});
 
 				gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
