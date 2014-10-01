@@ -214,13 +214,14 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 			// you should check if it is valid or some other qr/barcode.
 			final String potentialURL = qrscanResult.getContents();
 			
-			if(potentialURL != null && potentialURL.startsWith("http://192.168.2.110/")) {
+			if(potentialURL != null && potentialURL.startsWith("http://192.168.1.3")) {
 				// scan successful
 				Log.d("QR-CodeScan", potentialURL);
 				ApiTask task = new ApiTask();
 				task.execute(potentialURL);
 				
 			} else {
+				alertMessage(potentialURL);
 				alertMessage("An Error occurred");
 			}
 		}
