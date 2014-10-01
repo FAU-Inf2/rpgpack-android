@@ -105,6 +105,7 @@ public class CharacterBrowserFragment extends ListFragment {
 						selRow.setBackgroundColor(getResources().getColor(
 								R.color.background_green));
 					}
+					//pass selected character
 					mCallbacks.onCharacterSelected(clickedChar);
 				} else {
 					// edit character

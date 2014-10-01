@@ -44,7 +44,7 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if (gameName.equals("")) {
+				if ((gameName == null) || gameName.equals("")) {
 					Toast.makeText(
 							CreateNewGameActivity.this,
 							getResources().getString(
