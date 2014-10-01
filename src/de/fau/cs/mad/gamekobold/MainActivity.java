@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity11;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserActivity;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 
 	public void manageCharackter(View view) {
 		Intent intent = new Intent(MainActivity.this,
-				CharacterBrowserActivity11.class);
+				CharacterBrowserActivity.class);
 		startActivity(intent);
 	}
 

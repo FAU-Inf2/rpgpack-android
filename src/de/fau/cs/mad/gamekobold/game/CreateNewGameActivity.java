@@ -7,11 +7,11 @@ public class CreateNewGameActivity extends SingleFragmentActivity {
 
 	@Override
 	protected Fragment createFragment() {
-		return new CreateNewGameFragment1();
+		return new CreateNewGameFragment();
 	}
 	
 	@Override
 	protected int getLayoutResId() {
-	return R.layout.activity_create_new_game1;
+	return R.layout.activity_create_new_game;
 	}
 }

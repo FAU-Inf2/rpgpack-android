@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,10 +41,12 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserArrayAdapter;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
@@ -52,6 +55,8 @@ public class CreateNewGameFragment extends Fragment {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
+
+	private CharacterBrowserArrayAdapter adapter = null;
 
 	private Uri imageUri;
 	private ArrayList<Template> templates;
@@ -63,7 +68,7 @@ public class CreateNewGameFragment extends Fragment {
 	private GridView pickedCharacterGridView;
 	private Button createGameButton;
 	private ImageButton addImageButton;
-	private ExpandableListView expandableTemplateList;
+	private ListView characterList;
 	private GameCharacter curCharacter;
 	private Button infoButton;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
@@ -93,14 +98,12 @@ public class CreateNewGameFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_create_new_game, parent,
+		View view = inflater.inflate(R.layout.fragment_create_new_game1, parent,
 				false);
 
 		// for back-button
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		expandableTemplateList = (ExpandableListView) view
-				.findViewById(R.id.expandableTemplateList);
 		gameName = (EditText) view.findViewById(R.id.gameNameText);
 		worldName = (EditText) view.findViewById(R.id.worldNameText);
 		gameDate = (EditText) view.findViewById(R.id.gameDateText);
@@ -132,9 +135,8 @@ public class CreateNewGameFragment extends Fragment {
 				curGame);
 		expandableListAdapter
 				.passAdapterForPickedGrid(pickedCharacterGridAdapter);
-		expandableTemplateList.setAdapter(expandableListAdapter);
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-		
+
 		pickedCharacterGridView
 				.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -224,65 +226,65 @@ public class CreateNewGameFragment extends Fragment {
 
 		});
 
-		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
-		createGameButton.setOnClickListener(new OnClickListener() {
-			@SuppressLint("SimpleDateFormat")
-			@Override
-			public void onClick(View v) {
-
-				if (gameName.getEditableText().toString().equals("")) {
-					Toast.makeText(
-							getActivity(),
-							getResources().getString(
-									R.string.warning_set_gamename),
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				Toast.makeText(
-						getActivity(),
-						getActivity().getResources().getString(
-								R.string.warning_set_gamename)
-								+ " "
-								+ gameName.getEditableText().toString()
-								+ " "
-								+ getActivity().getResources().getString(
-										R.string.warning_set_gamename),
-						Toast.LENGTH_SHORT).show();
-
-				// now it goes to GameDetailsFragment
-				// Save and start GameDetailsActivity
-
-				try {
-					if (curGame.getDate() == null) {
-						// set creation date
-						final SimpleDateFormat format = new SimpleDateFormat(
-								"dd.MM.yyyy");
-						final Date date = new Date();
-						curGame.setDate(format.format(date));
-					}
-					// save game
-					JacksonInterface.saveGame(curGame, getActivity());
-					// check if we are editing a game
-					if (getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
-						// if so we were already in the details fragment-> just
-						// go back
-						getActivity().onBackPressed();
-					} else {
-						// if not we want to got to the details fragment ->
-						// start it
-						Intent i = new Intent(getActivity(),
-								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								curGame.getGameName());
-						startActivity(i);
-					}
-
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
+//		createGameButton.setOnClickListener(new OnClickListener() {
+//			@SuppressLint("SimpleDateFormat")
+//			@Override
+//			public void onClick(View v) {
+//
+//				if (gameName.getEditableText().toString().equals("")) {
+//					Toast.makeText(
+//							getActivity(),
+//							getResources().getString(
+//									R.string.warning_set_gamename),
+//							Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//
+//				Toast.makeText(
+//						getActivity(),
+//						getActivity().getResources().getString(
+//								R.string.warning_set_gamename)
+//								+ " "
+//								+ gameName.getEditableText().toString()
+//								+ " "
+//								+ getActivity().getResources().getString(
+//										R.string.warning_set_gamename),
+//						Toast.LENGTH_SHORT).show();
+//
+//				// now it goes to GameDetailsFragment
+//				// Save and start GameDetailsActivity
+//
+//				try {
+//					if (curGame.getDate() == null) {
+//						// set creation date
+//						final SimpleDateFormat format = new SimpleDateFormat(
+//								"dd.MM.yyyy");
+//						final Date date = new Date();
+//						curGame.setDate(format.format(date));
+//					}
+//					// save game
+//					JacksonInterface.saveGame(curGame, getActivity());
+//					// check if we are editing a game
+//					if (getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
+//						// if so we were already in the details fragment-> just
+//						// go back
+//						getActivity().onBackPressed();
+//					} else {
+//						// if not we want to got to the details fragment ->
+//						// start it
+//						Intent i = new Intent(getActivity(),
+//								GameDetailsActivity.class);
+//						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+//								curGame.getGameName());
+//						startActivity(i);
+//					}
+//
+//				} catch (Throwable e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.select_dialog_item, getResources()
@@ -362,7 +364,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		return view;
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);

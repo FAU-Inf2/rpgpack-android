@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        class="de.fau.cs.mad.gamekobold.game.CreateNewGameFragment1" >
+        class="de.fau.cs.mad.gamekobold.game.CreateNewGameFragment" >
     </fragment>
 
     <fragment
