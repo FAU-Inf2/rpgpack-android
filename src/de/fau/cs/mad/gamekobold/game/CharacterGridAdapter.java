@@ -16,23 +16,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class CharacterGridAdapter extends ArrayAdapter<GameCharacter>  {
+public class CharacterGridAdapter extends ArrayAdapter<CharacterSheet>  {
 	private Context context;
 
 	// list of highlighted characters
-	public ArrayList<GameCharacter> selectedCharacters = new ArrayList<GameCharacter>();
+	public ArrayList<CharacterSheet> selectedCharacters = new ArrayList<CharacterSheet>();
 
 	// the list of objects we want to display
-	private List<GameCharacter> characters;
+	private List<CharacterSheet> characters;
 	private ImageView characterIconImageView;
 	private ImageView highlightingImageView;
 	private TextView characterNameTextView;
 
 	public CharacterGridAdapter(Context context, Template template) {
-		super(context, R.layout.itemlayout_expandablelist_charakter, template
-				.getCharacters());
+		super(context, R.layout.itemlayout_expandablelist_charakter, template.getCharacters());
 		this.context = context;
 		this.characters = template.getCharacters();
 	}
@@ -58,19 +58,19 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter>  {
 								R.layout.itemlayout_expandablelist_create_new_character,
 								parent, false);
 
-				GameCharacter curCharacter = characters.get(position);
+				CharacterSheet curCharacter = characters.get(position);
 
 				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				characterNameTextView.setText(curCharacter.getCharacterName());
+				characterNameTextView.setText(curCharacter.getName());
 
 			}
 			// or reuse
 			else {
 				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				GameCharacter curCharacter = characters.get(position);
-				characterNameTextView.setText(curCharacter.getCharacterName());
+				CharacterSheet curCharacter = characters.get(position);
+				characterNameTextView.setText(curCharacter.getName());
 				Log.d("Character is null?", "" + (curCharacter == null));
 			}
 			// normal item
@@ -85,11 +85,11 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter>  {
 						R.layout.itemlayout_expandablelist_charakter, parent,
 						false);
 
-				GameCharacter curCharacter = characters.get(position);
+				CharacterSheet curCharacter = characters.get(position);
 
 				characterNameTextView = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				characterNameTextView.setText(curCharacter.getCharacterName());
+				characterNameTextView.setText(curCharacter.getName());
 
 				characterIconImageView = (ImageView) convertView
 						.findViewById(R.id.character_icon_circle);
@@ -134,8 +134,8 @@ public class CharacterGridAdapter extends ArrayAdapter<GameCharacter>  {
 			else {
 				TextView iName = (TextView) convertView
 						.findViewById(R.id.textItemTitle);
-				GameCharacter curCharacter = characters.get(position);
-				iName.setText(curCharacter.getCharacterName());
+				CharacterSheet curCharacter = characters.get(position);
+				iName.setText(curCharacter.getName());
 				Log.d("Character is null?", "" + (curCharacter == null));
 
 				characterIconImageView = (ImageView) convertView

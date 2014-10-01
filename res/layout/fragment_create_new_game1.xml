@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:background="@color/background" >
 
     <ImageButton
@@ -15,33 +15,6 @@
         android:padding="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/newphoto_add_black" />
-    <!-- android:background="@drawable/shape_templatedetails_roundcorner_iconbutton" -->
-
-    <EditText
-        android:id="@+id/gameDateText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/buttonInfoPopup"
-        android:layout_alignLeft="@+id/worldNameText"
-        android:layout_toLeftOf="@+id/buttonInfoPopup"
-        android:ems="10"
-        android:hint="@string/hint_1"
-        android:lines="1"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/buttonInfoPopup"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignRight="@+id/gameNameText"
-        android:layout_below="@+id/worldNameText"
-        android:layout_margin="5dp"
-        android:background="@drawable/info2_white"
-        android:scaleType="fitXY" />
 
     <EditText
         android:id="@+id/gameNameText"
@@ -52,8 +25,6 @@
         android:layout_toRightOf="@+id/buttonAddIcon"
         android:ems="10"
         android:hint="@string/hint_game_name"
-        android:lines="1"
-        android:maxLines="1"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
@@ -65,19 +36,45 @@
     <GridView
         android:id="@+id/pickedCharacterGridView"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/buttonInfoPopup"
         android:background="@drawable/character_grid_border"
         android:numColumns="4" >
     </GridView>
 
+    <Button
+        android:id="@+id/buttonInfoPopup"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/worldNameText"
+        android:layout_margin="5dp"
+        android:background="@drawable/info2_white"
+        android:scaleType="fitXY" />
+
     <EditText
         android:id="@+id/worldNameText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/gameNameText"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/gameNameText"
+        android:ems="10"
+        android:hint="@string/hint_1"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/gameDateText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonInfoPopup"
+        android:layout_alignBottom="@+id/buttonInfoPopup"
+        android:layout_alignLeft="@+id/worldNameText"
+        android:layout_toLeftOf="@+id/buttonInfoPopup"
         android:ems="10"
         android:hint="@string/hint_1"
         android:lines="1"

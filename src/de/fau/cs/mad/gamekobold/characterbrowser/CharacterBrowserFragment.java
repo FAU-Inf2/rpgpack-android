@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.Game;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
@@ -24,8 +27,31 @@ import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
 
 public class CharacterBrowserFragment extends ListFragment {
+	public static final String EXTRA_MODE_GAME_CREATION = "de.fau.cs.mad.gamekobold.gamecreation";
 	private CharacterBrowserArrayAdapter adapter = null;
 	private List<CharacterSheet> characters;
+	private boolean mode_pickCharacterForGameCreation = false;
+
+	private CallbacksCharBrowser mCallbacks;
+
+	/**
+	 * Required interface for hosting activities.
+	 */
+	public interface CallbacksCharBrowser {
+		void onCharacterSelected(CharacterSheet clickedChar);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mCallbacks = (CallbacksCharBrowser) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mCallbacks = null;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,14 +59,21 @@ public class CharacterBrowserFragment extends ListFragment {
 		characters = new ArrayList<CharacterSheet>();
 		adapter = new CharacterBrowserArrayAdapter(getActivity(), characters);
 		setListAdapter(adapter);
+
+		if ((getActivity().getIntent().hasExtra(EXTRA_MODE_GAME_CREATION))) {
+			mode_pickCharacterForGameCreation = getActivity().getIntent()
+					.getBooleanExtra(EXTRA_MODE_GAME_CREATION, false);
+		} else
+			mode_pickCharacterForGameCreation = false;
 	}
 
-//	@Override
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//			Bundle savedInstanceState) {
-//		// Inflate the layout for this fragment
-//		return inflater.inflate(R.layout.fragment_character_browser, container, false);
-//	}
+	// @Override
+	// public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	// Bundle savedInstanceState) {
+	// // Inflate the layout for this fragment
+	// return inflater.inflate(R.layout.fragment_character_browser, container,
+	// false);
+	// }
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,12 +83,33 @@ public class CharacterBrowserFragment extends ListFragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
 					int position, long id) {
-				// edit character
-				Intent i = new Intent(getActivity(),
-						CharacterDetailsActivity.class);
+
 				final CharacterSheet clickedChar = adapter.getItem(position);
-				i.putExtra("CharacterSheet", clickedChar);
-				startActivity(i);
+
+				if (mode_pickCharacterForGameCreation) {
+					// TODO change color and add to the pickedCharacterGrid
+					RelativeLayout selRow = (RelativeLayout) view
+							.findViewById(R.id.relativeLayout);
+					int color = Color.TRANSPARENT;
+					Drawable backgroundColor = selRow.getBackground();
+					if (backgroundColor instanceof ColorDrawable)
+						color = ((ColorDrawable) backgroundColor).getColor();
+					if ((color == getResources().getColor(
+							R.color.background_green))) {
+						selRow.setBackgroundColor(getResources().getColor(
+								R.color.background_dark));
+					} else {
+						selRow.setBackgroundColor(getResources().getColor(
+								R.color.background_green));
+					}
+					mCallbacks.onCharacterSelected(clickedChar);
+				} else {
+					// edit character
+					Intent i = new Intent(getActivity(),
+							CharacterDetailsActivity.class);
+					i.putExtra("CharacterSheet", clickedChar);
+					startActivity(i);
+				}
 			}
 		});
 
@@ -94,18 +148,18 @@ public class CharacterBrowserFragment extends ListFragment {
 											games.addAll(GameLab.get(
 													getActivity()).getGames());
 
-											ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
+											ArrayList<CharacterSheet> characters = new ArrayList<CharacterSheet>();
 											// check if character to delete
 											// appears in games
 											for (Game g : games) {
 												characters.addAll(g
-														.getCharacterList());
+														.getCharacterSheetList());
 												int location = 0;
-												for (GameCharacter c : characters) {
-													if (c.getFileAbsPath()
+												for (CharacterSheet c : characters) {
+													if (c.getFileAbsolutePath()
 															.equals(clickedCharacter
 																	.getFileAbsolutePath())) {
-														g.getCharacterList()
+														g.getCharacterSheetList()
 																.remove(location);
 													}
 													location++;
@@ -173,4 +227,25 @@ public class CharacterBrowserFragment extends ListFragment {
 			}
 		}
 	}
+
+	// /**
+	// * Required interface for hosting activities.
+	// */
+	// public interface onCharacterSelectedListener {
+	// public void onCharacterSelected(CharacterSheet clickedChar);
+	// }
+	//
+	// @Override
+	// public void onAttach(Activity activity) {
+	// super.onAttach(activity);
+	// if (activity instanceof onCharacterSelectedListener) {
+	// listener = (onCharacterSelectedListener) activity;
+	// } else {
+	// throw new ClassCastException(
+	// activity.toString()
+	// +
+	// " must implemenet CharacterBrowserFragment.onCharacterSelectedListener");
+	// }
+	// }
+
 }

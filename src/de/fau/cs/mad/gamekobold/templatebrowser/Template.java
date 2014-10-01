@@ -27,7 +27,7 @@ public class Template implements Serializable {
 	private long fileTimeStamp = 0;
 	private String tagString = "";
 	private String iconPath = "";
-	private List<GameCharacter> characters = new ArrayList<GameCharacter>();
+	private List<CharacterSheet> characters = new ArrayList<CharacterSheet>();
 
 	public Template(String templateName, String worldName, String author,
 			String date, String iconPath, String description) {
@@ -57,7 +57,7 @@ public class Template implements Serializable {
 	}
 
 	// TODO pruefen
-	public boolean addCharacter(GameCharacter character) {
+	public boolean addCharacter(CharacterSheet character) {
 		characters.add(character);
 		return true;
 	}
@@ -128,11 +128,11 @@ public class Template implements Serializable {
 		return fileName;
 	}
 
-	public List<GameCharacter> getCharacters() {
+	public List<CharacterSheet> getCharacters() {
 		return characters;
 	}
 
-	public void setCharacters(List<GameCharacter> characters) {
+	public void setCharacters(List<CharacterSheet> characters) {
 		this.characters = characters;
 	}
 
@@ -182,12 +182,4 @@ public class Template implements Serializable {
 		this.tagString = tagString;
 	}
 
-	public boolean addCharacter(CharacterSheet sheet) {
-		GameCharacter gc = new GameCharacter(sheet.getName(),
-				String.valueOf(sheet.getFileTimeStamp()),
-				new LinkedList<String>(), sheet.getDescription(),
-				sheet.getFileAbsolutePath());
-		characters.add(gc);
-		return true;
-	}
 }

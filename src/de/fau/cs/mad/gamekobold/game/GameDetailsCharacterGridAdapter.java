@@ -13,14 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class GameDetailsCharacterGridAdapter extends
-		ArrayAdapter<GameCharacter> {
+		ArrayAdapter<CharacterSheet> {
 	Context context;
 
 	// the list of objects we want to display
-	private List<GameCharacter> characters;
+	private List<CharacterSheet> characters;
 	private int layoutID;
 
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
@@ -35,9 +36,9 @@ public class GameDetailsCharacterGridAdapter extends
 
 	public GameDetailsCharacterGridAdapter(Context context, int layoutID,
 			Game game) {
-		super(context, layoutID, game.getCharacterList());
+		super(context, layoutID, game.getCharacterSheetList());
 		this.context = context;
-		this.characters = game.getCharacterList();
+		this.characters = game.getCharacterSheetList();
 		this.layoutID = layoutID;
 	}
 
@@ -53,7 +54,9 @@ public class GameDetailsCharacterGridAdapter extends
 		if (convertView == null) {
 			convertView = inflater.inflate(layoutID, parent, false);
 
-			GameCharacter curCharacter = characters.get(position);
+//			GameCharacter curCharacter = characters.get(position);
+			CharacterSheet curCharacter = characters.get(position);
+
 
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
@@ -61,7 +64,7 @@ public class GameDetailsCharacterGridAdapter extends
 			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 
-			characterName.setText(curCharacter.getCharacterName());
+			characterName.setText(curCharacter.getName());
 
 			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
 			if(bitmap == null) {
@@ -77,8 +80,8 @@ public class GameDetailsCharacterGridAdapter extends
 			Log.e("Reusing", "true");
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
-			GameCharacter curCharacter = characters.get(position);
-			characterName.setText(curCharacter.getCharacterName());
+			CharacterSheet curCharacter = characters.get(position);
+			characterName.setText(curCharacter.getName());
 			Log.d("Character is null?", "" + (curCharacter == null));
 			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
@@ -101,7 +104,7 @@ public class GameDetailsCharacterGridAdapter extends
 		return characters.size();
 	}
 	
-	public List<GameCharacter> getItems(){
+	public List<CharacterSheet> getItems(){
 		return characters;
 	}
 

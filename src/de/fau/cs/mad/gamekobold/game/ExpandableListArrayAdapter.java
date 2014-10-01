@@ -110,58 +110,58 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		}
 
 		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressLint("ResourceAsColor")
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-
-				// add to picked character
-				if (position != adapterView.getChildCount() - 1) {
-					curGameCharacter = (GameCharacter) adapterView
-							.getItemAtPosition(position);
-
-					// selected characters will be highlighted and added into
-					// pickedCharactersGrid
-					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
-					if (selectedCharacters.contains(curGameCharacter)) {
-						selectedCharacters.remove(curGameCharacter);
-						newGame.removeCharacter(curGameCharacter);
-
-					} else {
-						selectedCharacters.add(curGameCharacter);
-						Toast.makeText(
-								context,
-								curGameCharacter.getCharacterName()
-										+ " "
-										+ context.getResources().getString(
-												R.string.msg_added_to_game),
-								Toast.LENGTH_SHORT).show();
-						newGame.addCharacter(curGameCharacter);
-					}
-					pickedAdapter.notifyDataSetChanged();
-					adapter.notifyDataSetChanged();
-
-				}
-				// create new character from template
-				else {
-					Template curClickedTemplate = templates
-							.get(templatePosition);
-					Intent intent = new Intent(context,
-							CreateNewCharacterActivity.class);
-					intent.putExtra("templateFileName",
-							curClickedTemplate.getFileName());
-					intent.putExtra("template",
-							curClickedTemplate);
-					
-					context.startActivity(intent);
-					// TODO notify adapter!
-					// to be sure, that new character will appear in expandable
-					// list
-					//adapter.notifyDataSetChanged();
-				}
-			}
-		});
+//		gridView.setOnItemClickListener(new OnItemClickListener() {
+//			@SuppressLint("ResourceAsColor")
+//			@Override
+//			public void onItemClick(AdapterView<?> adapterView, View view,
+//					int position, long id) {
+//
+//				// add to picked character
+//				if (position != adapterView.getChildCount() - 1) {
+//					curGameCharacter = (GameCharacter) adapterView
+//							.getItemAtPosition(position);
+//
+//					// selected characters will be highlighted and added into
+//					// pickedCharactersGrid
+//					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
+//					if (selectedCharacters.contains(curGameCharacter)) {
+//						selectedCharacters.remove(curGameCharacter);
+//						newGame.removeCharacter(curGameCharacter);
+//
+//					} else {
+//						selectedCharacters.add(curGameCharacter);
+//						Toast.makeText(
+//								context,
+//								curGameCharacter.getCharacterName()
+//										+ " "
+//										+ context.getResources().getString(
+//												R.string.msg_added_to_game),
+//								Toast.LENGTH_SHORT).show();
+//						newGame.addCharacter(curGameCharacter);
+//					}
+//					pickedAdapter.notifyDataSetChanged();
+//					adapter.notifyDataSetChanged();
+//
+//				}
+//				// create new character from template
+//				else {
+//					Template curClickedTemplate = templates
+//							.get(templatePosition);
+//					Intent intent = new Intent(context,
+//							CreateNewCharacterActivity.class);
+//					intent.putExtra("templateFileName",
+//							curClickedTemplate.getFileName());
+//					intent.putExtra("template",
+//							curClickedTemplate);
+//					
+//					context.startActivity(intent);
+//					// TODO notify adapter!
+//					// to be sure, that new character will appear in expandable
+//					// list
+//					//adapter.notifyDataSetChanged();
+//				}
+//			}
+//		});
 
 		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override

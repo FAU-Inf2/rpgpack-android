@@ -1,11 +1,7 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,13 +28,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -47,8 +39,6 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserArrayAdapter;
-import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
@@ -56,10 +46,11 @@ public class CreateNewGameFragment extends Fragment {
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
+	private CallbacksCreateNewGame mCallbacks;
+
 	private CharacterBrowserArrayAdapter adapter = null;
 
 	private Uri imageUri;
-	private ArrayList<Template> templates;
 
 	private Game curGame;
 	private EditText gameName;
@@ -72,15 +63,10 @@ public class CreateNewGameFragment extends Fragment {
 	private GameCharacter curCharacter;
 	private Button infoButton;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
-	private ExpandableListArrayAdapter expandableListAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// templates we want to display
-		// TODO move to onResume?
-		templates = TemplateLab.get(getActivity()).getTemplates();
-
 		setHasOptionsMenu(true);
 		getActivity().setTitle(
 				getResources().getString(R.string.titel_create_game));
@@ -92,14 +78,14 @@ public class CreateNewGameFragment extends Fragment {
 		} else {
 			curGame = new Game();
 		}
-
+		mCallbacks.onGamePass(curGame);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_create_new_game1, parent,
-				false);
+		View view = inflater.inflate(R.layout.fragment_create_new_game1,
+				parent, false);
 
 		// for back-button
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,91 +114,90 @@ public class CreateNewGameFragment extends Fragment {
 			getActivity().setTitle(curGame.getGameName());
 		}
 
-		expandableListAdapter = new ExpandableListArrayAdapter(getActivity(),
-				templates, curGame);
-		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
-				getActivity(), R.layout.itemlayout_grid_picked_character,
-				curGame);
-		expandableListAdapter
-				.passAdapterForPickedGrid(pickedCharacterGridAdapter);
-		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-
-		pickedCharacterGridView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapterView,
-							View view, int position, long id) {
-						curCharacter = (GameCharacter) adapterView
-								.getItemAtPosition(position);
-
-						Toast.makeText(
-								getActivity(),
-								((TextView) view
-										.findViewById(R.id.textItemTitle))
-										.getText(), Toast.LENGTH_SHORT).show();
-						// TODO do something
-					}
-				});
-
-		pickedCharacterGridView
-				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-					@Override
-					public boolean onItemLongClick(AdapterView<?> adapterView,
-							View view, final int position, long id) {
-
-						final GameCharacter curGameCharacter = (GameCharacter) adapterView
-								.getItemAtPosition(position);
-
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
-						builder.setTitle(getResources().getString(
-								R.string.text_remove_character_from_game));
-						builder.setMessage(getResources()
-								.getString(
-										R.string.text_click_to_remove_character_from_game));
-						builder.setNegativeButton(
-								getResources().getString(R.string.no),
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-
-									}
-								});
-						builder.setPositiveButton(
-								getResources().getString(R.string.yes),
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										// remove picked character from the new
-										// game
-										curGame.removeCharacter(curGameCharacter);
-										pickedCharacterGridAdapter
-												.notifyDataSetChanged();
-
-										// remove highlighting
-										ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) expandableListAdapter.adapter).selectedCharacters;
-										if (selectedCharacters
-												.contains(curGameCharacter)) {
-											selectedCharacters
-													.remove(curGameCharacter);
-											expandableListAdapter.adapter
-													.notifyDataSetChanged();
-										}
-									}
-								});
-						builder.create().show();
-						return true;
-					}
-				});
+		// pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
+		// getActivity(), R.layout.itemlayout_grid_picked_character,
+		// curGame);
+		//
+		// pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
+		//
+		// pickedCharacterGridView
+		// .setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> adapterView,
+		// View view, int position, long id) {
+		// curCharacter = (GameCharacter) adapterView
+		// .getItemAtPosition(position);
+		//
+		// Toast.makeText(
+		// getActivity(),
+		// ((TextView) view
+		// .findViewById(R.id.textItemTitle))
+		// .getText(), Toast.LENGTH_SHORT).show();
+		// // TODO do something
+		// }
+		// });
+		//
+		// pickedCharacterGridView
+		// .setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+		// {
+		// @Override
+		// public boolean onItemLongClick(AdapterView<?> adapterView,
+		// View view, final int position, long id) {
+		//
+		// final GameCharacter curGameCharacter = (GameCharacter) adapterView
+		// .getItemAtPosition(position);
+		//
+		// AlertDialog.Builder builder = new AlertDialog.Builder(
+		// getActivity());
+		// builder.setTitle(getResources().getString(
+		// R.string.text_remove_character_from_game));
+		// builder.setMessage(getResources()
+		// .getString(
+		// R.string.text_click_to_remove_character_from_game));
+		// builder.setNegativeButton(
+		// getResources().getString(R.string.no),
+		// new DialogInterface.OnClickListener() {
+		// @Override
+		// public void onClick(DialogInterface dialog,
+		// int which) {
+		//
+		// }
+		// });
+		// builder.setPositiveButton(
+		// getResources().getString(R.string.yes),
+		// new DialogInterface.OnClickListener() {
+		// @Override
+		// public void onClick(DialogInterface dialog,
+		// int which) {
+		// // remove picked character from the new
+		// // game
+		// curGame.removeCharacter(curGameCharacter);
+		// pickedCharacterGridAdapter
+		// .notifyDataSetChanged();
+		//
+		// // // remove highlighting
+		// // ArrayList<GameCharacter>
+		// // selectedCharacters =
+		// // ((CharacterGridAdapter)
+		// // expandableListAdapter.adapter).selectedCharacters;
+		// // if (selectedCharacters
+		// // .contains(curGameCharacter)) {
+		// // selectedCharacters
+		// // .remove(curGameCharacter);
+		// // }
+		// }
+		// });
+		// builder.create().show();
+		// return true;
+		// }
+		// });
 
 		gameName.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence c, int start, int before,
 					int count) {
-				// TODO speichern in objekt
+				// save
 				curGame.setGameName(c.toString());
-
+				mCallbacks.onGameNamePass(c.toString());
 			}
 
 			public void beforeTextChanged(CharSequence c, int start, int count,
@@ -225,66 +210,6 @@ public class CreateNewGameFragment extends Fragment {
 			}
 
 		});
-
-//		createGameButton = (Button) view.findViewById(R.id.buttonCreateGame);
-//		createGameButton.setOnClickListener(new OnClickListener() {
-//			@SuppressLint("SimpleDateFormat")
-//			@Override
-//			public void onClick(View v) {
-//
-//				if (gameName.getEditableText().toString().equals("")) {
-//					Toast.makeText(
-//							getActivity(),
-//							getResources().getString(
-//									R.string.warning_set_gamename),
-//							Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//
-//				Toast.makeText(
-//						getActivity(),
-//						getActivity().getResources().getString(
-//								R.string.warning_set_gamename)
-//								+ " "
-//								+ gameName.getEditableText().toString()
-//								+ " "
-//								+ getActivity().getResources().getString(
-//										R.string.warning_set_gamename),
-//						Toast.LENGTH_SHORT).show();
-//
-//				// now it goes to GameDetailsFragment
-//				// Save and start GameDetailsActivity
-//
-//				try {
-//					if (curGame.getDate() == null) {
-//						// set creation date
-//						final SimpleDateFormat format = new SimpleDateFormat(
-//								"dd.MM.yyyy");
-//						final Date date = new Date();
-//						curGame.setDate(format.format(date));
-//					}
-//					// save game
-//					JacksonInterface.saveGame(curGame, getActivity());
-//					// check if we are editing a game
-//					if (getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
-//						// if so we were already in the details fragment-> just
-//						// go back
-//						getActivity().onBackPressed();
-//					} else {
-//						// if not we want to got to the details fragment ->
-//						// start it
-//						Intent i = new Intent(getActivity(),
-//								GameDetailsActivity.class);
-//						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-//								curGame.getGameName());
-//						startActivity(i);
-//					}
-//
-//				} catch (Throwable e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.select_dialog_item, getResources()
@@ -333,16 +258,6 @@ public class CreateNewGameFragment extends Fragment {
 		});
 
 		final AlertDialog dialog = builder.create();
-
-		// FIXME remove, just one simple test
-		// String path1 =
-		// "/storage/emulated/0/Pictures/Paper Pictures/PaperArtist_2014-02-25_18-16-51.jpeg";
-		// Bitmap bitmap1 = BitmapFactory.decodeFile(path1);
-		// addImageButton.setImageBitmap(bitmap1);
-
-		// String path1 = "/storage/emulated/0/tmp_avatar_1407747931597.jpg";
-		// Bitmap bitmap1 = BitmapFactory.decodeFile(path1);
-		// addImageButton.setImageBitmap(bitmap1);
 
 		addImageButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -582,4 +497,25 @@ public class CreateNewGameFragment extends Fragment {
 			return null;
 	}
 
+	/**
+	 * Required interface for hosting activities.
+	 */
+	// have to pass to activity curGame and gameName
+	public interface CallbacksCreateNewGame {
+		public void onGameNamePass(String gameName);
+
+		public void onGamePass(Game curGame);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mCallbacks = (CallbacksCreateNewGame) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mCallbacks = null;
+	}
 }

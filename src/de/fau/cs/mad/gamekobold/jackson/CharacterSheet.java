@@ -13,7 +13,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{	
+import de.fau.cs.mad.gamekobold.templatebrowser.Template;
+
+public class CharacterSheet implements Parcelable, Comparable<CharacterSheet> {
 	/* METADATA */
 	private String name;
 	private int level;
@@ -23,6 +25,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	private long fileTimeStamp;
 	private String fileLastUpdated;
 	private String iconPath;
+	private Template template;
 
 	/* ROOT_TABLE */
 	private ContainerTable rootTable = null;
@@ -38,7 +41,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	}
 
 	public CharacterSheet(String name) {
-		this.name = name;		
+		this.name = name;
 		this.level = 0;
 		this.description = "";
 		this.fileAbsolutePath = "";
@@ -47,11 +50,8 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		this.iconPath = "";
 	}
 
-	public CharacterSheet(String name,
-							int level,
-							int color,
-							String description,
-							ContainerTable table) {
+	public CharacterSheet(String name, int level, int color,
+			String description, ContainerTable table) {
 		this.name = name;
 		this.level = level;
 		this.color = color;
@@ -102,7 +102,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	public int getColor() {
 		return color;
 	}
-	
+
 	@JsonProperty("clr")
 	public void setColor(int color) {
 		this.color = color;
@@ -127,7 +127,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	}
 
 	public ContainerTable getRootTable() {
-		if(rootTable == null) {
+		if (rootTable == null) {
 			rootTable = new ContainerTable();
 			rootTable.tableName = "rootTable";
 		}
@@ -140,13 +140,15 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 	}
 
 	/**
-	 * @param withPrettyWriter If true the writer will indent the output.
+	 * @param withPrettyWriter
+	 *            If true the writer will indent the output.
 	 * @return Json representation of this CharacterSheet.
 	 * @throws JsonProcessingException
 	 */
-	public String toJSON(boolean withPrettyWriter) throws JsonProcessingException {
+	public String toJSON(boolean withPrettyWriter)
+			throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
-		if(withPrettyWriter) {
+		if (withPrettyWriter) {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
 		return mapper.writer().writeValueAsString(this);
@@ -158,11 +160,11 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		description = otherSheet.description;
 		level = otherSheet.level;
 	}
-	
+
 	public String getFileLastUpdated() {
 		return fileLastUpdated;
 	}
-	
+
 	@JsonProperty("lastUpd")
 	public void setFileLastUpdated(String fileLastUpdated) {
 		this.fileLastUpdated = fileLastUpdated;
@@ -190,7 +192,7 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 		public CharacterSheet[] newArray(int size) {
 			return new CharacterSheet[size];
 		}
-		
+
 		@Override
 		public CharacterSheet createFromParcel(Parcel source) {
 			// IMPORTANT read in same order as written (FIFO)
@@ -205,21 +207,32 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>{
 			return sheet;
 		}
 	};
+
 	// PARCELABLE END
 
 	/**
-	 * Used for sorting with {@link Collections#sort(List)}.
-	 * Sorts by {@link #getFileLastUpdated()}. Newest first oldest last.
+	 * Used for sorting with {@link Collections#sort(List)}. Sorts by
+	 * {@link #getFileLastUpdated()}. Newest first oldest last.
 	 */
 	@Override
 	public int compareTo(CharacterSheet another) {
-		final int res = this.fileLastUpdated.compareToIgnoreCase(another.fileLastUpdated);
-		if(res == 0){
+		final int res = this.fileLastUpdated
+				.compareToIgnoreCase(another.fileLastUpdated);
+		if (res == 0) {
 			return 0;
 		}
-		if(res < 0) {
+		if (res < 0) {
 			return 1;
 		}
 		return -1;
+	}
+
+	public void setTemplate(Template template) {
+		this.template = template;
+	}
+
+	@JsonIgnore
+	public Template getTemplate() {
+		return template;
 	}
 }
