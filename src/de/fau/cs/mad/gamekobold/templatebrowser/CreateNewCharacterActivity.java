@@ -31,6 +31,9 @@ import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
+import de.fau.cs.mad.gamekobold.game.CharacterGridAdapter;
+import de.fau.cs.mad.gamekobold.game.ExpandableListArrayAdapter;
+import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
@@ -47,7 +50,8 @@ public class CreateNewCharacterActivity extends Activity implements
 	private String templateFileName;
 	private boolean characterAltered;
 	private File characterDirectoryFile;
-
+	private de.fau.cs.mad.gamekobold.templatebrowser.Template curTemplate;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,6 +74,7 @@ public class CreateNewCharacterActivity extends Activity implements
 		final Bundle extras = intent.getExtras();
 		if (extras != null) {
 			templateFileName = (String) extras.getString("templateFileName");
+			curTemplate = (de.fau.cs.mad.gamekobold.templatebrowser.Template) extras.getSerializable("template");
 			// create new sheet
 			try {
 				final Template template = JacksonInterface.loadTemplate(this,
@@ -251,7 +256,7 @@ public class CreateNewCharacterActivity extends Activity implements
 			}
 		});
 	}
-
+	
 	@Override
 	public void onPause() {
 		saveCharacterSheet();
@@ -265,7 +270,7 @@ public class CreateNewCharacterActivity extends Activity implements
 		if (sheet != null && characterAltered) {
 			if (!sheet.getName().isEmpty()) {
 				Log.d("Trying to save sheet", "name not empty!");
-				
+							
 				if (sheet.getFileAbsolutePath().isEmpty()) {
 					Log.d("Trying to save sheet", "path is empty");
 					// create file
@@ -292,6 +297,7 @@ public class CreateNewCharacterActivity extends Activity implements
 					// open file
 					final File jsonFile = new File(sheet.getFileAbsolutePath());
 					JacksonInterface.saveCharacterSheet(sheet, jsonFile);
+					curTemplate.addCharacter(sheet);
 					// clear flag
 					characterAltered = false;
 				} catch (Throwable e) {

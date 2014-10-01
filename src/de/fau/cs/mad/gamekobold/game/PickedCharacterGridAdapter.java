@@ -13,13 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
+public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 	Context context;
 
 	// the list of objects we want to display
-	private List<GameCharacter> characters;
+	private List<CharacterSheet> characters;
 	private int layoutID;
 	private Game curGame;
 
@@ -34,9 +35,9 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 	}
 
 	public PickedCharacterGridAdapter(Context context, int layoutID, Game game) {
-		super(context, layoutID, game.getCharacterList());
+		super(context, layoutID, game.getCharacterSheetList());
 		this.context = context;
-		this.characters = game.getCharacterList();
+		this.characters = game.getCharacterSheetList();
 		this.layoutID = layoutID;
 		this.curGame = game;
 
@@ -47,7 +48,7 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 
 		Log.e("Position in getView picked", "" + position);
 
-		characters = curGame.getCharacterList();
+		characters = curGame.getCharacterSheetList();
 
 		Log.e("Size of character list", "" + characters.size());
 		Bitmap bitmap = null;
@@ -60,19 +61,19 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 		if (convertView == null) {
 
 			int i = 0;
-			for (GameCharacter g : characters) {
+			for (CharacterSheet g : characters) {
 				i++;
 				Log.e("PickedCharcterAdapter-first use",
-						i + " - " + g.getCharacterName());
+						i + " - " + g.getName());
 			}
 
 			convertView = inflater.inflate(layoutID, parent, false);
 
-			GameCharacter curCharacter = characters.get(position);
+			CharacterSheet curCharacter = characters.get(position);
 
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
-			characterName.setText(curCharacter.getCharacterName());
+			characterName.setText(curCharacter.getName());
 			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 
@@ -89,18 +90,18 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<GameCharacter> {
 		// or reuse
 		// TODO check!!!!
 		else {
-			characters = curGame.getCharacterList();
+			characters = curGame.getCharacterSheetList();
 			int i = 0;
-			for (GameCharacter g : curGame.getCharacterList()) {
+			for (CharacterSheet g : curGame.getCharacterSheetList()) {
 				i++;
 				Log.e("PickedCharcterAdapter-reuse",
-						i + " - " + g.getCharacterName());
+						i + " - " + g.getName());
 			}
-			GameCharacter curCharacter = characters.get(position);
+			CharacterSheet curCharacter = characters.get(position);
 
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
-			characterName.setText(curCharacter.getCharacterName());
+			characterName.setText(curCharacter.getName());
 			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 

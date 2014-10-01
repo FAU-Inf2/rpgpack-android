@@ -47,7 +47,7 @@ public class GameDetailsFragment extends Fragment {
 
 	private Game game;
 	private Template template;
-	private GameCharacter curCharacter;
+	private CharacterSheet curCharacter;
 
 	private TextView gameName;
 	private TextView date;
@@ -110,7 +110,7 @@ public class GameDetailsFragment extends Fragment {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 
-				curCharacter = (GameCharacter) adapterView
+				curCharacter = (CharacterSheet) adapterView
 						.getItemAtPosition(position);
 
 				Toast.makeText(
@@ -120,8 +120,8 @@ public class GameDetailsFragment extends Fragment {
 
 				// Start CharacterPlayActivity
 
-				File jsonFile = new File(curCharacter.getFileAbsPath());
-				curCharacter.getFileAbsPath();
+				File jsonFile = new File(curCharacter.getFileAbsolutePath());
+				curCharacter.getFileAbsolutePath();
 
 				try {
 					CharacterSheet sheet = JacksonInterface.loadCharacterSheet(
@@ -147,7 +147,7 @@ public class GameDetailsFragment extends Fragment {
 							View view, final int position, long id) {
 						Log.d("LONG CLICK", "pos:" + position);
 
-						final GameCharacter curGameCharacter = (GameCharacter) adapterView
+						final CharacterSheet curGameCharacter = (CharacterSheet) adapterView
 								.getItemAtPosition(position);
 
 						AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -173,7 +173,7 @@ public class GameDetailsFragment extends Fragment {
 											int which) {
 										// remove picked character from the
 										// current game
-										game.removeCharacter(curGameCharacter);
+										game.removeCharacterSheet(curGameCharacter);
 										gameDetailsCharacterGridAdapter
 												.notifyDataSetChanged();
 									}
@@ -207,7 +207,6 @@ public class GameDetailsFragment extends Fragment {
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
 				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
-
 				startActivity(i);
 			}
 		});
@@ -229,9 +228,9 @@ public class GameDetailsFragment extends Fragment {
 				CharacterSheet sheets[] = new CharacterSheet[gameDetailsCharacterGridAdapter
 						.getCount()];
 				int index = 0;
-				for (GameCharacter oneChar : gameDetailsCharacterGridAdapter
+				for (CharacterSheet oneChar : gameDetailsCharacterGridAdapter
 						.getItems()) {
-					File jsonFile = new File(oneChar.getFileAbsPath());
+					File jsonFile = new File(oneChar.getFileAbsolutePath());
 					try {
 						CharacterSheet sheet = JacksonInterface
 								.loadCharacterSheet(jsonFile, false);
@@ -309,6 +308,8 @@ public class GameDetailsFragment extends Fragment {
 			return curCharacter.getTemplate().fileAbsolutePath
 					.substring(lastSlashPos + 1);
 		}
-
 	}
+	
+	
+	
 }

@@ -59,7 +59,7 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 
 		gName.setText(curGame.getGameName());
 		gDate.setText(curGame.getDate());
-		gCounter.setText(String.valueOf(curGame.getCharacterList().size()));
+		gCounter.setText(String.valueOf(curGame.getCharacterSheetList().size()));
 
 		Log.d("getIconPath is null?", ""
 				+ (curGame.getIconPath() == null));

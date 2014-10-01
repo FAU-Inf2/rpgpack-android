@@ -1,7 +1,9 @@
 package de.fau.cs.mad.gamekobold;
 
 import de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity;
+import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserFragment;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameActivity;
+import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment;
 import de.fau.cs.mad.gamekobold.game.GameBrowserActivity;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
 import android.content.Intent;
@@ -62,6 +64,7 @@ public class GameMenu extends AbstractThreeButtonMenu {
 	protected void button1Action() {
 		// Start create new game activity
 		Intent i = new Intent(GameMenu.this, CreateNewGameActivity.class);
+		i.putExtra(CharacterBrowserFragment.EXTRA_MODE_GAME_CREATION, true);
 		startActivity(i);
 	}
 
