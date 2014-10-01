@@ -97,7 +97,6 @@ public class GameDetailsFragment extends Fragment {
 		infoButton = (Button) view.findViewById(R.id.buttonGameInfoPopup);
 		gameCharacterGridView = (GridView) view
 				.findViewById(R.id.gridViewCharacters);
-
 		gameName.setText(game.getGameName());
 		date.setText(game.getDate());
 

@@ -127,8 +127,8 @@
     <string name="go_back">Zurück</string>
     <string name="new_element">&#8230;</string>
     <string name="headline">Überschrift</string>
-    <string name="headline1">Überschrift 1</string>
-    <string name="headline2">Überschrift 2</string>
+    <string name="headline1">Name</string>
+    <string name="headline2">Beschreibung</string>
     <string name="blank"> - </string>
     <string name="number">Nr.</string>
     <string name="column_name">Spaltenname</string>

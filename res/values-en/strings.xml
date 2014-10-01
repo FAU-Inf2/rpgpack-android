@@ -100,11 +100,11 @@
 
     <!-- CreateNewTemplate -->
     <string name="text_create_template">Create Template</string>
-    <string name="hint_template_name">Tamplate Name&#8230;</string>
+    <string name="hint_template_name">Template Name&#8230;</string>
     <string name="text_add_icon">Add Icon</string>
     <string name="hint_world_name">World Name&#8230;</string>
     <string name="toast_create_template_now">Now create a new Template!</string>
-    <string name="toast_edit_template_now">Now edit your template!</string>
+    <string name="toast_edit_template_now">Now edit your Template!</string>
     <string name="msg_template_file_already_exists">A template already exists with the same file name.</string>
     <string name="msg_yes_to_overwrite_no_to_edit">Click YES to overwrite the file or NO to edit your name.</string>
 
@@ -127,8 +127,8 @@
     <string name="go_back">Back</string>
     <string name="new_element">&#8230;</string>
     <string name="headline">Headline</string>
-    <string name="headline1">Headline 1</string>
-    <string name="headline2">Headline 2</string>
+    <string name="headline1">Name</string>
+    <string name="headline2">Description</string>
     <string name="blank"> - </string>
     <string name="number">Nr.</string>
     <string name="column_name">Column Name</string>
@@ -148,7 +148,7 @@
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Do you really want to leave the Template Generator?</string>
-    <string name="yes_and_trash">Yes and Trash</string>
+    <string name="yes_and_trash">Yes and Foget</string>
     <string name="yes_and_save">"Yes and Save"</string>
 
     <!-- activity_template_details -->

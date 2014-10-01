@@ -22,6 +22,7 @@ import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.game.Game;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.game.GameLab;
+import de.fau.cs.mad.gamekobold.game.PickedCharacterGridAdapter;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
@@ -31,7 +32,6 @@ public class CharacterBrowserFragment extends ListFragment {
 	private CharacterBrowserArrayAdapter adapter = null;
 	private List<CharacterSheet> characters;
 	private boolean mode_pickCharacterForGameCreation = false;
-
 	private CallbacksCharBrowser mCallbacks;
 
 	/**
@@ -78,7 +78,9 @@ public class CharacterBrowserFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
 
+		
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
@@ -88,6 +90,7 @@ public class CharacterBrowserFragment extends ListFragment {
 
 				if (mode_pickCharacterForGameCreation) {
 					// TODO change color and add to the pickedCharacterGrid
+
 					RelativeLayout selRow = (RelativeLayout) view
 							.findViewById(R.id.relativeLayout);
 					int color = Color.TRANSPARENT;

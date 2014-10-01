@@ -39,6 +39,7 @@ import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserArrayAdapter;
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
@@ -60,7 +61,7 @@ public class CreateNewGameFragment extends Fragment {
 	private Button createGameButton;
 	private ImageButton addImageButton;
 	private ListView characterList;
-	private GameCharacter curCharacter;
+	private CharacterSheet curCharacter;
 	private Button infoButton;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
 
@@ -114,83 +115,82 @@ public class CreateNewGameFragment extends Fragment {
 			getActivity().setTitle(curGame.getGameName());
 		}
 
-		// pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
-		// getActivity(), R.layout.itemlayout_grid_picked_character,
-		// curGame);
-		//
-		// pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-		//
-		// pickedCharacterGridView
-		// .setOnItemClickListener(new OnItemClickListener() {
-		// @Override
-		// public void onItemClick(AdapterView<?> adapterView,
-		// View view, int position, long id) {
-		// curCharacter = (GameCharacter) adapterView
-		// .getItemAtPosition(position);
-		//
-		// Toast.makeText(
-		// getActivity(),
-		// ((TextView) view
-		// .findViewById(R.id.textItemTitle))
-		// .getText(), Toast.LENGTH_SHORT).show();
-		// // TODO do something
-		// }
-		// });
-		//
-		// pickedCharacterGridView
-		// .setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
-		// {
-		// @Override
-		// public boolean onItemLongClick(AdapterView<?> adapterView,
-		// View view, final int position, long id) {
-		//
-		// final GameCharacter curGameCharacter = (GameCharacter) adapterView
-		// .getItemAtPosition(position);
-		//
-		// AlertDialog.Builder builder = new AlertDialog.Builder(
-		// getActivity());
-		// builder.setTitle(getResources().getString(
-		// R.string.text_remove_character_from_game));
-		// builder.setMessage(getResources()
-		// .getString(
-		// R.string.text_click_to_remove_character_from_game));
-		// builder.setNegativeButton(
-		// getResources().getString(R.string.no),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		//
-		// }
-		// });
-		// builder.setPositiveButton(
-		// getResources().getString(R.string.yes),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// // remove picked character from the new
-		// // game
-		// curGame.removeCharacter(curGameCharacter);
-		// pickedCharacterGridAdapter
-		// .notifyDataSetChanged();
-		//
-		// // // remove highlighting
-		// // ArrayList<GameCharacter>
-		// // selectedCharacters =
-		// // ((CharacterGridAdapter)
-		// // expandableListAdapter.adapter).selectedCharacters;
-		// // if (selectedCharacters
-		// // .contains(curGameCharacter)) {
-		// // selectedCharacters
-		// // .remove(curGameCharacter);
-		// // }
-		// }
-		// });
-		// builder.create().show();
-		// return true;
-		// }
-		// });
+		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
+				getActivity(), R.layout.itemlayout_grid_picked_character,
+				curGame);
+
+		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
+
+		pickedCharacterGridView
+				.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> adapterView,
+							View view, int position, long id) {
+						curCharacter = (CharacterSheet) adapterView
+								.getItemAtPosition(position);
+
+						Toast.makeText(
+								getActivity(),
+								((TextView) view
+										.findViewById(R.id.textItemTitle))
+										.getText(), Toast.LENGTH_SHORT).show();
+						// TODO do something
+					}
+				});
+
+		pickedCharacterGridView
+				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> adapterView,
+							View view, final int position, long id) {
+
+						final CharacterSheet curGameCharacter = (CharacterSheet) adapterView
+								.getItemAtPosition(position);
+
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setTitle(getResources().getString(
+								R.string.text_remove_character_from_game));
+						builder.setMessage(getResources()
+								.getString(
+										R.string.text_click_to_remove_character_from_game));
+						builder.setNegativeButton(
+								getResources().getString(R.string.no),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+									}
+								});
+						builder.setPositiveButton(
+								getResources().getString(R.string.yes),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										// remove picked character from the new
+										// game
+										curGame.removeCharacterSheet(curGameCharacter);
+										pickedCharacterGridAdapter
+												.notifyDataSetChanged();
+
+										// // remove highlighting
+										// ArrayList<GameCharacter>
+										// selectedCharacters =
+										// ((CharacterGridAdapter)
+										// expandableListAdapter.adapter).selectedCharacters;
+										// if (selectedCharacters
+										// .contains(curGameCharacter)) {
+										// selectedCharacters
+										// .remove(curGameCharacter);
+										// }
+									}
+								});
+						builder.create().show();
+						return true;
+					}
+				});
 
 		gameName.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence c, int start, int before,
