@@ -114,10 +114,10 @@ public class MatrixFragment extends GeneralFragment {
 				public void onItemClick(AdapterView<?> adapterView, View view,
 						int position, long id) {
 
-					Toast.makeText(
-							getActivity(),
-							((TextView) view.findViewById(R.id.textItemTitle))
-									.getText(), Toast.LENGTH_SHORT).show();
+//					Toast.makeText(
+//							getActivity(),
+//							((TextView) view.findViewById(R.id.textItemTitle))
+//									.getText(), Toast.LENGTH_SHORT).show();
 
 					// is it last item?
 					if (position == adapterCreateTemplate.getCount() - 1) {
@@ -230,11 +230,11 @@ public class MatrixFragment extends GeneralFragment {
 					public void onItemClick(AdapterView<?> adapterView,
 							View view, int position, long id) {
 
-						Toast.makeText(
-								getActivity(),
-								((TextView) view
-										.findViewById(R.id.textItemTitle))
-										.getText(), Toast.LENGTH_SHORT).show();
+//						Toast.makeText(
+//								getActivity(),
+//								((TextView) view
+//										.findViewById(R.id.textItemTitle))
+//										.getText(), Toast.LENGTH_SHORT).show();
 
 						// is it last item?
 						if (position == adapterCreateTemplate.getCount() - 1) {
@@ -410,8 +410,8 @@ public class MatrixFragment extends GeneralFragment {
 						R.layout.character_edit_matrix_view, new LinearLayout(
 								getActivity()), false);
 
-				Toast.makeText(getActivity(), "CHARACTER GENERATOR!",
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "CHARACTER GENERATOR!",
+//						Toast.LENGTH_SHORT).show();
 
 				gridView = (GridView) rootView.findViewById(R.id.gridView);
 				// check needed for jackson data loading
@@ -541,8 +541,8 @@ public class MatrixFragment extends GeneralFragment {
 				rootView = (FrameLayout) inflater.inflate(
 						R.layout.character_play_matrix_view, new LinearLayout(
 								getActivity()), false);
-				Toast.makeText(getActivity(), "CHARACTER PLAY!",
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "CHARACTER PLAY!",
+//						Toast.LENGTH_SHORT).show();
 
 				gridView = (GridView) rootView.findViewById(R.id.gridViewM);
 				// check needed for jackson data loading
