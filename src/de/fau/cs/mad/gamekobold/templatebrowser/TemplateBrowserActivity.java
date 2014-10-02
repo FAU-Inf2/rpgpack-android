@@ -334,8 +334,7 @@ public class TemplateBrowserActivity extends ListActivity {
 		return false;
 	}
 
-	public class TemplateListUpdaterTask extends
-			AsyncTaskWithProgressDialog<Void, Void, Void> {
+	public class TemplateListUpdaterTask extends AsyncTaskWithProgressDialog<Void, Void, Boolean> {
 		private Context context;
 
 		public TemplateListUpdaterTask(Context context) {
@@ -389,7 +388,8 @@ public class TemplateBrowserActivity extends ListActivity {
 			}
 			return templateListChanged;
 		}
-
+		
+		@Override
 		protected void onPostExecute(Boolean listChanged) {
 			// if a template changed
 			if (listChanged) {

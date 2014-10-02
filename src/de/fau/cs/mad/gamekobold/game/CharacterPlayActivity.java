@@ -91,7 +91,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 					table.addTable(new FavoriteTable("Favorites"));
 				}
 				
-				//hier muss noch ein Eintrag für favoriten rein!
+				//hier muss noch ein Eintrag fuer favoriten rein!
 				
 				
 				// TODO ate create new Table type - Favorite! and add it for
