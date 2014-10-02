@@ -360,6 +360,9 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 	private static class TemplateTagsDialogFragment extends DialogFragment {
 		public CreateNewTemplateActivity createNewTemplateActivity;
 		private Template myTemplate;
+		
+		public TemplateTagsDialogFragment() {
+		}
 
 		public static TemplateTagsDialogFragment newInstance(
 				CreateNewTemplateActivity createNewTemplateActivity,
