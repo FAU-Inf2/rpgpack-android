@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.content.Context;
@@ -12,10 +13,11 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 /**
- * This class handles matrix elements we want to display on template creation.
+ * This class handles matrix elements we want to display on template creation / or on template editing.
  * 
  */
-public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
+public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
+		Serializable {
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -149,6 +151,16 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 						.findViewById(R.id.textModificator);
 
 				MatrixItem curItem = items.get(position);
+				
+				Log.d("MatrixViewArrayAdapter items size?", ""
+						+ items.size());
+				
+				Log.d("MatrixViewArrayAdapter curItem is null?", ""
+						+ (curItem == null));
+				
+				Log.d("MatrixViewArrayAdapter curItem NAME", ""
+						+ curItem.getItemName());
+				
 				itemName.setText(curItem.getItemName());
 				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
 						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
@@ -166,6 +178,14 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> {
 					itemModificator.setText(curItem.getModificator());
 					// // set modificator text color: blue for positive red for
 					// // negative
+					
+					Log.d("MatrixViewArrayAdapter curItem is null?", ""
+							+ (curItem == null));
+					Log.d("MatrixViewArrayAdapter curItem.getModificator is null?", ""
+							+ (curItem.getModificator() == null));
+					Log.d("MatrixViewArrayAdapter curItem.getModificator is empty?", ""
+							+ (curItem.getModificator() == ""));
+					
 					if (!curItem.getModificator().isEmpty()) {
 
 						if (Integer.valueOf(curItem.getModificator()) > 0) {

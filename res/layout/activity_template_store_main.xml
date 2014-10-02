@@ -37,14 +37,7 @@
     android:background="@android:color/darker_gray"/>
     
 
-    <Button
-        android:id="@+id/buttonImport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/separator"
-        android:onClick="importTemplate"
-        android:text="@string/buttonImport" />
+
 
     
     <ListView

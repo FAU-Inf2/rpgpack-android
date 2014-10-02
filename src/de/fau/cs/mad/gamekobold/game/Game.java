@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import android.util.Log;
 
 /**
@@ -21,18 +22,21 @@ public class Game implements Serializable {
 	private String date = null;
 	private List<String> tagList;
 	private String description;
-	private List<GameCharacter> characterList;
+//	private List<GameCharacter> characterList;
+	private List<CharacterSheet> characterSheetList;
+
 	private String iconPath;
 	private String fileAbsolutePath;
 	private long fileTimeStamp;
 
 	public Game(String gameName, String author, String date,
 			List<String> tagList, String description,
-			List<GameCharacter> characterList, String iconPath) {
+			List<CharacterSheet> characterSheetList, String iconPath) {
 		this(gameName, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-		this.setCharakterList(characterList);
+//		this.setCharakterList(characterList);
+		this.setCharacterSheetList(characterSheetList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 	}
@@ -66,24 +70,37 @@ public class Game implements Serializable {
 		this.date = "";
 		this.tagList = new LinkedList<String>();
 		this.description = "";
-		this.characterList = new ArrayList<GameCharacter>();
+//		this.characterList = new ArrayList<GameCharacter>();
+		this.characterSheetList = new ArrayList<CharacterSheet>();
 		this.iconPath = "";
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 	}
 
-	public boolean addCharacter(GameCharacter character) {
-		Log.e("Character is null?", "" + (character == null));
-		Log.e("List is null?", "" + (characterList == null));
-		characterList.add(character);
+	public boolean addCharacterSheet(CharacterSheet characterSheet) {
+		Log.e("Character is null?", "" + (characterSheet == null));
+		Log.e("List is null?", "" + (characterSheetList == null));
+		characterSheetList.add(characterSheet);
 		return true;
 	}
 
-	public boolean removeCharacter(GameCharacter character) {
-		characterList.remove(character);
+	public boolean removeCharacterSheet(CharacterSheet characterSheet) {
+		characterSheetList.remove(characterSheet);
 		return true;
 	}
 
+//	public boolean addCharacter(GameCharacter character) {
+//		Log.e("Character is null?", "" + (character == null));
+//		Log.e("List is null?", "" + (characterList == null));
+//		characterList.add(character);
+//		return true;
+//	}
+//
+//	public boolean removeCharacter(GameCharacter character) {
+//		characterList.remove(character);
+//		return true;
+//	}
+	
 	public String getGameName() {
 		return gameName;
 	}
@@ -132,19 +149,32 @@ public class Game implements Serializable {
 		this.description = description;
 	}
 
-	public List<GameCharacter> getCharacterList() {
-		return characterList;
+//	public List<GameCharacter> getCharacterList() {
+//		return characterList;
+//	}
+//
+//	@JsonProperty("characters")
+//	public void setCharakterList(List<GameCharacter> characterList) {
+//		Log.e("CharacterList",
+//				"Setting CharacterList to " + characterList.size());
+//		this.characterList.clear();
+//		this.characterList.addAll(characterList);
+//		return;
+//	}
+	
+	public List<CharacterSheet> getCharacterSheetList() {
+		return characterSheetList;
 	}
-
+	
 	@JsonProperty("characters")
-	public void setCharakterList(List<GameCharacter> characterList) {
-		Log.e("CharacterList",
-				"Setting CharacterList to " + characterList.size());
-		this.characterList.clear();
-		this.characterList.addAll(characterList);
+	public void setCharacterSheetList(List<CharacterSheet> characterSheetList) {
+		Log.e("characterSheetList",
+				"Setting characterSheetList to " + characterSheetList.size());
+		this.characterSheetList.clear();
+		this.characterSheetList.addAll(characterSheetList);
 		return;
 	}
-
+	
 	public String getIconPath() {
 		return iconPath;
 	}
@@ -178,9 +208,13 @@ public class Game implements Serializable {
 		this.date = otherGame.date;
 		this.tagList = otherGame.tagList;
 		this.description = otherGame.description;
-		this.characterList = otherGame.characterList;
+//		this.characterList = otherGame.characterList;
+		this.characterSheetList = otherGame.characterSheetList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
 		this.fileTimeStamp = otherGame.fileTimeStamp;
 		this.iconPath = otherGame.iconPath;
 	}
+	
+
+
 }

@@ -117,7 +117,7 @@ public class TemplateLab {
 					}
 				}
 				// fake item to create New Character from template
-				GameCharacter createNewCharacter = new GameCharacter("+");
+				CharacterSheet createNewCharacter = new CharacterSheet("+");
 				for (Template t : templates) {
 					t.addCharacter(createNewCharacter);
 				}
@@ -142,12 +142,14 @@ public class TemplateLab {
 								.loadTemplate(templateFile, true);
 						if (loadedTemplate != null) {
 							// take over changes
-							template.setTemplateName(loadedTemplate.getTemplateName());
+							template.setTemplateName(loadedTemplate
+									.getTemplateName());
 							template.setWorldName(loadedTemplate.getGameName());
 							template.setAuthor(loadedTemplate.getAuthor());
 							template.setDate(loadedTemplate.getDate());
-//							template.setIconID(loadedTemplate.getIconID());
-							template.setDescription(loadedTemplate.getDescription());
+							// template.setIconID(loadedTemplate.getIconID());
+							template.setDescription(loadedTemplate
+									.getDescription());
 							template.setTagString(loadedTemplate.getTagString());
 							// update time stamp
 							template.setFileTimeStamp(templateFile
@@ -181,61 +183,19 @@ public class TemplateLab {
 				try {
 					final CharacterSheet sheet = JacksonInterface
 							.loadCharacterSheet(characterFile, true);
-					final GameCharacter character = new GameCharacter("");
-					character.setCharacterName(sheet.getName());
-					character.setDescription(sheet.getDescription());
-					character.setTemplate(template);
-					character.setFileAbsPath(characterFile.getAbsolutePath());
-					character.setDate(sheet.getFileLastUpdated());
-					character.setIconPath(sheet.getIconPath());
-					template.addCharacter(character);
+					sheet.setTemplate(template);
+					// final CharacterSheet character = new CharacterSheet("");
+					// character.setCharacterName(sheet.getName());
+					// character.setDescription(sheet.getDescription());
+					// character.setTemplate(template);
+					// character.setFileAbsPath(characterFile.getAbsolutePath());
+					// character.setDate(sheet.getFileLastUpdated());
+					// character.setIconPath(sheet.getIconPath());
+					template.addCharacter(sheet);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-
-	// FIXME remove as not using
-	// private void addDefaultData() {
-	// Template template1 = new Template("My First Template",
-	// "Dungeons and Dragons", "Anna", "20.05.2014");
-	// Template template2 = new Template("The Best Template",
-	// "Vampire the Masquerade", "Anna", "24.05.2014");
-	// Template template3 = new Template("Schwarze Auge Template",
-	// "Das Schwarze Auge", "Anna", "21.03.2014");
-	// Template template4 = new Template("Annas Template",
-	// "Das Schwarze Auge", "Anna", "12.06.2014");
-	//
-	// GameCharacter character1t1 = new GameCharacter("Anna", "20.03.2014",
-	// template1);
-	// GameCharacter character2t1 = new GameCharacter("Bella", "22.04.2014",
-	// template1);
-	// GameCharacter character3t1 = new GameCharacter("Sisi", "23.05.2014",
-	// template1);
-	// GameCharacter character1t2 = new GameCharacter("Emma", "24.06.2014",
-	// template2);
-	// GameCharacter character2t2 = new GameCharacter("Nana", "25.07.2014",
-	// template2);
-	// GameCharacter character1t3 = new GameCharacter("Olly", "26.08.2014",
-	// template3);
-	// GameCharacter character1t4 = new GameCharacter("Hannah", "27.09.2014",
-	// template4);
-	// GameCharacter character2t4 = new GameCharacter("Meggy", "28.07.2014",
-	// template4);
-	//
-	// template1.addCharacter(character1t1);
-	// template1.addCharacter(character2t1);
-	// template1.addCharacter(character3t1);
-	// template2.addCharacter(character1t2);
-	// template2.addCharacter(character2t2);
-	// template3.addCharacter(character1t3);
-	// template4.addCharacter(character1t4);
-	// template4.addCharacter(character2t4);
-	//
-	// templates.add(template1);
-	// templates.add(template2);
-	// templates.add(template3);
-	// templates.add(template4);
-	// }
 }

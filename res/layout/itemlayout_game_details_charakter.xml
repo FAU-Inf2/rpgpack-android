@@ -9,27 +9,28 @@
         android:id="@+id/textItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/character_icon_circle"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="@string/name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <ImageView
         android:id="@+id/character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
         android:background="@drawable/shape_game_details_char_border"
         android:gravity="center"
-        android:maxWidth="80dip"
+        android:maxWidth="90dip"
         android:padding="18dp"
         android:scaleType="fitXY"
-        android:src="@drawable/game_default_white" />
+        android:src="@drawable/character_white" />
 
 </RelativeLayout>

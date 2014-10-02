@@ -25,8 +25,8 @@
     <dimen name="bg_tooltip_padding_top">4dp</dimen>
     <dimen name="bg_tooltip_pointer_padding_bottom">8dp</dimen>
     
-    <dimen name="game_toolbox_map_cellsize">32dp</dimen>
-    <dimen name="game_toolbox_map_cellsize_without_padding">30dp</dimen>
+    <dimen name="game_toolbox_map_cellsize">40dp</dimen>
+    <dimen name="game_toolbox_map_cellsize_without_padding">38dp</dimen>
     <dimen name="game_toolbox_map_cell_padding">1dp</dimen>
 
 </resources>

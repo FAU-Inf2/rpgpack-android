@@ -127,8 +127,8 @@
     <string name="go_back">Zurück</string>
     <string name="new_element">&#8230;</string>
     <string name="headline">Überschrift</string>
-    <string name="headline1">Überschrift 1</string>
-    <string name="headline2">Überschrift 2</string>
+    <string name="headline1">Name</string>
+    <string name="headline2">Beschreibung</string>
     <string name="blank"> - </string>
     <string name="number">Nr.</string>
     <string name="column_name">Spaltenname</string>
@@ -274,6 +274,7 @@
     <string name="map_rock">Stein</string>
     <string name="map_draw">zeichnen</string>
     <string name="map_add">+</string>
+    <string name="choose_image">Wähle ein Bild aus</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Liste mischen</string>
@@ -312,7 +313,7 @@
     <string name="titel_create_game">Neues Spiel</string>
     <string name="warning_set_gamename">Dein Spiel braucht einen Namen!</string>
     <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
-    <string name="msg_yes_to_delete_character">Klicke auf JA um den Charakter zu loeschen.</string>
+    <string name="msg_yes_to_delete_character">Der Charakter wird auch aus allen aktiven Spielen gelöscht. Klicke auf JA um den Charakter zu loeschen.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Wähle bitte einen Namen für Deinen Charakter!</string>
     <string name="create_new_game_last_item">Neues Spiel erstellen&#8230;</string>
@@ -358,7 +359,9 @@
 
     <!-- character_edit_matrix_view -->
 
-    <string name="hint_select_items">Wähle Attribute für Deinen Charakter!</string>
+    <string name="hint_select_items">Konfiguriere Deinen Charakter indem Du die passende Attribute auswählst oder neu erstellst!</string>
+    <string name="hint_edit_items">Konfiguriere Deinen Charakter indem Du die vorhandene Attribute editierst oder fehlende neu erstellst!</string>
+    <string name="hint_create_items">Erstelle hier die benötigten Attribute für Deine Vorlage!</string>
 
     <!-- activity_character_generator_welcome -->
     <string name="character_generator_welcome">Willkommen im Charakter-Generator! \n \n Um Deinen eigenen Charakter zu erstellen öffne einfach das Menü und wähle die Elemente, die Deinem Charakter zugeordnet sind!</string>

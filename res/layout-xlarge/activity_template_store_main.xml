@@ -7,7 +7,7 @@
     android:foreground="@drawable/shape_window_dim"
     tools:context="de.fau.cs.mad.gamekobold.TemplateStoreMainActivity" >
     
-<RelativeLayout
+ <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".TemplateStoreMainActivity" 
@@ -27,14 +27,7 @@
     </TextView>
 	
 
-        <Button
-        android:id="@+id/buttonImport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/separator"
-        android:onClick="importTemplate"
-        android:text="@string/buttonImport" />
+
 
     <View
     android:id="@+id/separator"

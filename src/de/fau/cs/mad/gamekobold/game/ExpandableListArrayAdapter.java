@@ -1,5 +1,6 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +71,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 					R.layout.rowlayout_expandablelist_character, null);
 		}
 
-	
 		// initialize values assigned to the items in the grid.
 		final int spacingDp = 10;
 		final int colWidthDp = 100;
@@ -88,15 +88,10 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		final int colCount = (int) Math
 				.floor((parent.getWidth() - (2 * SPACING))
 						/ (COL_WIDTH + SPACING));
-		
+
 		final int rowCount = (int) Math.ceil((templates.get(templatePosition)
 				.getCharacters().size() + 0d)
 				/ colCount);
-		Log.d("templates.get(templatePosition)getCharacters().size()", ""
-				+ templates.get(templatePosition).getCharacters().size());
-
-		Log.d("COL COUNT", "" + colCount);
-		Log.d("ROW COUNT", "" + rowCount);
 
 		// calculate the height for the current grid
 		final int GRID_HEIGHT = Math.round(rowCount * (ROW_HEIGHT + SPACING));
@@ -106,7 +101,6 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		// set the height of the current grid
 		gridView.getLayoutParams().height = GRID_HEIGHT;
 
-		// CharacterGridAdapter adapter;
 		if (this.adapterCache.containsKey(templatePosition)) {
 			adapter = this.adapterCache.get(templatePosition);
 		} else {
@@ -116,54 +110,58 @@ public class ExpandableListArrayAdapter extends BaseExpandableListAdapter {
 		}
 
 		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@SuppressLint("ResourceAsColor")
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view,
-					int position, long id) {
-				// Log.e("Position in gridview", ""+position);
-				// add to picked character
-				if (position != adapterView.getChildCount() - 1) {
-
-					curGameCharacter = (GameCharacter) adapterView
-							.getItemAtPosition(position);
-
-					// selected characters will be highlighted and added into
-					// pickedCharactersGrid
-					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
-					if (selectedCharacters.contains(curGameCharacter)) {
-						selectedCharacters.remove(curGameCharacter);
-						newGame.removeCharacter(curGameCharacter);
-
-					} else {
-						selectedCharacters.add(curGameCharacter);
-						Toast.makeText(
-								context,
-								curGameCharacter.getCharacterName()
-										+ " "
-										+ context.getResources().getString(
-												R.string.msg_added_to_game),
-								Toast.LENGTH_SHORT).show();
-						newGame.addCharacter(curGameCharacter);
-					}
-					pickedAdapter.notifyDataSetChanged();
-					adapter.notifyDataSetChanged();
-
-				}
-				// create new character from template
-				else {
-					Template curClickedTemplate = templates
-							.get(templatePosition);
-					Intent intent = new Intent(context,
-							CreateNewCharacterActivity.class);
-					// TODO bei den anderen auch curTemplate.getFileName()
-					intent.putExtra("templateFileName",
-							curClickedTemplate.getFileName());
-					context.startActivity(intent);
-				}
-
-			}
-		});
+//		gridView.setOnItemClickListener(new OnItemClickListener() {
+//			@SuppressLint("ResourceAsColor")
+//			@Override
+//			public void onItemClick(AdapterView<?> adapterView, View view,
+//					int position, long id) {
+//
+//				// add to picked character
+//				if (position != adapterView.getChildCount() - 1) {
+//					curGameCharacter = (GameCharacter) adapterView
+//							.getItemAtPosition(position);
+//
+//					// selected characters will be highlighted and added into
+//					// pickedCharactersGrid
+//					ArrayList<GameCharacter> selectedCharacters = ((CharacterGridAdapter) adapter).selectedCharacters;
+//					if (selectedCharacters.contains(curGameCharacter)) {
+//						selectedCharacters.remove(curGameCharacter);
+//						newGame.removeCharacter(curGameCharacter);
+//
+//					} else {
+//						selectedCharacters.add(curGameCharacter);
+//						Toast.makeText(
+//								context,
+//								curGameCharacter.getCharacterName()
+//										+ " "
+//										+ context.getResources().getString(
+//												R.string.msg_added_to_game),
+//								Toast.LENGTH_SHORT).show();
+//						newGame.addCharacter(curGameCharacter);
+//					}
+//					pickedAdapter.notifyDataSetChanged();
+//					adapter.notifyDataSetChanged();
+//
+//				}
+//				// create new character from template
+//				else {
+//					Template curClickedTemplate = templates
+//							.get(templatePosition);
+//					Intent intent = new Intent(context,
+//							CreateNewCharacterActivity.class);
+//					intent.putExtra("templateFileName",
+//							curClickedTemplate.getFileName());
+//					intent.putExtra("template",
+//							curClickedTemplate);
+//					
+//					context.startActivity(intent);
+//					// TODO notify adapter!
+//					// to be sure, that new character will appear in expandable
+//					// list
+//					//adapter.notifyDataSetChanged();
+//				}
+//			}
+//		});
 
 		gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override

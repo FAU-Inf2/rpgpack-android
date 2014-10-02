@@ -94,17 +94,17 @@
     <string name="matrix_item_title">Title</string>
     <string name="matrix_item_value">Value</string>
     <string name="item_range">Range</string>
-    
+
     <!-- ItemLayout Character Icon -->
     <string name="character_icon_textview">TextView</string>
 
     <!-- CreateNewTemplate -->
     <string name="text_create_template">Create Template</string>
-    <string name="hint_template_name">Tamplate Name&#8230;</string>
+    <string name="hint_template_name">Template Name&#8230;</string>
     <string name="text_add_icon">Add Icon</string>
     <string name="hint_world_name">World Name&#8230;</string>
     <string name="toast_create_template_now">Now create a new Template!</string>
-    <string name="toast_edit_template_now">Now edit your template!</string>
+    <string name="toast_edit_template_now">Now edit your Template!</string>
     <string name="msg_template_file_already_exists">A template already exists with the same file name.</string>
     <string name="msg_yes_to_overwrite_no_to_edit">Click YES to overwrite the file or NO to edit your name.</string>
 
@@ -127,8 +127,8 @@
     <string name="go_back">Back</string>
     <string name="new_element">&#8230;</string>
     <string name="headline">Headline</string>
-    <string name="headline1">Headline 1</string>
-    <string name="headline2">Headline 2</string>
+    <string name="headline1">Name</string>
+    <string name="headline2">Description</string>
     <string name="blank"> - </string>
     <string name="number">Nr.</string>
     <string name="column_name">Column Name</string>
@@ -148,7 +148,7 @@
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Do you really want to leave the Template Generator?</string>
-    <string name="yes_and_trash">Yes and Trash</string>
+    <string name="yes_and_trash">Yes and Forget</string>
     <string name="yes_and_save">"Yes and Save"</string>
 
     <!-- activity_template_details -->
@@ -274,6 +274,7 @@
     <string name="map_rock">Rock</string>
     <string name="map_draw">draw</string>
     <string name="map_add">+</string>
+    <string name="choose_image">Choose an image</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>
@@ -312,7 +313,7 @@
     <string name="titel_create_game">New Game</string>
     <string name="warning_set_gamename">Please enter a name for your Game!</string>
     <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
-    <string name="msg_yes_to_delete_character">Click YES to delete this character.</string>
+    <string name="msg_yes_to_delete_character">This character will be also delete in all active games. Click YES to delete this character.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Please choose a name for your character!</string>
     <string name="create_new_game_last_item">Create New Game&#8230;</string>
@@ -357,7 +358,9 @@
     <string name="character_game_notices">Notes</string>
 
     <!-- character_edit_matrix_view -->
-    <string name="hint_select_items">Select attributes for your character!</string>
+    <string name="hint_select_items">Select attributes for your character or create some new!</string>
+    <string name="hint_edit_items">Edit some attributes for your Character or create some new!</string>
+    <string name="hint_create_items">Create attributes for your template here!</string>
 
     <!-- activity_character_generator_welcome -->
     <string name="character_generator_welcome">Welcome to the Character Generator!\n \n To create your own character just open the menu and choose the elements!</string>

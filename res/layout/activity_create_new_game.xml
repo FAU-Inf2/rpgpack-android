@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <fragment
+        android:id="@+id/fragmentContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        class="de.fau.cs.mad.gamekobold.game.CreateNewGameFragment" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        class="de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserFragment" >
+    </fragment>
+
+    <Button
+        android:id="@+id/buttonCreateGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_green"
+        android:text="@string/save_game" />
+
+</LinearLayout>

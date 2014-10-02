@@ -52,4 +52,26 @@
         android:textColor="@color/white"
         android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/tv_store_rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_store_worldname"
+        android:layout_marginTop="5dp"
+        android:layout_alignRight="@+id/ratingBarStore"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        />
+
+    <RatingBar
+        android:id="@+id/ratingBarStore"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_store_worldname"
+        android:layout_alignParentRight="true"
+        android:isIndicator="true"
+        android:rating="3.5"
+        android:stepSize="0.01" />
+
 </RelativeLayout>

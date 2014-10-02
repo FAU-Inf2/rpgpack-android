@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -25,6 +26,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MODIFICATOR = "KEY_SAVE_MODIFICATOR";
 	private static final String KEY_SAVE_DESCRIPTION = "KEY_SAVE_DESCRIPTION";
 	private static final String KEY_SAVE_ITEMTOEDIT = "KEY_SAVE_ITEMTOEDIT";
+	private static final String KEY_SAVE_ADAPTER = "KEY_SAVE_ADAPTER";
 
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
@@ -33,19 +35,22 @@ public class AddNewItemDialogFragment extends DialogFragment {
 
 	private EditText itemName, rangeMin, rangeMax, defaultVal, modificator,
 			description;
+	private Switch switchFrom, switchTo, switchValue, switchMod;
 	public MatrixFragment matrixFragment;
 	public MatrixItem editItem = null;
+	public ArrayAdapter curAdapter;
 
-	public static AddNewItemDialogFragment newInstance(MatrixFragment receiver) {
+	public static AddNewItemDialogFragment newInstance(MatrixFragment receiver,
+			ArrayAdapter adapter) {
 		AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 		fragment.matrixFragment = receiver;
+		fragment.curAdapter = adapter;
 		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// Restore the fragment's state here
 		if (savedInstanceState != null) {
 			matrixFragment = (MatrixFragment) getFragmentManager().getFragment(
@@ -73,16 +78,14 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		defaultVal = (EditText) view.findViewById(R.id.defaultValue);
 		modificator = (EditText) view.findViewById(R.id.modificator);
 		description = (EditText) view.findViewById(R.id.description);
+		// get all Switches
+		switchFrom = (Switch) view.findViewById(R.id.switchRangeFrom);
+		switchTo = (Switch) view.findViewById(R.id.switchRangeTo);
+		switchValue = (Switch) view.findViewById(R.id.switchDefaultValue);
+		switchMod = (Switch) view.findViewById(R.id.switchModificator);
 
-		final Switch switchFrom = (Switch) view
-				.findViewById(R.id.switchRangeFrom);
-		final Switch switchTo = (Switch) view.findViewById(R.id.switchRangeTo);
-		final Switch switchValue = (Switch) view
-				.findViewById(R.id.switchDefaultValue);
-		final Switch switchMod = (Switch) view
-				.findViewById(R.id.switchModificator);
-
-		// check for editItem
+		// check for editItem, if it is not null, we will edit this matrix item
+		// and now have to recover its values into popup UI
 		if (editItem != null) {
 			// insert values from editItem into views
 			itemName.setText(editItem.getItemName());
@@ -110,6 +113,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				switchMod.setChecked(false);
 		}
 
+		// recover saved values
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(KEY_SAVE_ITEM_NAME)) {
 				itemName.setText((savedInstanceState
@@ -139,6 +143,10 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				editItem = (MatrixItem) savedInstanceState
 						.getSerializable(KEY_SAVE_ITEMTOEDIT);
 			}
+			if (savedInstanceState.containsKey(KEY_SAVE_ADAPTER)) {
+				curAdapter = (ArrayAdapter) savedInstanceState
+						.getSerializable(KEY_SAVE_ADAPTER);
+			}
 		}
 
 		builder.setView(view);
@@ -159,67 +167,11 @@ public class AddNewItemDialogFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						// TODO Check for null values
-						final String name = itemName.getEditableText()
-								.toString();
-						if (name.equals("")) {
-							Toast.makeText(
-									getActivity(),
-									getResources()
-											.getString(
-													R.string.warning_set_matrixitem_name),
-									Toast.LENGTH_SHORT).show();
-							return;
-						}
-						final String defValue = defaultVal.getEditableText()
-								.toString();
-						int min = 0;
-						if (!rangeMin.getEditableText().toString().isEmpty()) {
-							min = Integer.parseInt(rangeMin.getEditableText()
-									.toString());
-						}
-						int max = 0;
-						if (!rangeMax.getEditableText().toString().isEmpty()) {
-							max = Integer.parseInt(rangeMax.getEditableText()
-									.toString());
-						}
-
-						String mod = modificator.getEditableText().toString();
-
-						final String desc = description.getEditableText()
-								.toString();
-
-						int vis = 0;
-						if (switchFrom.isChecked())
-							vis = vis | FLAG_FROM;
-						if (switchTo.isChecked())
-							vis = vis | FLAG_TO;
-						if (switchValue.isChecked())
-							vis = vis | FLAG_VALUE;
-						if (switchMod.isChecked())
-							vis = vis | FLAG_MOD;
-
-						if (editItem == null) {
-							final MatrixItem newItem = new MatrixItem(name,
-									defValue, min, max, mod, desc, vis);
-
-							Log.d("newItem is NULL?", "" + (newItem == null));
-							Log.d("matrixFragment is NULL?", ""
-									+ (matrixFragment == null));
-
-							matrixFragment.addMatrixItem(newItem);
-							matrixFragment.adapterCreateTemplate
-									.notifyDataSetChanged();
-						} else {
-							editItem.setItemName(name);
-							editItem.setValue(defValue);
-							editItem.setRangeMin(min);
-							editItem.setRangeMax(max);
-							editItem.setModificator(mod);
-							editItem.setDescription(desc);
-							editItem.setVisibility(vis);
-							matrixFragment.adapterCreateTemplate
-									.notifyDataSetChanged();
-						}
+						// Do nothing here because we override this button later
+						// to change the close behaviour.
+						// However, we still need this because on older versions
+						// of Android unless we
+						// pass a handler the button doesn't get instantiated
 					}
 				});
 
@@ -238,7 +190,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(final DialogInterface dialog) {
-
 				Button positiveButton = ((AlertDialog) dialog)
 						.getButton(DialogInterface.BUTTON_POSITIVE);
 
@@ -254,6 +205,85 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart(); // super.onStart() is where dialog.show() is actually
+							// called on the underlying dialog, so we have to do
+							// it after this point
+		AlertDialog d = (AlertDialog) getDialog();
+		if (d != null) {
+			Button positiveButton = (Button) d
+					.getButton(Dialog.BUTTON_POSITIVE);
+			positiveButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Boolean wantToCloseDialog = false;
+					// Check the setting values
+					final String name = itemName.getEditableText().toString();
+					if (name.equals("")) {
+						// item name is not set, show warning
+						Toast.makeText(
+								getActivity(),
+								getResources().getString(
+										R.string.warning_set_matrixitem_name),
+								Toast.LENGTH_SHORT).show();
+					} else {
+						// item name is set, dialog could be closed
+						wantToCloseDialog = true;
+					}
+					// save new item (or new values for an edit item) and close
+					// dialog else dialog stays open.
+					if (wantToCloseDialog) {
+						final String defValue = defaultVal.getEditableText()
+								.toString();
+						int min = 0;
+						if (!rangeMin.getEditableText().toString().isEmpty()) {
+							min = Integer.parseInt(rangeMin.getEditableText()
+									.toString());
+						}
+						int max = 0;
+						if (!rangeMax.getEditableText().toString().isEmpty()) {
+							max = Integer.parseInt(rangeMax.getEditableText()
+									.toString());
+						}
+
+						String mod = modificator.getEditableText().toString();
+						final String desc = description.getEditableText()
+								.toString();
+
+						int vis = 0;
+						if (switchFrom.isChecked())
+							vis = vis | FLAG_FROM;
+						if (switchTo.isChecked())
+							vis = vis | FLAG_TO;
+						if (switchValue.isChecked())
+							vis = vis | FLAG_VALUE;
+						if (switchMod.isChecked())
+							vis = vis | FLAG_MOD;
+
+						if (editItem == null) {
+							//add new matrix item
+							final MatrixItem newItem = new MatrixItem(name,
+									defValue, min, max, mod, desc, vis);
+							matrixFragment.addMatrixItem(newItem, curAdapter);
+						} else {
+							//matrix item exists already, edit it values
+							editItem.setItemName(name);
+							editItem.setValue(defValue);
+							editItem.setRangeMin(min);
+							editItem.setRangeMax(max);
+							editItem.setModificator(mod);
+							editItem.setDescription(desc);
+							editItem.setVisibility(vis);
+						}
+						// close dialog
+						dismiss();
+					}
+				}
+			});
+		}
+	}
+
+	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Save the fragment's state
@@ -266,10 +296,13 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				.toString());
 		outState.putString(KEY_SAVE_DESCRIPTION, description.getText()
 				.toString());
+		//if it is an item to edit, save it
 		if (editItem != null) {
 			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
 					(Serializable) editItem);
-		} // Save the fragment's instance
+		}
+		outState.putSerializable(KEY_SAVE_ADAPTER, (Serializable) curAdapter);
+		// Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",
 				matrixFragment);
 	}
