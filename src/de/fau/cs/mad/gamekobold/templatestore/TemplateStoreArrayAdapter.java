@@ -21,6 +21,7 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		TextView worldname;
 		TextView date_author;
 		TextView name;
+		TextView rating;
 		RatingBar bar;
 		ImageView img;
 		Bitmap bm;
@@ -58,6 +59,8 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 					.findViewById(R.id.ratingBarStore);
 			holder.img = (ImageView) convertView
 					.findViewById(R.id.templateStoreImg);
+			holder.rating = (TextView) convertView
+					.findViewById(R.id.tv_store_rating_text);
 			if (curr.hasImage()) {
 				curr.setBm(curr.getImage_data());
 			}
@@ -72,7 +75,9 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 		if (holder.bar != null) {
 			holder.bar.setRating(curr.getRating());
 		}
-
+		if (holder.rating != null) {
+			holder.rating.setText("\u00d8" + " " + Float.valueOf(curr.getRating()).toString());
+		}
 		if ((position % 2) == 0) {
 			convertView.setBackgroundColor(Color.parseColor("#0f0f0f"));
 		} else {

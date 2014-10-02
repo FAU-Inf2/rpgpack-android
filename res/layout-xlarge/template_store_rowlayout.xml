@@ -62,4 +62,15 @@
         android:layout_alignBottom="@+id/tv_store_date_author"
         android:layout_alignParentRight="true" />
 
+    <TextView
+        android:id="@+id/tv_store_rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_store_date_author"
+        android:layout_marginTop="5dp"
+        android:layout_alignRight="@+id/ratingBarStore"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        />
+
 </RelativeLayout>
