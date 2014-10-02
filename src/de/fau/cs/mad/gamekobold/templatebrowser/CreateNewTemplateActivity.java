@@ -357,7 +357,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 				"popupTemplateTagsFragment");
 	}
 
-	private static class TemplateTagsDialogFragment extends DialogFragment {
+	public static class TemplateTagsDialogFragment extends DialogFragment {
 		public CreateNewTemplateActivity createNewTemplateActivity;
 		private Template myTemplate;
 		
