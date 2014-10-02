@@ -3,20 +3,29 @@ package de.fau.cs.mad.gamekobold.filebrowser;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
+import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 
 public class TemplateExportTask extends AsyncTaskWithProgressDialog<File, Void, Boolean>{
 	private File targetFile = null;
 	private File templateFile = null;
+	private Context context = null;
+
+	public static TemplateExportTask getInstance(Context context) {
+		TemplateExportTask task = new TemplateExportTask();
+		task.context = context;
+		return task;
+	}
 
 	@Override
 	protected void onPreExecute() {
-		super.onPreExecute();
+		super.onPreExecute(context, context.getString(R.string.msg_please_wait), context.getString(R.string.msg_exporting_template));
 	}
 
 	@Override

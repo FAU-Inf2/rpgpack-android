@@ -434,4 +434,8 @@
   	<string name="toast_imported_character">Charakter importiert.</string>
 	<string name="toast_imported_character_failed">Importieren fehlgeschlagen!</string>
 	<string name="toast_file_is_not_character">Datei ist kein Charakter!</string>
+	
+	<!-- TempalteExportTask -->
+	<string name="msg_exporting_template">Exportiere Vorlage.</string>
+	
 </resources>

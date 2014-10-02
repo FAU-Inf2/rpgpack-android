@@ -7,20 +7,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
+import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
+import de.fau.cs.mad.gamekobold.filebrowser.TemplateExportTask;
 import de.fau.cs.mad.gamekobold.game.Game;
 
 public abstract class JacksonInterface {
@@ -474,4 +480,19 @@ public abstract class JacksonInterface {
 		Game game = mapper.readValue(inStream, Game.class);
 		return game;	
 	}
+	
+	public static void exportTemplate(final Context context, final File templateFile, final File targetFile, boolean overrideIfExists) throws FileWouldOverwriteException, FileTargetIsSourceException {
+		if(templateFile == null || targetFile == null) {
+			throw new NullPointerException();
+		}
+		if(templateFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+			throw new FileTargetIsSourceException(targetFile);
+		}
+		if(targetFile.exists() && !overrideIfExists) {
+			throw new FileWouldOverwriteException(targetFile);
+		}
+		TemplateExportTask exportTask = TemplateExportTask.getInstance(context);
+		exportTask.execute(new File[] {templateFile, targetFile});
+	}
+
 }

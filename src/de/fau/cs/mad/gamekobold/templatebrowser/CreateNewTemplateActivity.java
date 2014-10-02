@@ -3,7 +3,6 @@ package de.fau.cs.mad.gamekobold.templatebrowser;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.DuplicateFormatFlagsException;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -32,15 +31,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
-import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
-import de.fau.cs.mad.gamekobold.filebrowser.TemplateExportTask;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.jackson.Template;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -54,6 +52,9 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 	private static Activity myActivity = null;
 	
 	private boolean editTemplate;
+	private boolean templateEdited;
+	
+	private TextView tvTemplateName,tvGameName,tvDescription;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,8 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		myActivity = this;
 		// standard mode is to create a new one
 		editTemplate = false;
-		// check if we got a tempalte for editing
+		templateEdited = false;
+		// check if we got a template for editing
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 		if(extras != null) {
@@ -78,12 +80,12 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		}
 
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
-		final TextView tvTemplateName = (TextView) findViewById(R.id.templateName);		
-		final TextView tvGameName = (TextView) findViewById(R.id.worldName);
-		final TextView tvDescription = (TextView) findViewById(R.id.description);
+		tvTemplateName = (TextView) findViewById(R.id.templateName);
+		tvGameName = (TextView) findViewById(R.id.worldName);
+		tvDescription = (TextView) findViewById(R.id.description);
 		final Button createTemplateButton = (Button) findViewById(R.id.createTemplate);
 		final Button infoButton = (Button) findViewById(R.id.buttonInfo);
-		
+
 		// set values from template and change button text
 		if(editTemplate) {
 			tvTemplateName.setText(currentTemplate.getTemplateName());
@@ -183,6 +185,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 				/*
 				 * JACKSON START
 				 */
+				// set the right extras for the intent according to current mode 
 				if(editTemplate) {
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_EDIT_TEMPLATE);
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_TEMPLATE_FILE_NAME,
@@ -192,16 +195,15 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					intent.putExtra(SlideoutNavigationActivity.EXTRA_MODE, SlideoutNavigationActivity.MODE_CREATE_TEMPLATE);
 				}
 
-				// create template for data transfer
-				// set data
-				currentTemplate.setTemplateName(tvTemplateName.getText().toString());
-				currentTemplate.setGameName(tvGameName.getText().toString());
-				// TODO author
-				currentTemplate.setAuthor("Registered Author");
-				currentTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
-						.format(new Date()));
-				currentTemplate.setDescription(tvDescription.getText().toString());
 				if(!editTemplate) {
+					// set data
+					currentTemplate.setTemplateName(tvTemplateName.getText().toString());
+					currentTemplate.setGameName(tvGameName.getText().toString());
+					// TODO author
+					currentTemplate.setAuthor("Registered Author");
+					currentTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
+							.format(new Date()));
+					currentTemplate.setDescription(tvDescription.getText().toString());
 					// check to see if a file for this template already exists
 					if (JacksonInterface.doesTemplateFileExist(currentTemplate, myActivity)) {
 						// if yes we show a dialog and ask whether to overwrite the
@@ -216,16 +218,14 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 							getResources().getString(R.string.no),
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog, int which) {
 								}
 							});
 						builder.setPositiveButton(
 							getResources().getString(R.string.yes),
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog, int which) {
 									intent.putExtra(
 											Template.PARCELABLE_STRING,
 											currentTemplate);
@@ -233,7 +233,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 									Toast.makeText(getApplicationContext(),
 											getString(R.string.toast_create_template_now), Toast.LENGTH_SHORT)
 											.show();	
-									startActivity(intent);
+									leaveActivityAndSaveTemplateIfNeeded(intent);
 								}
 							});
 						AlertDialog dialog = builder.create();
@@ -256,7 +256,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					.show();					
 				}
 				
-				startActivity(intent);
+				leaveActivityAndSaveTemplateIfNeeded(intent);
 				/*
 				 * JACKSON END
 				 */
@@ -301,6 +301,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		addImageButton.setImageBitmap(bitmap);
 		// set icon path
 		currentTemplate.setIconPath(path);
+		templateEdited = true;
 	}
 
 	@Override
@@ -339,6 +340,11 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public void onBackPressed() {
+		leaveActivityAndSaveTemplateIfNeeded(null);
+	}
+	
 	private void showFileExplorerPopup() {
 		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY));
 		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_folder), Toast.LENGTH_LONG).show();
@@ -351,7 +357,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 				"popupTemplateTagsFragment");
 	}
 
-	public static class TemplateTagsDialogFragment extends DialogFragment {
+	private static class TemplateTagsDialogFragment extends DialogFragment {
 		public CreateNewTemplateActivity createNewTemplateActivity;
 		private Template myTemplate;
 
@@ -390,7 +396,11 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							myTemplate.setTagString(editText.getEditableText().toString());
+							String newTagString = editText.getEditableText().toString();
+							if(!myTemplate.getTagString().equals(newTagString)) {
+								myTemplate.setTagString(newTagString);
+								createNewTemplateActivity.templateEdited = true;
+							}	
 						}
 					});
 
@@ -462,31 +472,147 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		Log.d("CreateNewTemplateActivity", "export:"+directory.getAbsolutePath());
 		FileBrowser.removeAsPopup(getFragmentManager());
 		// copy file
-		File templateFile = new File(currentTemplate.getFileAbsPath());
+		final File templateFile = new File(currentTemplate.getFileAbsPath());
+		final File targetFile = new File(directory, templateFile.getName());
 		try {
-			FileCopyUtility.copyFile(templateFile, new File(directory, templateFile.getName()), true);
-			Toast.makeText(this,
-					String.format(getString(R.string.toast_exported_template), templateFile.getName()),
-					Toast.LENGTH_LONG).show();
+			JacksonInterface.exportTemplate(CreateNewTemplateActivity.this,templateFile, targetFile, false);
+		}
+		catch (FileTargetIsSourceException e) {
+			// should not occur
+			e.printStackTrace();
+		}
+		catch(FileWouldOverwriteException e) {
+			e.printStackTrace();
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.question_overwrite_file).setTitle(R.string.msg_file_with_same_name_already_exists);
+			builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// do nothing
+					dialog.dismiss();
+				}
+			});
+			builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					// overwrite file
+					try {
+						JacksonInterface.exportTemplate(CreateNewTemplateActivity.this, templateFile, targetFile, true);						
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			builder.create().show();
+			// show dialog
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			Toast.makeText(this, getString(R.string.toast_exported_template_failed), Toast.LENGTH_LONG).show();
 		}
 	}
 
-	//TODO integrate with app
-	private void exportTemplate(final File templateFile, final File targetFile, boolean overrideIfExists) throws FileWouldOverwriteException, FileTargetIsSourceException {
-		if(templateFile == null || targetFile == null) {
-			throw new NullPointerException();
+	/**
+	 * Calls startAcitivty if the provided intent is not null. Otherwise calls super.onBackPressed().
+	 * Before this Activity is left, a check will be performed to determine if the template has changed.
+	 * If we are editing a Template and it has changed it will be saved before leaving. 
+	 * @param intentToStart intent to use for startAcitivity or null to call super.onBackPressed().
+	 */
+	private void leaveActivityAndSaveTemplateIfNeeded(Intent intentToStart) {
+		checkAndTakeOverChanges();
+		if(editTemplate && templateEdited) {			
+				SaveEditetTemplateTask saveTask = new SaveEditetTemplateTask();
+				saveTask.intentToStart = intentToStart;
+				saveTask.execute();
 		}
-		if(templateFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
-			throw new FileTargetIsSourceException(targetFile);
+		else {
+			if(intentToStart != null) {
+				startActivity(intentToStart);
+			}
+			else {
+				superOnBackPressed();
+			}
 		}
-		if(targetFile.exists() && !overrideIfExists) {
-			throw new FileWouldOverwriteException(targetFile);
+	}
+	
+	/**
+	 * Saves the changes made to the currentTemplate to file system.
+	 * If intentToStart is set (!=null), startAcitivity(intentToStart) will be called after saving.
+	 * If intentToStart is not set (=null), superOnBackPressed() will be called after saving.
+	 * After execution we will leave this activity!
+	 */
+	private class SaveEditetTemplateTask extends AsyncTaskWithProgressDialog<Void, Void, Void> {
+		public Intent intentToStart = null;
+
+		@Override
+		public void onPreExecute() {
+			super.onPreExecute(CreateNewTemplateActivity.this, "Please wait", "saving changes");
 		}
-		TemplateExportTask exportTask = new TemplateExportTask();
-		exportTask.execute(new File[] {templateFile, targetFile});
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				File templateFile = new File (currentTemplate.getFileAbsPath());
+				if(!templateFile.isFile()) {
+					return null;
+				}
+				Template loadedTemplate = JacksonInterface.loadTemplate(templateFile, false);
+				loadedTemplate.setDescription(currentTemplate.getDescription());
+				loadedTemplate.setTagString(currentTemplate.getTagString());
+				loadedTemplate.setTemplateName(currentTemplate.getTemplateName());
+				loadedTemplate.setIconPath(currentTemplate.getIconPath());
+				loadedTemplate.setGameName(currentTemplate.getGameName());
+				JacksonInterface.saveTemplate(loadedTemplate, templateFile);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		@Override
+		public void onPostExecute(Void param) {
+			templateEdited = false;
+			super.onPostExecute(param);
+			if(intentToStart != null) {
+				startActivity(intentToStart);
+			}
+			else {
+				(CreateNewTemplateActivity.this).superOnBackPressed();
+			}
+		}
+	}
+
+	/**
+	 * Calls super.onBackPressed();
+	 */
+	private void superOnBackPressed() {
+		super.onBackPressed();
+	}
+	
+	/**
+	 * Checks if the template infos have changed. Also takes over any changes to currentTemplate.
+	 * @return true if something has changed, false otherwise.
+	 */
+	private boolean checkAndTakeOverChanges() {
+		// check template name
+		if(!tvTemplateName.getEditableText().toString().equals(currentTemplate.getTemplateName())) {
+			templateEdited = true;
+			currentTemplate.setTemplateName(tvTemplateName.getEditableText().toString());
+		}
+		// check world name
+		if(!tvGameName.getEditableText().toString().equals(currentTemplate.getGameName())) {
+			templateEdited = true;
+			currentTemplate.setGameName(tvGameName.getEditableText().toString());
+		}
+		// check description
+		if(!tvDescription.getEditableText().toString().equals(currentTemplate.getDescription())) {
+			templateEdited = true;
+			currentTemplate.setDescription(tvDescription.getEditableText().toString());
+		}
+		// icon is handled by onActivityResult
+		// tag list is handled by popup
+		return templateEdited;
 	}
 }

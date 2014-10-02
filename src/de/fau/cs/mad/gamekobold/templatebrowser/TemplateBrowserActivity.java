@@ -322,7 +322,7 @@ public class TemplateBrowserActivity extends ListActivity {
 		return false;
 	}
 
-	private class TemplateListUpdaterTask extends AsyncTaskWithProgressDialog<Void, Void, Void> {
+	private class TemplateListUpdaterTask extends AsyncTaskWithProgressDialog<Void, Void, Boolean> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute(TemplateBrowserActivity.this,
@@ -331,7 +331,7 @@ public class TemplateBrowserActivity extends ListActivity {
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected Boolean doInBackground(Void... params) {
 			boolean templateListChanged = false;
 			// iterate over all loaded templates
 			for (int i = 0; i < templateList.size(); i++) {
@@ -368,16 +368,18 @@ public class TemplateBrowserActivity extends ListActivity {
 					}
 				}
 			}
+			return templateListChanged;
+		}
+
+		protected void onPostExecute(Boolean listChanged) {
 			// if a template changed
-			if (templateListChanged) {
+			if (listChanged) {
 				// notify adapter that a change occurred
 				TemplateBrowserArrayAdapter adapter = (TemplateBrowserArrayAdapter) getListAdapter();
 				adapter.notifyDataSetChanged();
 			}
-			return null;
+			super.onPostExecute(listChanged);
 		}
-		
-		// no onPostExecute needed. Progress dialog will automatically closed
 	};
 
 	/**
