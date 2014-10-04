@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -136,7 +137,8 @@ public class TableEditDialog extends DialogFragment {
             		else if(valueGiven > 99){
             			v.setText(Integer.toString(99));
             		}
-            		adaptDialogTable(dialogTable, valueGiven);	
+					Log.d("TableEditDialog", "adaptDialogTable FALSE");
+            		adaptDialogTable(dialogTable, valueGiven, false);	
         		}
         		catch(NumberFormatException e) {
         			e.printStackTrace();
@@ -158,7 +160,7 @@ public class TableEditDialog extends DialogFragment {
         		}
         		int newValue = oldValue+1;
         		dialogRowCounter.setText(Integer.toString(newValue));
-        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
+        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())), false);
         	}
         });
         ImageButton subtractButton = (ImageButton) dialogViewTableView.findViewById(R.id.button_remove_column);
@@ -179,7 +181,7 @@ public class TableEditDialog extends DialogFragment {
         			return;
         		}
         		dialogRowCounter.setText(Integer.toString(newValue));
-        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())));
+        		adaptDialogTable(dialogTable, (Integer.parseInt(dialogRowCounter.getText().toString())), false);
         	}
         });
 
@@ -204,11 +206,17 @@ public class TableEditDialog extends DialogFragment {
 
 		alertDialogBuilder.setView(dialogViewTableView);
 		dialog = alertDialogBuilder.create();
+		dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 		newlyShown = false;
 
         return dialog;
     }
 
+//	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+	    getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+	    super.onViewCreated(view, savedInstanceState);
+	}
 	
 	private void copyDialogTable(TableLayout dialogTable,
 			TableLayout storedDialogTable) {
@@ -311,12 +319,21 @@ public class TableEditDialog extends DialogFragment {
 		}
 	}
 	
+	
+	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow){
+		final Throwable throwable = new Throwable();
+		throwable.printStackTrace();
+		adaptDialogTable(dialogTable, rowsToShow, true);
+	}
+	
 	/**
 	 * adapt the dialog table to have exactly rowsToShow rows
 	 * @param dialogTable
 	 * @param rowsToShow
+	 * @param readFromTable if true: values are read from underlying table <br>
+	 * if false: values are taken as they are already stored in this temporary dialog-table
 	 */
-	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow){
+	protected void adaptDialogTable(TableLayout dialogTable, int rowsToShow, boolean readFromTable){
 		int firstRowToAdd = dialogTable.getChildCount();
 		int rowsNeeded = rowsToShow;
 		//first step: adapt all needed Column-names from headerTable
@@ -325,11 +342,13 @@ public class TableEditDialog extends DialogFragment {
 			TableRow headerRow = (TableRow) targetFragment.headerTable.getChildAt(0);
 			TextView headerText = (TextView) headerRow.getChildAt(i-1);
 			EditText textToSet = (EditText) ((TableRow) dialogTable.getChildAt(i)).getChildAt(1);
-			if(headerText == null){
-				textToSet.setText("");
-			}
-			else{
-				textToSet.setText(headerText.getText());
+			if(readFromTable){
+				if(headerText == null){
+					textToSet.setText("");
+				}
+				else{
+					textToSet.setText(headerText.getText());
+				}
 			}
 			//dont adapt spinner now, it might have been modified and we want to keep that
 //			Spinner spinnerToSet = (Spinner) ((TableRow) dialogTable.getChildAt(i)).getChildAt(2);
