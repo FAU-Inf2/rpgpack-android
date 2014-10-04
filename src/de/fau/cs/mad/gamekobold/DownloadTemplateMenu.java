@@ -66,7 +66,8 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 	    			alertMessage(getResources().getString(R.string.download_successful));
 	    		 
 	    	 } else {
-	    		 alertMessage(response.toString());
+	    		 // for debug
+	    		 // alertMessage(response.toString());
 	    	 }
 		}
 	  }
@@ -214,16 +215,22 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 			// you should check if it is valid or some other qr/barcode.
 			final String potentialURL = qrscanResult.getContents();
 			
-			if(potentialURL != null && potentialURL.startsWith("http://192.168.1.3")) {
+			if(potentialURL == null) {
+				alertMessage(getResources().getString(R.string.scan_error));
+				return;
+			}
+			
+			if(potentialURL.startsWith("http://192.168.2.110")) {
 				// scan successful
 				Log.d("QR-CodeScan", potentialURL);
 				ApiTask task = new ApiTask();
 				task.execute(potentialURL);
 				
 			} else {
-				alertMessage(potentialURL);
-				alertMessage("An Error occurred");
+				alertMessage(getResources().getString(R.string.invalid_qr_code));
 			}
+		} else {
+			alertMessage(getResources().getString(R.string.scan_error));
 		}
 	}
 	

@@ -441,4 +441,7 @@
 	<!-- TempalteExportTask -->
 	<string name="msg_exporting_template">Exportiere Vorlage.</string>
 	
+	<!-- QR Code Scan -->
+	<string name="scan_error">Beim Scannen des QR Codes ist ein Fehler aufgetreten</string>
+	<string name="invalid_qr_code">Es wurde ein ungültiger QR Code gescannt</string>
 </resources>
