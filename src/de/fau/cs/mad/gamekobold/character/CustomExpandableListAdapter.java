@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.opengl.Visibility;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -338,7 +339,14 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 		  final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
 		  popupHeadline.setText(headline);
 		  final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
-
+		  if(!SlideoutNavigationActivity.getAc().inEditMode()){
+				Log.d("tableFragment", "set Popup non editable");
+//	        	inputPopup.setInputType(InputType.TYPE_NULL);
+	        	inputPopup.setFocusable(false);
+		  }
+	        else{
+				Log.d("tableFragment", "set Popup EDITABLE");
+	        }
 
 
 		  final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);

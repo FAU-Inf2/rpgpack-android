@@ -7,14 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ReattachingPopup;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
-import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
 import de.fau.cs.mad.gamekobold.character.CustomExpandableListAdapter;
 import de.fau.cs.mad.gamekobold.jackson.CheckBoxClass;
 import de.fau.cs.mad.gamekobold.jackson.ColumnHeader;
@@ -33,11 +29,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.ClickableSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
@@ -66,7 +61,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -119,7 +113,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				if(tv.getEditableText().toString().equals(getResources().getString(R.string.blank))) {
 					tv.setText("");
 				}
-//				// TODO horizontal scrolling bug testing
+//				// TODO horizontal scrolling bug testing; note: seems to work
 //				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
 //						        hsv.postDelayed(new Runnable() {
 //					@Override
@@ -482,20 +476,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	protected TableLayout createTableHeader() {
 		headerTable = (TableLayout) mainView.findViewById(R.id.header_table);
 		final TableRow row = new TableRow(getActivity());
-		TableRow.LayoutParams rowParams = new TableRow.LayoutParams();
-		// Wrap-up the content of the row
-		rowParams.height = TableRow.LayoutParams.MATCH_PARENT;
-		rowParams.width = TableRow.LayoutParams.MATCH_PARENT;
-		TableRow.LayoutParams colParams = new TableRow.LayoutParams();
-		colParams.height = TableRow.LayoutParams.MATCH_PARENT;
-		colParams.width = TableRow.LayoutParams.MATCH_PARENT;
-		//TODO:
-//		((View) row).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				showDialog();
-//			}
-//		});
 		headerTable.addView(row);
 		jacksonLoadTableHeader(row);
 		return headerTable;
@@ -942,12 +922,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		});
         LayoutInflater inflater = (LayoutInflater) SlideoutNavigationActivity.theActiveActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.table_view_popup, null);
-//        final View layoutContainingHeadline = (View) popupView.findViewById(R.id.popup_content);
         final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
         popupHeadline.setText(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getCurrentFragment().elementName);
         final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
-        
-        
         
         final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
         toggleBold.setOnClickListener(new Button.OnClickListener() {
@@ -1145,7 +1122,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
             			Log.d("textstyle", "setSpan: UNDERLINED!!! (" + styleStart + " to " + position + ")");
 //            			Log.d("textstyle", "UNDERLINE from " + styleStart + " to " + position);
                     }
-                    //XXX:note: i think recursive calls to listener are the problem; dont think so anymore; should be fixed...
             		spans = text.getSpans(styleStart, position, Object.class);
         			Log.d("textstyle", "setting text with " + spans.length + " spans! (" + styleStart + " to " + position + ")");
         			for (int i = 0; i < spans.length; i++) {
@@ -1220,45 +1196,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         // TEST
         if(!jacksonEntry.getContent().isEmpty()) {
         	inputPopup.setText(jacksonEntry.getContent());
-        	//XXX:following is atm only done in character-edit mode
-        	//-> code is in CustomExpendableListAdapter
-//        	if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
-//    	        Log.d("TableFragment", "durchsuche Popup!");
-//        		String searchForReferences = inputPopup.getText().toString();
-//        		Pattern p = Pattern.compile("@");
-//        	    Matcher m = p.matcher(searchForReferences);
-//        	    while (m.find()){
-////        	    	System.out.print("Start index: " + matcher.start());
-//        	    	//TODO: copy&paste for highlighting popup?
-//        	    	int startIndex = m.start();
-//        	    	int endIndex = startIndex;
-//        	    	while(searchForReferences.charAt(endIndex) != ' ' && searchForReferences.charAt(endIndex) != '\n'
-//        	    			&& searchForReferences.charAt(endIndex) != '\b'){
-//        	    		endIndex++;
-//        	    	}
-//        	    	String referenceString = searchForReferences.substring(startIndex, endIndex);
-//        	    	getAllMatrixReferences(((SlideoutNavigationActivity) SlideoutNavigationActivity.theActiveActivity).getRootFragment());
-//        	    	Spannable span = (Spannable) inputPopup;
-//        	    	span.setSpan(new MyClickableSpan(popupView), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-////        	        span.setSpan(new ClickableSpan() {  
-////        	            @Override
-////        	            public void onClick(View v) {  
-//////        	            	ToolTipRelativeLayout a = new ToolTipRelativeLayout(getActivity(), null);
-////        	            	ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) popupView.findViewById(R.id.activity_main_tooltipRelativeLayout);
-//////
-////        	                ToolTip toolTip = new ToolTip()
-////        	                                    .withText("A beautiful View")
-////        	                                    .withColor(R.color.red)
-////        	                                    .withShadow();
-////        	                View myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, this.);
-//////        	                myToolTipView.setOnToolTipViewClickedListener(MainActivity.this);
-////        	            	
-////        	                //TODO: tooltip
-////        	            }
-////        	        }, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        	        inputPopup.setText(span); 
-//        	    }
-//        	}
         }
         // TEST END
         
