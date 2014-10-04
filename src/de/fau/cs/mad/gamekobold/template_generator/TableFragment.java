@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.template_generator;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -374,28 +375,30 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			//
 			// JSON START
 			// check index
+			CharSequence[] spaltentypen = getResources().getStringArray(R.array.spaltentypen);
+			List<CharSequence> spaltentypenList = Arrays.asList(spaltentypen);
 			if(indexOfTable > jsonOldNumberOfColumns) {
 				// we have to create a new column
-				if(choice.equals("Textfeld")){
+				if(choice.equals(spaltentypenList.get(0))){
 					jacksonTable.addColumn(new ColumnHeader("", StringClass.TYPE_STRING));
 				}
-				else if(choice.equals("CheckBox")){
+				else if(choice.equals(spaltentypenList.get(1))){
 					jacksonTable.addColumn(new ColumnHeader("", CheckBoxClass.TYPE_STRING));
 				}
-				else if(choice.equals("PopUp")){
+				else if(choice.equals(spaltentypenList.get(2))){
 					jacksonTable.addColumn(new ColumnHeader("", PopupClass.TYPE_STRING));
 				}
 			}
 			else {
 				// we have to change the type
 				// change column type in json
-				if(choice.equals("Textfeld")){
+				if(choice.equals(spaltentypenList.get(0))){
 					jacksonTable.changeColumnType(indexOfTable, StringClass.TYPE_STRING);
 				}
-				else if(choice.equals("CheckBox")){
+				else if(choice.equals(spaltentypenList.get(1))){
 					jacksonTable.changeColumnType(indexOfTable, CheckBoxClass.TYPE_STRING);
 				}
-				else if(choice.equals("PopUp")){
+				else if(choice.equals(spaltentypenList.get(2))){
 					jacksonTable.changeColumnType(indexOfTable, PopupClass.TYPE_STRING);
 				}				
 			}
@@ -409,7 +412,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				// moved before jackson part above
 //				Spinner spin = (Spinner) dialogTableRow.getChildAt(2);
 //				String choice = spin.getSelectedItem().toString();
-				if(choice.equals("Textfeld")){
+				if(choice.equals(spaltentypenList.get(0))){
 					if(!(elementToAdapt instanceof EditText)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
@@ -417,7 +420,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 						tableRow.addView(newElement, indexOfTable);
 					}
 				}
-				else if(choice.equals("CheckBox")){
+				else if(choice.equals(spaltentypenList.get(1))){
 					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
@@ -433,7 +436,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
 					}
 				}
-				else if(choice.equals("PopUp")){
+				else if(choice.equals(spaltentypenList.get(2))){
 					if(!(elementToAdapt instanceof TextView) || elementToAdapt instanceof EditText){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);

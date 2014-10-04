@@ -339,6 +339,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 	 */
 	public static Intent createIntentForStarting(Context packageContext,
 			CharacterSheet[] sheets) {
+		Log.d("CharacterPlayActivity", "createIntentForStarting: sheets.length == " + sheets.length);
 		Intent intent = new Intent(packageContext, CharacterPlayActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		// set flag so we do not use template mode
