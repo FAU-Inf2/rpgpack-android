@@ -90,10 +90,16 @@ public class Game implements Parcelable, Serializable {
 		characterSheetList.add(characterSheet);
 		return true;
 	}
+	
+	
 	@JsonIgnore
 	public boolean removeCharacterSheet(CharacterSheet characterSheet) {
 		characterSheetList.remove(characterSheet);
 		return true;
+	}
+	
+	public boolean isInCharacterList(CharacterSheet characterSheet) {
+		return this.characterSheetList.contains(characterSheet);
 	}
 
 //	public boolean addCharacter(GameCharacter character) {

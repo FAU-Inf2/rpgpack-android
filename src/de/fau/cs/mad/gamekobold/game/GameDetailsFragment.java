@@ -43,6 +43,7 @@ public class GameDetailsFragment extends Fragment {
 	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
+	public static final String EXTRA_MODE_GAME_CREATION = "de.fau.cs.mad.gamekobold.gamecreation";
 	// private List<GameCharakter> charakterList;
 	// private List<String> tagList;
 
@@ -206,7 +207,9 @@ public class GameDetailsFragment extends Fragment {
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
-				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, (Parcelable)game);
+				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT,
+						(Parcelable) game);
+				i.putExtra(EXTRA_MODE_GAME_CREATION, true);
 				startActivity(i);
 			}
 		});
@@ -309,7 +312,5 @@ public class GameDetailsFragment extends Fragment {
 					.substring(lastSlashPos + 1);
 		}
 	}
-	
-	
-	
+
 }

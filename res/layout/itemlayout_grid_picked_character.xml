@@ -12,7 +12,6 @@
         android:layout_centerHorizontal="true"
 
         android:adjustViewBounds="true"
-        android:clickable="false"
         android:gravity="center"
         android:maxWidth="40dip"
         android:padding="9dp"

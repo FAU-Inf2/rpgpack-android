@@ -100,7 +100,11 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 	public void onCharacterSelected(CharacterSheet clickedChar) {
 		Log.d("CreateNewGameActivity", "clickedChar " + clickedChar.getName());
 		this.clickedChar = clickedChar;
-		curGame.addCharacterSheet(clickedChar);
+		if (curGame.isInCharacterList(clickedChar)) {
+			curGame.removeCharacterSheet(clickedChar);
+		} else {
+			curGame.addCharacterSheet(clickedChar);
+		}
 		pickedCharacterGridAdapter.notifyDataSetChanged();
 		// TODO add character to selCharacter
 	}
