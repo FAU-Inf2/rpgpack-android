@@ -25,6 +25,7 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 	private String gameName;
 	private CharacterSheet clickedChar;
 	private Game curGame;
+	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
 
 	@Override
 	protected Fragment createFragment() {
@@ -91,20 +92,33 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 
 	@Override
 	public void onGameNamePass(String gameName) {
-		Log.d("LOG", "gameName " + gameName);
+		Log.d("CreateNewGameActivity", "gameName " + gameName);
 		this.gameName = gameName;
 	}
 
 	@Override
 	public void onCharacterSelected(CharacterSheet clickedChar) {
-		Log.d("LOG", "clickedChar " + clickedChar.getName());
+		Log.d("CreateNewGameActivity", "clickedChar " + clickedChar.getName());
 		this.clickedChar = clickedChar;
 		curGame.addCharacterSheet(clickedChar);
+		pickedCharacterGridAdapter.notifyDataSetChanged();
+		// TODO add character to selCharacter
 	}
 
 	@Override
 	public void onGamePass(Game curGame) {
-		Log.d("LOG", "curGame " + curGame.getGameName());
+		Log.d("CreateNewGameActivity", "curGame " + curGame.getGameName());
 		this.curGame = curGame;
+
+		// TODO pass also selCharacter
+	}
+
+	@Override
+	public void onSelCharAdapterPass(
+			PickedCharacterGridAdapter pickedCharacterGridAdapter) {
+		Log.d("CreateNewGameActivity", "pickedCharacterGridAdapter "
+				+ pickedCharacterGridAdapter.toString());
+		this.pickedCharacterGridAdapter = pickedCharacterGridAdapter;
+
 	}
 }

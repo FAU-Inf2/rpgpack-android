@@ -90,7 +90,7 @@ public class CharacterBrowserFragment extends ListFragment {
 				final CharacterSheet clickedChar = adapter.getItem(position);
 
 				if (mode_pickCharacterForGameCreation) {
-					// TODO change color and add to the pickedCharacterGrid
+					// TODO change backgroud color for selected character and add it to the pickedCharacterGrid
 
 					RelativeLayout selRow = (RelativeLayout) view
 							.findViewById(R.id.relativeLayout);
@@ -232,25 +232,5 @@ public class CharacterBrowserFragment extends ListFragment {
 			}
 		}
 	}
-
-	// /**
-	// * Required interface for hosting activities.
-	// */
-	// public interface onCharacterSelectedListener {
-	// public void onCharacterSelected(CharacterSheet clickedChar);
-	// }
-	//
-	// @Override
-	// public void onAttach(Activity activity) {
-	// super.onAttach(activity);
-	// if (activity instanceof onCharacterSelectedListener) {
-	// listener = (onCharacterSelectedListener) activity;
-	// } else {
-	// throw new ClassCastException(
-	// activity.toString()
-	// +
-	// " must implemenet CharacterBrowserFragment.onCharacterSelectedListener");
-	// }
-	// }
 
 }

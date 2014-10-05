@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
@@ -74,15 +75,16 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
 			characterName.setText(curCharacter.getName());
-			ImageView characterIconView = (ImageView) convertView
+			ImageButton characterIconView = (ImageButton) convertView
 					.findViewById(R.id.character_icon_circle);
 
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-			if(bitmap == null) {
+			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
+					context);
+			if (bitmap == null) {
 				// set some default game icon
-				characterIconView.setImageResource(R.drawable.person_without_plus);
-			}
-			else {
+				characterIconView
+						.setImageResource(R.drawable.person_without_plus);
+			} else {
 				// set game icon
 				characterIconView.setImageBitmap(bitmap);
 			}
@@ -94,23 +96,22 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 			int i = 0;
 			for (CharacterSheet g : curGame.getCharacterSheetList()) {
 				i++;
-				Log.e("PickedCharcterAdapter-reuse",
-						i + " - " + g.getName());
+				Log.e("PickedCharcterAdapter-reuse", i + " - " + g.getName());
 			}
 			CharacterSheet curCharacter = characters.get(position);
 
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
 			characterName.setText(curCharacter.getName());
-			ImageView characterIconView = (ImageView) convertView
+			ImageButton characterIconView = (ImageButton) convertView
 					.findViewById(R.id.character_icon_circle);
 
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-			if(bitmap == null) {
+			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
+					context);
+			if (bitmap == null) {
 				// set some default game icon
-				characterIconView.setImageResource(R.drawable.person_without_plus);
-			}
-			else {
+				characterIconView.setImageResource(R.drawable.character_white);
+			} else {
 				// set game icon
 				characterIconView.setImageBitmap(bitmap);
 			}

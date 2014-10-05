@@ -63,7 +63,7 @@ public class CreateNewGameFragment extends Fragment {
 	private ListView characterList;
 	private CharacterSheet curCharacter;
 	private Button infoButton;
-	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
+	private PickedCharacterGridAdapter pickedCharacterGridAdapter = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,8 @@ public class CreateNewGameFragment extends Fragment {
 		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_grid_picked_character,
 				curGame);
-
+		mCallbacks.onSelCharAdapterPass(pickedCharacterGridAdapter);
+		
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView
@@ -509,6 +510,9 @@ public class CreateNewGameFragment extends Fragment {
 		public void onGameNamePass(String gameName);
 
 		public void onGamePass(Game curGame);
+
+		public void onSelCharAdapterPass(
+				PickedCharacterGridAdapter pickedCharacterGridAdapter);
 	}
 
 	@Override

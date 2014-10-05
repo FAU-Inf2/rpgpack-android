@@ -4,41 +4,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <ImageButton
         android:id="@+id/character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_template_browser_circle_green"
+        android:clickable="false"
         android:gravity="center"
         android:maxWidth="40dip"
         android:padding="9dp"
         android:scaleType="fitXY"
         android:src="@drawable/character_white" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textItemTitle"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/character_icon_circle"
-        android:layout_alignRight="@+id/character_icon_circle"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/character_icon_circle"
-        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="2dp"
-            android:gravity="center"
-            android:text="@string/name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white"
-            android:textSize="12sp" >
-        </TextView>
-    </RelativeLayout>
+        android:gravity="center"
+        android:text="@string/name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
 
 </RelativeLayout>
