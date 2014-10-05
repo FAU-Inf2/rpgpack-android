@@ -61,24 +61,38 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_new_template);
 		myActivity = this;
-		// standard mode is to create a new one
-		editTemplate = false;
-		templateEdited = false;
-		// check if we got a template for editing
-		final Intent intent = getIntent();
-		final Bundle extras = intent.getExtras();
-		if(extras != null) {
-			currentTemplate = extras.getParcelable(Template.PARCELABLE_STRING);
-			if(currentTemplate != null) {
-				// set mode
-				editTemplate = true;
+		
+		if(savedInstanceState == null) {
+			// standard mode is to create a new one
+			editTemplate = false;
+			templateEdited = false;
+			// check if we got a template for editing
+			final Intent intent = getIntent();
+			final Bundle extras = intent.getExtras();
+			if(extras != null) {
+				currentTemplate = extras.getParcelable(Template.PARCELABLE_STRING);
+				if(currentTemplate != null) {
+					// set mode
+					editTemplate = true;
+				}
+			}
+			if(editTemplate == false) {
+				// creation mode so create a new one
+				currentTemplate = new Template();
 			}
 		}
-		if(editTemplate == false) {
-			// creation mode so create a new one
-			currentTemplate = new Template();
+		else {
+			Uri uri = (Uri)savedInstanceState.getParcelable("uri");
+			if(uri != null) {
+				imageUri = uri;
+			}
+			Template template = (Template)savedInstanceState.getParcelable("template");
+			if(template != null) {
+				currentTemplate = template;
+			}
+			editTemplate = savedInstanceState.getBoolean("edit");
+			templateEdited = savedInstanceState.getBoolean("templateEdited");	
 		}
-
 		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
 		tvTemplateName = (TextView) findViewById(R.id.templateName);
 		tvGameName = (TextView) findViewById(R.id.worldName);
@@ -87,7 +101,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		final Button infoButton = (Button) findViewById(R.id.buttonInfo);
 
 		// set values from template and change button text
-		if(editTemplate) {
+		if(editTemplate || (savedInstanceState != null)) {
 			tvTemplateName.setText(currentTemplate.getTemplateName());
 			tvGameName.setText(currentTemplate.getGameName());
 			tvDescription.setText(currentTemplate.getDescription());
@@ -270,11 +284,25 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		checkAndTakeOverChanges();
+		if(imageUri != null) {
+			savedInstanceState.putParcelable("uri", imageUri);
+		}
+		if(currentTemplate != null) {
+			savedInstanceState.putParcelable("template", currentTemplate);
+		}
+		savedInstanceState.putBoolean("edit", editTemplate);
+		savedInstanceState.putBoolean("templateEdited", templateEdited);
+	}
+
+	@Override
 	// to handle the selected image
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode != RESULT_OK)
 			return;
-
+		Log.d("CREATE NEW TEMPLATE..", "onActivityResult");
 		Bitmap bitmap = null;
 		String path = "";
 
@@ -293,15 +321,18 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		} else {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
-			path = imageUri.getPath();
-			bitmap = ThumbnailLoader.loadThumbnail(path, this);
+			if(imageUri != null) {
+				path = imageUri.getPath();
+				bitmap = ThumbnailLoader.loadThumbnail(path, this);
+			}
 		}
-
-		final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
-		addImageButton.setImageBitmap(bitmap);
-		// set icon path
-		currentTemplate.setIconPath(path);
-		templateEdited = true;
+		if(bitmap != null) {
+			final ImageButton addImageButton = (ImageButton) findViewById(R.id.imageButtonTemplateIcon);
+			addImageButton.setImageBitmap(bitmap);
+			// set icon path
+			currentTemplate.setIconPath(path);
+			templateEdited = true;	
+		}
 	}
 
 	@Override
