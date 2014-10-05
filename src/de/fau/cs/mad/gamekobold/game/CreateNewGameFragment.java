@@ -74,8 +74,10 @@ public class CreateNewGameFragment extends Fragment {
 
 		// check if we have to deal with newGame or dameToEdit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-			curGame = (Game) getActivity().getIntent().getSerializableExtra(
+			curGame = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME_TO_EDIT);
+//			curGame = (Game) getActivity().getIntent().getSerializableExtra(
+//					EXTRA_GAME_TO_EDIT);
 		} else {
 			curGame = new Game();
 		}
@@ -101,8 +103,10 @@ public class CreateNewGameFragment extends Fragment {
 
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
-			curGame = (Game) getActivity().getIntent().getSerializableExtra(
-					EXTRA_GAME_TO_EDIT);
+			curGame = (Game) getActivity().getIntent().getParcelableExtra(
+			EXTRA_GAME_TO_EDIT);
+//			curGame = (Game) getActivity().getIntent().getSerializableExtra(
+//					EXTRA_GAME_TO_EDIT);
 
 			gameName.setText(curGame.getGameName());
 			gameDate.setText(curGame.getDate());

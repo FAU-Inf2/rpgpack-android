@@ -39,7 +39,7 @@ public abstract class JacksonInterface {
 	/**
 	 * If set to false, jackson will not intent or align anything. Uses less space if set to false.
 	 */
-	public static boolean use_pretty_writer = false;
+	public static boolean use_pretty_writer = true;
 
 	/**
 	 * 

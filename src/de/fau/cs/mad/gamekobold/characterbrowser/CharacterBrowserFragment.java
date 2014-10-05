@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -111,7 +112,7 @@ public class CharacterBrowserFragment extends ListFragment {
 					// edit character
 					Intent i = new Intent(getActivity(),
 							CharacterDetailsActivity.class);
-					i.putExtra("CharacterSheet", clickedChar);
+					i.putExtra("CharacterSheet", (Parcelable)clickedChar);
 					startActivity(i);
 				}
 			}

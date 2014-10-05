@@ -79,8 +79,6 @@
             android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.PlayCharacterActivity" >
-        </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.CharacterPlayActivity"
             android:theme="@style/template_generator_style"

@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -205,7 +206,7 @@ public class GameDetailsFragment extends Fragment {
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
-				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, game);
+				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT, (Parcelable)game);
 				startActivity(i);
 			}
 		});

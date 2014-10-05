@@ -1,6 +1,5 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>
-		 {
+{
 	/* METADATA */
 	private String name;
 	private int level;

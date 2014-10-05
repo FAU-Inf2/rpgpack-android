@@ -1,14 +1,20 @@
 package de.fau.cs.mad.gamekobold.game;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import android.util.Log;
 
 /**
@@ -16,7 +22,7 @@ import android.util.Log;
  * <code>characterList</code>.
  * 
  */
-public class Game implements Serializable {
+public class Game implements Parcelable, Serializable {
 	private String gameName;
 	private String author;
 	private String date = null;
@@ -61,6 +67,7 @@ public class Game implements Serializable {
 	/**
 	 * needed for json.
 	 */
+	@JsonCreator
 	public Game() {
 		/**
 		 * need to set all fields to default values for json.
@@ -76,14 +83,14 @@ public class Game implements Serializable {
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 	}
-
+	@JsonIgnore
 	public boolean addCharacterSheet(CharacterSheet characterSheet) {
 		Log.e("Character is null?", "" + (characterSheet == null));
 		Log.e("List is null?", "" + (characterSheetList == null));
 		characterSheetList.add(characterSheet);
 		return true;
 	}
-
+	@JsonIgnore
 	public boolean removeCharacterSheet(CharacterSheet characterSheet) {
 		characterSheetList.remove(characterSheet);
 		return true;
@@ -162,17 +169,40 @@ public class Game implements Serializable {
 //		return;
 //	}
 	
+	@JsonIgnore
 	public List<CharacterSheet> getCharacterSheetList() {
 		return characterSheetList;
 	}
 	
-	@JsonProperty("characters")
+	@JsonIgnore
 	public void setCharacterSheetList(List<CharacterSheet> characterSheetList) {
 		Log.e("characterSheetList",
 				"Setting characterSheetList to " + characterSheetList.size());
 		this.characterSheetList.clear();
 		this.characterSheetList.addAll(characterSheetList);
 		return;
+	}
+
+	private List<String> getCharacterList() {
+		ArrayList<String> characterPaths = new ArrayList<String>();
+		for(final CharacterSheet sheet : characterSheetList) {
+			characterPaths.add(sheet.getFileAbsolutePath());
+		}
+		return  characterPaths;
+	}
+	
+	@JsonProperty("characters")
+	private void setCharacterList(List<String> characterList) {
+		for(final String absPath : characterList) {
+			try {
+					File characterFile = new File(absPath);
+					CharacterSheet character = JacksonInterface.loadCharacterSheet(characterFile, false);
+					characterSheetList.add(character);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public String getIconPath() {
@@ -215,6 +245,51 @@ public class Game implements Serializable {
 		this.iconPath = otherGame.iconPath;
 	}
 	
+	// PARCELABLE START
+		@Override
+		public int describeContents() {
+			return 0;
+		}
 
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(gameName);
+			dest.writeString(author);
+			dest.writeString(date);
+			dest.writeStringList(tagList);
+			dest.writeString(description);
+			dest.writeList(characterSheetList);
+			dest.writeString(iconPath);
+			dest.writeString(fileAbsolutePath);
+			dest.writeLong(fileTimeStamp);
 
+		}
+
+		public static final Parcelable.Creator<Game> CREATOR = new Creator<Game>() {
+			@Override
+			public Game[] newArray(int size) {
+				return new Game[size];
+			}
+
+			@Override
+			public Game createFromParcel(Parcel source) {
+				// IMPORTANT read in same order as written (FIFO)
+				Game game = new Game();
+				game.setGameName(source.readString());
+				game.setAuthor(source.readString());
+				game.setDate(source.readString());
+				List<String> tagList = new LinkedList<String>();
+				source.readStringList(tagList);
+				game.setTagList(tagList);
+				game.setDescription(source.readString());
+				List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
+				source.readList(characterList, CharacterSheet.class.getClassLoader());
+				game.setIconPath(source.readString());
+				game.setFileAbsolutePath(source.readString());
+				game.setFileTimeStamp(source.readLong());
+				return game;
+			}
+		};
+
+		// PARCELABLE END
 }
