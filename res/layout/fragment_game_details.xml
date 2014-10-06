@@ -65,19 +65,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewWorldName"
-        android:layout_below="@+id/textViewWorldName"
-        android:layout_toLeftOf="@+id/buttonGameInfoPopup"
-        android:text="@string/creation_date"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
+    
     <GridView
         android:id="@+id/gridViewCharacters"
         android:layout_width="match_parent"
@@ -99,5 +87,28 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/info2_white"
         android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/textViewGM"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewWorldName"
+        android:layout_below="@+id/textViewWorldName"
+        android:text="Gamemaster"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iconGame"
+        android:layout_alignLeft="@+id/textViewGM"
+        android:layout_toLeftOf="@+id/buttonGameInfoPopup"
+        android:text="@string/creation_date"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 </RelativeLayout>

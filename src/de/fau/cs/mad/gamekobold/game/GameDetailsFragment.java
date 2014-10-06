@@ -55,6 +55,7 @@ public class GameDetailsFragment extends Fragment {
 	private TextView date;
 	private TextView description;
 	private TextView worldName;
+	private TextView gameMaster;
 	private ImageView gameIcon;
 	private Button infoButton;
 	private Button editGameButton;
@@ -95,12 +96,16 @@ public class GameDetailsFragment extends Fragment {
 		gameName = (TextView) view.findViewById(R.id.gameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);
 		worldName = (TextView) view.findViewById(R.id.textViewWorldName);
+		gameMaster = (TextView) view.findViewById(R.id.textViewGM);
 		gameIcon = (ImageView) view.findViewById(R.id.iconGame);
 		infoButton = (Button) view.findViewById(R.id.buttonGameInfoPopup);
 		gameCharacterGridView = (GridView) view
 				.findViewById(R.id.gridViewCharacters);
+
 		gameName.setText(game.getGameName());
+		worldName.setText(game.getWorldName());
 		date.setText(game.getDate());
+		gameMaster.setText(game.getGameMaster());
 
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_game_details_charakter, game);

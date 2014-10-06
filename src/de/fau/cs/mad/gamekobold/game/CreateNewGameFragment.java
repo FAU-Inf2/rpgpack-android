@@ -76,8 +76,8 @@ public class CreateNewGameFragment extends Fragment {
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME_TO_EDIT);
-//			curGame = (Game) getActivity().getIntent().getSerializableExtra(
-//					EXTRA_GAME_TO_EDIT);
+			// curGame = (Game) getActivity().getIntent().getSerializableExtra(
+			// EXTRA_GAME_TO_EDIT);
 		} else {
 			curGame = new Game();
 		}
@@ -98,15 +98,16 @@ public class CreateNewGameFragment extends Fragment {
 		gameDate = (EditText) view.findViewById(R.id.gameDateText);
 		addImageButton = (ImageButton) view.findViewById(R.id.buttonAddIcon);
 		infoButton = (Button) view.findViewById(R.id.buttonInfoPopup);
+
 		pickedCharacterGridView = (GridView) view
 				.findViewById(R.id.pickedCharacterGridView);
 
 		// we've got a game for edit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getParcelableExtra(
-			EXTRA_GAME_TO_EDIT);
-//			curGame = (Game) getActivity().getIntent().getSerializableExtra(
-//					EXTRA_GAME_TO_EDIT);
+					EXTRA_GAME_TO_EDIT);
+			// curGame = (Game) getActivity().getIntent().getSerializableExtra(
+			// EXTRA_GAME_TO_EDIT);
 
 			gameName.setText(curGame.getGameName());
 			gameDate.setText(curGame.getDate());
@@ -123,25 +124,25 @@ public class CreateNewGameFragment extends Fragment {
 				getActivity(), R.layout.itemlayout_grid_picked_character,
 				curGame);
 		mCallbacks.onSelCharAdapterPass(pickedCharacterGridAdapter);
-		
+
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
-//		pickedCharacterGridView
-//				.setOnItemClickListener(new OnItemClickListener() {
-//					@Override
-//					public void onItemClick(AdapterView<?> adapterView,
-//							View view, int position, long id) {
-//						curCharacter = (CharacterSheet) adapterView
-//								.getItemAtPosition(position);
-//
-//						Toast.makeText(
-//								getActivity(),
-//								((TextView) view
-//										.findViewById(R.id.textItemTitle))
-//										.getText(), Toast.LENGTH_SHORT).show();
-//						// TODO do something
-//					}
-//				});
+		// pickedCharacterGridView
+		// .setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> adapterView,
+		// View view, int position, long id) {
+		// curCharacter = (CharacterSheet) adapterView
+		// .getItemAtPosition(position);
+		//
+		// Toast.makeText(
+		// getActivity(),
+		// ((TextView) view
+		// .findViewById(R.id.textItemTitle))
+		// .getText(), Toast.LENGTH_SHORT).show();
+		// // TODO do something
+		// }
+		// });
 
 		pickedCharacterGridView
 				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

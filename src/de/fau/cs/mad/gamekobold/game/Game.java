@@ -22,15 +22,16 @@ import android.util.Log;
  * <code>characterList</code>.
  * 
  */
+// TODO Benni, added new Element gameMaster
 public class Game implements Parcelable, Serializable {
 	private String gameName;
-	private String author;
+	private String gameMaster;
 	private String date = null;
 	private List<String> tagList;
 	private String description;
-//	private List<GameCharacter> characterList;
+	// private List<GameCharacter> characterList;
 	private List<CharacterSheet> characterSheetList;
-
+	private String worldName;
 	private String iconPath;
 	private String fileAbsolutePath;
 	private long fileTimeStamp;
@@ -41,7 +42,7 @@ public class Game implements Parcelable, Serializable {
 		this(gameName, date, iconPath);
 		this.tagList = tagList;
 		this.description = description;
-//		this.setCharakterList(characterList);
+		// this.setCharakterList(characterList);
 		this.setCharacterSheetList(characterSheetList);
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
@@ -73,45 +74,45 @@ public class Game implements Parcelable, Serializable {
 		 * need to set all fields to default values for json.
 		 */
 		this.gameName = "";
-		this.author = "";
+		this.gameMaster = "";
 		this.date = "";
 		this.tagList = new LinkedList<String>();
 		this.description = "";
-//		this.characterList = new ArrayList<GameCharacter>();
+		// this.characterList = new ArrayList<GameCharacter>();
 		this.characterSheetList = new ArrayList<CharacterSheet>();
 		this.iconPath = "";
 		this.fileAbsolutePath = "";
 		this.fileTimeStamp = 0;
 	}
+
 	@JsonIgnore
 	public boolean addCharacterSheet(CharacterSheet characterSheet) {
 		characterSheetList.add(characterSheet);
 		return true;
 	}
-	
-	
+
 	@JsonIgnore
 	public boolean removeCharacterSheet(CharacterSheet characterSheet) {
 		characterSheetList.remove(characterSheet);
 		return true;
 	}
-	
+
 	public boolean isInCharacterList(CharacterSheet characterSheet) {
 		return this.characterSheetList.contains(characterSheet);
 	}
 
-//	public boolean addCharacter(GameCharacter character) {
-//		Log.e("Character is null?", "" + (character == null));
-//		Log.e("List is null?", "" + (characterList == null));
-//		characterList.add(character);
-//		return true;
-//	}
-//
-//	public boolean removeCharacter(GameCharacter character) {
-//		characterList.remove(character);
-//		return true;
-//	}
-	
+	// public boolean addCharacter(GameCharacter character) {
+	// Log.e("Character is null?", "" + (character == null));
+	// Log.e("List is null?", "" + (characterList == null));
+	// characterList.add(character);
+	// return true;
+	// }
+	//
+	// public boolean removeCharacter(GameCharacter character) {
+	// characterList.remove(character);
+	// return true;
+	// }
+
 	public String getGameName() {
 		return gameName;
 	}
@@ -121,13 +122,21 @@ public class Game implements Parcelable, Serializable {
 		this.gameName = gameName;
 	}
 
-	public String getAuthor() {
-		return author;
+	public String getGameMaster() {
+		return gameMaster;
 	}
 
 	@JsonProperty("author")
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setGameMaster(String gameMaster) {
+		this.gameMaster = gameMaster;
+	}
+
+	public String getWorldName() {
+		return worldName;
+	}
+
+	public void setWorldName(String worldName) {
+		this.worldName = worldName;
 	}
 
 	public String getDate() {
@@ -160,28 +169,28 @@ public class Game implements Parcelable, Serializable {
 		this.description = description;
 	}
 
-//	public List<GameCharacter> getCharacterList() {
-//		return characterList;
-//	}
-//
-//	@JsonProperty("characters")
-//	public void setCharakterList(List<GameCharacter> characterList) {
-//		Log.e("CharacterList",
-//				"Setting CharacterList to " + characterList.size());
-//		this.characterList.clear();
-//		this.characterList.addAll(characterList);
-//		return;
-//	}
-	
+	// public List<GameCharacter> getCharacterList() {
+	// return characterList;
+	// }
+	//
+	// @JsonProperty("characters")
+	// public void setCharakterList(List<GameCharacter> characterList) {
+	// Log.e("CharacterList",
+	// "Setting CharacterList to " + characterList.size());
+	// this.characterList.clear();
+	// this.characterList.addAll(characterList);
+	// return;
+	// }
+
 	@JsonIgnore
 	public List<CharacterSheet> getCharacterSheetList() {
 		return characterSheetList;
 	}
-	
+
 	@JsonIgnore
 	public void setCharacterSheetList(List<CharacterSheet> characterSheetList) {
-		Log.e("characterSheetList",
-				"Setting characterSheetList to " + characterSheetList.size());
+		Log.e("characterSheetList", "Setting characterSheetList to "
+				+ characterSheetList.size());
 		this.characterSheetList.clear();
 		this.characterSheetList.addAll(characterSheetList);
 		return;
@@ -189,26 +198,26 @@ public class Game implements Parcelable, Serializable {
 
 	private List<String> getCharacterList() {
 		ArrayList<String> characterPaths = new ArrayList<String>();
-		for(final CharacterSheet sheet : characterSheetList) {
+		for (final CharacterSheet sheet : characterSheetList) {
 			characterPaths.add(sheet.getFileAbsolutePath());
 		}
-		return  characterPaths;
+		return characterPaths;
 	}
-	
+
 	@JsonProperty("characters")
 	private void setCharacterList(List<String> characterList) {
-		for(final String absPath : characterList) {
+		for (final String absPath : characterList) {
 			try {
-					File characterFile = new File(absPath);
-					CharacterSheet character = JacksonInterface.loadCharacterSheet(characterFile, false);
-					characterSheetList.add(character);
-			}
-			catch(Exception e) {
+				File characterFile = new File(absPath);
+				CharacterSheet character = JacksonInterface.loadCharacterSheet(
+						characterFile, false);
+				characterSheetList.add(character);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	public String getIconPath() {
 		return iconPath;
 	}
@@ -238,62 +247,63 @@ public class Game implements Parcelable, Serializable {
 
 	public void takeOverValues(final Game otherGame) {
 		this.gameName = otherGame.gameName;
-		this.author = otherGame.author;
+		this.gameMaster = otherGame.gameMaster;
 		this.date = otherGame.date;
 		this.tagList = otherGame.tagList;
 		this.description = otherGame.description;
-//		this.characterList = otherGame.characterList;
+		// this.characterList = otherGame.characterList;
 		this.characterSheetList = otherGame.characterSheetList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
 		this.fileTimeStamp = otherGame.fileTimeStamp;
 		this.iconPath = otherGame.iconPath;
 	}
-	
+
 	// PARCELABLE START
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(gameName);
+		dest.writeString(gameMaster);
+		dest.writeString(date);
+		dest.writeStringList(tagList);
+		dest.writeString(description);
+		dest.writeList(characterSheetList);
+		dest.writeString(iconPath);
+		dest.writeString(fileAbsolutePath);
+		dest.writeLong(fileTimeStamp);
+
+	}
+
+	public static final Parcelable.Creator<Game> CREATOR = new Creator<Game>() {
 		@Override
-		public int describeContents() {
-			return 0;
+		public Game[] newArray(int size) {
+			return new Game[size];
 		}
 
 		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			dest.writeString(gameName);
-			dest.writeString(author);
-			dest.writeString(date);
-			dest.writeStringList(tagList);
-			dest.writeString(description);
-			dest.writeList(characterSheetList);
-			dest.writeString(iconPath);
-			dest.writeString(fileAbsolutePath);
-			dest.writeLong(fileTimeStamp);
-
+		public Game createFromParcel(Parcel source) {
+			// IMPORTANT read in same order as written (FIFO)
+			Game game = new Game();
+			game.setGameName(source.readString());
+			game.setGameMaster(source.readString());
+			game.setDate(source.readString());
+			List<String> tagList = new LinkedList<String>();
+			source.readStringList(tagList);
+			game.setTagList(tagList);
+			game.setDescription(source.readString());
+			List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
+			source.readList(characterList,
+					CharacterSheet.class.getClassLoader());
+			game.setIconPath(source.readString());
+			game.setFileAbsolutePath(source.readString());
+			game.setFileTimeStamp(source.readLong());
+			return game;
 		}
+	};
 
-		public static final Parcelable.Creator<Game> CREATOR = new Creator<Game>() {
-			@Override
-			public Game[] newArray(int size) {
-				return new Game[size];
-			}
-
-			@Override
-			public Game createFromParcel(Parcel source) {
-				// IMPORTANT read in same order as written (FIFO)
-				Game game = new Game();
-				game.setGameName(source.readString());
-				game.setAuthor(source.readString());
-				game.setDate(source.readString());
-				List<String> tagList = new LinkedList<String>();
-				source.readStringList(tagList);
-				game.setTagList(tagList);
-				game.setDescription(source.readString());
-				List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
-				source.readList(characterList, CharacterSheet.class.getClassLoader());
-				game.setIconPath(source.readString());
-				game.setFileAbsolutePath(source.readString());
-				game.setFileTimeStamp(source.readLong());
-				return game;
-			}
-		};
-
-		// PARCELABLE END
+	// PARCELABLE END
 }
