@@ -74,6 +74,7 @@
         android:layout_alignTop="@+id/character_icon_circle"
         android:layout_toRightOf="@+id/textValue"
         android:button="@android:drawable/btn_star"
-        android:focusable="false" />
+        android:focusable="false"
+        android:visibility="gone" />
 
 </RelativeLayout>
