@@ -110,7 +110,9 @@ public class CreateNewGameFragment extends Fragment {
 			// EXTRA_GAME_TO_EDIT);
 
 			gameName.setText(curGame.getGameName());
-			gameDate.setText(curGame.getDate());
+			// gameDate.setText(curGame.getDate());
+			worldName.setText(curGame.getWorldName());
+			gameDate.setText(curGame.getGameMaster());
 
 			final Bitmap icon = ThumbnailLoader.loadThumbnail(
 					curGame.getIconPath(), getActivity());
@@ -180,17 +182,6 @@ public class CreateNewGameFragment extends Fragment {
 										curGame.removeCharacterSheet(curGameCharacter);
 										pickedCharacterGridAdapter
 												.notifyDataSetChanged();
-
-										// // remove highlighting
-										// ArrayList<GameCharacter>
-										// selectedCharacters =
-										// ((CharacterGridAdapter)
-										// expandableListAdapter.adapter).selectedCharacters;
-										// if (selectedCharacters
-										// .contains(curGameCharacter)) {
-										// selectedCharacters
-										// .remove(curGameCharacter);
-										// }
 									}
 								});
 						builder.create().show();

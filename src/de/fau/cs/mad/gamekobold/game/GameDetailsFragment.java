@@ -40,6 +40,7 @@ import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class GameDetailsFragment extends Fragment {
 	public static final String EXTRA_GAME_NAME = "de.fau.cs.mad.gamekobold.game.gamename";
+	public static final String EXTRA_GAME = "de.fau.cs.mad.gamekobold.game";
 	public static final String MODE_TEMPLATE = "MODE_TEMPLATE";
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
@@ -82,8 +83,17 @@ public class GameDetailsFragment extends Fragment {
 				EXTRA_GAME_NAME);
 
 		// TODO change it!!!
-		Log.d("GameDetailsFragment", "getGame >>" + gName);
-		game = GameLab.get(getActivity()).getGame(gName);
+		// Log.d("GameDetailsFragment", "getGame >>" + gName);
+		// game = GameLab.get(getActivity()).getGame(gName);
+
+		if ((getActivity().getIntent().hasExtra(EXTRA_GAME))) {
+			game = (Game) getActivity().getIntent().getParcelableExtra(
+					EXTRA_GAME);
+			// curGame = (Game) getActivity().getIntent().getSerializableExtra(
+			// EXTRA_GAME_TO_EDIT);
+		} else {
+			game = new Game();
+		}
 
 		if (!(game == null)) {
 			getActivity().setTitle(game.getGameName());

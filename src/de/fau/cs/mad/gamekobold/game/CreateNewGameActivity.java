@@ -6,6 +6,7 @@ import java.util.Date;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,8 +78,10 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 						// start it
 						Intent i = new Intent(CreateNewGameActivity.this,
 								GameDetailsActivity.class);
-						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-								curGame.getGameName());
+						i.putExtra(GameDetailsFragment.EXTRA_GAME,
+								(Parcelable) curGame);
+//						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+//								curGame.getGameName());
 						startActivity(i);
 					}
 

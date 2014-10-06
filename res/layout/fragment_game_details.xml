@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_below="@+id/textViewWorldName"
-        android:text="Gamemaster"
+        android:text="@string/gamemaster"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />
