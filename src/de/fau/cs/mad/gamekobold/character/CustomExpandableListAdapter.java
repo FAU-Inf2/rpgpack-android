@@ -54,7 +54,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class CustomExpandableListAdapter extends BaseExpandableListAdapter implements OnCheckedChangeListener {
+public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 	  private Context mContext;
 	  private String[][] mContents;
 	  private String[] mTitles;
@@ -135,14 +135,36 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 			  //			  content = popup;
 		  }
 		  else if(mTypes[groupPosition][childPosition] == content_type.checkbox){
-			  CheckBox cb = new CheckBox(mContext);
+			  final CheckBox cb = new CheckBox(mContext);
 			  cb.setButtonDrawable(R.drawable.custom_checkbox);
 			  final IEditableContent jacksonEntry =
 					  mJacksonTable.getEntry(childPosition, groupPosition);
 			  if(jacksonEntry != null) {
 				  // sets the onCheckedChangeListener
 				  // this is needed so we can take over the changes to our jackson model
-				  cb.setOnCheckedChangeListener(this);
+				  if(SlideoutNavigationActivity.getAc().inEditMode()){
+//					  cb.setOnCheckedChangeListener(this);
+					  cb.setOnClickListener(new OnClickListener(){
+
+					        @Override
+					        public void onClick(View v) {
+					            // you might keep a reference to the CheckBox to avoid this class cast
+					            boolean checked = ((CheckBox)v).isChecked();
+					            IEditableContent entry = (IEditableContent) v.getTag(R.id.jackson_row_tag_id);
+					  		  	// set the new value
+					  		  	entry.setContent(String.valueOf(checked));
+					        }
+
+					    });
+				  }
+				  else{
+					  cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+							cb.setChecked(!isChecked);
+						}
+					});
+				  }
 				  // sets the associated jackson row to this 
 				  cb.setTag(R.id.jackson_row_tag_id, jacksonEntry);
 				  // set checked state to jackson state
@@ -288,16 +310,16 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 	    return true;
 	  }
 	  
-	  /**
-	   *  This is called when a checkbox changed its state.
-	   */
-	  @Override
-	  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		  // get the associated entry
-		  IEditableContent entry = (IEditableContent) buttonView.getTag(R.id.jackson_row_tag_id);
-		  // set the new value
-		  entry.setContent(String.valueOf(isChecked));
-	  }
+//	  /**
+//	   *  This is called when a checkbox changed its state.
+//	   */
+//	  @Override
+//	  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//		  // get the associated entry
+//		  IEditableContent entry = (IEditableContent) buttonView.getTag(R.id.jackson_row_tag_id);
+//		  // set the new value
+//		  entry.setContent(String.valueOf(isChecked));
+//	  }
 
 
 	  int styleStart = 0;
