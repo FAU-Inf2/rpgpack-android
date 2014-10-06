@@ -75,7 +75,7 @@
     <GridView
         android:id="@+id/pickedCharacterGridView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="62dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/buttonInfoPopup"
         android:background="@drawable/character_grid_border"
