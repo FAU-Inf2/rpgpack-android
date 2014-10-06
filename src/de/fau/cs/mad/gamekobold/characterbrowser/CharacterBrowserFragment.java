@@ -92,21 +92,21 @@ public class CharacterBrowserFragment extends ListFragment {
 					// add it to the pickedCharacterGrid
 					view.setSelected(true);
 
-					if (view.isSelected()) {
-						int color = Color.TRANSPARENT;
-						Drawable backgroundColor = view.getBackground();
-						if (backgroundColor instanceof ColorDrawable)
-							color = ((ColorDrawable) backgroundColor)
-									.getColor();
-						if ((color == getResources().getColor(
-								R.color.background_green))) {
-							view.setBackgroundColor(getResources().getColor(
-									R.color.background_dark));
-						} else {
-							view.setBackgroundColor(getResources().getColor(
-									R.color.background_green));
-						}
-					}
+					// if (view.isSelected()) {
+					// int color = Color.TRANSPARENT;
+					// Drawable backgroundColor = view.getBackground();
+					// if (backgroundColor instanceof ColorDrawable)
+					// color = ((ColorDrawable) backgroundColor)
+					// .getColor();
+					// if ((color == getResources().getColor(
+					// R.color.background_green))) {
+					// view.setBackgroundColor(getResources().getColor(
+					// R.color.background_dark));
+					// } else {
+					// view.setBackgroundColor(getResources().getColor(
+					// R.color.background_green));
+					// }
+					// }
 					// RelativeLayout selRow = (RelativeLayout) view
 					// .findViewById(R.id.relativeLayout);
 

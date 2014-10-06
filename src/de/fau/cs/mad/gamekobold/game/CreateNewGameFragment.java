@@ -126,22 +126,22 @@ public class CreateNewGameFragment extends Fragment {
 		
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
 
-		pickedCharacterGridView
-				.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> adapterView,
-							View view, int position, long id) {
-						curCharacter = (CharacterSheet) adapterView
-								.getItemAtPosition(position);
-
-						Toast.makeText(
-								getActivity(),
-								((TextView) view
-										.findViewById(R.id.textItemTitle))
-										.getText(), Toast.LENGTH_SHORT).show();
-						// TODO do something
-					}
-				});
+//		pickedCharacterGridView
+//				.setOnItemClickListener(new OnItemClickListener() {
+//					@Override
+//					public void onItemClick(AdapterView<?> adapterView,
+//							View view, int position, long id) {
+//						curCharacter = (CharacterSheet) adapterView
+//								.getItemAtPosition(position);
+//
+//						Toast.makeText(
+//								getActivity(),
+//								((TextView) view
+//										.findViewById(R.id.textItemTitle))
+//										.getText(), Toast.LENGTH_SHORT).show();
+//						// TODO do something
+//					}
+//				});
 
 		pickedCharacterGridView
 				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

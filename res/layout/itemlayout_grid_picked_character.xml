@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageButton
+    <ImageView
         android:id="@+id/character_icon_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-
         android:adjustViewBounds="true"
         android:gravity="center"
         android:maxWidth="40dip"
@@ -24,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/character_icon_circle"
-
         android:gravity="center"
         android:text="@string/name"
         android:textAppearance="?android:attr/textAppearanceMedium"

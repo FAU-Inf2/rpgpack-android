@@ -75,7 +75,7 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
 			characterName.setText(curCharacter.getName());
-			ImageButton characterIconView = (ImageButton) convertView
+			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 
 			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
@@ -103,7 +103,7 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 			TextView characterName = (TextView) convertView
 					.findViewById(R.id.textItemTitle);
 			characterName.setText(curCharacter.getName());
-			ImageButton characterIconView = (ImageButton) convertView
+			ImageView characterIconView = (ImageView) convertView
 					.findViewById(R.id.character_icon_circle);
 
 			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),

@@ -226,8 +226,8 @@
 
     <!-- fragment_create_new_game -->
     <string name="hint_game_name">Spielname&#8230;</string>
-    <string name="hint_1">Tipp1&#8230;</string>
-    <string name="hint_2">Tipp2&#8230;</string>
+    <string name="hint_playsystem">Spielwelt&#8230;</string>
+    <string name="hint_gamemaster">Gamemaster&#8230;</string>
     <string name="hint_3">Tipp3&#8230;</string>
 
     <!-- fragment_character_details -->
