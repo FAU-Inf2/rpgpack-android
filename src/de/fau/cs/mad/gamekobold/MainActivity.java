@@ -82,6 +82,7 @@ public class MainActivity extends Activity {
 		getActionBar().setCustomView(R.layout.main_actionbar);
 		leaveToast = Toast.makeText(this, getString(R.string.leave_toast),Toast.LENGTH_SHORT);
 		setContentView(R.layout.activity_main4);
+		
 	}
 
 	public void onBackPressed() {
