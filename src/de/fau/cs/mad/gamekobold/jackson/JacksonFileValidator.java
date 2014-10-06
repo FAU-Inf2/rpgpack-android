@@ -11,6 +11,7 @@ public class JacksonFileValidator {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			FileInputStream inStream = new FileInputStream(file);
+			@SuppressWarnings("unused")
 			Template template = mapper.readValue(inStream, Template.class);
 			inStream.close();
 		}
@@ -24,6 +25,7 @@ public class JacksonFileValidator {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			FileInputStream inStream = new FileInputStream(file);
+			@SuppressWarnings("unused")
 			CharacterSheet character = mapper.readValue(inStream, CharacterSheet.class);
 			inStream.close();
 		}

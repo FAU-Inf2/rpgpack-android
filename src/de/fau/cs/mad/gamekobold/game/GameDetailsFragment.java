@@ -82,6 +82,12 @@ public class GameDetailsFragment extends Fragment {
 		// TODO change it!!!
 		Log.d("GameDetailsFragment", "getGame >>" + gName);
 		game = GameLab.get(getActivity()).getGame(gName);
+		
+		// TODO hier
+//		Log.d("GameDetailsFragment", "game char sheets:"+game.getCharacterSheetList().size());
+//		for(final CharacterSheet sheet : game.getCharacterSheetList()) {
+//			Log.d("GameDetailsFragment", "char name:"+sheet.getName());
+//		}
 
 		if (!(game == null)) {
 			getActivity().setTitle(game.getGameName());

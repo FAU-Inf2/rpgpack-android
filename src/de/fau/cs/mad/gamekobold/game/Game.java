@@ -284,6 +284,7 @@ public class Game implements Parcelable, Serializable {
 				game.setDescription(source.readString());
 				List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 				source.readList(characterList, CharacterSheet.class.getClassLoader());
+				game.setCharacterSheetList(characterList);
 				game.setIconPath(source.readString());
 				game.setFileAbsolutePath(source.readString());
 				game.setFileTimeStamp(source.readLong());

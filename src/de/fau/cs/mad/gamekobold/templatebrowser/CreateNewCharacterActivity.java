@@ -43,14 +43,27 @@ public class CreateNewCharacterActivity extends Activity implements
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_FILE = 2;
 
+	// layout stuff
 	private RelativeLayout relLayout;
+	private ImageButton characterIconButton;
+	// data stuff
 	private CharacterSheet sheet;
 	private Uri iconUri;
-	private ImageButton characterIconButton;
 	private String templateFileName;
 	private boolean characterAltered;
 	private File characterDirectoryFile;
 	private de.fau.cs.mad.gamekobold.templatebrowser.Template curTemplate;
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putParcelable("uri", iconUri);
+		savedInstanceState.putParcelable("character", sheet);
+		savedInstanceState.putString("templateFileName", templateFileName);
+		savedInstanceState.putBoolean("altered", characterAltered);
+		savedInstanceState.putSerializable("curTemplate", curTemplate);
+		savedInstanceState.putSerializable("characterDirectoryFile", characterDirectoryFile);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,35 +72,58 @@ public class CreateNewCharacterActivity extends Activity implements
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		sheet = null;
-		characterAltered = false;
-		characterDirectoryFile = null;
-
 		relLayout = (RelativeLayout) findViewById(R.id.relativeLayout1);
 		final EditText description = (EditText) findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button) findViewById(R.id.button2);
 		final EditText characterName = (EditText) findViewById(R.id.character_name_edittext);
 		final EditText characterLevel = (EditText) findViewById(R.id.character_level_edittext);
 		characterIconButton = (ImageButton) findViewById(R.id.imageButton1);
-
-		final Intent intent = getIntent();
-		final Bundle extras = intent.getExtras();
-		if (extras != null) {
-			templateFileName = (String) extras.getString("templateFileName");
-			curTemplate = (de.fau.cs.mad.gamekobold.templatebrowser.Template) extras.getSerializable("template");
-			// create new sheet
-			try {
-				final Template template = JacksonInterface.loadTemplate(this,
-						templateFileName, false);
-				characterDirectoryFile = JacksonInterface
-						.getDirectoryForCharacters(template, this, true);
-				sheet = template.getCharacterSheet();
-				// change to default color
-				sheet.setColor(getResources().getColor(R.color.light_green));
-			} catch (Throwable e) {
-				e.printStackTrace();
-				// TODO correct error handling
+		
+		characterDirectoryFile = null;
+		sheet = null;
+		
+//		Log.d("CreateNewCharacterActivity", "savedInstanceState:"+(savedInstanceState==null));
+		
+		if(savedInstanceState == null) {
+			characterAltered = false;
+			
+			final Intent intent = getIntent();
+			final Bundle extras = intent.getExtras();
+			if (extras != null) {
+				templateFileName = (String) extras.getString("templateFileName");
+				curTemplate = (de.fau.cs.mad.gamekobold.templatebrowser.Template) extras.getSerializable("template");
+				// create new sheet
+				try {
+					final Template template = JacksonInterface.loadTemplate(this,
+							templateFileName, false);
+					characterDirectoryFile = JacksonInterface
+							.getDirectoryForCharacters(template, this, true);
+					sheet = template.getCharacterSheet();
+					// change to default color
+					sheet.setColor(getResources().getColor(R.color.light_green));
+				} catch (Throwable e) {
+					e.printStackTrace();
+					// TODO correct error handling
+				}
 			}
+		}
+		else {
+			iconUri = (Uri)savedInstanceState.getParcelable("uri");
+			sheet = (CharacterSheet)savedInstanceState.getParcelable("character");
+			if(sheet != null) {
+				description.setText(sheet.getDescription());
+				characterLevel.setText(String.valueOf(sheet.getLevel()));
+				characterName.setText(sheet.getName());
+				setCharacterColor(sheet.getColor());
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+				if(icon != null) {
+					characterIconButton.setImageBitmap(icon);
+				}
+			}
+			templateFileName = savedInstanceState.getString("templateFileName");
+			characterAltered = savedInstanceState.getBoolean("altered");
+			curTemplate = (de.fau.cs.mad.gamekobold.templatebrowser.Template)savedInstanceState.getSerializable("curTemplate");
+			characterDirectoryFile = (File)savedInstanceState.getSerializable("characterDirectoryFile");
 		}
 
 		characterIconButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +162,7 @@ public class CreateNewCharacterActivity extends Activity implements
 												android.provider.MediaStore.EXTRA_OUTPUT,
 												iconUri);
 										intent.putExtra("return-data", true);
-
+										intent.putExtra("foobar", true);
 										startActivityForResult(intent,
 												PICK_FROM_CAMERA);
 									} catch (Exception e) {
@@ -205,9 +241,11 @@ public class CreateNewCharacterActivity extends Activity implements
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
-					sheet.setName(s.toString());
-					setTitle(s.toString());
-					characterAltered = true;
+					if(!sheet.getName().equals(s.toString())) {
+						sheet.setName(s.toString());
+						setTitle(s.toString());
+						characterAltered = true;
+					}
 				}
 			}
 		});
@@ -227,11 +265,13 @@ public class CreateNewCharacterActivity extends Activity implements
 			public void afterTextChanged(Editable s) {
 				if (sheet != null) {
 					try {
-						sheet.setLevel(Integer.parseInt(s.toString()));
-						characterAltered = true;
+						int newLevel = Integer.parseInt(s.toString());
+						if(sheet.getLevel()!=newLevel) {
+							sheet.setLevel(newLevel);
+							characterAltered = true;
+						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
-						sheet.setLevel(0);
 					}
 				}
 			}
@@ -248,7 +288,7 @@ public class CreateNewCharacterActivity extends Activity implements
 					return;
 				}
 				// save sheet because we need the file path
-				// we will not double save becaus of alteration flag
+				// we will not double save because of alteration flag
 				saveCharacterSheet();
 				Intent intent = CharacterEditActivity.createIntentForStarting(CreateNewCharacterActivity.this, sheet);
 				startActivity(intent);
@@ -297,9 +337,9 @@ public class CreateNewCharacterActivity extends Activity implements
 					// open file
 					final File jsonFile = new File(sheet.getFileAbsolutePath());
 					JacksonInterface.saveCharacterSheet(sheet, jsonFile);
-					curTemplate.addCharacter(sheet);
 					// clear flag
 					characterAltered = false;
+					curTemplate.addCharacter(sheet);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
@@ -378,7 +418,6 @@ public class CreateNewCharacterActivity extends Activity implements
 		if (bitmap != null) {
 			characterIconButton.setImageBitmap(bitmap);
 		}
-		// TODO store image path for later use
 		sheet.setIconPath(path);
 		characterAltered = true;
 	}
