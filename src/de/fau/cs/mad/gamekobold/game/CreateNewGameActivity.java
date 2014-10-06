@@ -106,15 +106,12 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 			curGame.addCharacterSheet(clickedChar);
 		}
 		pickedCharacterGridAdapter.notifyDataSetChanged();
-		// TODO add character to selCharacter
 	}
 
 	@Override
 	public void onGamePass(Game curGame) {
 		Log.d("CreateNewGameActivity", "curGame " + curGame.getGameName());
 		this.curGame = curGame;
-
-		// TODO pass also selCharacter
 	}
 
 	@Override

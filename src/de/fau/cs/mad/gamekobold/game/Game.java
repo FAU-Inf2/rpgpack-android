@@ -85,8 +85,6 @@ public class Game implements Parcelable, Serializable {
 	}
 	@JsonIgnore
 	public boolean addCharacterSheet(CharacterSheet characterSheet) {
-		Log.e("Character is null?", "" + (characterSheet == null));
-		Log.e("List is null?", "" + (characterSheetList == null));
 		characterSheetList.add(characterSheet);
 		return true;
 	}

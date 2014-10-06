@@ -37,7 +37,9 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet> {
 					parent, false);
 		} else {
 			rowView = convertView;
-		}
+		}  
+		
+		
 		final TextView textView1 = (TextView) rowView
 				.findViewById(R.id.textView1);
 		final TextView textView2 = (TextView) rowView

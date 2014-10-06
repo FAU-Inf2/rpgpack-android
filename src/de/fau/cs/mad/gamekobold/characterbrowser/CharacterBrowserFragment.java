@@ -79,9 +79,7 @@ public class CharacterBrowserFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
 
-		
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view,
@@ -90,29 +88,35 @@ public class CharacterBrowserFragment extends ListFragment {
 				final CharacterSheet clickedChar = adapter.getItem(position);
 
 				if (mode_pickCharacterForGameCreation) {
-					// TODO change backgroud color for selected character and add it to the pickedCharacterGrid
+					// change backgroud color for selected character and
+					// add it to the pickedCharacterGrid
+					view.setSelected(true);
 
-					RelativeLayout selRow = (RelativeLayout) view
-							.findViewById(R.id.relativeLayout);
-					int color = Color.TRANSPARENT;
-					Drawable backgroundColor = selRow.getBackground();
-					if (backgroundColor instanceof ColorDrawable)
-						color = ((ColorDrawable) backgroundColor).getColor();
-					if ((color == getResources().getColor(
-							R.color.background_green))) {
-						selRow.setBackgroundColor(getResources().getColor(
-								R.color.background_dark));
-					} else {
-						selRow.setBackgroundColor(getResources().getColor(
-								R.color.background_green));
+					if (view.isSelected()) {
+						int color = Color.TRANSPARENT;
+						Drawable backgroundColor = view.getBackground();
+						if (backgroundColor instanceof ColorDrawable)
+							color = ((ColorDrawable) backgroundColor)
+									.getColor();
+						if ((color == getResources().getColor(
+								R.color.background_green))) {
+							view.setBackgroundColor(getResources().getColor(
+									R.color.background_dark));
+						} else {
+							view.setBackgroundColor(getResources().getColor(
+									R.color.background_green));
+						}
 					}
-					//pass selected character
+					// RelativeLayout selRow = (RelativeLayout) view
+					// .findViewById(R.id.relativeLayout);
+
+					// pass selected character
 					mCallbacks.onCharacterSelected(clickedChar);
 				} else {
 					// edit character
 					Intent i = new Intent(getActivity(),
 							CharacterDetailsActivity.class);
-					i.putExtra("CharacterSheet", (Parcelable)clickedChar);
+					i.putExtra("CharacterSheet", (Parcelable) clickedChar);
 					startActivity(i);
 				}
 			}

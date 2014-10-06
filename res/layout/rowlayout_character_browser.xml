@@ -3,7 +3,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background_dark" >
+    android:background="@drawable/bg_key" >
 
     <ImageView
         android:id="@+id/imageView1"
