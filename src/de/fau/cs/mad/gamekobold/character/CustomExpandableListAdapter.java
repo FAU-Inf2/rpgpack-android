@@ -339,15 +339,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 		  final TextView popupHeadline = (TextView) popupView.findViewById(R.id.popup_headline);
 		  popupHeadline.setText(headline);
 		  final EditText inputPopup = (EditText) popupView.findViewById(R.id.popup_editText);
-		  if(!SlideoutNavigationActivity.getAc().inEditMode()){
-				Log.d("tableFragment", "set Popup non editable");
-//	        	inputPopup.setInputType(InputType.TYPE_NULL);
-	        	inputPopup.setFocusable(false);
-		  }
-	        else{
-				Log.d("tableFragment", "set Popup EDITABLE");
-	        }
-
 
 		  final ToggleButton toggleBold = (ToggleButton) popupView.findViewById(R.id.toggle_bold);
 		  toggleBold.setOnClickListener(new Button.OnClickListener() {
@@ -629,6 +620,20 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter imple
 					inputPopup.requestFocus();
 				}
 			});
+			
+			if(!SlideoutNavigationActivity.getAc().inEditMode()){
+				Log.d("tableFragment", "set Popup non editable");
+				//	        	inputPopup.setInputType(InputType.TYPE_NULL);
+				inputPopup.setFocusable(false);
+				addRefButton.setVisibility(View.INVISIBLE);
+				toggleBold.setVisibility(View.INVISIBLE);
+				toggleItalic.setVisibility(View.INVISIBLE);
+				toggleUnderlined.setVisibility(View.INVISIBLE);
+			}
+			else{
+				Log.d("tableFragment", "set Popup EDITABLE");
+			}
+			
 //			txt.setTextSize(mContext.getResources().getDimension(R.dimen.text_xxl));
 			txt.setText(mContext.getResources().getString(R.string.new_element));
 			txt.setTypeface(null, Typeface.BOLD_ITALIC);

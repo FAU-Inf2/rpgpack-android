@@ -124,6 +124,11 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	    return allData.get(position);
 	}
 	
+	/**
+	 * 
+	 * @return all elements inside this folder
+	 * <br> null if no elements are inside
+	 */
 	public FolderElementData[] getAll(){
 		FolderElementData[] toReturn = new FolderElementData[allData.size()];
 		allData.toArray(toReturn);

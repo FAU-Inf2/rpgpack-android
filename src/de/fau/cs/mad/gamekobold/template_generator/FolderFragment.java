@@ -170,24 +170,26 @@ public class FolderFragment extends GeneralFragment {
 	public ArrayList<MatrixItem> getAllMatrixReferences() {
 		ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
 		// Log.d("popupReferences", "subdirs: " + dataAdapter.getAll().length);
-		for (FolderElementData currentDatum : dataAdapter.getAll()) {
-			GeneralFragment currentFragment = currentDatum.childFragment;
-			if (currentFragment instanceof FolderFragment) {
-				// Log.d("popupReferences",
-				// "folderfragment found, descending now");
-				ArrayList<MatrixItem> toAdd = ((FolderFragment) currentFragment)
-						.getAllMatrixReferences();
-				results.addAll(toAdd);
-			} else if (currentFragment instanceof TableFragment) {
-				// Log.d("popupReferences", "tableview found; atm ignoring");
-			} else if (currentFragment instanceof MatrixFragment) {
-				// Log.d("popupReferences", "matrix found. Elements:" +
-				// (((MatrixFragment) currentFragment).itemsList).size());
-				for (MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList) {
-					results.add(oneItem);
+		if(dataAdapter != null){
+			for (FolderElementData currentDatum : dataAdapter.getAll()) {
+				GeneralFragment currentFragment = currentDatum.childFragment;
+				if (currentFragment instanceof FolderFragment) {
+					// Log.d("popupReferences",
+					// "folderfragment found, descending now");
+					ArrayList<MatrixItem> toAdd = ((FolderFragment) currentFragment)
+							.getAllMatrixReferences();
+					results.addAll(toAdd);
+				} else if (currentFragment instanceof TableFragment) {
+					// Log.d("popupReferences", "tableview found; atm ignoring");
+				} else if (currentFragment instanceof MatrixFragment) {
+					// Log.d("popupReferences", "matrix found. Elements:" +
+					// (((MatrixFragment) currentFragment).itemsList).size());
+					for (MatrixItem oneItem : ((MatrixFragment) currentFragment).itemsList) {
+						results.add(oneItem);
+					}
+				} else {
+					Log.d("popupReferences", "unhandled element found!!!");
 				}
-			} else {
-				Log.d("popupReferences", "unhandled element found!!!");
 			}
 		}
 		return results;

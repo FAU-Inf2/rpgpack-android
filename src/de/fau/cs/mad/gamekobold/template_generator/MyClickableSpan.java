@@ -59,7 +59,7 @@ public class MyClickableSpan extends ClickableSpan {
     	ToolTip toolTip = new ToolTip()
     	//TODO: translate
     	.withText(valueToShow!=null? valueToShow:"Value doesn't exist")
-    	.withColor(mBelongsTo.getResources().getColor(R.color.red));
+    	.withColor(mBelongsTo.getResources().getColor(R.color.a_green));
 //    	.withShadow();
     	
     	//
