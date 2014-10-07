@@ -71,9 +71,24 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 		int resId = SlideoutNavigationActivity.getAc().getResources()
 				.getIdentifier("action_bar_container", "id", "android");
 		View actionBarView = v.findViewById(resId);
-		LinearLayout actionBarParent = (LinearLayout) actionBarView.getParent();
-		ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) actionBarParent
-				.getLayoutParams();
+		//FIXME?
+//		LinearLayout actionBarParent = (LinearLayout) actionBarView.getParent();
+		LinearLayout actionBarParent;
+		ViewGroup.MarginLayoutParams lp;
+		if(Build.VERSION.SDK_INT < 18){
+			actionBarParent = (LinearLayout) actionBarView.getParent();
+			lp = (ViewGroup.MarginLayoutParams) actionBarParent
+					.getLayoutParams();
+		}
+		else{
+			lp = (ViewGroup.MarginLayoutParams) ((View) actionBarView.getParent())
+					.getLayoutParams();
+		}
+//		ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) actionBarParent
+//				.getLayoutParams();
+//		ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) ((View) actionBarView.getParent())
+//				.getLayoutParams();
+
 		// Log.d("CharacterSelectAdapter", "actionBarHeight method == " +
 		// getActionBarHeight());
 		// Log.d("CharacterSelectAdapter", "actionBar padding top == " +
