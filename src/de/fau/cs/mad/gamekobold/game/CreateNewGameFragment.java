@@ -56,10 +56,7 @@ public class CreateNewGameFragment extends Fragment {
 	private EditText worldName;
 	private EditText gameDate;
 	private GridView pickedCharacterGridView;
-	private Button createGameButton;
 	private ImageButton addImageButton;
-	private ListView characterList;
-	private CharacterSheet curCharacter;
 	private Button infoButton;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter = null;
 
@@ -197,6 +194,7 @@ public class CreateNewGameFragment extends Fragment {
 					int count) {
 				// save
 				curGame.setGameName(c.toString());
+				Log.d("addTextChangedListener", c.toString());
 				// mCallbacks.onGameNamePass(c.toString());
 			}
 
@@ -320,6 +318,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		// pass game to the activity
 		mCallbacks.onGamePass(curGame);
+		Log.d("mCallbacks.onGamePass(curGame);", curGame.getGameName());
 		return view;
 	}
 
@@ -440,6 +439,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		Log.d("mCallbacks.onGamePass(curGame) - onActivityResult;", curGame.getGameName());
 		if (resultCode != Activity.RESULT_OK)
 			return;
 
@@ -490,6 +490,7 @@ public class CreateNewGameFragment extends Fragment {
 
 		// store image path for later use
 		curGame.setIconPath(path);
+		mCallbacks.onGamePass(curGame);
 	}
 
 	// TODO refactoring?

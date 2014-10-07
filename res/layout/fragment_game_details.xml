@@ -44,7 +44,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/gameName"
+        android:id="@+id/rpgGameName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textViewWorldName"

@@ -3,9 +3,6 @@ package de.fau.cs.mad.gamekobold.game;
 import java.io.File;
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -27,16 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
-import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity;
-import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-import de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity;
 
 public class GameDetailsFragment extends Fragment {
 	public static final String EXTRA_GAME_NAME = "de.fau.cs.mad.gamekobold.game.gamename";
@@ -45,16 +36,14 @@ public class GameDetailsFragment extends Fragment {
 	public static final String WELCOME_TYPE_PLAY_CHARACTER = "WELCOME_PLAY_CHARACTER";
 	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
 	public static final String EXTRA_MODE_GAME_CREATION = "de.fau.cs.mad.gamekobold.gamecreation";
+	public static final String EXTRA_MODE_GAME_EDITION = "de.fau.cs.mad.gamekobold.gameedition";
 	// private List<GameCharakter> charakterList;
 	// private List<String> tagList;
 
 	private Game game;
-	private Template template;
 	private CharacterSheet curCharacter;
-
 	private TextView gameName;
 	private TextView date;
-	private TextView description;
 	private TextView worldName;
 	private TextView gameMaster;
 	private ImageView gameIcon;
@@ -72,8 +61,6 @@ public class GameDetailsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
-		String path = "";
-
 		View view = inflater.inflate(R.layout.fragment_game_details, parent,
 				false);
 		// for back-button
@@ -99,7 +86,7 @@ public class GameDetailsFragment extends Fragment {
 
 		getActivity().setTitle(game.getGameName());
 
-		gameName = (TextView) view.findViewById(R.id.gameName);
+		gameName = (TextView) view.findViewById(R.id.rpgGameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);
 		worldName = (TextView) view.findViewById(R.id.textViewWorldName);
 		gameMaster = (TextView) view.findViewById(R.id.textViewGM);
@@ -157,7 +144,7 @@ public class GameDetailsFragment extends Fragment {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> adapterView,
 							View view, final int position, long id) {
-						
+
 						final CharacterSheet curGameCharacter = (CharacterSheet) adapterView
 								.getItemAtPosition(position);
 
@@ -219,7 +206,9 @@ public class GameDetailsFragment extends Fragment {
 				i.putExtra(CreateNewGameFragment.EXTRA_GAME_TO_EDIT,
 						(Parcelable) game);
 				i.putExtra(EXTRA_MODE_GAME_CREATION, true);
+				i.putExtra(EXTRA_MODE_GAME_EDITION, true);
 				startActivity(i);
+				
 			}
 		});
 
@@ -288,7 +277,8 @@ public class GameDetailsFragment extends Fragment {
 		}
 		return view;
 	}
-//
+
+	//
 	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
 				.newInstance(game, false);
