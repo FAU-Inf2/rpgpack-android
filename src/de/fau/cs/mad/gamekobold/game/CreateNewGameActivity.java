@@ -22,8 +22,10 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		CallbacksCharBrowser, CallbacksCreateNewGame {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
 
-	Button createGameButton;
+	private Button createGameButton;
 	private String gameName;
+	private String worldName;
+	private String gameMaster;
 	private CharacterSheet clickedChar;
 	private Game curGame;
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
@@ -46,7 +48,8 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				if ((gameName == null) || gameName.equals("")) {
+				// check if game name is set or not
+				if (curGame.getGameName().equals("")) {
 					Toast.makeText(
 							CreateNewGameActivity.this,
 							getResources().getString(
@@ -55,13 +58,12 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 					return;
 				}
 
-				// now it goes to GameDetailsFragment
 				// Save and start GameDetailsActivity
 				try {
-					if (curGame.getDate() == null) {
+					if (curGame.getDate().equals("")) {
 						// set creation date
 						final SimpleDateFormat format = new SimpleDateFormat(
-								"dd.MM.yyyy");
+								"dd.MM.yyyy HH:mm:ss");
 						final Date date = new Date();
 						curGame.setDate(format.format(date));
 					}
@@ -80,8 +82,8 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 								GameDetailsActivity.class);
 						i.putExtra(GameDetailsFragment.EXTRA_GAME,
 								(Parcelable) curGame);
-//						i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
-//								curGame.getGameName());
+						// i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
+						// curGame.getGameName());
 						startActivity(i);
 					}
 
@@ -93,11 +95,11 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		});
 	}
 
-	@Override
-	public void onGameNamePass(String gameName) {
-		Log.d("CreateNewGameActivity", "gameName " + gameName);
-		this.gameName = gameName;
-	}
+	// @Override
+	// public void onGameNamePass(String gameName) {
+	// Log.d("CreateNewGameActivity", "gameName " + gameName);
+	// this.gameName = gameName;
+	// }
 
 	@Override
 	public void onCharacterSelected(CharacterSheet clickedChar) {
@@ -125,4 +127,18 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		this.pickedCharacterGridAdapter = pickedCharacterGridAdapter;
 
 	}
+
+	// @Override
+	// public void onWorldNamePass(String worldName) {
+	// Log.d("CreateNewGameActivity", "worldName " + worldName);
+	// this.worldName = worldName;
+	//
+	// }
+	//
+	// @Override
+	// public void onGameMasterPass(String gameMaster) {
+	// Log.d("CreateNewGameActivity", "gameMaster " + gameMaster);
+	// this.gameMaster = gameMaster;
+	//
+	// }
 }

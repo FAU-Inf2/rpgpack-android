@@ -22,7 +22,7 @@ import android.util.Log;
  * <code>characterList</code>.
  * 
  */
-// TODO Benni, added new Element gameMaster
+// TODO Benni, added new Element gameMaster and worldName
 public class Game implements Parcelable, Serializable {
 	private String gameName;
 	private String gameMaster;
@@ -36,10 +36,11 @@ public class Game implements Parcelable, Serializable {
 	private String fileAbsolutePath;
 	private long fileTimeStamp;
 
-	public Game(String gameName, String author, String date,
+	public Game(String gameName, String gameMaster, String date,
 			List<String> tagList, String description,
 			List<CharacterSheet> characterSheetList, String iconPath) {
 		this(gameName, date, iconPath);
+		this.gameMaster = gameMaster;
 		this.tagList = tagList;
 		this.description = description;
 //		this.setCharakterList(characterList);
@@ -189,8 +190,6 @@ public class Game implements Parcelable, Serializable {
 
 	@JsonIgnore
 	public void setCharacterSheetList(List<CharacterSheet> characterSheetList) {
-		Log.e("characterSheetList", "Setting characterSheetList to "
-				+ characterSheetList.size());
 		this.characterSheetList.clear();
 		this.characterSheetList.addAll(characterSheetList);
 		return;
@@ -285,7 +284,6 @@ public class Game implements Parcelable, Serializable {
 			dest.writeString(fileAbsolutePath);
 			dest.writeLong(fileTimeStamp);
 			dest.writeString(worldName);
-
 		}
 
 		public static final Parcelable.Creator<Game> CREATOR = new Creator<Game>() {

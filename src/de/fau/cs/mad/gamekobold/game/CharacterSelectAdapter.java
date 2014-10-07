@@ -37,15 +37,12 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 	public CharacterSelectAdapter(Context context, int resource,
 			CharacterSheet[] objects) {
 		super(context, resource, objects);
-		// Log.d("CharacterSelectAdapter", "constructor");
 		this.sheets = objects;
 		this.context = context;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// Log.d("CharacterSelectAdapter", "getView");
 		final Bitmap icon = ThumbnailLoader.loadThumbnail(
 				sheets[position].getIconPath(),
 				SlideoutNavigationActivity.getAc());
