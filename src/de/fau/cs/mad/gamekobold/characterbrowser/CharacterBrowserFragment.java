@@ -127,72 +127,68 @@ public class CharacterBrowserFragment extends ListFragment {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> arg0,
 							View view, int position, long id) {
-						if (position < adapter.getCount() - 1) {
-							final CharacterSheet clickedCharacter = adapter
-									.getItem(position);
-							AlertDialog.Builder builder = new AlertDialog.Builder(
-									getActivity());
-							builder.setTitle(getResources().getString(
-									R.string.msg_ask_character_deletion));
-							builder.setMessage(getResources().getString(
-									R.string.msg_yes_to_delete_character));
-							builder.setNegativeButton(
-									getResources().getString(R.string.no),
-									new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(
-												DialogInterface dialog,
-												int which) {
-										}
-									});
-							builder.setPositiveButton(
-									getResources().getString(R.string.yes),
-									new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(
-												DialogInterface dialog,
-												int which) {
-											// remove character from all games
-											ArrayList<Game> games = new ArrayList<Game>();
-											games.addAll(GameLab.get(
-													getActivity()).getGames());
+						final CharacterSheet clickedCharacter = adapter
+								.getItem(position);
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setTitle(getResources().getString(
+								R.string.msg_ask_character_deletion));
+						builder.setMessage(getResources().getString(
+								R.string.msg_yes_to_delete_character));
+						builder.setNegativeButton(
+								getResources().getString(R.string.no),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											DialogInterface dialog,
+											int which) {
+									}
+								});
+						builder.setPositiveButton(
+								getResources().getString(R.string.yes),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(
+											DialogInterface dialog,
+											int which) {
+										// remove character from all games
+										ArrayList<Game> games = new ArrayList<Game>();
+										games.addAll(GameLab.get(
+												getActivity()).getGames());
 
-											ArrayList<CharacterSheet> characters = new ArrayList<CharacterSheet>();
-											// check if character to delete
-											// appears in games
-											for (Game g : games) {
-												characters.addAll(g
-														.getCharacterSheetList());
-												int location = 0;
-												for (CharacterSheet c : characters) {
-													if (c.getFileAbsolutePath()
-															.equals(clickedCharacter
-																	.getFileAbsolutePath())) {
-														g.getCharacterSheetList()
-																.remove(location);
-													}
-													location++;
+										ArrayList<CharacterSheet> characters = new ArrayList<CharacterSheet>();
+										// check if character to delete
+										// appears in games
+										for (Game g : games) {
+											characters.addAll(g
+													.getCharacterSheetList());
+											int location = 0;
+											for (CharacterSheet c : characters) {
+												if (c.getFileAbsolutePath()
+														.equals(clickedCharacter
+																.getFileAbsolutePath())) {
+													g.getCharacterSheetList()
+															.remove(location);
 												}
-												characters.clear();
+												location++;
 											}
-											File file = new File(
-													clickedCharacter
-															.getFileAbsolutePath());
-											if (file != null) {
-												// delete character
-												if (file.isFile()) {
-													file.delete();
-													adapter.remove(clickedCharacter);
-													adapter.notifyDataSetChanged();
-												}
-											}
-
+											characters.clear();
 										}
-									});
-							builder.create().show();
-							return true;
-						}
-						return false;
+										File file = new File(
+												clickedCharacter
+														.getFileAbsolutePath());
+										if (file != null) {
+											// delete character
+											if (file.isFile()) {
+												file.delete();
+												adapter.remove(clickedCharacter);
+												adapter.notifyDataSetChanged();
+											}
+										}
+										}
+								});
+						builder.create().show();
+						return true;
 					}
 				});
 	}
