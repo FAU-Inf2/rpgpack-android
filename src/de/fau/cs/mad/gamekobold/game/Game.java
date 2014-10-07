@@ -6,16 +6,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-import android.util.Log;
 
 /**
  * This class represents one game group. All played characters are in
@@ -37,7 +36,7 @@ public class Game implements Parcelable, Serializable {
 	private long fileTimeStamp;
 
 	public Game(String gameName, String gameMaster, String date,
-			List<String> tagList, String description,
+			/*List<String> tagList,*/ String description,
 			List<CharacterSheet> characterSheetList, String iconPath) {
 		this(gameName, date, iconPath);
 		this.gameMaster = gameMaster;
@@ -300,8 +299,8 @@ public class Game implements Parcelable, Serializable {
 				game.setGameName(source.readString());
 				game.setGameMaster(source.readString());
 				game.setDate(source.readString());
-				List<String> tagList = new LinkedList<String>();
-				source.readStringList(tagList);
+//				List<String> tagList = new LinkedList<String>();
+//				source.readStringList(tagList);
 //				game.setTagList(tagList);
 				game.setDescription(source.readString());
 				List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
