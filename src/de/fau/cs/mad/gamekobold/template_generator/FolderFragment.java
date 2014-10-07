@@ -1,23 +1,9 @@
 package de.fau.cs.mad.gamekobold.template_generator;
 
-import de.fau.cs.mad.gamekobold.*;
-import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
-import de.fau.cs.mad.gamekobold.character.FavoriteTable;
-import de.fau.cs.mad.gamekobold.game.CharacterPlayActivity;
-import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
-import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
-import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
-import de.fau.cs.mad.gamekobold.jackson.Table;
-import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
-import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
-import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
-import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
@@ -29,12 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.jackson.AbstractTable;
+import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
+import de.fau.cs.mad.gamekobold.jackson.MatrixTable;
+import de.fau.cs.mad.gamekobold.jackson.Table;
+import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
+import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
+import de.fau.cs.mad.gamekobold.template_generator.FolderElementData.element_type;
 
 public class FolderFragment extends GeneralFragment {
 	/*
@@ -170,7 +163,7 @@ public class FolderFragment extends GeneralFragment {
 	public ArrayList<MatrixItem> getAllMatrixReferences() {
 		ArrayList<MatrixItem> results = new ArrayList<MatrixItem>();
 		// Log.d("popupReferences", "subdirs: " + dataAdapter.getAll().length);
-		if(dataAdapter != null){
+		if (dataAdapter != null) {
 			for (FolderElementData currentDatum : dataAdapter.getAll()) {
 				GeneralFragment currentFragment = currentDatum.childFragment;
 				if (currentFragment instanceof FolderFragment) {
@@ -180,7 +173,8 @@ public class FolderFragment extends GeneralFragment {
 							.getAllMatrixReferences();
 					results.addAll(toAdd);
 				} else if (currentFragment instanceof TableFragment) {
-					// Log.d("popupReferences", "tableview found; atm ignoring");
+					// Log.d("popupReferences",
+					// "tableview found; atm ignoring");
 				} else if (currentFragment instanceof MatrixFragment) {
 					// Log.d("popupReferences", "matrix found. Elements:" +
 					// (((MatrixFragment) currentFragment).itemsList).size());
@@ -494,11 +488,12 @@ public class FolderFragment extends GeneralFragment {
 							.jacksonInflate((MatrixTable) subTable, activity);
 
 				}
-			} else if (subTable instanceof FavoriteTable) {
-				Log.d("INFLATING FOR FavoriteTable, name", ""
-						+ subTable.tableName);
-				//TODO ate
 			}
+			// } else if (subTable instanceof FavoriteTable) {
+			// Log.d("INFLATING FOR FavoriteTable, name", ""
+			// + subTable.tableName);
+			// //TODO ate
+			// }
 			dataAdapter.notifyDataSetChanged();
 		}
 	}

@@ -77,7 +77,6 @@ public class GameMenu extends AbstractThreeButtonMenu {
 
 	@Override
 	protected void button3Action() {
-		Toast.makeText(GameMenu.this, "Alljoyn", Toast.LENGTH_LONG).show();
 		// Start template list
 		Intent i = new Intent(GameMenu.this, TemplateListActivity.class);
 		i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
