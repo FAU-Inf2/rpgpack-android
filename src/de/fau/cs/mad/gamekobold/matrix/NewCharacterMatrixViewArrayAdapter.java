@@ -59,196 +59,79 @@ public class NewCharacterMatrixViewArrayAdapter extends
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) context
+		final LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// TODO ate refactor with view holder
-		// if it's not recycled, initialize some attributes
+		View rowView = null;
 		if (convertView == null) {
-			// if (position == getCount() - 1) {
-			// convertView = inflater.inflate(
-			// R.layout.itemlayout_new_character_new_item_matrix_view,
-			// parent, false);
-			// MatrixItem curItem = items.get(position);
-			//
-			// TextView itemName = (TextView) convertView
-			// .findViewById(R.id.matr_textItemTitle);
-			// TextView itemValue = (TextView) convertView
-			// .findViewById(R.id.matr_textValue);
-			// itemName.setText(curItem.getItemName());
-			// itemValue.setText(curItem.getValue());
-			//
-			// } else {
-			convertView = inflater
+			rowView = inflater
 					.inflate(R.layout.itemlayout_newcharacter_matrix_view,
 							parent, false);
-			TextView itemName = (TextView) convertView
-					.findViewById(R.id.matrix_textItemTitle);
-			TextView itemValue = (TextView) convertView
-					.findViewById(R.id.matrix_textValue);
-			// combine min and max
-			TextView itemRange = (TextView) convertView
-					.findViewById(R.id.matrix_textRangeFromTo);
-
-			TextView itemModificator = (TextView) convertView
-					.findViewById(R.id.matrix_textModificator);
-
-			MatrixItem curItem = items.get(position);
-
-			itemName.setText(curItem.getItemName());
-			itemValue.setText(curItem.getValue());
-
-			itemRange.setText(curItem.getRangeMin() + " - "
-					+ curItem.getRangeMax());
-
-			itemModificator.setText(curItem.getModificator());
-
-			highlightingImageView = (ImageView) convertView
-					.findViewById(R.id.matrix_item_highlighting_circle);
-
-			Log.i("selectedMatrixItems.contains(curItem) - "
-					+ curItem.getItemName(),
-					"" + (selectedMatrixItems.contains(curItem)));
-
-			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
-					.getDrawable();
-
-			if (selectedMatrixItems.contains(curItem)) {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.white));
-
-				if ((!(curItem.getModificator() == null))
-						&& !curItem.getModificator().equals("")) {
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
-
-			} else {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemModificator.setTextColor(context.getResources().getColor(
-						R.color.grey));
-			}
-
-			highlightingShape
-					.setColor(selectedMatrixItems.contains(curItem) ? context
-							.getResources().getColor(R.color.background_green)
-							: context.getResources().getColor(
-									android.R.color.transparent));
-			// }
 		} else {
-			// or reuse
-			// FIXME have to inflate here too because of null pointer exception!
-			// both cases are the same now!
-			// if (position == getCount() - 1) {
-			// convertView = inflater.inflate(
-			// R.layout.itemlayout_new_character_new_item_matrix_view,
-			// parent, false);
-			// MatrixItem curItem = items.get(position);
-			//
-			// TextView itemName = (TextView) convertView
-			// .findViewById(R.id.matr_textItemTitle);
-			// TextView itemValue = (TextView) convertView
-			// .findViewById(R.id.matr_textValue);
-			// itemName.setText(curItem.getItemName());
-			// itemValue.setText(curItem.getValue());
-			// } else {
-			convertView = inflater
-					.inflate(R.layout.itemlayout_newcharacter_matrix_view,
-							parent, false);
-			TextView itemName = (TextView) convertView
-					.findViewById(R.id.matrix_textItemTitle);
-			TextView itemValue = (TextView) convertView
-					.findViewById(R.id.matrix_textValue);
-			// combine min and max
-			TextView itemRange = (TextView) convertView
-					.findViewById(R.id.matrix_textRangeFromTo);
+			rowView = convertView;
+		}
 
-			TextView itemModificator = (TextView) convertView
-					.findViewById(R.id.matrix_textModificator);
+		TextView itemName = (TextView) rowView
+				.findViewById(R.id.matrix_textItemTitle);
+		TextView itemValue = (TextView) rowView
+				.findViewById(R.id.matrix_textValue);
+		// combine min and max
+		TextView itemRange = (TextView) rowView
+				.findViewById(R.id.matrix_textRangeFromTo);
+		TextView itemModificator = (TextView) rowView
+				.findViewById(R.id.matrix_textModificator);
 
-			Log.d("NewCharacterMatrixViewADAPTER SIZE", "" + items.size());
-			Log.d("NewCharacterMatrixViewADAPTER POSITION", "" + position);
+		MatrixItem curItem = items.get(position);
 
-			MatrixItem curItem = items.get(position);
+		itemName.setText(curItem.getItemName());
+		itemValue.setText(curItem.getValue());
 
-			Log.d("NewCharacterMatrixViewADAPTER curItem NAME",
-					"" + curItem.getItemName());
-			Log.d("NewCharacterMatrixViewADAPTER itemName is null?", ""
-					+ (itemName == null));
+		itemRange
+				.setText(curItem.getRangeMin() + " - " + curItem.getRangeMax());
 
-			itemName.setText(curItem.getItemName());
-			itemValue.setText(curItem.getValue());
+		itemModificator.setText(curItem.getModificator());
 
-			itemRange.setText(curItem.getRangeMin() + " - "
-					+ curItem.getRangeMax());
+		highlightingImageView = (ImageView) rowView
+				.findViewById(R.id.matrix_item_highlighting_circle);
 
-			itemModificator.setText(curItem.getModificator());
+		GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
+				.getDrawable();
 
-			highlightingImageView = (ImageView) convertView
-					.findViewById(R.id.matrix_item_highlighting_circle);
+		if (selectedMatrixItems.contains(curItem)) {
+			itemName.setTextColor(context.getResources()
+					.getColor(R.color.white));
+			itemValue.setTextColor(context.getResources().getColor(
+					R.color.white));
+			itemRange.setTextColor(context.getResources().getColor(
+					R.color.white));
 
-			Log.i("selectedMatrixItems.contains(curItem) - "
-					+ curItem.getItemName(),
-					"" + (selectedMatrixItems.contains(curItem)));
-
-			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
-					.getDrawable();
-
-			if (selectedMatrixItems.contains(curItem)) {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.white));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.white));
-
-				if ((!(curItem.getModificator() == null))
-						&& !curItem.getModificator().equals("")) {
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
-
-			} else {
-				itemName.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemValue.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemRange.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemModificator.setTextColor(context.getResources().getColor(
-						R.color.grey));
+			if ((!(curItem.getModificator() == null))
+					&& !curItem.getModificator().equals("")) {
+				if (Integer.valueOf(curItem.getModificator()) > 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.blue));
+				} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.red));
+				} else
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.white));
 			}
 
-			highlightingShape
-					.setColor(selectedMatrixItems.contains(curItem) ? context
-							.getResources().getColor(R.color.background_green)
-							: context.getResources().getColor(
-									android.R.color.transparent));
-
+		} else {
+			itemName.setTextColor(context.getResources().getColor(R.color.grey));
+			itemValue.setTextColor(context.getResources()
+					.getColor(R.color.grey));
+			itemRange.setTextColor(context.getResources()
+					.getColor(R.color.grey));
+			itemModificator.setTextColor(context.getResources().getColor(
+					R.color.grey));
 		}
-		// }
-		return convertView;
+		highlightingShape
+				.setColor(selectedMatrixItems.contains(curItem) ? context
+						.getResources().getColor(R.color.background_green)
+						: context.getResources().getColor(
+								android.R.color.transparent));
+
+		return rowView;
 	}
 }
