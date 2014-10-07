@@ -17,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
-public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> implements Serializable{
+public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
+		implements Serializable {
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -35,142 +36,78 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem> impleme
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		LayoutInflater inflater = (LayoutInflater) context
+		final LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		// View itemView;
-		// TODO ate refactor with view holder
-		// if it's not recycled, initialize some attributes
+		View rowView = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(
+			rowView = inflater.inflate(
 					R.layout.itemlayout_play_character_matrix_view, parent,
 					false);
-			final MatrixItem curItem = items.get(position);
-
-			if (curItem.isSelected()) {
-
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textValue);
-
-				// combine min and max
-				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.textRangeFromTo);
-
-				TextView iModificator = (TextView) convertView
-						.findViewById(R.id.textModificator);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-				itemRange.setText(curItem.getRangeMin() + " - "
-						+ curItem.getRangeMax());
-				iModificator.setText(curItem.getModificator());
-
-				CheckBox favoriteItem = (CheckBox) convertView
-						.findViewById(R.id.favorite_checkbox);
-				favoriteItem.setChecked(curItem.isFavorite());
-
-				favoriteItem
-						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
-							public void onCheckedChanged(
-									CompoundButton buttonView, boolean isChecked) {
-
-								curItem.setFavorite(isChecked);
-								// TODO Benni save isFavorite for current
-								// Matrix
-								// Item
-								if (isChecked) {
-									Toast.makeText(
-											context,
-											curItem.getItemName()
-													+ context
-															.getResources()
-															.getString(
-																	R.string.msg_added_to_matrix_favorite),
-											Toast.LENGTH_SHORT).show();
-								}
-
-							}
-						});
-
-			} else {
-				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
-
-			}
-			// or reuse
 		} else {
-
-			final MatrixItem curItem = items.get(position);
-			if (curItem.isSelected()) {
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textValue);
-				// combine min and max
-				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.textRangeFromTo);
-
-				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.textModificator);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-
-				itemRange.setText(curItem.getRangeMin() + " - "
-						+ curItem.getRangeMax());
-
-				itemModificator.setText(curItem.getModificator());
-
-				// // set modificator text color: blue for positive red for
-				// // negative
-				if (!curItem.getModificator().isEmpty()) {
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.a_blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.a_red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
-
-				CheckBox favoriteItem = (CheckBox) convertView
-						.findViewById(R.id.favorite_checkbox);
-				favoriteItem.setChecked(curItem.isFavorite());
-
-				favoriteItem.setEnabled(true);
-				favoriteItem
-						.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-							@Override
-							public void onCheckedChanged(
-									CompoundButton buttonView, boolean isChecked) {
-
-								curItem.setFavorite(isChecked);
-								// TODO Benni save isFavorite for current
-								// Matrix
-								// Item
-								if (isChecked) {
-									Toast.makeText(
-											context,
-											curItem.getItemName()
-													+ context
-															.getResources()
-															.getString(
-																	R.string.msg_added_to_matrix_favorite),
-											Toast.LENGTH_SHORT).show();
-								}
-							}
-						});
-
-			} else {
-				Log.d("curItem.isSelected()???", "" + curItem.isSelected());
-
-			}
+			rowView = convertView;
 		}
-		return convertView;
+
+		final MatrixItem curItem = items.get(position);
+
+		if (curItem.isSelected()) {
+
+			TextView itemName = (TextView) rowView
+					.findViewById(R.id.textItemTitle);
+			TextView itemValue = (TextView) rowView
+					.findViewById(R.id.textValue);
+
+			// combine min and max
+			TextView itemRange = (TextView) rowView
+					.findViewById(R.id.textRangeFromTo);
+
+			TextView itemModificator = (TextView) rowView
+					.findViewById(R.id.textModificator);
+
+			itemName.setText(curItem.getItemName());
+			itemValue.setText(curItem.getValue());
+			itemRange.setText(curItem.getRangeMin() + " - "
+					+ curItem.getRangeMax());
+			itemModificator.setText(curItem.getModificator());
+
+			CheckBox favoriteItem = (CheckBox) rowView
+					.findViewById(R.id.favorite_checkbox);
+			favoriteItem.setChecked(curItem.isFavorite());
+
+			favoriteItem
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+						@Override
+						//TODO add this matrix item to the favorites 
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							curItem.setFavorite(isChecked);
+							if (isChecked) {
+								Toast.makeText(
+										context,
+										curItem.getItemName()
+												+ context
+														.getResources()
+														.getString(
+																R.string.msg_added_to_matrix_favorite),
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+
+			// set modificator text color: blue for positive red for
+			// negative
+			if (!curItem.getModificator().isEmpty()) {
+				if (Integer.valueOf(curItem.getModificator()) > 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.a_blue));
+				} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.a_red));
+				} else
+					itemModificator.setTextColor(context.getResources()
+							.getColor(R.color.white));
+			}
+
+		}
+		return rowView;
 	}
 }
