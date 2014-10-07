@@ -49,19 +49,63 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	private boolean characterAltered;
 
 	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putParcelable("uri", iconUri);
+		savedInstanceState.putParcelable("character", sheet);
+		savedInstanceState.putBoolean("altered", characterAltered);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_character_details);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		characterAltered = false;
 		relLayout = (RelativeLayout)findViewById(R.id.relativeLayout1);
 		final EditText description = (EditText)findViewById(R.id.editText1);
 		final Button colorChangeButton = (Button)findViewById(R.id.button2);
 		final TextView characterName = (TextView)findViewById(R.id.textView1);
 		final EditText levelEditText = (EditText)findViewById(R.id.EditText1);
 		characterIconButton = (ImageButton)findViewById(R.id.imageButton1);
+		
+		characterAltered = false;
+		if(savedInstanceState == null) {
+			final Intent intent = getIntent();
+			final Bundle extras = intent.getExtras();		
+			if (extras != null) {
+				sheet = (CharacterSheet)extras.getParcelable("CharacterSheet");
+				// remove next line later when we got a character
+				if(sheet != null) {
+					setTitle(sheet.getName());
+					characterName.setText(sheet.getName());
+					levelEditText.setText(String.valueOf(sheet.getLevel()));
+					description.setTag(sheet.getDescription());
+				// set to character color
+					relLayout.setBackgroundColor(sheet.getColor());
+					final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+					if(icon != null) {
+						characterIconButton.setImageBitmap(icon);
+					}
+				}
+			}
+		}
+		else {
+			iconUri = (Uri)savedInstanceState.getParcelable("uri");
+			sheet = (CharacterSheet)savedInstanceState.getParcelable("character");
+			if(sheet != null) {
+				description.setText(sheet.getDescription());
+				levelEditText.setText(String.valueOf(sheet.getLevel()));
+				characterName.setText(sheet.getName());
+				setCharacterColor(sheet.getColor());
+				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+				if(icon != null) {
+					characterIconButton.setImageBitmap(icon);
+				}
+			}
+			characterAltered = savedInstanceState.getBoolean("altered");
+		}
 		
 		characterIconButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -164,25 +208,6 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				}
 			}
 		});
-
-		final Intent intent = getIntent();
-		final Bundle extras = intent.getExtras();		
-		if (extras != null) {
-			sheet = (CharacterSheet)extras.getParcelable("CharacterSheet");
-			// remove next line later when we got a character
-			if(sheet != null) {
-				setTitle(sheet.getName());
-				characterName.setText(sheet.getName());
-				levelEditText.setText(String.valueOf(sheet.getLevel()));
-				description.setTag(sheet.getDescription());
-				// set to character color
-				relLayout.setBackgroundColor(sheet.getColor());
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
-				if(icon != null) {
-					characterIconButton.setImageBitmap(icon);
-				}
-			}
-		}
 		
 		final Button characterEditButton = (Button)findViewById(R.id.button1);
 		characterEditButton.setOnClickListener(new OnClickListener() {
@@ -302,11 +327,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		else if(requestCode == PICK_FROM_CAMERA) {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
-			//path = iconUri.getPath();
-			//bitmap = BitmapFactory.decodeFile(path);
-			// gets the thumbnail
-			final Bundle extras = data.getExtras();
-			bitmap = (Bitmap)extras.get("data");
+			path = iconUri.getPath();
+			bitmap = ThumbnailLoader.loadThumbnail(path, this);
 		}
 		if(bitmap != null) {
 			characterIconButton.setImageBitmap(bitmap);
