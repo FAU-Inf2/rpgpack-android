@@ -17,11 +17,11 @@ public class CharacterBrowserActivity extends SingleFragmentActivity implements
 		return new CharacterBrowserFragment();
 	}
 
-	@Override
-	public void onGameNamePass(String gameName) {
-		Log.d("CharacterBrowserActivity", "gameName " + gameName);
-
-	}
+//	@Override
+//	public void onGameNamePass(String gameName) {
+//		Log.d("CharacterBrowserActivity", "gameName " + gameName);
+//
+//	}
 
 	@Override
 	public void onCharacterSelected(CharacterSheet clickedChar) {

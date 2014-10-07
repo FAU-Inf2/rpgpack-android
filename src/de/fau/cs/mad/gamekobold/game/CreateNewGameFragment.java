@@ -27,14 +27,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
@@ -72,7 +70,7 @@ public class CreateNewGameFragment extends Fragment {
 		getActivity().setTitle(
 				getResources().getString(R.string.titel_create_game));
 
-		// check if we have to deal with newGame or dameToEdit
+		// check if we have to deal with newGame or gameToEdit
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME_TO_EDIT);
@@ -81,6 +79,7 @@ public class CreateNewGameFragment extends Fragment {
 		} else {
 			curGame = new Game();
 		}
+		// pass game to the activity
 		mCallbacks.onGamePass(curGame);
 	}
 
@@ -112,6 +111,7 @@ public class CreateNewGameFragment extends Fragment {
 			gameName.setText(curGame.getGameName());
 			// gameDate.setText(curGame.getDate());
 			worldName.setText(curGame.getWorldName());
+			// TODO change gameDate to gameMaster
 			gameDate.setText(curGame.getGameMaster());
 
 			final Bitmap icon = ThumbnailLoader.loadThumbnail(
@@ -125,6 +125,7 @@ public class CreateNewGameFragment extends Fragment {
 		pickedCharacterGridAdapter = new PickedCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_grid_picked_character,
 				curGame);
+		// pass adapter to activity
 		mCallbacks.onSelCharAdapterPass(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
@@ -142,10 +143,11 @@ public class CreateNewGameFragment extends Fragment {
 		// ((TextView) view
 		// .findViewById(R.id.textItemTitle))
 		// .getText(), Toast.LENGTH_SHORT).show();
-		// // TODO do something
+		// // TODO do something on click?
 		// }
 		// });
 
+		// delete character on long click
 		pickedCharacterGridView
 				.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 					@Override
@@ -162,6 +164,7 @@ public class CreateNewGameFragment extends Fragment {
 						builder.setMessage(getResources()
 								.getString(
 										R.string.text_click_to_remove_character_from_game));
+						// user says no - do nothing
 						builder.setNegativeButton(
 								getResources().getString(R.string.no),
 								new DialogInterface.OnClickListener() {
@@ -171,6 +174,7 @@ public class CreateNewGameFragment extends Fragment {
 
 									}
 								});
+						// users says yes - delete character from game
 						builder.setPositiveButton(
 								getResources().getString(R.string.yes),
 								new DialogInterface.OnClickListener() {
@@ -194,18 +198,59 @@ public class CreateNewGameFragment extends Fragment {
 					int count) {
 				// save
 				curGame.setGameName(c.toString());
-				mCallbacks.onGameNamePass(c.toString());
+			//	mCallbacks.onGameNamePass(c.toString());
 			}
 
-			public void beforeTextChanged(CharSequence c, int start, int count,
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// This space intentionally left blank
+				// TODO Auto-generated method stub
 			}
 
-			public void afterTextChanged(Editable c) {
-				// This one too
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+			}
+		});
+
+		worldName.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence c, int start, int before,
+					int count) {
+				// save
+				curGame.setWorldName(c.toString());
+			//	mCallbacks.onWorldNamePass(c.toString());
 			}
 
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+			}
+		});
+
+		gameDate.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence c, int start, int before,
+					int count) {
+				// save
+				curGame.setGameMaster(c.toString());
+			//	mCallbacks.onGameMasterPass(c.toString());
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+			}
 		});
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -265,11 +310,11 @@ public class CreateNewGameFragment extends Fragment {
 				dialog.show();
 			}
 		});
-
+		// popup with game notices
 		infoButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// show popup with some space for Game Info
+				// show popup with some space for Game Infos
 				showPopup(curGame);
 			}
 		});
@@ -290,7 +335,6 @@ public class CreateNewGameFragment extends Fragment {
 		case R.id.menu_item_load_template_from_store:
 			openStore();
 			return true;
-			// TODO check it!!!
 			// handling back-button
 		case android.R.id.home:
 			getActivity().onBackPressed();
@@ -316,6 +360,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	}
 
+	//popup with game notices
 	public static class GameInfoDialogFragment extends DialogFragment {
 		private EditText editTextInfo;
 		private Game cGame;
@@ -356,9 +401,8 @@ public class CreateNewGameFragment extends Fragment {
 					}
 				}
 			}
-			Log.d("curGame is null?", "" + (cGame == null));
+			
 			if (cGame != null) {
-				Log.d("cGame description", "" + cGame.getDescription());
 				if (!cGame.getDescription().isEmpty()) {
 					editTextInfo.setText(cGame.getDescription());
 				}
@@ -497,10 +541,11 @@ public class CreateNewGameFragment extends Fragment {
 	/**
 	 * Required interface for hosting activities.
 	 */
-	// have to pass to activity curGame and gameName
+	// have to pass objects to activity
 	public interface CallbacksCreateNewGame {
-		public void onGameNamePass(String gameName);
-
+	//	public void onGameNamePass(String gameName);
+	//	public void onWorldNamePass(String worldName);
+	//	public void onGameMasterPass(String gameMaster);
 		public void onGamePass(Game curGame);
 
 		public void onSelCharAdapterPass(
