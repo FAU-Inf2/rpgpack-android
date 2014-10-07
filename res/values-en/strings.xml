@@ -314,7 +314,7 @@
     <string name="titel_create_game">New Game</string>
     <string name="warning_set_gamename">Please enter a name for your Game!</string>
     <string name="msg_ask_character_deletion">Do you really want to delete this character?</string>
-    <string name="msg_yes_to_delete_character">This character will be also delete in all active games. Click YES to delete this character.</string>
+    <string name="msg_yes_to_delete_character">This character will be also deleted in all active games. Click YES to delete this character.</string>
     <string name="title_activity_logo">LogoActivity</string>
     <string name="warning_set_character_name">Please choose a name for your character!</string>
     <string name="create_new_game_last_item">Create New Game&#8230;</string>
