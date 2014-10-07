@@ -18,7 +18,8 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 	// the list of objects we want to display
 	private List<Template> objects;
-	// flag to distinguish if we are only displaying templates or if we got the extra "edit last template item"
+	// flag to distinguish if we are only displaying templates or if we got the
+	// extra "edit last template item"
 	private boolean mode_onlyTemplates = false;
 
 	public TemplateBrowserArrayAdapter(Context context, List<Template> objects) {
@@ -26,7 +27,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 		this.context = context;
 		this.objects = objects;
 	}
-	
+
 	public void setModeOnlyTemplates(boolean value) {
 		mode_onlyTemplates = value;
 	}
@@ -37,7 +38,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 	// otherwise 1 for the edit last template item and 0 for templates
 	@Override
 	public int getItemViewType(int position) {
-		if(mode_onlyTemplates) {
+		if (mode_onlyTemplates) {
 			return 0;
 		}
 		// if "edit last template"
@@ -53,7 +54,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 	// 2 otherwise
 	@Override
 	public int getViewTypeCount() {
-		if(mode_onlyTemplates) {
+		if (mode_onlyTemplates) {
 			return 1;
 		}
 		return 2; // Count of different layouts
@@ -67,18 +68,15 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 		View rowView;
 		// handle template only mode first
-		if(mode_onlyTemplates) {
-			if(convertView == null) {
+		if (mode_onlyTemplates) {
+			if (convertView == null) {
 				rowView = inflater.inflate(R.layout.rowlayout_template_browser,
 						parent, false);
-			}
-			else {
+			} else {
 				rowView = convertView;
 			}
-			TextView tName = (TextView) rowView
-					.findViewById(R.id.textView1);
-			TextView tWorld = (TextView) rowView
-					.findViewById(R.id.textView2);
+			TextView tName = (TextView) rowView.findViewById(R.id.textView1);
+			TextView tWorld = (TextView) rowView.findViewById(R.id.textView2);
 			TextView tAdditionalInfo = (TextView) rowView
 					.findViewById(R.id.textView3);
 
@@ -89,8 +87,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 			tName.setText(curTemplate.getTemplateName());
 			tWorld.setText(curTemplate.getWorldName());
-			tAdditionalInfo.setText(String.format(context.getString(R.string.template_item_adapter_author_date_label),
-					curTemplate.getAuthor(), curTemplate.getDate())); 
+			tAdditionalInfo.setText(curTemplate.getDate());
 
 			// load image bitmap
 			final Bitmap icon = ThumbnailLoader.loadThumbnail(
@@ -107,30 +104,23 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 				rowView = inflater.inflate(
 						R.layout.rowlayout_edittemplate_template_browser,
 						parent, false);
+			} else {
+				rowView = inflater.inflate(R.layout.rowlayout_template_browser,
+						parent, false);
 			}
-			else {
-				rowView = inflater.inflate(
-						R.layout.rowlayout_template_browser,
-						parent, false);				
-			}
-		}
-		else {
+		} else {
 			rowView = convertView;
 		}
 		// check position
-		if(position == getCount() - 1) {
+		if (position == getCount() - 1) {
 			// edit last template
-			TextView tName = (TextView) rowView
-					.findViewById(R.id.textView1);
+			TextView tName = (TextView) rowView.findViewById(R.id.textView1);
 			Template curTemplate = objects.get(position);
 			tName.setText(curTemplate.getTemplateName());
-		}
-		else {
+		} else {
 			// normal template
-			TextView tName = (TextView) rowView
-					.findViewById(R.id.textView1);
-			TextView tWorld = (TextView) rowView
-					.findViewById(R.id.textView2);
+			TextView tName = (TextView) rowView.findViewById(R.id.textView1);
+			TextView tWorld = (TextView) rowView.findViewById(R.id.textView2);
 			TextView tAdditionalInfo = (TextView) rowView
 					.findViewById(R.id.textView3);
 
@@ -141,8 +131,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 
 			tName.setText(curTemplate.getTemplateName());
 			tWorld.setText(curTemplate.getWorldName());
-			tAdditionalInfo.setText(String.format(context.getString(R.string.template_item_adapter_author_date_label),
-					curTemplate.getAuthor(), curTemplate.getDate()));
+			tAdditionalInfo.setText(curTemplate.getDate());
 
 			// load image bitmap
 			final Bitmap icon = ThumbnailLoader.loadThumbnail(
