@@ -56,7 +56,6 @@ public class Template implements Serializable {
 		this.date = date;
 	}
 
-	// TODO pruefen
 	public boolean addCharacter(CharacterSheet character) {
 		characters.add(character);
 		return true;

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import de.fau.cs.mad.gamekobold.R;
 
+@Deprecated
+// TODO not used
 public class TemplateIcons {
 
 	private static TemplateIcons instance = null;

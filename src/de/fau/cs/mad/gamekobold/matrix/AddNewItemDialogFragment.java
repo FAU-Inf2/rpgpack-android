@@ -36,9 +36,9 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	private EditText itemName, rangeMin, rangeMax, defaultVal, modificator,
 			description;
 	private Switch switchFrom, switchTo, switchValue, switchMod;
-	public MatrixFragment matrixFragment;
-	public MatrixItem editItem = null;
-	public ArrayAdapter curAdapter;
+	private MatrixFragment matrixFragment;
+	MatrixItem editItem = null;
+	private ArrayAdapter curAdapter;
 
 	public static AddNewItemDialogFragment newInstance(MatrixFragment receiver,
 			ArrayAdapter adapter) {

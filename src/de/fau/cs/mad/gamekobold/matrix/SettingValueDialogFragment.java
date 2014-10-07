@@ -146,10 +146,7 @@ public class SettingValueDialogFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Toast.makeText(getActivity(), "nothing",
-								Toast.LENGTH_SHORT).show();
 						dialog.cancel();
-
 					}
 				});
 

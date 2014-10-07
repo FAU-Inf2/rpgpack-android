@@ -24,7 +24,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
-
+@Deprecated
+//TODO not used 
 public class MatrixViewActivity extends Activity {
 	GridView gridView;
 	List<MatrixItem> itemsList = getDataForGridView();

@@ -46,78 +46,36 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		Log.e("Position in getView picked", "" + position);
+		final LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = null;
+		if (convertView == null) {
+			rowView = inflater.inflate(layoutID, parent, false);
+		} else {
+			rowView = convertView;
+		}
 
 		characters = curGame.getCharacterSheetList();
-
-		Log.e("Size of character list", "" + characters.size());
 		Bitmap bitmap = null;
-		String path = "";
+		CharacterSheet curCharacter = characters.get(position);
 
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		TextView characterName = (TextView) rowView
+				.findViewById(R.id.textItemTitle);
+		characterName.setText(curCharacter.getName());
+		ImageView characterIconView = (ImageView) rowView
+				.findViewById(R.id.character_icon_circle);
 
-		// if it's not recycled, initialize some attributes
-		if (convertView == null) {
-
-			int i = 0;
-			for (CharacterSheet g : characters) {
-				i++;
-				Log.e("PickedCharcterAdapter-first use",
-						i + " - " + g.getName());
-			}
-
-			convertView = inflater.inflate(layoutID, parent, false);
-
-			CharacterSheet curCharacter = characters.get(position);
-
-			TextView characterName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			characterName.setText(curCharacter.getName());
-			ImageView characterIconView = (ImageView) convertView
-					.findViewById(R.id.character_icon_circle);
-
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
-					context);
-			if (bitmap == null) {
-				// set some default game icon
-				characterIconView
-						.setImageResource(R.drawable.person_without_plus);
-			} else {
-				// set game icon
-				characterIconView.setImageBitmap(bitmap);
-			}
-		}
-		// or reuse
-		// TODO check!!!!
-		else {
-			characters = curGame.getCharacterSheetList();
-			int i = 0;
-			for (CharacterSheet g : curGame.getCharacterSheetList()) {
-				i++;
-				Log.e("PickedCharcterAdapter-reuse", i + " - " + g.getName());
-			}
-			CharacterSheet curCharacter = characters.get(position);
-
-			TextView characterName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			characterName.setText(curCharacter.getName());
-			ImageView characterIconView = (ImageView) convertView
-					.findViewById(R.id.character_icon_circle);
-
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
-					context);
-			if (bitmap == null) {
-				// set some default game icon
-				characterIconView.setImageResource(R.drawable.character_white);
-			} else {
-				// set game icon
-				characterIconView.setImageBitmap(bitmap);
-			}
+		bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
+				context);
+		if (bitmap == null) {
+			// set some default game icon
+			characterIconView.setImageResource(R.drawable.character_white);
+		} else {
+			// set game icon
+			characterIconView.setImageBitmap(bitmap);
 		}
 
-		return convertView;
+		return rowView;
 	}
 
 }

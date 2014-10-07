@@ -129,7 +129,7 @@ public class TemplateDetailsActivity extends Activity {
 //			}
 //		});
 
-		TemplateIcons templateIcons = TemplateIcons.getInstance();
+	//	TemplateIcons templateIcons = TemplateIcons.getInstance();
 
 		ImageView ivIcon = (ImageView) findViewById(R.id.icon1);
 		TextView tvTempalteName = (TextView) findViewById(R.id.textView1);

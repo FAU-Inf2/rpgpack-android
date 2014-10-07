@@ -115,12 +115,6 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		});
 	}
 
-	// @Override
-	// public void onGameNamePass(String gameName) {
-	// Log.d("CreateNewGameActivity", "gameName " + gameName);
-	// this.gameName = gameName;
-	// }
-
 	@Override
 	public void onCharacterSelected(CharacterSheet clickedChar) {
 		Log.d("CreateNewGameActivity", "clickedChar " + clickedChar.getName());
@@ -147,18 +141,4 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		this.pickedCharacterGridAdapter = pickedCharacterGridAdapter;
 
 	}
-
-	// @Override
-	// public void onWorldNamePass(String worldName) {
-	// Log.d("CreateNewGameActivity", "worldName " + worldName);
-	// this.worldName = worldName;
-	//
-	// }
-	//
-	// @Override
-	// public void onGameMasterPass(String gameMaster) {
-	// Log.d("CreateNewGameActivity", "gameMaster " + gameMaster);
-	// this.gameMaster = gameMaster;
-	//
-	// }
 }

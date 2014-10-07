@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,8 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
 /**
- * This class handles matrix elements we want to display on template creation / or on template editing.
+ * This class handles matrix elements we want to display on template creation /
+ * or on template editing.
  * 
  */
 public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
@@ -62,148 +62,83 @@ public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		LayoutInflater inflater = (LayoutInflater) context
+		final LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = null;
 
-		// View itemView;
-		// TODO ate refactor with view holder
-		// if it's not recycled, initialize some attributes
-		if (convertView == null) {
-			if (position == getCount() - 1) {
-				// if it is the last row -> create new item
-				convertView = inflater
+		// if it is the last row -> create new item
+		if (position == getCount() - 1) {
+			if (convertView == null) {
+				rowView = inflater
 						.inflate(R.layout.itemlayout2_newitem_matrix_view,
 								parent, false);
-
-				MatrixItem curItem = items.get(position);
-
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textItemAdd);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-
 			} else {
-				convertView = inflater.inflate(
-						R.layout.itemlayout2_matrix_view, parent, false);
-				MatrixItem curItem = items.get(position);
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textValue);
-
-				// combine min and max
-				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.textRangeFromTo);
-
-				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.textModificator);
-
-				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
-						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
-					itemRange.setText(curItem.getRangeMin() + " - "
-							+ curItem.getRangeMax());
-				} else
-					itemRange.setText("");
-
-				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
-					itemValue.setText(curItem.getValue());
-				} else
-					itemValue.setText("");
-
-				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
-					itemModificator.setText(curItem.getModificator());
-				} else
-					itemModificator.setText("");
-
-				itemName.setText(curItem.getItemName());
+				rowView = convertView;
 			}
-			// or reuse
-		} else {
-			// if it is the last row -> create new template
-			if (position == getCount() - 1) {
+			MatrixItem curItem = items.get(position);
 
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
+			TextView itemName = (TextView) rowView
+					.findViewById(R.id.textItemTitle);
+			TextView itemValue = (TextView) rowView
+					.findViewById(R.id.textItemAdd);
 
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textItemAdd);
-				MatrixItem curItem = items.get(position);
-
-				itemName.setText(curItem.getItemName());
-				itemValue.setText(curItem.getValue());
-
-			} else {
-				// itemView = inflater.inflate(R.layout.itemlayout2_matrix_view,
-				// parent, false);
-				TextView itemName = (TextView) convertView
-						.findViewById(R.id.textItemTitle);
-				TextView itemValue = (TextView) convertView
-						.findViewById(R.id.textValue);
-				// combine min and max
-				TextView itemRange = (TextView) convertView
-						.findViewById(R.id.textRangeFromTo);
-
-				TextView itemModificator = (TextView) convertView
-						.findViewById(R.id.textModificator);
-
-				MatrixItem curItem = items.get(position);
-				
-				Log.d("MatrixViewArrayAdapter items size?", ""
-						+ items.size());
-				
-				Log.d("MatrixViewArrayAdapter curItem is null?", ""
-						+ (curItem == null));
-				
-				Log.d("MatrixViewArrayAdapter curItem NAME", ""
-						+ curItem.getItemName());
-				
-				itemName.setText(curItem.getItemName());
-				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
-						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
-					itemRange.setText(curItem.getRangeMin() + " - "
-							+ curItem.getRangeMax());
-				} else
-					itemRange.setText("");
-
-				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
-					itemValue.setText(curItem.getValue());
-				} else
-					itemValue.setText("");
-
-				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
-					itemModificator.setText(curItem.getModificator());
-					// // set modificator text color: blue for positive red for
-					// // negative
-					
-					Log.d("MatrixViewArrayAdapter curItem is null?", ""
-							+ (curItem == null));
-					Log.d("MatrixViewArrayAdapter curItem.getModificator is null?", ""
-							+ (curItem.getModificator() == null));
-					Log.d("MatrixViewArrayAdapter curItem.getModificator is empty?", ""
-							+ (curItem.getModificator() == ""));
-					
-					if (!curItem.getModificator().isEmpty()) {
-
-						if (Integer.valueOf(curItem.getModificator()) > 0) {
-							itemModificator.setTextColor(context.getResources()
-									.getColor(R.color.a_blue));
-						} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-							itemModificator.setTextColor(context.getResources()
-									.getColor(R.color.a_red));
-						} else
-							itemModificator.setTextColor(context.getResources()
-									.getColor(R.color.white));
-					}
-				} else
-					itemModificator.setText("");
-
-			}
+			itemName.setText(curItem.getItemName());
+			itemValue.setText(curItem.getValue());
 		}
-		return convertView;
+		// it is normal matrix item
+		else {
+			if (convertView == null) {
+				rowView = inflater.inflate(R.layout.itemlayout2_matrix_view,
+						parent, false);
+			} else {
+				rowView = convertView;
+			}
+			MatrixItem curItem = items.get(position);
+
+			TextView itemName = (TextView) rowView
+					.findViewById(R.id.textItemTitle);
+			TextView itemValue = (TextView) rowView
+					.findViewById(R.id.textValue);
+			// combine min and max
+			TextView itemRange = (TextView) rowView
+					.findViewById(R.id.textRangeFromTo);
+			TextView itemModificator = (TextView) rowView
+					.findViewById(R.id.textModificator);
+
+			itemName.setText(curItem.getItemName());
+
+			if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+					&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+				itemRange.setText(curItem.getRangeMin() + " - "
+						+ curItem.getRangeMax());
+			} else
+				itemRange.setText("");
+
+			if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+				itemValue.setText(curItem.getValue());
+			} else
+				itemValue.setText("");
+
+			if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+				itemModificator.setText(curItem.getModificator());
+				// // set modificator text color: blue for positive red for
+				// // negative
+				if (!curItem.getModificator().isEmpty()) {
+
+					if (Integer.valueOf(curItem.getModificator()) > 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_blue));
+					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_red));
+					} else
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.white));
+				}
+			} else
+				itemModificator.setText("");
+		}
+		return rowView;
 	}
 
 }

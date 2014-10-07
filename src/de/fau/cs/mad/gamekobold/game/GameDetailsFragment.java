@@ -37,8 +37,6 @@ public class GameDetailsFragment extends Fragment {
 	public static final String WELCOME_TYPE_TEMPLATE = "WELCOME_TEMPLATE";
 	public static final String EXTRA_MODE_GAME_CREATION = "de.fau.cs.mad.gamekobold.gamecreation";
 	public static final String EXTRA_MODE_GAME_EDITION = "de.fau.cs.mad.gamekobold.gameedition";
-	// private List<GameCharakter> charakterList;
-	// private List<String> tagList;
 
 	private Game game;
 	private CharacterSheet curCharacter;
@@ -78,8 +76,6 @@ public class GameDetailsFragment extends Fragment {
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME))) {
 			game = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME);
-			// curGame = (Game) getActivity().getIntent().getSerializableExtra(
-			// EXTRA_GAME_TO_EDIT);
 		} else {
 			game = new Game();
 		}
@@ -264,8 +260,6 @@ public class GameDetailsFragment extends Fragment {
 		// XXX
 
 		// TODO Check it! is it necessary?
-		Log.e("getIconPath is null?", "" + (game.getIconPath() == null));
-
 		final Bitmap bitmap = ThumbnailLoader.loadThumbnail(game.getIconPath(),
 				getActivity());
 		if (bitmap == null) {

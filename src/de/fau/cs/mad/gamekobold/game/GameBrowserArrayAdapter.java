@@ -55,14 +55,10 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 				.findViewById(R.id.characterCounter);
 
 		Game curGame = objects.get(position);
-		Log.d("curGame is null?", "" + (curGame == null));
-
+	
 		gName.setText(curGame.getGameName());
 		gDate.setText(curGame.getDate());
 		gCounter.setText(String.valueOf(curGame.getCharacterSheetList().size()));
-
-		Log.d("getIconPath is null?", ""
-				+ (curGame.getIconPath() == null));
 
 		bitmap = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), context);
 		if(bitmap == null) {

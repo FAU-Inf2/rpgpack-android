@@ -71,8 +71,6 @@ public class CreateNewGameFragment extends Fragment {
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME_TO_EDIT))) {
 			curGame = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME_TO_EDIT);
-			// curGame = (Game) getActivity().getIntent().getSerializableExtra(
-			// EXTRA_GAME_TO_EDIT);
 		} else {
 			curGame = new Game();
 		}
@@ -520,9 +518,6 @@ public class CreateNewGameFragment extends Fragment {
 	 */
 	// have to pass objects to activity
 	public interface CallbacksCreateNewGame {
-		// public void onGameNamePass(String gameName);
-		// public void onWorldNamePass(String worldName);
-		// public void onGameMasterPass(String gameMaster);
 		public void onGamePass(Game curGame);
 
 		public void onSelCharAdapterPass(
