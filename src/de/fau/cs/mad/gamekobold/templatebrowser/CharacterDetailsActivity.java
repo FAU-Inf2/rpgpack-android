@@ -302,11 +302,8 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		else if(requestCode == PICK_FROM_CAMERA) {
 			// If user choose to take picture from camera, get the real path of
 			// temporary file
-			//path = iconUri.getPath();
-			//bitmap = BitmapFactory.decodeFile(path);
-			// gets the thumbnail
-			final Bundle extras = data.getExtras();
-			bitmap = (Bitmap)extras.get("data");
+			path = iconUri.getPath();
+			bitmap = ThumbnailLoader.loadThumbnail(path, this);
 		}
 		if(bitmap != null) {
 			characterIconButton.setImageBitmap(bitmap);
