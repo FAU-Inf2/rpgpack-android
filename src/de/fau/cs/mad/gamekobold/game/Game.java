@@ -27,7 +27,7 @@ public class Game implements Parcelable, Serializable {
 	private String gameName;
 	private String gameMaster;
 	private String date = null;
-	private List<String> tagList;
+//	private List<String> tagList;
 	private String description;
 //	private List<GameCharacter> characterList;
 	private List<CharacterSheet> characterSheetList;
@@ -41,7 +41,7 @@ public class Game implements Parcelable, Serializable {
 			List<CharacterSheet> characterSheetList, String iconPath) {
 		this(gameName, date, iconPath);
 		this.gameMaster = gameMaster;
-		this.tagList = tagList;
+//		this.tagList = tagList;
 		this.description = description;
 //		this.setCharakterList(characterList);
 		this.setCharacterSheetList(characterSheetList);
@@ -77,7 +77,7 @@ public class Game implements Parcelable, Serializable {
 		this.gameName = "";
 		this.gameMaster = "";
 		this.date = "";
-		this.tagList = new LinkedList<String>();
+//		this.tagList = new LinkedList<String>();
 		this.description = "";
 //		this.characterList = new ArrayList<GameCharacter>();
 		this.characterSheetList = new ArrayList<CharacterSheet>();
@@ -149,14 +149,14 @@ public class Game implements Parcelable, Serializable {
 		this.date = date;
 	}
 
-	public List<String> getTagList() {
-		return tagList;
-	}
-
-	@JsonProperty("tags")
-	public void setTagList(List<String> tagList) {
-		this.tagList = tagList;
-	}
+//	public List<String> getTagList() {
+//		return tagList;
+//	}
+//
+//	@JsonProperty("tags")
+//	public void setTagList(List<String> tagList) {
+//		this.tagList = tagList;
+//	}
 
 	public String getDescription() {
 		if (description == null) {
@@ -199,6 +199,7 @@ public class Game implements Parcelable, Serializable {
 	 * Needed for jackson
 	 * @return
 	 */
+	@JsonProperty("characters")
 	private List<String> getCharacterList() {
 		ArrayList<String> characterPaths = new ArrayList<String>();
 		for (final CharacterSheet sheet : characterSheetList) {
@@ -257,7 +258,7 @@ public class Game implements Parcelable, Serializable {
 		this.gameName = otherGame.gameName;
 		this.gameMaster = otherGame.gameMaster;
 		this.date = otherGame.date;
-		this.tagList = otherGame.tagList;
+//		this.tagList = otherGame.tagList;
 		this.description = otherGame.description;
 		this.characterSheetList = otherGame.characterSheetList;
 		this.fileAbsolutePath = otherGame.fileAbsolutePath;
@@ -277,7 +278,7 @@ public class Game implements Parcelable, Serializable {
 			dest.writeString(gameName);
 			dest.writeString(gameMaster);
 			dest.writeString(date);
-			dest.writeStringList(tagList);
+//			dest.writeStringList(tagList);
 			dest.writeString(description);
 			dest.writeList(characterSheetList);
 			dest.writeString(iconPath);
@@ -301,7 +302,7 @@ public class Game implements Parcelable, Serializable {
 				game.setDate(source.readString());
 				List<String> tagList = new LinkedList<String>();
 				source.readStringList(tagList);
-				game.setTagList(tagList);
+//				game.setTagList(tagList);
 				game.setDescription(source.readString());
 				List<CharacterSheet> characterList = new ArrayList<CharacterSheet>();
 				source.readList(characterList, CharacterSheet.class.getClassLoader());
@@ -315,4 +316,17 @@ public class Game implements Parcelable, Serializable {
 		};
 
 		// PARCELABLE END
+//		public void print() {
+//			Log.d("GAME", "name:"+gameName);
+//			Log.d("GAME", "world:"+worldName);
+//			Log.d("GAME", "description:"+description);
+//			Log.d("GAME", "gameMaster:"+gameMaster);
+//			Log.d("GAME", "date:"+date);
+//			Log.d("GAME", "fileAbsPath:"+fileAbsolutePath);
+//			Log.d("GAME", "iconPath:"+iconPath);
+//			Log.d("GAME", "characters:"+characterSheetList.size());
+//			for(final CharacterSheet sheet : characterSheetList) {
+//				Log.d("GAME", "character:"+sheet.getName());
+//			}
+//		}
 }

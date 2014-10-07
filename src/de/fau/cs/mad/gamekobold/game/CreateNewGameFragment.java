@@ -535,4 +535,10 @@ public class CreateNewGameFragment extends Fragment {
 		super.onDetach();
 		mCallbacks = null;
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		mCallbacks.onGamePass(curGame);
+	}
 }

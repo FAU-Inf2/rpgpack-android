@@ -446,6 +446,8 @@ public abstract class JacksonInterface {
 		if(game == null || outStream == null) {
 			return;
 		}
+//		Log.d("JACKSONINTERFACE", "saving game");
+//		game.print();
 		ObjectMapper mapper = new ObjectMapper();
 //		if(use_pretty_writer) {
 //			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
@@ -478,6 +480,8 @@ public abstract class JacksonInterface {
 //			mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
 //		}
 		Game game = mapper.readValue(inStream, Game.class);
+//		Log.d("JACKSONINTERFACE", "loading game");
+//		game.print();
 		return game;	
 	}
 	
