@@ -10,7 +10,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.View;
+import android.view.View.OnTouchListener;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +30,8 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class ToolboxMapView extends GridView {
+public class ToolboxMapView extends GridView implements OnScaleGestureListener,
+		OnTouchListener {
 
 	private Path drawPath;
 	private Paint drawPaint, canvasPaint;
@@ -44,6 +48,10 @@ public class ToolboxMapView extends GridView {
 	private static final float TOUCH_TOLERANCE = 4;
 	private boolean paint_enabled;
 	private boolean defaultbg;
+	private boolean isZoom = false;
+	private ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(
+			getContext(), this);
+	private float scale = 1f;
 
 	public ToolboxMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -72,8 +80,8 @@ public class ToolboxMapView extends GridView {
 			id = getContext().getResources().getIdentifier(background,
 					"drawable", getContext().getPackageName());
 			canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
-			
-		}		
+
+		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		drawCanvas = new Canvas(canvasBitmap);
 		width = w;
@@ -93,8 +101,12 @@ public class ToolboxMapView extends GridView {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (paint_enabled) {
+	public boolean onTouch(View view, MotionEvent event) {
+
+		if (mScaleDetector.onTouchEvent(event))
+			Log.i("Event started", "Zoomzoom");
+
+		if (!mScaleDetector.isInProgress() && paint_enabled) {
 			float x = event.getX();
 			float y = event.getY();
 
@@ -113,6 +125,7 @@ public class ToolboxMapView extends GridView {
 				break;
 			}
 		}
+	
 		return true;
 
 	}
@@ -157,18 +170,17 @@ public class ToolboxMapView extends GridView {
 
 	}
 
-	public void rotateBackground(Bitmap bmp){
+	public void rotateBackground(Bitmap bmp) {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(90);
-		canvasBitmap = Bitmap.createBitmap(bmp, 0, 0, 
-				bmp.getWidth(), bmp.getHeight(), 
-		                              matrix, true);
+		canvasBitmap = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
+				bmp.getHeight(), matrix, true);
 	}
-	
+
 	public void setFileToBackground(Bitmap bmp) {
 		this.background = bmp.toString();
 		canvasBitmap = bmp;
-		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()){
+		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()) {
 			rotateBackground(canvasBitmap);
 		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -182,12 +194,12 @@ public class ToolboxMapView extends GridView {
 		int id = context.getResources().getIdentifier(image, "drawable",
 				context.getPackageName());
 		canvasBitmap = BitmapFactory.decodeResource(getResources(), id);
-		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()){
+		if (canvasBitmap.getHeight() < canvasBitmap.getWidth()) {
 			rotateBackground(canvasBitmap);
 		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Log.i("Bitmaph","" +canvasBitmap.getHeight());
-		Log.i("Bitmapw","" +canvasBitmap.getWidth());
+		Log.i("Bitmaph", "" + canvasBitmap.getHeight());
+		Log.i("Bitmapw", "" + canvasBitmap.getWidth());
 		defaultbg = true;
 		invalidate();
 	}
@@ -227,4 +239,30 @@ public class ToolboxMapView extends GridView {
 		int[] size = { width, height };
 		return size;
 	}
+
+	@Override
+	public boolean onScale(ScaleGestureDetector detector) {
+		scale *= detector.getScaleFactor();
+		scale = Math.max(1.0f, Math.min(scale, 10.0f));
+		Log.d("View", "onScale");
+		Log.d("View", "zoom ongoing, scale: " + detector.getScaleFactor());
+		return true;
+	}
+
+	@Override
+	public boolean onScaleBegin(ScaleGestureDetector detector) {
+		Log.d("View", "onScaleBegin");
+		isZoom = true;
+		return true;
+	}
+
+	@Override
+	public void onScaleEnd(ScaleGestureDetector detector) {
+		Log.d("View", "onScaleEnd");
+		isZoom = false;
+		this.setScaleX(scale);
+		this.setScaleY(scale);
+
+	}
+
 }

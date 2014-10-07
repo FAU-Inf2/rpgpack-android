@@ -105,6 +105,7 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 	            
 	        }
 	    });
+		mapView.setOnTouchListener(mapView);
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
 		currPaint.setImageDrawable(getResources().getDrawable(
