@@ -73,6 +73,9 @@ public class GameDetailsFragment extends Fragment {
 		// game = GameLab.get(getActivity()).getGame(gName);
 
 		// check if it is game edit mode or game creation mode
+//		Intent i = getActivity().getIntent();
+//		if (i.get)
+//		
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME))) {
 			game = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME);

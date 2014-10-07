@@ -22,6 +22,7 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 		CallbacksCharBrowser, CallbacksCreateNewGame {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
 	public static final String EXTRA_MODE_GAME_EDITION = "de.fau.cs.mad.gamekobold.gameedition";
+	public static final String EXTRA_GAME = "de.fau.cs.mad.gamekobold.game";
 
 	private Button createGameButton;
 	private Game curGame;
@@ -84,8 +85,9 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 					// start it
 					Intent i = new Intent(CreateNewGameActivity.this,
 							GameDetailsActivity.class);
-					i.putExtra(GameDetailsFragment.EXTRA_GAME,
-							(Parcelable) curGame);
+					// i.putExtra(GameDetailsFragment.EXTRA_GAME,
+					// (Parcelable) curGame);
+					i.putExtra(EXTRA_GAME, (Parcelable) curGame);
 					// i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME,
 					// curGame.getGameName());
 					startActivity(i);
