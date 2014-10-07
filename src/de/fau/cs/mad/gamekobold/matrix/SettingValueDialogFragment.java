@@ -2,6 +2,7 @@ package de.fau.cs.mad.gamekobold.matrix;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,8 +43,8 @@ public class SettingValueDialogFragment extends DialogFragment {
 		this.selectedItemsAdapter = selectedItemsAdapter;
 	}
 
-	public void passSelItems(ArrayList<MatrixItem> selectedItems) {
-		this.selectedItems = selectedItems;
+	public void passSelItems(List<MatrixItem> selectedItems) {
+		this.selectedItems = (ArrayList<MatrixItem>) selectedItems;
 	}
 
 	@Override
