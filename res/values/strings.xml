@@ -393,42 +393,42 @@
     <string name="menu_your_games">Deine Spiele</string>
     <string name="menu_your_characters">Deine Charaktere</string>
     <string name="menu_your_templates">Deine Vorlagen</string>
-    <string name="menu_your_games_description">Beschreibung fuer Spiele</string>
-    <string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
-    <string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>
+    <string name="menu_your_games_description">Du moechtest spielen? Verwalte hier alle Deine RPG Spiele – erstelle neue, modifiziere und setze die vorhandenen Spiele fort! So hast Du alle Deine Spielnotizen immer dabei!</string>
+    <string name="menu_your_characters_description">Du moechtest Deine Charaktere sehen? Verwalte hier alle Deine RPG Charaktere, ganz egal aus welcher Welt sie kommen! Erstelle, modifiziere, importiere oder exportiere sie um sie mit deinen Freuden teilen zu koennen!</string>
+    <string name="menu_your_templates_description">Hier faengt alles an! Über diesen Punkt kommst du an die RPG Charakter-Vorlagen, die du mehrfach wiederverwenden kannst um Deine eigenen Charaktere zu erstellen. Verwalte hier alle Deine Vorlagen, ganz egal in welcher Spielwelt Du gerade unterwegs bist! Importiere, erstelle eigene, modifiziere oder exportiere die Vorlagen, um sie mit Deinen Freuden teilen zu koennen!</string>
 
     <!-- GameMenu -->
     <string name="menu_new_game">Neues Spiel</string>
     <string name="menu_continue_game">Spiel fortsetzen</string>
     <string name="menu_alljoyn">Alljoyn</string>
-    <string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
-    <string name="menu_continue_game_description">Beschreibung fuer weiter spielen</string>
-    <string name="menu_alljoyn_description">Beschreibung fuer Alljoyn</string>
+    <string name="menu_new_game_description">Erstelle hier eine neue Spielgruppe mit all den Charakteren die Du spielen möchtest. Deine Freunde haben kein Gerät dabei? Kein Problem! Füge einfach alle Charaktere dem Spiel hinzu. Beim Spielen kannst Du die Charaktere per Knopfdruck wechseln und das Geraet einfach weiterreichen.</string>
+    <string name="menu_continue_game_description">Hier kommst du wieder an Deine bisher gestarteten Spiele. Suche einfach eines deiner Spiele aus und schon hast du alle Spielcharaktere und alle Spielnotizen da – genau so, wie Du sie am Vorabend hinterlassen hast! Es geht wieder los! Nutze auch das eingebaute Toolbox um den Spielabend noch bequemer zu gestalten.</string>
+    <string name="menu_alljoyn_description">Zum Spielabend sind schon alle da? Dann tauscht untereinander eure Lieblingsvorlagen aus: ganz einfach und direkt per Knopfdruck werden sie verschickt. So dauert es nicht mehr lange bis ihr für das Spielen bereit seid!</string>
 
     <!-- CharacterMenu -->
     <string name="menu_new_character">Neuer Charakter</string>
     <string name="menu_edit_characters">Charaktere bearbeiten</string>
-    <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
-    <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    <string name="menu_new_character_description">Erstelle hier einen neuen Charakter basierend auf einer Deiner Vorlagen!</string>
+    <string name="menu_edit_characters_description">So kommst Du an all Deine Charaktere. Suche einfach einen deine RPG Charaktere aus und schon kann Du ihn anschauen oder modifizieren.</string>
     <string name="menu_import_character_from_file">Importiere einen Charakter</string>
-    <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
+    <string name="menu_import_character_from_file_description">Du hast einen Charakter per E-Mail bekommen und auf Deinem Geraet gespeichert? Importiere einfach die Datei in die App.</string>
     <string name="toast_please_pick_a_template">Bitte waehle eine Vorlage.</string>
 
     <!-- TemplateMenu -->
     <string name="menu_new_template">Neue Vorlage</string>
     <string name="menu_edit_templates">Vorlagen bearbeiten</string>
     <string name="menu_download_templates">Vorlagen herunterladen</string>
-    <string name="menu_new_template_description">Beschreibung fuer neue Vorlage</string>
-    <string name="menu_edit_templates_description">Beschreibung fuer Vorlage editieren</string>
-    <string name="menu_download_templates_description">Beschreibung fuer Vorlagen herunterladen</string>
+    <string name="menu_new_template_description">Investiere ein bisschen Zeit und erstelle hier eine eigene Charakter-Vorlage nach Deinen Wuenschen. Spaeter wirst Du sie mehrfach wiederverwenden koennen um Deine RPG-Charaktere zu erstellen.</string>
+    <string name="menu_edit_templates_description">Die Vorlage ist noch nicht ganz rund? Irgendwas fehlt oder passt nicht? Dann modifiziere sie einfach – fuege neue Elemente hinzu oder korrigiere die bestehenden. \n Beachte, dass all die Charaktere, die Du basierend auf der Vorlage schon erstellt hast, NICHT modifiziert werden.</string>
+    <string name="menu_download_templates_description">Hier kommst Du ganz schnell an die Vorlagen heran! Importiere oder suche und lade eine Vorlage aus dem Template Store herunter.</string>
 
     <!-- DownloadTemplateMenu -->
-    <string name="menu_template_store">Vorlagen-Store</string>
+    <string name="menu_template_store">Template Store</string>
     <string name="menu_template_import">Vorlage importieren</string>
     <string name="menu_scan_qrcode">QR-Code scannen</string>
-    <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
-    <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
-    <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
+    <string name="menu_template_store_description">Suche nach den neuesten oder bestbewerteten Vorlagen fuer deine Spielwelt im Template Store! Lade die Vorlagen gleich runter und nutze sie.</string>
+    <string name="menu_template_import_description">Du hast eine Vorlage per E-Mail bekommen und auf Deinem Geraet gespeichert? Importiere einfach die Datei in die App.</string>
+    <string name="menu_scan_qrcode_description">Du hast eine Vorlage mit unserem Online-Generator erstellt und einen QR-Code für sie bekommen? Um die Vorlage runterzuladen scanne ihn einfach ein!</string>
 
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">Eine Datei mit dem selben Namen existiert bereits!</string>

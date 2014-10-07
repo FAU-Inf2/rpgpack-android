@@ -392,42 +392,42 @@
     <string name="menu_your_games">Your games</string>
     <string name="menu_your_characters">Your characters</string>
     <string name="menu_your_templates">Your templates</string>
-    <string name="menu_your_games_description">Beschreibung fuer Spiele</string>
-    <string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
-    <string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>
+    <string name="menu_your_games_description">Do you want to play? Here you can manage all your RPG Playgroups – create a new one, modify or continue your last Sunday\’s game! So you\’ll have all your game notes always with you!</string>
+    <string name="menu_your_characters_description">Do you want to check your RPG characters? No matter which RPG system you play - manage all of them here. Create a new one, modify or export it to share it with your friends!</string>
+    <string name="menu_your_templates_description">It starts all here! At this point you can manage all your RPG templates. No matter which RPG system you play! Import, create your own one template, modify or export it to share with your friends!</string>
 
     <!-- GameMenu -->
     <string name="menu_new_game">New game</string>
     <string name="menu_continue_game">Continue game</string>
     <string name="menu_alljoyn">Alljoyn</string>
-    <string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
-    <string name="menu_continue_game_description">Beschreibung fuer weiter spielen</string>
-    <string name="menu_alljoyn_description">Beschreibung fuer Alljoyn</string>
+    <string name="menu_new_game_description">Create a new playgroup here and add all the characters you want to use. You got a lot of friends to play, but just one device? No problem! Simply add all the characters to the game. You can easily switch between them and have the whole fun with even one device!</string>
+    <string name="menu_continue_game_description">Let\’s play again! Do you want to continue some of your games? Just select a game from the list and you will have all your characters and notices back. To make the evening yet better you can also use the toolbox.</string>
+    <string name="menu_alljoyn_description">Are your friends already here? Then it\’s the best time to share your favorite templates: just one click and it is sent! So it doesn‘t take long until you are all ready to play!</string>
 
     <!-- CharacterMenu -->
     <string name="menu_new_character">New character</string>
     <string name="menu_edit_characters">Edit characters</string>
-    <string name="menu_new_character_description">Beschreibung fuer neuer Charakter</string>
-    <string name="menu_edit_characters_description">Beschreibung fuer Charaktere editieren</string>
+    <string name="menu_new_character_description">Create a new character from one of your templates here!</string>
+    <string name="menu_edit_characters_description">Do you want to edit some of your characters? There is a list of all of them here. Just select one and modify it as you like.</string>
     <string name="menu_import_character_from_file">Import character</string>
-    <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
+    <string name="menu_import_character_from_file_description">You\’ve got a character as an e-mail attachment and saved it to your device? Simply import the file into the app.</string>
     <string name="toast_please_pick_a_template">Please pick a template.</string>
 
     <!-- TemplateMenu -->
     <string name="menu_new_template">New template</string>
     <string name="menu_edit_templates">Edit templates</string>
     <string name="menu_download_templates">Download templates</string>
-    <string name="menu_new_template_description">Beschreibung fuer neue Vorlage</string>
-    <string name="menu_edit_templates_description">Beschreibung fuer Vorlage editieren</string>
-    <string name="menu_download_templates_description">Beschreibung fuer Vorlagen herunterladen</string>
+    <string name="menu_new_template_description">Invest some time to create your own template. You will reuse it several times later to create your characters or to share it with your friends.</string>
+    <string name="menu_edit_templates_description">Your template is not complete yet? Something is missing or something does not fit? Simply modify it - add new elements or adjust some. \n Note that all the characters you\’ve already created based on the template will NOT be modified.</string>
+    <string name="menu_download_templates_description">Here you can quickly get some templates! Just import or download one from the Template Store.</string>
 
     <!-- DownloadTemplateMenu -->
-    <string name="menu_template_store">Template-Store</string>
+    <string name="menu_template_store">Template Store</string>
     <string name="menu_template_import">Import template</string>
     <string name="menu_scan_qrcode">Scan QR-Code</string>
-    <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
-    <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
-    <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
+    <string name="menu_template_store_description">Browse the Template Store to discover the newest or the best rated templates for your role-playing game system! You can download the templates here.</string>
+    <string name="menu_template_import_description">You\’ve got a template as an e-mail attachment and saved it to your device? Simply import the file into the app.</string>
+    <string name="menu_scan_qrcode_description">You\’ve used our online generator to create your own template and got an QR-Code for it? For downloading simply scan it.</string>
 
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">A file with the same name already exists!</string>
