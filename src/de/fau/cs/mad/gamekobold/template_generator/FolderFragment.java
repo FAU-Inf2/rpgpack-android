@@ -480,7 +480,7 @@ public class FolderFragment extends GeneralFragment {
 					newDataItem.checked = subTable.isSelected();
 					newDataItem.favorite = subTable.isFavorite();
 					// create fragment
-					// TODO add matrix inflation
+					// matrix inflation
 					newDataItem.childFragment = new MatrixFragment();
 					newDataItem.childFragment.elementName = subTable.tableName;
 					newDataItem.childFragment.fragment_parent = this;
@@ -489,10 +489,11 @@ public class FolderFragment extends GeneralFragment {
 
 				}
 			}
-			// } else if (subTable instanceof FavoriteTable) {
+			//TODO Favorites - not implemented now  
+			//} else if (subTable instanceof FavoriteTable) {
 			// Log.d("INFLATING FOR FavoriteTable, name", ""
 			// + subTable.tableName);
-			// //TODO ate
+			// 
 			// }
 			dataAdapter.notifyDataSetChanged();
 		}

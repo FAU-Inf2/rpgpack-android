@@ -76,7 +76,8 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 			favoriteItem
 					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 						@Override
-						//TODO add this matrix item to the favorites 
+						// TODO add this matrix item to the favorites -not
+						// implemented now
 						public void onCheckedChanged(CompoundButton buttonView,
 								boolean isChecked) {
 							curItem.setFavorite(isChecked);

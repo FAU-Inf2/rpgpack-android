@@ -64,7 +64,6 @@ public class MatrixViewActivity extends Activity {
 
 				} else {
 					// click on item
-					// TODO what's next?
 					Intent i = new Intent(MatrixViewActivity.this,
 							AddNewItemActivity.class);
 
@@ -120,8 +119,7 @@ public class MatrixViewActivity extends Activity {
 		}
 	}
 
-	// TODO replace with real data, now it is just stub for real data from DB or
-	// json file?
+
 	public static List<MatrixItem> getDataForGridView() {
 		List<MatrixItem> itemsList = new ArrayList<MatrixItem>();
 
@@ -145,7 +143,6 @@ public class MatrixViewActivity extends Activity {
 	}
 
 	public static class AddNewItemDialogFragment extends DialogFragment {
-		// TODO check
 		public static AddNewItemDialogFragment newInstance() {
 			AddNewItemDialogFragment fragment = new AddNewItemDialogFragment();
 			return fragment;
@@ -171,7 +168,7 @@ public class MatrixViewActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-							// TODO ADD new Item
+							// ADD new Item
 
 						}
 					});
@@ -184,16 +181,6 @@ public class MatrixViewActivity extends Activity {
 							AddNewItemDialogFragment.this.getDialog().cancel();
 						}
 					});
-
-			// TODO x-Button on the top, make it clickable
-			// Button cancel =
-			// (Button)getActivity().findViewById(R.id.imageView_close);
-			// cancel.setOnClickListener(l);
-			// setOnClickListener(new OnClickListener() {
-			// public void onClick(View v) {
-			// AddNewItemDialogFragment.this.getDialog().cancel();
-			// }
-			// });
 
 			// Create the AlertDialog object and return it
 			final AlertDialog dialog = builder.create();

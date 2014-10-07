@@ -449,7 +449,7 @@ public class MatrixFragment extends GeneralFragment {
 									getActivity(),
 									"Neues Element wird in Deinem Character erstellt!",
 									Toast.LENGTH_SHORT).show();
-							// TODO Benni save new matrix item
+							// save new matrix item
 							showPopup(adapterCreateCharacter);
 						} else {
 
@@ -475,8 +475,6 @@ public class MatrixFragment extends GeneralFragment {
 								curMatrixItem.setSelected(true);
 
 								// show popup to set current value
-								// TODO new popup
-
 								showSetValuePopup(curMatrixItem,
 										adapterCreateCharacter, selectedItems);
 								// selectedItems.add(curMatrixItem);

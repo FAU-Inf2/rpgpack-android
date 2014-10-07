@@ -259,7 +259,6 @@ public class GameDetailsFragment extends Fragment {
 
 		// XXX
 
-		// TODO Check it! is it necessary?
 		final Bitmap bitmap = ThumbnailLoader.loadThumbnail(game.getIconPath(),
 				getActivity());
 		if (bitmap == null) {

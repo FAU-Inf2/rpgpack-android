@@ -166,7 +166,6 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
-						// TODO Check for null values
 						// Do nothing here because we override this button later
 						// to change the close behaviour.
 						// However, we still need this because on older versions

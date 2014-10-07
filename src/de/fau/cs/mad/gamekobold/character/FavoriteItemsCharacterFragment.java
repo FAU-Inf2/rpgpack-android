@@ -78,7 +78,7 @@
 //
 //		charName.setText(curCharacter.getCharacterName());
 //
-//		//TODO find out fav items!
+//		//TODO find out favotite items - not implemented!
 ////		for (AbstractTable at : curSheet.getRootTable().subTables){
 ////			if (at.isFavorite() && at instanceof MatrixTable) {
 ////				at.

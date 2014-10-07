@@ -58,7 +58,6 @@ public class CharacterMenu extends AbstractThreeButtonMenu implements IFileBrows
 		setButton2DescriptionText(getString(R.string.menu_edit_characters_description));
 
 		// button 3
-		//TODO right text
 		setButton3MainText(getString(R.string.menu_import_character_from_file));
 		setButton3DescriptionText(getString(R.string.menu_import_character_from_file_description));
 

@@ -213,8 +213,8 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					// set data
 					currentTemplate.setTemplateName(tvTemplateName.getText().toString());
 					currentTemplate.setGameName(tvGameName.getText().toString());
-					// TODO author
-					currentTemplate.setAuthor("Registered Author");
+					//FIXME author is not used  
+					currentTemplate.setAuthor("");
 					currentTemplate.setDate(new SimpleDateFormat("dd.MM.yyyy")
 							.format(new Date()));
 					currentTemplate.setDescription(tvDescription.getText().toString());

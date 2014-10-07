@@ -50,7 +50,6 @@ public class GameMenu extends AbstractThreeButtonMenu {
 		setButton2DescriptionText(getString(R.string.menu_continue_game_description));
 
 		// button 3
-		// TODO right text
 		setButton3MainText(getString(R.string.menu_alljoyn));
 		setButton3DescriptionText(getString(R.string.menu_alljoyn_description));
 

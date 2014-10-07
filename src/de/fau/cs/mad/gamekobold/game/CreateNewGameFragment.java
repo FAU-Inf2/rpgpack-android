@@ -400,7 +400,6 @@ public class CreateNewGameFragment extends Fragment {
 								cGame.setDescription(editTextInfo
 										.getEditableText().toString());
 								// game changed!!!
-								// TODO check it!! newGame vs myGame
 							}
 						}
 					});
