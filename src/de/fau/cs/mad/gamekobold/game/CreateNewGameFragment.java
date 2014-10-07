@@ -105,8 +105,12 @@ public class CreateNewGameFragment extends Fragment {
 			// EXTRA_GAME_TO_EDIT);
 
 			gameName.setText(curGame.getGameName());
+			// we can not edit game name because of it is used in the game file
+			// name
+			gameName.setEnabled(false);
 			// gameDate.setText(curGame.getDate());
 			worldName.setText(curGame.getWorldName());
+			worldName.requestFocus();
 			// TODO change gameDate to gameMaster
 			gameDate.setText(curGame.getGameMaster());
 
@@ -439,7 +443,8 @@ public class CreateNewGameFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		Log.d("mCallbacks.onGamePass(curGame) - onActivityResult;", curGame.getGameName());
+		Log.d("mCallbacks.onGamePass(curGame) - onActivityResult;",
+				curGame.getGameName());
 		if (resultCode != Activity.RESULT_OK)
 			return;
 
