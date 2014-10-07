@@ -6,11 +6,11 @@
     <string name="hello_world">Hallo Welt!</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_tools">Werkzeuge</string>
-	<string name="action_character">Charakter wählen</string>
+    <string name="action_character">Charakter wählen</string>
     <string name="action_edit">Editieren</string>
-	<string name="action_edit_mode">Editier-Modus</string>
-	<string name="action_selection_mode">Betrachten-Modus</string>
-	<string name="action_show_invisible">Unsichtbare Elemente anzeigen</string>
+    <string name="action_edit_mode">Editier-Modus</string>
+    <string name="action_selection_mode">Betrachten-Modus</string>
+    <string name="action_show_invisible">Unsichtbare Elemente anzeigen</string>
     <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
     <string name="action_main">Main</string>
     <string name="action_go_above">..</string>
@@ -28,7 +28,7 @@
     <string name="settings">Einstellungen</string>
     <string name="alljoyn">Alljoyn</string>
     <string name="leave_toast">Druecke erneut Zurueck um die App zu verlassen.</string>
-    
+
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
 
@@ -94,7 +94,7 @@
     <string name="matrix_item_title">Titel</string>
     <string name="matrix_item_value">Wert</string>
     <string name="item_range">Bereich</string>
-    
+
     <!-- ItemLayout Character Icon -->
     <string name="character_icon_textview">TextView</string>
 
@@ -107,7 +107,7 @@
     <string name="toast_edit_template_now">Editiere nun dein Template!</string>
     <string name="msg_template_file_already_exists">Es existiert bereits eine Vorlage mit dem gleichem Datei Namen.</string>
     <string name="msg_yes_to_overwrite_no_to_edit">Klicke auf Ja um die Datei zu ueberschreiben oder auf Nein um den Namen zu aendern.</string>
-    
+
     <string-array name="image_picker_items">
         <item>von Kamera</item>
         <item>von SD-Karte</item>
@@ -194,17 +194,17 @@
     <string name="row_edit_last_template">Letztes Vorlage bearbeiten&#8230;</string>
     <string name="row_create_new_template">Neues Vorlage erstellen&#8230;</string>
     <string name="menu_label_export_template">Exportiere Vorlage als Datei</string>
-	<string name="menu_label_import_template">Importiere ein Vorlage aus einer Datei</string>
-	<string name="toast_exported_template">Vorlage exportiert nach: %1$s</string>
-	<string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
-	<string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
-	<string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
-	<string name="toast_imported_template">Vorlage importiert.</string>
-	<string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
-	<string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
-	<string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
-	<string name="template_item_adapter_author_date_label">Von %1$s, %2$s</string>
-	
+    <string name="menu_label_import_template">Importiere ein Vorlage aus einer Datei</string>
+    <string name="toast_exported_template">Vorlage exportiert nach: %1$s</string>
+    <string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
+    <string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
+    <string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
+    <string name="toast_imported_template">Vorlage importiert.</string>
+    <string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
+    <string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
+    <string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
+    <string name="template_item_adapter_author_date_label">Von %1$s, %2$s</string>
+
     <!-- template_generator_table_view -->
     <string name="text_add_row"> + Zeile</string>
     <string name="text_add_column"> + Spalte</string>
@@ -235,7 +235,7 @@
     <string name="three">3</string>
     <string name="menu_export_character">Charakter in eine Datei exportieren</string>
     <string name="toast_exported_character">Charakter exportiert nach: %1$s</string>
-	<string name="toast_exported_character_failed">Exportieren fehlgeschlagen!</string>
+    <string name="toast_exported_character_failed">Exportieren fehlgeschlagen!</string>
 
     <!-- fragment_game_details -->
     <string name="text_change_game">Spiel anpassen</string>
@@ -246,8 +246,8 @@
     <string name="game_name">Spielname</string>
     <string name="world_name">Name der Spielwelt</string>
     <string name="creation_date">Erstellungsdatum</string>
- <string name="gamemaster">Gamemaster</string>
-    
+    <string name="gamemaster">Gamemaster: </string>
+
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
 
@@ -347,12 +347,12 @@
     <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
     <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
     <string name="download_successful">Das Template wurde erfolgreich auf dem Gerät gespeichert</string>
-	<string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
-	<string name="buttonImport">Importieren</string>
-	<string name="store_invalid_file">Ungültige Datei ausgewählt</string>
-	<string name="store_invalid_template">Ungültiges Template ausgewählt</string>
-	<string name="store_template_import_success">Template wurde erfolgreich importiert</string>
-    
+    <string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
+    <string name="buttonImport">Importieren</string>
+    <string name="store_invalid_file">Ungültige Datei ausgewählt</string>
+    <string name="store_invalid_template">Ungültiges Template ausgewählt</string>
+    <string name="store_template_import_success">Template wurde erfolgreich importiert</string>
+
     <!-- character_favorite_items.xml / fragment create new character.xml -->
     <string name="hint_character_name">Charakter Name</string>
     <string name="hint_character_lvl">lvl</string>
@@ -388,14 +388,14 @@
 
     <!-- dialog_fragment_setting_matrix_value -->
     <string name="matrix_value">Wert:</string>
-    
+
     <!-- MainMenu -->
     <string name="menu_your_games">Deine Spiele</string>
     <string name="menu_your_characters">Deine Charaktere</string>
     <string name="menu_your_templates">Deine Vorlagen</string>
     <string name="menu_your_games_description">Beschreibung fuer Spiele</string>
-	<string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
-	<string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>    
+    <string name="menu_your_characters_description">Beschreibung fuer Charaktere</string>
+    <string name="menu_your_templates_description">Beschreibung fuer Vorlagen</string>
 
     <!-- GameMenu -->
     <string name="menu_new_game">Neues Spiel</string>
@@ -404,7 +404,7 @@
     <string name="menu_new_game_description">Beschreibung fuer neues Spiel</string>
     <string name="menu_continue_game_description">Beschreibung fuer weiter spielen</string>
     <string name="menu_alljoyn_description">Beschreibung fuer Alljoyn</string>
-    
+
     <!-- CharacterMenu -->
     <string name="menu_new_character">Neuer Charakter</string>
     <string name="menu_edit_characters">Charaktere bearbeiten</string>
@@ -413,7 +413,7 @@
     <string name="menu_import_character_from_file">Importiere einen Charakter</string>
     <string name="menu_import_character_from_file_description">Importiere einen Charakter aus einer Datei</string>
     <string name="toast_please_pick_a_template">Bitte waehle eine Vorlage.</string>
-    
+
     <!-- TemplateMenu -->
     <string name="menu_new_template">Neue Vorlage</string>
     <string name="menu_edit_templates">Vorlagen bearbeiten</string>
@@ -421,7 +421,7 @@
     <string name="menu_new_template_description">Beschreibung fuer neue Vorlage</string>
     <string name="menu_edit_templates_description">Beschreibung fuer Vorlage editieren</string>
     <string name="menu_download_templates_description">Beschreibung fuer Vorlagen herunterladen</string>
-    
+
     <!-- DownloadTemplateMenu -->
     <string name="menu_template_store">Vorlagen-Store</string>
     <string name="menu_template_import">Vorlage importieren</string>
@@ -429,20 +429,21 @@
     <string name="menu_template_store_description">Beschreibung fuer Vorlagen-Store</string>
     <string name="menu_template_import_description">Beschreibung fuer Vorlage importieren. Importiere eine Vorlage aus einer Datei.</string>
     <string name="menu_scan_qrcode_description">Beschreibung fuer QR-Code scannen</string>
-   
+
     <!-- AlertDialog FileAlreadyExists -->
     <string name="msg_file_with_same_name_already_exists">Eine Datei mit dem selben Namen existiert bereits!</string>
     <string name="question_overwrite_file">Datei ueberschreiben?</string>
-    
+
     <!-- Character import -->
-  	<string name="toast_imported_character">Charakter importiert.</string>
-	<string name="toast_imported_character_failed">Importieren fehlgeschlagen!</string>
-	<string name="toast_file_is_not_character">Datei ist kein Charakter!</string>
-	
-	<!-- TempalteExportTask -->
-	<string name="msg_exporting_template">Exportiere Vorlage.</string>
-	
-	<!-- QR Code Scan -->
-	<string name="scan_error">Beim Scannen des QR Codes ist ein Fehler aufgetreten</string>
-	<string name="invalid_qr_code">Es wurde ein ungültiger QR Code gescannt</string>
+    <string name="toast_imported_character">Charakter importiert.</string>
+    <string name="toast_imported_character_failed">Importieren fehlgeschlagen!</string>
+    <string name="toast_file_is_not_character">Datei ist kein Charakter!</string>
+
+    <!-- TempalteExportTask -->
+    <string name="msg_exporting_template">Exportiere Vorlage.</string>
+
+    <!-- QR Code Scan -->
+    <string name="scan_error">Beim Scannen des QR Codes ist ein Fehler aufgetreten</string>
+    <string name="invalid_qr_code">Es wurde ein ungültiger QR Code gescannt</string>
+
 </resources>

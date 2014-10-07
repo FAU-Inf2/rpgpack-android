@@ -246,7 +246,7 @@
     <string name="game_name">Game Name</string>
     <string name="world_name">Gameworld Name</string>
     <string name="creation_date">Date Created</string>
-    <string name="gamemaster">Gamemaster</string>
+    <string name="gamemaster">Gamemaster: </string>
 
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>

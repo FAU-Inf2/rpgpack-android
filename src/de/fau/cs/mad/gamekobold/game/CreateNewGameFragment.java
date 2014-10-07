@@ -323,36 +323,6 @@ public class CreateNewGameFragment extends Fragment {
 		return view;
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.fragment_templates_list, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.menu_item_load_template_from_store:
-			openStore();
-			return true;
-			// handling back-button
-		case android.R.id.home:
-			getActivity().onBackPressed();
-			// finish();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	private void openStore() {
-		// Spiel erstellen
-		Intent intent = new Intent(getActivity(),
-				TemplateStoreMainActivity.class);
-		startActivity(intent);
-	}
-
 	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
 				.newInstance(game, false);

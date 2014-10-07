@@ -26,7 +26,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_game_details_char_border"
         android:gravity="center"
         android:maxWidth="90dip"
         android:padding="18dp"

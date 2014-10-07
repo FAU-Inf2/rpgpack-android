@@ -63,7 +63,7 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 					if (curGame.getDate().equals("")) {
 						// set creation date
 						final SimpleDateFormat format = new SimpleDateFormat(
-								"dd.MM.yyyy HH:mm:ss");
+								"yyyy/MM/dd HH:mm:ss");
 						final Date date = new Date();
 						curGame.setDate(format.format(date));
 					}

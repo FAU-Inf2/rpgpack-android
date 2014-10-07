@@ -79,13 +79,15 @@ public class GameDetailsFragment extends Fragment {
 		// for back-button
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		String gName = (String) getActivity().getIntent().getSerializableExtra(
-				EXTRA_GAME_NAME);
+		// String gName = (String)
+		// getActivity().getIntent().getSerializableExtra(
+		// EXTRA_GAME_NAME);
 
 		// TODO change it!!!
 		// Log.d("GameDetailsFragment", "getGame >>" + gName);
 		// game = GameLab.get(getActivity()).getGame(gName);
 
+		// check if it is game edit mode or game creation mode
 		if ((getActivity().getIntent().hasExtra(EXTRA_GAME))) {
 			game = (Game) getActivity().getIntent().getParcelableExtra(
 					EXTRA_GAME);
@@ -95,13 +97,7 @@ public class GameDetailsFragment extends Fragment {
 			game = new Game();
 		}
 
-		if (!(game == null)) {
-			getActivity().setTitle(game.getGameName());
-
-		} else {
-			getActivity().setTitle("Default");
-
-		}
+		getActivity().setTitle(game.getGameName());
 
 		gameName = (TextView) view.findViewById(R.id.gameName);
 		date = (TextView) view.findViewById(R.id.textViewDate);
@@ -115,7 +111,8 @@ public class GameDetailsFragment extends Fragment {
 		gameName.setText(game.getGameName());
 		worldName.setText(game.getWorldName());
 		date.setText(game.getDate());
-		gameMaster.setText(game.getGameMaster());
+		gameMaster.setText(getResources().getString(R.string.gamemaster) + " "
+				+ game.getGameMaster());
 
 		final GameDetailsCharacterGridAdapter gameDetailsCharacterGridAdapter = new GameDetailsCharacterGridAdapter(
 				getActivity(), R.layout.itemlayout_game_details_charakter, game);
@@ -135,7 +132,6 @@ public class GameDetailsFragment extends Fragment {
 								.getText(), Toast.LENGTH_SHORT).show();
 
 				// Start CharacterPlayActivity
-
 				File jsonFile = new File(curCharacter.getFileAbsolutePath());
 				curCharacter.getFileAbsolutePath();
 
@@ -161,8 +157,7 @@ public class GameDetailsFragment extends Fragment {
 					@Override
 					public boolean onItemLongClick(AdapterView<?> adapterView,
 							View view, final int position, long id) {
-						Log.d("LONG CLICK", "pos:" + position);
-
+						
 						final CharacterSheet curGameCharacter = (CharacterSheet) adapterView
 								.getItemAtPosition(position);
 
@@ -203,7 +198,7 @@ public class GameDetailsFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// show popup with some space for Game Info
-				showPopup();
+				showPopup(game);
 			}
 		});
 
@@ -218,7 +213,6 @@ public class GameDetailsFragment extends Fragment {
 						getActivity().getResources().getString(
 								R.string.msg_edit_game_mode),
 						Toast.LENGTH_SHORT).show();
-				// TODO
 				// Start createNewGameActivity with current game values!
 				Intent i = new Intent(getActivity(),
 						CreateNewGameActivity.class);
@@ -294,10 +288,10 @@ public class GameDetailsFragment extends Fragment {
 		}
 		return view;
 	}
-
-	private void showPopup() {
+//
+	private void showPopup(Game game) {
 		GameInfoDialogFragment gameInfoDialogFragment = GameInfoDialogFragment
-				.newInstance(game, true);
+				.newInstance(game, false);
 		gameInfoDialogFragment.show(getFragmentManager(),
 				"popupGameInfoFragment");
 	}

@@ -9,7 +9,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_gravity="left|fill_vertical"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         android:adjustViewBounds="true"
         android:padding="8dp"
         android:scaleType="fitCenter"
@@ -44,28 +44,17 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textViewWorldName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/gameName"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/iconGame"
-        android:text="@string/world_name"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <TextView
         android:id="@+id/gameName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewWorldName"
         android:layout_alignLeft="@+id/textViewWorldName"
         android:layout_alignTop="@+id/iconGame"
         android:text="@string/game_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
-        android:textSize="16sp" />
-    
+        android:textSize="18sp" />
+
     <GridView
         android:id="@+id/gridViewCharacters"
         android:layout_width="match_parent"
@@ -89,24 +78,38 @@
         android:scaleType="fitXY" />
 
     <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iconGame"
+        android:layout_alignLeft="@+id/textViewGM"
+        android:layout_marginBottom="5dp"
+        android:layout_toLeftOf="@+id/buttonGameInfoPopup"
+        android:text="@string/creation_date"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
         android:id="@+id/textViewGM"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewDate"
         android:layout_alignLeft="@+id/textViewWorldName"
-        android:layout_below="@+id/textViewWorldName"
+        android:layout_alignParentRight="true"
         android:text="@string/gamemaster"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/textViewDate"
+        android:id="@+id/textViewWorldName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/iconGame"
-        android:layout_alignLeft="@+id/textViewGM"
-        android:layout_toLeftOf="@+id/buttonGameInfoPopup"
-        android:text="@string/creation_date"
+        android:layout_above="@+id/textViewGM"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/iconGame"
+        android:text="@string/world_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white"
         android:textSize="14sp" />

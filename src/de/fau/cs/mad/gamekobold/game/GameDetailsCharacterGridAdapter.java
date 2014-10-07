@@ -45,66 +45,41 @@ public class GameDetailsCharacterGridAdapter extends
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Bitmap bitmap = null;
-		String path = "";
-
-		LayoutInflater inflater = (LayoutInflater) context
+		final LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		// if it's not recycled, initialize some attributes
+		View rowView = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(layoutID, parent, false);
-
-//			GameCharacter curCharacter = characters.get(position);
-			CharacterSheet curCharacter = characters.get(position);
-
-
-			TextView characterName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-
-			ImageView characterIconView = (ImageView) convertView
-					.findViewById(R.id.character_icon_circle);
-
-			characterName.setText(curCharacter.getName());
-
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-			if(bitmap == null) {
-				// set some default game icon
-				characterIconView.setImageResource(R.drawable.person_without_plus);
-			}
-			else {
-				characterIconView.setImageBitmap(bitmap);
-			}
-		}
-		// or reuse
-		else {
-			Log.e("Reusing", "true");
-			TextView characterName = (TextView) convertView
-					.findViewById(R.id.textItemTitle);
-			CharacterSheet curCharacter = characters.get(position);
-			characterName.setText(curCharacter.getName());
-			Log.d("Character is null?", "" + (curCharacter == null));
-			ImageView characterIconView = (ImageView) convertView
-					.findViewById(R.id.character_icon_circle);
-
-			bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(), context);
-			if(bitmap == null) {
-				// set some default game icon
-				characterIconView.setImageResource(R.drawable.person_without_plus);
-			}
-			else {
-				characterIconView.setImageBitmap(bitmap);
-			}
+			rowView = inflater.inflate(layoutID, parent, false);
+		} else {
+			rowView = convertView;
 		}
 
-		return convertView;
+		CharacterSheet curCharacter = characters.get(position);
+
+		TextView characterName = (TextView) rowView
+				.findViewById(R.id.textItemTitle);
+		ImageView characterIconView = (ImageView) rowView
+				.findViewById(R.id.character_icon_circle);
+		
+		characterName.setText(curCharacter.getName());
+		
+		bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
+				context);
+		if (bitmap == null) {
+			// set some default game icon
+			characterIconView.setImageResource(R.drawable.character_white);
+		} else {
+			characterIconView.setImageBitmap(bitmap);
+		}
+		return rowView;
 	}
 
 	@Override
 	public int getCount() {
 		return characters.size();
 	}
-	
-	public List<CharacterSheet> getItems(){
+
+	public List<CharacterSheet> getItems() {
 		return characters;
 	}
 
