@@ -82,7 +82,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 					characterName.setText(sheet.getName());
 					levelEditText.setText(String.valueOf(sheet.getLevel()));
 					description.setTag(sheet.getDescription());
-				// set to character color
+					// set to character color
 					relLayout.setBackgroundColor(sheet.getColor());
 					final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
 					if(icon != null) {

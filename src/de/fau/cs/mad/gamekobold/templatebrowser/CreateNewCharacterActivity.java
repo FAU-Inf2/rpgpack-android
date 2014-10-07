@@ -315,12 +315,12 @@ public class CreateNewCharacterActivity extends Activity implements
 						Log.d("Trying to save sheet", "dir not null");
 						String fileName = JacksonInterface
 								.getSanitizedFileName(sheet.getName());
-						if (fileName.isEmpty()) {
-							SimpleDateFormat format = new SimpleDateFormat(
-									"yyyy-MM-dd--HH-mm-ss");
-							Date date = new Date();
-							fileName = format.format(date);
-						}
+						// add current time in order to prevent to accidentally
+						// overwrite existing character
+						final SimpleDateFormat format = new SimpleDateFormat(
+									" yyyy-MM-dd--HH-mm-ss");
+						Date date = new Date();
+						fileName += format.format(date);
 						sheet.setFileAbsolutePath(characterDirectoryFile
 								.getAbsolutePath()
 								+ File.separatorChar
