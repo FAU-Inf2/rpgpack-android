@@ -79,8 +79,7 @@ public class CreateNewGameFragment extends Fragment {
 		} else {
 			curGame = new Game();
 		}
-		// pass game to the activity
-		mCallbacks.onGamePass(curGame);
+
 	}
 
 	@Override
@@ -198,7 +197,7 @@ public class CreateNewGameFragment extends Fragment {
 					int count) {
 				// save
 				curGame.setGameName(c.toString());
-			//	mCallbacks.onGameNamePass(c.toString());
+				// mCallbacks.onGameNamePass(c.toString());
 			}
 
 			@Override
@@ -218,7 +217,7 @@ public class CreateNewGameFragment extends Fragment {
 					int count) {
 				// save
 				curGame.setWorldName(c.toString());
-			//	mCallbacks.onWorldNamePass(c.toString());
+				// mCallbacks.onWorldNamePass(c.toString());
 			}
 
 			@Override
@@ -238,7 +237,7 @@ public class CreateNewGameFragment extends Fragment {
 					int count) {
 				// save
 				curGame.setGameMaster(c.toString());
-			//	mCallbacks.onGameMasterPass(c.toString());
+				// mCallbacks.onGameMasterPass(c.toString());
 			}
 
 			@Override
@@ -319,6 +318,8 @@ public class CreateNewGameFragment extends Fragment {
 			}
 		});
 
+		// pass game to the activity
+		mCallbacks.onGamePass(curGame);
 		return view;
 	}
 
@@ -360,7 +361,7 @@ public class CreateNewGameFragment extends Fragment {
 
 	}
 
-	//popup with game notices
+	// popup with game notices
 	public static class GameInfoDialogFragment extends DialogFragment {
 		private EditText editTextInfo;
 		private Game cGame;
@@ -401,7 +402,7 @@ public class CreateNewGameFragment extends Fragment {
 					}
 				}
 			}
-			
+
 			if (cGame != null) {
 				if (!cGame.getDescription().isEmpty()) {
 					editTextInfo.setText(cGame.getDescription());
@@ -543,9 +544,9 @@ public class CreateNewGameFragment extends Fragment {
 	 */
 	// have to pass objects to activity
 	public interface CallbacksCreateNewGame {
-	//	public void onGameNamePass(String gameName);
-	//	public void onWorldNamePass(String worldName);
-	//	public void onGameMasterPass(String gameMaster);
+		// public void onGameNamePass(String gameName);
+		// public void onWorldNamePass(String worldName);
+		// public void onGameMasterPass(String gameMaster);
 		public void onGamePass(Game curGame);
 
 		public void onSelCharAdapterPass(
