@@ -1,6 +1,7 @@
 package de.fau.cs.mad.gamekobold.game;
 
 import java.io.File;
+
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.character.FavoriteTable;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -73,10 +73,10 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 					table = characterSheets[charNumberToInflate].getRootTable();
 				} else {
 					table = characterSheets[0].getRootTable();
-					table.addTable(new FavoriteTable("Favorites"));
+
 				}
 				// TODO add one table more - Favorite, add it for
-				// inflation!
+				// inflation! table.addTable(new FavoriteTable("Favorites"));
 				super.inflate(table);
 			}
 		}

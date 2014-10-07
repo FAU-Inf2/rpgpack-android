@@ -35,39 +35,35 @@ public class GameBrowserArrayAdapter extends ArrayAdapter<Game> {
 		View rowView;
 		Bitmap bitmap = null;
 
-		Log.d("er", "position: " + position);
 		if (convertView == null) {
-			rowView = inflater.inflate(R.layout.rowlayout_game_browser,
-					parent, false);
-		}
-		else {
+			rowView = inflater.inflate(R.layout.rowlayout_game_browser, parent,
+					false);
+		} else {
 			rowView = convertView;
 		}
-		TextView gName = (TextView) rowView
-				.findViewById(R.id.textViewGameName);
+		TextView gName = (TextView) rowView.findViewById(R.id.textViewGameName);
 		TextView gWorld = (TextView) rowView
 				.findViewById(R.id.textViewWorldName);
-		TextView gDate = (TextView) rowView
-				.findViewById(R.id.textViewDate);
+		TextView gDate = (TextView) rowView.findViewById(R.id.textViewDate);
 		ImageView imageViewGameIcon = (ImageView) rowView
 				.findViewById(R.id.iconView);
 		TextView gCounter = (TextView) rowView
 				.findViewById(R.id.characterCounter);
 
 		Game curGame = objects.get(position);
-	
+
 		gName.setText(curGame.getGameName());
 		gDate.setText(curGame.getDate());
 		gCounter.setText(String.valueOf(curGame.getCharacterSheetList().size()));
+		gWorld.setText(curGame.getWorldName());
 
 		bitmap = ThumbnailLoader.loadThumbnail(curGame.getIconPath(), context);
-		if(bitmap == null) {
+		if (bitmap == null) {
 			// set some default game icon
 			imageViewGameIcon.setImageResource(R.drawable.group_white);
-		}
-		else {
+		} else {
 			// set game icon
-			imageViewGameIcon.setImageBitmap(bitmap);					
+			imageViewGameIcon.setImageBitmap(bitmap);
 		}
 		return rowView;
 	}
