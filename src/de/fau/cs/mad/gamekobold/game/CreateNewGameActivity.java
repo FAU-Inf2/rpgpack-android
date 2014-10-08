@@ -29,7 +29,8 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 	private PickedCharacterGridAdapter pickedCharacterGridAdapter;
 	private CharacterSheet clickedChar;
 
-	// private boolean editMode;
+	//TODO remove it later!
+	private boolean editMode;
 
 	@Override
 	protected Fragment createFragment() {
@@ -44,11 +45,11 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// editMode = false;
+		editMode = false;
 
 		if (getIntent().hasExtra(EXTRA_GAME_TO_EDIT)) {
 			curGame = (Game) getIntent().getParcelableExtra(EXTRA_GAME_TO_EDIT);
-			// editMode = true;
+			editMode = true;
 		}
 
 		createGameButton = (Button) findViewById(R.id.buttonCreateGame);
@@ -64,10 +65,10 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				// if (editMode) {
-				// Log.d("editmode!",
-				// "try to save new values!");
-				// }
+				 if (editMode) {
+				 Log.d("editmode!",
+				 "try to save new values!");
+				 }
 				// Save and start GameDetailsActivity
 				try {
 					// if (curGame.getDate().equals("")) {
@@ -119,7 +120,6 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 
 	@Override
 	public void onCharacterSelected(CharacterSheet clickedChar) {
-		Log.d("CreateNewGameActivity", "clickedChar " + clickedChar.getName());
 		this.clickedChar = clickedChar;
 		if (curGame.isInCharacterList(clickedChar)) {
 			curGame.removeCharacterSheet(clickedChar);

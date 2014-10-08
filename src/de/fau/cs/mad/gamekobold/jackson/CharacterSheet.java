@@ -15,8 +15,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
-public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>
-{
+public class CharacterSheet implements Parcelable, Comparable<CharacterSheet> {
 	/* METADATA */
 	private String name;
 	private int level;
@@ -235,5 +234,23 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet>
 	@JsonIgnore
 	public Template getTemplate() {
 		return template;
+	}
+
+	// used in game edit to check if character is selected or not
+	@Override
+	public boolean equals(Object object) {
+		boolean isEqual = false;
+
+		if (object != null && object instanceof CharacterSheet) {
+			isEqual = (this.fileAbsolutePath
+					.equals(((CharacterSheet) object).fileAbsolutePath));
+		}
+
+		return isEqual;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.fileAbsolutePath.hashCode();
 	}
 }
