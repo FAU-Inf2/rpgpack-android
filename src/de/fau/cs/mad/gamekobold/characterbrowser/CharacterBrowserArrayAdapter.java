@@ -50,6 +50,7 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet> {
 		textView1.setText(character.getName());
 
 		// get template name from character file path
+		// TODO now always correct
 		String curStr = character.getFileAbsolutePath().split("/")[6]
 				.split("-")[0];
 		textView2.setText(curStr);

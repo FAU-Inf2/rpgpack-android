@@ -199,6 +199,7 @@
     <string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
     <string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
     <string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
+    <string name="toast_fileexplorer_msg_pick_character">Bitte waehle den Charakter.</string>
     <string name="toast_imported_template">Vorlage importiert.</string>
     <string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
     <string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>

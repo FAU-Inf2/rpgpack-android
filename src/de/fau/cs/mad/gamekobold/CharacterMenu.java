@@ -96,7 +96,7 @@ public class CharacterMenu extends AbstractThreeButtonMenu implements IFileBrows
 	 */
 	private void showFileBrowserPopup() {
 		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_FILE));
-		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_template), Toast.LENGTH_LONG).show();
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_character), Toast.LENGTH_LONG).show();
 	}
 
 	/**

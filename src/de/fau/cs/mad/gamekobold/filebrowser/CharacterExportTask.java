@@ -13,7 +13,6 @@ import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
-import de.fau.cs.mad.gamekobold.jackson.Template;
 
 public class CharacterExportTask extends AsyncTaskWithProgressDialog<File, Void, Boolean>{
 	private File targetFile = null;
@@ -71,7 +70,8 @@ public class CharacterExportTask extends AsyncTaskWithProgressDialog<File, Void,
 	@Override
 	protected void onPostExecute(Boolean param) {
 		if(param.booleanValue()) {
-			Toast.makeText(context, context.getString(R.string.toast_exported_character), Toast.LENGTH_LONG).show();
+			final String msg = String.format(context.getString(R.string.toast_exported_character), targetFile.getName());
+			Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 		}
 		else {
 			Toast.makeText(context, R.string.toast_exported_character_failed, Toast.LENGTH_LONG).show();

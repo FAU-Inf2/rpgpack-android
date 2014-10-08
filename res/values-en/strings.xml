@@ -199,6 +199,7 @@
     <string name="toast_exported_template_failed">Failed to export!</string>
     <string name="toast_fileexplorer_msg_pick_folder">Please pick a folder.</string>
     <string name="toast_fileexplorer_msg_pick_template">Please pick a template to import.</string>
+    <string name="toast_fileexplorer_msg_pick_character">Please pick a character to import.</string>
     <string name="toast_imported_template">Imported template.</string>
     <string name="toast_imported_template_failed">Failed to import template!</string>
     <string name="toast_file_is_not_template">File is not a template!</string>
