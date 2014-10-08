@@ -88,6 +88,7 @@ public class MatrixFragment extends GeneralFragment {
 				// jacksonTable.entries
 				// FIXME comment is not correct, last fake item appears also in
 				// jacksonTable.entries and make problems!!!!
+				// now it is just fix and dirty!
 				MatrixItem addNewMatrixItem = new MatrixItem(getResources()
 						.getString(R.string.new_matrix_item), "+", "");
 				itemsList.add(addNewMatrixItem);
@@ -664,13 +665,20 @@ public class MatrixFragment extends GeneralFragment {
 		// jacksonInflateWithData = true;
 		itemsList = jacksonTable.entries;
 
-		// // add the "new item" entry
-		// // FIXME is not correct!!!!!
-		// final MatrixItem newElement = new
-		// MatrixItem(appContext.getResources()
-		// .getString(R.string.text_new_element), "+", "");
-		// newElement.setSelected(false);
-		// itemsList.add(newElement);
+		// check it the last item is a fake one, remove it
+		if (itemsList.get(itemsList.size() - 1).getValue().equals("+")) {
+			itemsList.remove(itemsList.get(itemsList.size() - 1));
+		}
+		// add the "new item" entry
+		final MatrixItem newElement = new MatrixItem(appContext.getResources()
+				.getString(R.string.text_new_element), "+", "");
+		newElement.setSelected(false);
+		itemsList.add(newElement);
+		//
+		// for (MatrixItem ma : jacksonTable.entries) {
+		// Log.d("jacksonTable.entries - jacksonInflate", ma.getItemName());
+		// }
+
 	}
 
 	public void setJacksonTable(MatrixTable myTable) {
