@@ -206,6 +206,7 @@ public class MatrixFragment extends GeneralFragment {
 								getActivity()), false);
 
 				gridView = (GridView) rootView.findViewById(R.id.gridView);
+
 				// check needed for jackson data loading
 				if (itemsList == null) {
 					itemsList = new ArrayList<MatrixItem>();

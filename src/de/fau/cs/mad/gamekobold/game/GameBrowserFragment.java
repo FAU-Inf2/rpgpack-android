@@ -8,6 +8,7 @@ import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import de.fau.cs.mad.gamekobold.R;
 
 public class GameBrowserFragment extends ListFragment {
+	public static final String EXTRA_GAME = "de.fau.cs.mad.gamekobold.game";
 	private ArrayList<Game> games;
 	private GameBrowserArrayAdapter adapter;
 
@@ -23,8 +25,7 @@ public class GameBrowserFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.game_browser_title);
 		games = new ArrayList<Game>();
-		adapter = new GameBrowserArrayAdapter(
-				getActivity(), games);
+		adapter = new GameBrowserArrayAdapter(getActivity(), games);
 		setListAdapter(adapter);
 		setHasOptionsMenu(true);
 	}
@@ -32,46 +33,47 @@ public class GameBrowserFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int position, long id) {
-				Log.d("GameBrowserFragment", "position >>"+position);
-				final Game longClickedGame = games.get(position);
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle(getResources().getString(
-						R.string.msg_want_to_delete_game));
-				builder.setMessage(getResources().getString(
-						R.string.msg_yes_to_delete_game));
-				builder.setNegativeButton(
-						getResources().getString(R.string.no),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(
-									DialogInterface dialog,
-									int which) {
-							}
-						});
-				builder.setPositiveButton(
-						getResources().getString(R.string.yes),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(
-									DialogInterface dialog,
-									int which) {
-								File file = new File(longClickedGame.getFileAbsolutePath());
-								if (file != null) {
-									if (file.delete()) {
-										adapter.remove(longClickedGame);
-										adapter.notifyDataSetChanged();
+		getListView().setOnItemLongClickListener(
+				new AdapterView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> arg0,
+							View arg1, int position, long id) {
+						Log.d("GameBrowserFragment", "position >>" + position);
+						final Game longClickedGame = games.get(position);
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								getActivity());
+						builder.setTitle(getResources().getString(
+								R.string.msg_want_to_delete_game));
+						builder.setMessage(getResources().getString(
+								R.string.msg_yes_to_delete_game));
+						builder.setNegativeButton(
+								getResources().getString(R.string.no),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
 									}
-								}
-							}
-						});
-				builder.create().show();
-				return true;
-			}
-		});
+								});
+						builder.setPositiveButton(
+								getResources().getString(R.string.yes),
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										File file = new File(longClickedGame
+												.getFileAbsolutePath());
+										if (file != null) {
+											if (file.delete()) {
+												adapter.remove(longClickedGame);
+												adapter.notifyDataSetChanged();
+											}
+										}
+									}
+								});
+						builder.create().show();
+						return true;
+					}
+				});
 	}
 
 	@Override
@@ -92,6 +94,7 @@ public class GameBrowserFragment extends ListFragment {
 		// Start GameDetailsActivity
 		Intent i = new Intent(getActivity(), GameDetailsActivity.class);
 		i.putExtra(GameDetailsFragment.EXTRA_GAME_NAME, g.getGameName());
+		i.putExtra(EXTRA_GAME, (Parcelable) g);
 		startActivity(i);
 	}
 }
