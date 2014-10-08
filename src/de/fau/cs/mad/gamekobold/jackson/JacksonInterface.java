@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.fau.cs.mad.gamekobold.R.string;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
+import de.fau.cs.mad.gamekobold.filebrowser.CharacterExportTask;
 import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.TemplateExportTask;
@@ -498,5 +499,18 @@ public abstract class JacksonInterface {
 		TemplateExportTask exportTask = TemplateExportTask.getInstance(context);
 		exportTask.execute(new File[] {templateFile, targetFile});
 	}
-
+	
+	public static void exportCharacter(final Context context, final File characterFile, final File targetFile, boolean overrideIfExists) throws FileWouldOverwriteException, FileTargetIsSourceException {
+		if(characterFile == null || targetFile == null) {
+			throw new NullPointerException();
+		}
+		if(characterFile.getAbsolutePath().equals(targetFile.getAbsolutePath())) {
+			throw new FileTargetIsSourceException(targetFile);
+		}
+		if(targetFile.exists() && !overrideIfExists) {
+			throw new FileWouldOverwriteException(targetFile);
+		}
+		CharacterExportTask exportTask = CharacterExportTask.getInstance(context);
+		exportTask.execute(new File[] {characterFile, targetFile});
+	}
 }

@@ -9,6 +9,7 @@ import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
 import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
+import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -336,7 +337,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 		sheet.setIconPath(path);
 		characterAltered = true;
 	}
-	
+
 	// TODO refactoring?
 	public String getRealPathFromURI(Uri contentUri) {
 		String[] proj = { MediaStore.Images.Media.DATA };
@@ -357,23 +358,15 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 	@Override
 	public void onFilePicked(File directory) {
 		FileBrowser.removeAsPopup(getFragmentManager());
-		exportCharacterAsFile(directory, false);
-	}
-
-	private void showFileExplorerPopup() {
-		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY));
-		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_folder), Toast.LENGTH_LONG).show();
-	}
-
-	private void exportCharacterAsFile(final File characterFolder, boolean overwriteIfExists) {
 		// copy file
 		final File characterFile = new File(sheet.getFileAbsolutePath());
-		final File targetFile = new File(characterFolder, characterFile.getName());
+		final File targetFile = new File(directory, characterFile.getName());
 		try {
-			FileCopyUtility.copyFile(characterFile, targetFile, overwriteIfExists);
-				Toast.makeText(this,
-						String.format(getString(R.string.toast_exported_character), targetFile.getName()),
-						Toast.LENGTH_LONG).show();
+			JacksonInterface.exportCharacter(this, characterFile, targetFile, false);
+		}
+		catch (FileTargetIsSourceException e) {
+			// should not occur
+			e.printStackTrace();
 		}
 		catch(FileWouldOverwriteException e) {
 			e.printStackTrace();
@@ -389,16 +382,26 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 			builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// overwrite file
-					exportCharacterAsFile(characterFolder, true);
 					dialog.dismiss();
+					// overwrite file
+					try {
+						JacksonInterface.exportCharacter(CharacterDetailsActivity.this, characterFile, targetFile, true);						
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 			builder.create().show();
+			// show dialog
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			Toast.makeText(this, getString(R.string.toast_exported_character_failed), Toast.LENGTH_LONG).show();
 		}
+	}
+
+	private void showFileExplorerPopup() {
+		FileBrowser.showAsPopup(getFragmentManager(), FileBrowser.newInstance(this, FileBrowser.Mode.PICK_DIRECTORY));
+		Toast.makeText(this, getString(R.string.toast_fileexplorer_msg_pick_folder), Toast.LENGTH_LONG).show();
 	}
 }
