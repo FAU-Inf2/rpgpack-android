@@ -106,7 +106,7 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 			tvGameName.setText(currentTemplate.getGameName());
 			tvDescription.setText(currentTemplate.getDescription());
 			createTemplateButton.setText(R.string.edit_template);
-			final Bitmap icon = ThumbnailLoader.loadThumbnail(currentTemplate.getIconPath(), this);
+			final Bitmap icon = currentTemplate.getIcon(this);
 			if(icon != null) {
 				addImageButton.setImageBitmap(icon);
 			}

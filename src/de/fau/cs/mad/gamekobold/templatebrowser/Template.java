@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.game.GameCharacter;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 
@@ -181,4 +189,50 @@ public class Template implements Serializable {
 		this.tagString = tagString;
 	}
 
+	public boolean hasIcon() {
+		if(iconPath == null) {
+			return false;
+		}
+		if(iconPath.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isIconBase64() {
+		if(!hasIcon()) {
+			return false;
+		}
+		try {
+			final File testFile = new File(iconPath);
+			if(testFile.isFile()) {
+				return false;
+			}
+			else {
+				return true;		
+			}
+		}
+		catch(Exception e) {
+			return true;
+		}
+	}
+
+	public Bitmap getIcon(final Context context) {
+		if(!hasIcon()) {
+			return null;
+		}
+		if(isIconBase64()) {
+			try {
+				final byte[] decodedBase64 = Base64.decode(iconPath, Base64.DEFAULT);
+				return BitmapFactory.decodeByteArray(decodedBase64, 0, decodedBase64.length);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		else {
+			return ThumbnailLoader.loadThumbnail(iconPath, context);
+		}
+	}
 }

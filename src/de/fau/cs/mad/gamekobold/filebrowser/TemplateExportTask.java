@@ -7,6 +7,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
@@ -40,7 +42,8 @@ public class TemplateExportTask extends AsyncTaskWithProgressDialog<File, Void, 
 		// first load template
 		try {
 			Template template = JacksonInterface.loadTemplate(templateFile, false);
-			if(!template.getIconPath().isEmpty()) {
+			if(!template.isIconBase64()) {
+				Log.d("TemplateExportTask", "icon is not base64");
 				// load icon
 				Bitmap icon = BitmapFactory.decodeFile(template.getIconPath());
 				if(icon != null) {
@@ -51,6 +54,7 @@ public class TemplateExportTask extends AsyncTaskWithProgressDialog<File, Void, 
 					String iconBase64 = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 					// set as icon path
 					template.setIconPath(iconBase64);
+					Log.d("TemplateExportTask", "encoded icon");
 				}
 			}
 			// save template to file
@@ -66,10 +70,11 @@ public class TemplateExportTask extends AsyncTaskWithProgressDialog<File, Void, 
 	@Override
 	protected void onPostExecute(Boolean param) {
 		if(param.booleanValue()) {
-			
+			// TODO STRINGS
+			Toast.makeText(context, context.getString(R.string.toast_exported_template), Toast.LENGTH_LONG).show();
 		}
 		else {
-			
+			Toast.makeText(context, R.string.toast_exported_template_failed, Toast.LENGTH_LONG).show();
 		}
 		super.onPostExecute(param);
 	}

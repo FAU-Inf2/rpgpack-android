@@ -155,7 +155,7 @@ public class TemplateDetailsActivity extends Activity {
 						+ curTemplate.getDate());
 
 				// load image bitmap
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(curTemplate.getIconPath(), this);
+				final Bitmap icon = curTemplate.getIcon(this);
 				if(icon != null) {
 					ivIcon.setImageBitmap(icon);
 				}

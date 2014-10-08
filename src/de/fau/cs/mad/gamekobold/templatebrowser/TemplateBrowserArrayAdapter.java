@@ -90,8 +90,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 			tAdditionalInfo.setText(curTemplate.getDate());
 
 			// load image bitmap
-			final Bitmap icon = ThumbnailLoader.loadThumbnail(
-					curTemplate.getIconPath(), context);
+			final Bitmap icon = curTemplate.getIcon(context);
 			if (icon != null) {
 				imageView.setImageBitmap(icon);
 			}
@@ -134,8 +133,7 @@ public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 			tAdditionalInfo.setText(curTemplate.getDate());
 
 			// load image bitmap
-			final Bitmap icon = ThumbnailLoader.loadThumbnail(
-					curTemplate.getIconPath(), context);
+			final Bitmap icon = curTemplate.getIcon(context);
 			if (icon != null) {
 				imageView.setImageBitmap(icon);
 			}
