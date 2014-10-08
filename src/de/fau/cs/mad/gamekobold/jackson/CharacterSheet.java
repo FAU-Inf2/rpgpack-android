@@ -1,11 +1,16 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Base64;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 
 public class CharacterSheet implements Parcelable, Comparable<CharacterSheet> {
@@ -252,5 +258,55 @@ public class CharacterSheet implements Parcelable, Comparable<CharacterSheet> {
 	@Override
 	public int hashCode() {
 		return this.fileAbsolutePath.hashCode();
+	}
+	
+	@JsonIgnore
+	public boolean hasIcon() {
+		if(iconPath == null) {
+			return false;
+		}
+		if(iconPath.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	@JsonIgnore
+	public boolean isIconBase64() {
+		if(!hasIcon()) {
+			return false;
+		}
+		try {
+			final File testFile = new File(iconPath);
+			if(testFile.isFile()) {
+				return false;
+			}
+			else {
+				return true;		
+			}
+		}
+		catch(Exception e) {
+			return true;
+		}
+	}
+	
+	@JsonIgnore
+	public Bitmap getIcon(final Context context) {
+		if(!hasIcon()) {
+			return null;
+		}
+		if(isIconBase64()) {
+			try {
+				final byte[] decodedBase64 = Base64.decode(iconPath, Base64.DEFAULT);
+				return BitmapFactory.decodeByteArray(decodedBase64, 0, decodedBase64.length);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		else {
+			return ThumbnailLoader.loadThumbnail(iconPath, context);
+		}
 	}
 }

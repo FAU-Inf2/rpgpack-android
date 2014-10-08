@@ -1,11 +1,16 @@
 package de.fau.cs.mad.gamekobold.jackson;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Base64;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 
 public class Template implements Parcelable{
 	@JsonIgnore
@@ -159,13 +166,64 @@ public class Template implements Parcelable{
 	public void setIconPath(String iconPath) {
 		this.iconPath = iconPath;
 	}
-	
+
 	public String getFileAbsPath() {
 		return fileAbsPath;
 	}
+
 	@JsonIgnore
 	public void setFileAbsPath(String fileAbsPath) {
 		this.fileAbsPath = fileAbsPath;
+	}
+
+	@JsonIgnore
+	public boolean hasIcon() {
+		if(iconPath == null) {
+			return false;
+		}
+		if(iconPath.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	@JsonIgnore
+	public boolean isIconBase64() {
+		if(!hasIcon()) {
+			return false;
+		}
+		try {
+			final File testFile = new File(iconPath);
+			if(testFile.isFile()) {
+				return false;
+			}
+			else {
+				return true;		
+			}
+		}
+		catch(Exception e) {
+			return true;
+		}
+	}
+	
+	@JsonIgnore
+	public Bitmap getIcon(final Context context) {
+		if(!hasIcon()) {
+			return null;
+		}
+		if(isIconBase64()) {
+			try {
+				final byte[] decodedBase64 = Base64.decode(iconPath, Base64.DEFAULT);
+				return BitmapFactory.decodeByteArray(decodedBase64, 0, decodedBase64.length);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		else {
+			return ThumbnailLoader.loadThumbnail(iconPath, context);
+		}
 	}
 
 	//
