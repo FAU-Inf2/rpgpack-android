@@ -85,7 +85,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 					description.setTag(sheet.getDescription());
 					// set to character color
 					relLayout.setBackgroundColor(sheet.getColor());
-					final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+					final Bitmap icon = sheet.getIcon(this);
 					if(icon != null) {
 						characterIconButton.setImageBitmap(icon);
 					}
@@ -100,7 +100,7 @@ public class CharacterDetailsActivity extends Activity implements ColorPickerDia
 				levelEditText.setText(String.valueOf(sheet.getLevel()));
 				characterName.setText(sheet.getName());
 				setCharacterColor(sheet.getColor());
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+				final Bitmap icon = sheet.getIcon(this);
 				if(icon != null) {
 					characterIconButton.setImageBitmap(icon);
 				}

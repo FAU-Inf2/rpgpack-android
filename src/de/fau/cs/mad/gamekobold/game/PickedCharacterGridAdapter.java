@@ -65,8 +65,7 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 		ImageView characterIconView = (ImageView) rowView
 				.findViewById(R.id.character_icon_circle);
 
-		bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
-				context);
+		bitmap = curCharacter.getIcon(context);
 		if (bitmap == null) {
 			// set some default game icon
 			characterIconView.setImageResource(R.drawable.character_white);

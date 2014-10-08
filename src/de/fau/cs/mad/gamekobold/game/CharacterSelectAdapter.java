@@ -43,9 +43,7 @@ public class CharacterSelectAdapter extends ArrayAdapter<CharacterSheet> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final Bitmap icon = ThumbnailLoader.loadThumbnail(
-				sheets[position].getIconPath(),
-				SlideoutNavigationActivity.getAc());
+		final Bitmap icon = sheets[position].getIcon(SlideoutNavigationActivity.getAc());
 		LayoutInflater li = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View wholeView = li.inflate(R.layout.character_spinner_row, parent,

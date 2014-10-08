@@ -112,7 +112,7 @@ public class CreateNewCharacterActivity extends Activity implements
 				characterLevel.setText(String.valueOf(sheet.getLevel()));
 				characterName.setText(sheet.getName());
 				setCharacterColor(sheet.getColor());
-				final Bitmap icon = ThumbnailLoader.loadThumbnail(sheet.getIconPath(), this);
+				final Bitmap icon = sheet.getIcon(this);
 				if(icon != null) {
 					characterIconButton.setImageBitmap(icon);
 				}

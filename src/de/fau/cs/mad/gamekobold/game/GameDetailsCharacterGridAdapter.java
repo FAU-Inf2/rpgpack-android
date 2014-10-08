@@ -63,8 +63,7 @@ public class GameDetailsCharacterGridAdapter extends
 		
 		characterName.setText(curCharacter.getName());
 		
-		bitmap = ThumbnailLoader.loadThumbnail(curCharacter.getIconPath(),
-				context);
+		bitmap = curCharacter.getIcon(context);
 		if (bitmap == null) {
 			// set some default game icon
 			characterIconView.setImageResource(R.drawable.character_white);
