@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_add_item"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
-    android:gravity="center"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/dialog_add_item"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="-50dp" >
@@ -26,16 +23,6 @@
                 android:layout_height="match_parent"
                 android:columnCount="7" >
 
-                <Space android:layout_column="1" />
-
-                <Space android:layout_row="1" />
-
-                <Space
-                    android:layout_column="1"
-                    android:layout_row="5" />
-
-                <Space android:layout_row="11" />
-
                 <EditText
                     android:id="@+id/itemName"
                     android:layout_width="265dp"
@@ -44,7 +31,6 @@
                     android:layout_gravity="top"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
                     android:layout_row="0"
                     android:ems="10"
                     android:hint="@string/hint_matrix_item_name"
@@ -58,13 +44,12 @@
                 <EditText
                     android:id="@+id/description"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="66dp"
                     android:layout_column="0"
                     android:layout_columnSpan="3"
                     android:layout_gravity="fill_horizontal|fill_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
                     android:layout_row="11"
                     android:ems="10"
                     android:gravity="top|left"
@@ -72,15 +57,14 @@
                     android:inputType="textMultiLine"
                     android:lines="8"
                     android:scrollbars="vertical"
-                    android:textSize="14sp" >
-                </EditText>
+                    android:textSize="14sp" />
 
                 <Switch
                     android:id="@+id/switchRangeFrom"
                     android:layout_column="2"
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:layout_row="5"
                     android:checked="true" />
 
@@ -89,9 +73,9 @@
                     android:layout_width="98dp"
                     android:layout_column="2"
                     android:layout_gravity="left|top"
+                    android:layout_marginBottom="2dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
                     android:layout_row="5"
                     android:text="@string/text_visible"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -151,7 +135,7 @@
                     android:id="@+id/switchRangeTo"
                     android:layout_column="2"
                     android:layout_gravity="left|bottom"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_row="6"
                     android:checked="true" />
@@ -228,15 +212,17 @@
                     android:layout_column="0"
                     android:layout_gravity="left|bottom"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="15dp"
                     android:layout_row="10"
                     android:text="@string/text_description"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </GridLayout>
-            <!-- -add your views here -->
         </LinearLayout>
 
-     
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </FrameLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
