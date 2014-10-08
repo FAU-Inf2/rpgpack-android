@@ -70,7 +70,6 @@ public class TemplateExportTask extends AsyncTaskWithProgressDialog<File, Void, 
 	@Override
 	protected void onPostExecute(Boolean param) {
 		if(param.booleanValue()) {
-			// TODO STRINGS
 			Toast.makeText(context, context.getString(R.string.toast_exported_template), Toast.LENGTH_LONG).show();
 		}
 		else {
