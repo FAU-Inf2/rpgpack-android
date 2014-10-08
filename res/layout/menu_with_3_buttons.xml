@@ -47,7 +47,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textColor="@color/white" />
+                android:textColor="@color/grey" />
 
         </LinearLayout>
 
@@ -94,7 +94,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textColor="@color/white" />
+                android:textColor="@color/grey" />
 
         </LinearLayout>
 
@@ -140,7 +140,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="TextView"
-                android:textColor="@color/white" />
+                android:textColor="@color/grey" />
 
         </LinearLayout>
 
