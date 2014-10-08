@@ -220,7 +220,7 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 				return;
 			}
 			
-			if(potentialURL.startsWith("http://192.168.2.110")) {
+			if(potentialURL.startsWith("http://www.rpg-pack.de")) {
 				// scan successful
 				Log.d("QR-CodeScan", potentialURL);
 				ApiTask task = new ApiTask();
