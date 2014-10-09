@@ -53,6 +53,8 @@ public class TableEditDialog extends DialogFragment {
         	public void onClick(DialogInterface dialog,int id) {
         		// surrounded by a try: if the input field is empty we get a numberformatexception. so catch it and do nothing
         		try {
+        			//TODO
+        			dialogRowCounter.notifyOnDemand();
         			final int columnCount =	Integer.parseInt(dialogRowCounter.getText().toString());
         			targetFragment.setAmountOfColumns(columnCount);
             		adaptHeaderTable(dialogTable);
