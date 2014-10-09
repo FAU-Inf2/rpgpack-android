@@ -61,6 +61,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -174,6 +175,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	addColumnButton.setOnClickListener(new View.OnClickListener() {
         		public void onClick(View v) {
         			addColumn();
+        			final HorizontalScrollView sv = (HorizontalScrollView) mainView.findViewById(R.id.horiz_scroll);
+        	        //note: we have to do scrolling in seperate thread to make sure the new item is already inserted
+        	        sv.post(new Runnable() {
+        	            @Override
+        	            public void run() {
+        	            	sv.fullScroll(ScrollView.FOCUS_RIGHT);
+        	            }
+        	        });
         		}
         	});
         	Button removeColumnButton = (Button)mainView.findViewById(R.id.remove_column);
