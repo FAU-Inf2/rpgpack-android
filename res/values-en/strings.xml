@@ -121,7 +121,7 @@
 
     <!-- FolderElementAdapter -->
     <string name="question_delete">Delete Element?</string>
-    <string name="long_click_dialog_message">Choose YES to delete the Elemente.</string>
+    <string name="long_click_dialog_message">Choose YES to delete the element.</string>
 
     <!-- TableFragment -->
     <string name="save_table">Save Table</string>
@@ -135,6 +135,9 @@
     <string name="column_name">Column Name</string>
     <string name="column_type">Column Type</string>
     <string name="dot">.</string>
+    <string name="question_delete_row">Delete row?</string>
+	<string name="text_delete_row">Choose YES to delete the row</string>
+    
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>

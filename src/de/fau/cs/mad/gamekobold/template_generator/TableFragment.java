@@ -22,7 +22,9 @@ import de.fau.cs.mad.gamekobold.matrix.MatrixFragment;
 import de.fau.cs.mad.gamekobold.matrix.MatrixItem;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -49,6 +51,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -218,8 +221,15 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					final int columnCount = jacksonTable.getNumberOfColumns();
 					Log.d("TableFragment", "loading row " + rowNum + "; isSelected == " + jacksonTable.getRow(rowNum).isSelected());
 //					if(jacksonTable.getRow(rowNum).isSelected()){
-						TableRow row = new TableRow(getActivity());
-						registerForContextMenu(row);
+						final TableRow row = new TableRow(getActivity());
+//						registerForContextMenu(row);
+						row.setOnLongClickListener(new OnLongClickListener() {
+							@Override
+							public boolean onLongClick(View v) {
+								showDeleteElementDialog(row);
+								return true;
+							}
+						});
 						table.addView(row);
 						for(int i = 0 ; i < columnCount; i++) {
 							final int rowIndex = table.getChildCount()-1;
@@ -229,7 +239,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 								newElement = initTextField(row, jacksonTable.getEntry(i, rowIndex));
 							}
 							else if(header.isCheckBox()) {
-								newElement = initCheckBox(jacksonTable.getEntry(i, rowIndex));
+								newElement = initCheckBox(row, jacksonTable.getEntry(i, rowIndex));
 							}
 							else {
 								newElement = initPopup(row, jacksonTable.getEntry(i, rowIndex), i, rowIndex);
@@ -427,14 +437,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 					if(!(elementToAdapt instanceof LinearLayout)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initCheckBox(jacksonTable.getEntry(indexOfTable, k));
+						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "FFFFFFFFF");
 					}
 					else if(!(((LinearLayout) elementToAdapt).getChildAt(0) instanceof CheckBox)){
 						isModified = true;
 						tableRow.removeView(elementToAdapt);
-						newElement = initCheckBox(jacksonTable.getEntry(indexOfTable, k));
+						newElement = initCheckBox(tableRow, jacksonTable.getEntry(indexOfTable, k));
 						tableRow.addView(newElement, indexOfTable);
 						Log.d("TABLE_FRAGMENT", "GGGGGGGGGG");
 					}
@@ -491,27 +501,51 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	}
 	
 	
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		Log.d("TableFragment", "onCreateContextMenu view:"+v);
-		if(v instanceof TableRow){
-			contextMenuRow = (TableRow) v;
-			// only show if v is a TableRow. We get double calls because
-			// we have to register also checkbox and popup
-			MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
-			inflater.inflate(R.menu.template_generator_remove_table_item, menu);
-		}
-	}
+//	public void onCreateContextMenu(ContextMenu menu, View v,
+//			ContextMenuInfo menuInfo) {
+//		super.onCreateContextMenu(menu, v, menuInfo);
+//		Log.d("TableFragment", "onCreateContextMenu view:"+v);
+//		if(v instanceof TableRow){
+//			contextMenuRow = (TableRow) v;
+//			// only show if v is a TableRow. We get double calls because
+//			// we have to register also checkbox and popup
+//			MenuInflater inflater = SlideoutNavigationActivity.theActiveActivity.getMenuInflater();
+//			inflater.inflate(R.menu.template_generator_remove_table_item, menu);
+//		}
+//	}
+//	
+//	public boolean onContextItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case R.id.removeTableRow:
+//			removeRow(contextMenuRow);
+//			return true;
+//		default:
+//			return super.onContextItemSelected(item);
+//		}
+//	}
 	
-	public boolean onContextItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.removeTableRow:
-			removeRow(contextMenuRow);
-			return true;
-		default:
-			return super.onContextItemSelected(item);
-		}
+	public void showDeleteElementDialog(final TableRow row){
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				SlideoutNavigationActivity.getAc());
+		builder.setTitle(R.string.question_delete_row);
+		builder.setMessage(R.string.text_delete_row);
+		builder.setNegativeButton(R.string.no,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+					}
+				});
+		builder.setPositiveButton(R.string.yes,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						Log.d("TableFragment", "row deleted!");
+						removeRow(row);
+					}
+				});
+		builder.create().show();
 	}
 	
 	/**
@@ -543,8 +577,16 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	//
         	// JACKSON END
         	//
-	        TableRow row = new TableRow(getActivity());
-	        registerForContextMenu(row);
+	        final TableRow row = new TableRow(getActivity());
+	        //old method; now show deleteElementDialog
+//	        registerForContextMenu(row);
+	        row.setOnLongClickListener(new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					showDeleteElementDialog(row);
+					return true;
+				}
+			});
 	        table.addView(row);
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);
@@ -826,6 +868,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 //		((EditText) newElement).clearFocus();
 //		setTableStyle(newElement);
+		newElement.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				showDeleteElementDialog(row);
+				return true;
+			}
+		});
 		return newElement;
 	}
 	
@@ -1386,7 +1435,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		ll.setGravity(Gravity.CENTER);
 		// set it here because otherwise a long click on the cell
 		// won't trigger the context menu
-		ll.setOnCreateContextMenuListener(this);
+//		ll.setOnCreateContextMenuListener(this);
+		ll.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				showDeleteElementDialog(row);
+				return true;
+			}
+		});
 		setTableStyle(ll);
 		return ll;
 	}
@@ -1410,7 +1466,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		return columnIndex;
 	}
 	
-	private LinearLayout initCheckBox(final IEditableContent jacksonEntry){
+	private LinearLayout initCheckBox(final TableRow row, final IEditableContent jacksonEntry){
 		LinearLayout newElement = new LinearLayout(getActivity());
 		CheckBox cb = new CheckBox(getActivity());
 		if(jacksonEntry != null) {
@@ -1428,7 +1484,14 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		setTableStyle(newElement);
 		// set it here because otherwise a long click on the drawable/checkbox
 		// won't trigger the context menu
-		cb.setOnCreateContextMenuListener(this);
+//		cb.setOnCreateContextMenuListener(this);
+		cb.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				showDeleteElementDialog(row);
+				return true;
+			}
+		});
 		return newElement;
 	}
 	
@@ -1455,7 +1518,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         }
         else if(firstRowView instanceof LinearLayout){
         	if(((LinearLayout) firstRowView).getChildAt(0) instanceof CheckBox){
-        		newElement = initCheckBox(jacksonTable.getEntry(columnIndex, rowIndex));
+        		newElement = initCheckBox(row, jacksonTable.getEntry(columnIndex, rowIndex));
         	}
         	else{// if(((LinearLayout) firstRowView).getChildAt(0) instanceof TextView){
             	newElement = initPopup(row, jacksonTable.getEntry(columnIndex, rowIndex), columnIndex, rowIndex);

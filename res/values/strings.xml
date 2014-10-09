@@ -134,7 +134,10 @@
     <string name="column_name">Spaltenname</string>
     <string name="column_type">Spaltentyp</string>
     <string name="dot">.</string>
+    <string name="question_delete_row">Zeile löschen?</string>
+    <string name="text_delete_row">Klicke auf JA um diese Zeile zu löschen</string>
 
+        
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Element löschen?</string>
     <string name="new_matrix_item">Neues Element</string>
