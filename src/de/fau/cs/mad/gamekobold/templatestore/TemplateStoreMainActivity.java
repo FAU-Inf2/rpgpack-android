@@ -411,6 +411,8 @@ public class TemplateStoreMainActivity extends ListActivity {
 			apiParams.setMethod("searchTemplates");
 			ArrayList<NameValuePair> httpParams = new ArrayList<NameValuePair>();
 			httpParams.add(new BasicNameValuePair("worldname", query));
+			httpParams.add(new BasicNameValuePair("author", query));
+			httpParams.add(new BasicNameValuePair("name", query));
 			apiParams.setParams(httpParams);
 			this.task.execute(apiParams);
 	    }
