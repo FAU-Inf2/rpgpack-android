@@ -42,7 +42,7 @@
         <item>CheckBox</item>
         <item>PopUp</item>
     </string-array>
-
+    
     <!-- activity_template_generator_welcome -->
     <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
     <string name="popup_titel">Item Information</string>
@@ -145,6 +145,10 @@
     <string name="loading_template">Template wird geladen&#8230;</string>
     <string name="wait">Warten Sie bitte einen Moment&#8230;</string>
     <string name="loading_template_failure">Template konnte nicht geladen werden!</string>
+    
+    <!-- Character Editor -->
+    <string name="menu_item_save_character">Charakter speichern</string>
+    
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Wollen Sie den Template-Generator wirklich verlassen?</string>

@@ -156,6 +156,21 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 				reinflate();
 				invalidateOptionsMenu();
 		 }
+		 else if (id == R.id.action_save_character){
+			 if(characterSheet != null) {
+
+				 try {
+					// TODO add simple characterAltered Flag to prevent some unneeded saving
+					// open file
+					final File jsonFile = new File(characterSheet.getFileAbsolutePath());
+					// save
+					JacksonInterface.saveCharacterSheet(characterSheet, jsonFile);
+				}
+				catch(Throwable e) {
+					e.printStackTrace();
+				}
+			 }
+		 }
 		 return super.onOptionsItemSelected(item);
 	 }
 	 

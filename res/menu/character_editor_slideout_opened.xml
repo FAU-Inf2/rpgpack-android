@@ -22,4 +22,10 @@
         android:checkable="true"
         android:checked="false"/>
     
+    <item
+        android:id="@+id/action_save_character"
+        android:checkable="false"
+        android:title="@string/menu_item_save_character">
+    </item>
+    
 </menu>
