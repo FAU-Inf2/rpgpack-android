@@ -402,7 +402,7 @@
     <string name="menu_new_game">Neues Spiel</string>
     <string name="menu_continue_game">Spiel fortsetzen</string>
     <string name="menu_alljoyn">Alljoyn</string>
-    <string name="menu_new_game_description">Erstelle hier eine neue Spielgruppe mit all den Charakteren die Du spielen möchtest. \n Deine Freunde haben kein Gerät dabei? Kein Problem! Füge einfach alle Charaktere dem Spiel hinzu. Beim Spielen kannst Du die Charaktere per Knopfdruck wechseln und das Geraet einfach weiterreichen.</string>
+    <string name="menu_new_game_description">Erstelle hier eine neue Spielgruppe mit all den Charakteren die Du spielen möchtest, ganz egal in welcher Spielwelt Du gerade unterwegs bist! </string>
     <string name="menu_continue_game_description">Hier kommst du wieder an Deine bisher gestarteten Spiele. \n Suche einfach eines deiner Spiele aus und schon hast du alle Spielcharaktere und alle Spielnotizen da!</string>
     <string name="menu_alljoyn_description">Zum Spielabend sind schon alle da? \n Dann tauscht untereinander eure Lieblingsvorlagen aus: ganz einfach und direkt per Knopfdruck werden sie verschickt!</string>
 

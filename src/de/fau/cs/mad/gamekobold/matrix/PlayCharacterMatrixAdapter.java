@@ -17,8 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
+/**
+ * This class handles matrix elements we want to display on character playing in
+ * normal (not edit) mode.
+ * 
+ */
 public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 		implements Serializable {
+	// this flags is used to store visibility of UI elements
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -26,7 +32,7 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 	Context context;
 
 	// the list of objects we want to display
-	private List<MatrixItem> items;
+	public List<MatrixItem> items;
 
 	public PlayCharacterMatrixAdapter(Context context, List<MatrixItem> items) {
 		super(context, R.layout.itemlayout_play_character_matrix_view, items);
@@ -49,8 +55,9 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 
 		final MatrixItem curItem = items.get(position);
 
+		// inflate only selected matrix items, because at normal (not edit)
+		// mode, we want to see not all of them
 		if (curItem.isSelected()) {
-
 			TextView itemName = (TextView) rowView
 					.findViewById(R.id.textItemTitle);
 			TextView itemValue = (TextView) rowView
@@ -68,7 +75,8 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 			itemRange.setText(curItem.getRangeMin() + " - "
 					+ curItem.getRangeMax());
 			itemModificator.setText(curItem.getModificator());
-
+			// favorites - not implemented yet, it is set as invisible in xml
+			// layout file
 			CheckBox favoriteItem = (CheckBox) rowView
 					.findViewById(R.id.favorite_checkbox);
 			favoriteItem.setChecked(curItem.isFavorite());
@@ -111,4 +119,5 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 		}
 		return rowView;
 	}
+
 }

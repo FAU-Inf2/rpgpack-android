@@ -28,6 +28,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_ITEMTOEDIT = "KEY_SAVE_ITEMTOEDIT";
 	private static final String KEY_SAVE_ADAPTER = "KEY_SAVE_ADAPTER";
 
+	// this flags is used to store visibility of UI elements
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -249,6 +250,8 @@ public class AddNewItemDialogFragment extends DialogFragment {
 						final String desc = description.getEditableText()
 								.toString();
 
+						// check visibility of UI elements und save in as
+						// integer
 						int vis = 0;
 						if (switchFrom.isChecked())
 							vis = vis | FLAG_FROM;
@@ -260,12 +263,13 @@ public class AddNewItemDialogFragment extends DialogFragment {
 							vis = vis | FLAG_MOD;
 
 						if (editItem == null) {
-							//add new matrix item
+							// add new matrix item
 							final MatrixItem newItem = new MatrixItem(name,
 									defValue, min, max, mod, desc, vis);
 							matrixFragment.addMatrixItem(newItem, curAdapter);
+							curAdapter.notifyDataSetChanged();
 						} else {
-							//matrix item exists already, edit it values
+							// matrix item exists already, edit it values
 							editItem.setItemName(name);
 							editItem.setValue(defValue);
 							editItem.setRangeMin(min);
@@ -295,7 +299,7 @@ public class AddNewItemDialogFragment extends DialogFragment {
 				.toString());
 		outState.putString(KEY_SAVE_DESCRIPTION, description.getText()
 				.toString());
-		//if it is an item to edit, save it
+		// if it is an item to edit, save it
 		if (editItem != null) {
 			outState.putSerializable(KEY_SAVE_ITEMTOEDIT,
 					(Serializable) editItem);

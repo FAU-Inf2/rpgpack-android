@@ -26,10 +26,13 @@ public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_ITEM = "KEY_SAVE_MATRIX_ITEM";
 	private static final String KEY_SAVE_SEL_ITEMS = "KEY_SAVE_SEL_ITEMS";
 	private static final String KEY_SAVE_ADAPTER = "KEY_SAVE_ADAPTER";
+	private static final String KEY_SAVE_ADAPTER_ALL_ITEMS = "KEY_SAVE_ADAPTER_ALL_ITEMS";
 
 	private EditText editTextMatrixValue;
-	protected ArrayAdapter<MatrixItem> selectedItemsAdapter;
-	protected ArrayList<MatrixItem> selectedItems;
+	protected ArrayAdapter<MatrixItem> editModeAdapter;
+	protected ArrayAdapter<MatrixItem> playAdapter;
+	protected ArrayList<MatrixItem> playMatrixItems;
+
 	public MatrixItem matrixItem = null;
 	public MatrixFragment matrixFragment;
 
@@ -39,12 +42,16 @@ public class SettingValueDialogFragment extends DialogFragment {
 		return frag;
 	}
 
-	public void passAdapter(ArrayAdapter<MatrixItem> selectedItemsAdapter) {
-		this.selectedItemsAdapter = selectedItemsAdapter;
+	public void passAdapterEdit(ArrayAdapter<MatrixItem> editModeAdapter) {
+		this.editModeAdapter = editModeAdapter;
 	}
 
-	public void passSelItems(List<MatrixItem> selectedItems) {
-		this.selectedItems = (ArrayList<MatrixItem>) selectedItems;
+	public void passAdapterNormal(ArrayAdapter<MatrixItem> playAdapter) {
+		this.playAdapter = playAdapter;
+	}
+
+	public void passSelItems(List<MatrixItem> playMatrixItems) {
+		this.playMatrixItems = (ArrayList<MatrixItem>) playMatrixItems;
 	}
 
 	@Override
@@ -78,12 +85,16 @@ public class SettingValueDialogFragment extends DialogFragment {
 						.getSerializable(KEY_SAVE_MATRIX_ITEM);
 			}
 			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
-				selectedItems = (ArrayList<MatrixItem>) savedInstanceState
+				playMatrixItems = (ArrayList<MatrixItem>) savedInstanceState
 						.getSerializable(KEY_SAVE_SEL_ITEMS);
 			}
 			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
-				selectedItemsAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
+				editModeAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
 						.getSerializable(KEY_SAVE_ADAPTER);
+			}
+			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
+				playAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
+						.getSerializable(KEY_SAVE_ADAPTER_ALL_ITEMS);
 			}
 
 		}
@@ -100,8 +111,15 @@ public class SettingValueDialogFragment extends DialogFragment {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-						.toString()));
+				int oldValue; 
+				if (!(editTextMatrixValue.getText().equals(""))) {
+					oldValue = (Integer.parseInt(editTextMatrixValue
+							.getText().toString()));
+				} else {
+					// if no value is set, then use a default one (here is 0)
+					oldValue = 0;
+				}
+
 				int newValue = oldValue + 1;
 				editTextMatrixValue.setText(Integer.toString(newValue));
 				// adaptDialogTable(dialogTable,
@@ -137,8 +155,11 @@ public class SettingValueDialogFragment extends DialogFragment {
 						dialog.dismiss();
 						matrixItem.setValue(editTextMatrixValue.getText()
 								.toString());
-						selectedItems.add(matrixItem);
-						selectedItemsAdapter.notifyDataSetChanged();
+						playMatrixItems.add(matrixItem);
+						if (!(editModeAdapter == null))
+							editModeAdapter.notifyDataSetChanged();
+						if (!(playAdapter == null))
+							playAdapter.notifyDataSetChanged();
 
 					}
 				});
@@ -181,9 +202,13 @@ public class SettingValueDialogFragment extends DialogFragment {
 		outState.putSerializable(KEY_SAVE_MATRIX_ITEM,
 				(Serializable) matrixItem);
 		outState.putSerializable(KEY_SAVE_SEL_ITEMS,
-				(Serializable) selectedItems);
-		outState.putSerializable(KEY_SAVE_ADAPTER,
-				(Serializable) selectedItemsAdapter);
+				(Serializable) playMatrixItems);
+		if (!(editModeAdapter == null))
+			outState.putSerializable(KEY_SAVE_ADAPTER,
+					(Serializable) editModeAdapter);
+		if (!(playAdapter == null))
+			outState.putSerializable(KEY_SAVE_ADAPTER_ALL_ITEMS,
+					(Serializable) playAdapter);
 
 		// Save the fragment's instance
 		getFragmentManager().putFragment(outState, "matrixFragment",

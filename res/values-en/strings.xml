@@ -401,7 +401,7 @@
     <string name="menu_new_game">New game</string>
     <string name="menu_continue_game">Continue game</string>
     <string name="menu_alljoyn">Alljoyn</string>
-    <string name="menu_new_game_description">Create a new playgroup here and add all the characters you want to use. \n You got a lot of friends to play, but just one device? No problem! Simply add all the characters to the game. You can easily switch between them and have the whole fun with even one device!</string>
+    <string name="menu_new_game_description">Create a new playgroup here and add all the characters you want to use!</string>
     <string name="menu_continue_game_description">Do you want to continue some of your games? \n Just select a game from the list and you will have all your characters and notices back. </string>
     <string name="menu_alljoyn_description">Are your friends already here? \n Then it\’s the best time to share your favorite templates: just one click and it is sent! </string>
 
