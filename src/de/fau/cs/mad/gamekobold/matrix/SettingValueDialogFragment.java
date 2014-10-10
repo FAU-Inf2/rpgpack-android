@@ -116,12 +116,14 @@ public class SettingValueDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				int oldValue;
-				if (!(editTextMatrixValue.getText().equals(""))) {
-					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-							.toString()));
-				} else {
+				if (editTextMatrixValue == null
+						|| editTextMatrixValue.getText() == null
+						|| editTextMatrixValue.getText().toString().equals("")) {
 					// if no value is set, then use a default one (here is 0)
 					oldValue = 0;
+				} else {
+					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+							.toString()));
 				}
 
 				int newValue = oldValue + 1;
@@ -134,12 +136,14 @@ public class SettingValueDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				int oldValue;
-				if (!(editTextMatrixValue.getText().equals(""))) {
-					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-							.toString()));
-				} else {
+				if (editTextMatrixValue == null
+						|| editTextMatrixValue.getText() == null
+						|| editTextMatrixValue.getText().toString().equals("")) {
 					// if no value is set, then use a default one (here is 0)
 					oldValue = 0;
+				} else {
+					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+							.toString()));
 				}
 				int newValue = oldValue - 1;
 				editTextMatrixValue.setText(Integer.toString(newValue));

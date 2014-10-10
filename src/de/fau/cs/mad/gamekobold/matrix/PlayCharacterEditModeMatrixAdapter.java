@@ -44,6 +44,26 @@ public class PlayCharacterEditModeMatrixAdapter extends
 		this.selectedMatrixItems = new ArrayList<MatrixItem>();
 	}
 
+	// needed for viewConvertion so that the system knows that there are
+	// different layouts in the adapter 1 for the edit last template item and 0
+	// for templates
+	@Override
+	public int getItemViewType(int position) {
+		// if create new item
+		if (position == getCount() - 1) {
+			// return 1
+			return 1;
+		}
+		// return 0 for every other item
+		return 0;
+	}
+
+	// 2 otherwise
+	@Override
+	public int getViewTypeCount() {
+		return 2; // Count of different layouts
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -51,14 +71,24 @@ public class PlayCharacterEditModeMatrixAdapter extends
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = null;
 
+		if (convertView == null) {
+			// if it is the last row -> edit last template
+			if (position == getCount() - 1) {
+				rowView = inflater
+						.inflate(R.layout.itemlayout2_newitem_matrix_view,
+								parent, false);
+			} else {
+				rowView = inflater.inflate(
+						R.layout.itemlayout_newcharacter_matrix_view, parent,
+						false);
+			}
+		} else {
+			rowView = convertView;
+		}
+
+		MatrixItem curItem = items.get(position);
 		// if it is the last row -> create new item
 		if (position == getCount() - 1) {
-			// have to inflate every time, no reusing is possible, cause of the
-			// nullpointerexception
-			rowView = inflater.inflate(
-					R.layout.itemlayout2_newitem_matrix_view, parent, false);
-			MatrixItem curItem = items.get(position);
-
 			TextView itemName = (TextView) rowView
 					.findViewById(R.id.textItemTitle);
 			TextView itemValue = (TextView) rowView
@@ -69,14 +99,6 @@ public class PlayCharacterEditModeMatrixAdapter extends
 		}
 		// it is normal matrix item
 		else {
-			// have to inflate every time, no reusing is possible, cause of the
-			// nullpointerexception
-			rowView = inflater
-					.inflate(R.layout.itemlayout_newcharacter_matrix_view,
-							parent, false);
-
-			MatrixItem curItem = items.get(position);
-
 			TextView itemName = (TextView) rowView
 					.findViewById(R.id.matrix_textItemTitle);
 			TextView itemValue = (TextView) rowView

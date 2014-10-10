@@ -458,11 +458,15 @@ public class MatrixFragment extends GeneralFragment {
 					showPopup(adapterPlayEditMode);
 				} else {
 					MatrixItem curMatrixItem = itemsList.get(position);
+					
+					Log.e("CLICK", curMatrixItem.getItemName());
 					if (selectedItems.contains(curMatrixItem)) {
 						// because we do not want to show this item anymore
 						curMatrixItem.setSelected(false);
 						selectedItems.remove(curMatrixItem);
 						adapterPlayEditMode.notifyDataSetChanged();
+						adapterPlay.clear();
+						adapterPlay.addAll(selectedItems);
 						adapterPlay.notifyDataSetChanged();
 
 					} else {
