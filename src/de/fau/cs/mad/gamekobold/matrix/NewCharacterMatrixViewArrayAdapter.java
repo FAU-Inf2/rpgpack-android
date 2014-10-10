@@ -6,20 +6,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.game.GameCharacter;
-import de.fau.cs.mad.gamekobold.jackson.Row;
 
 /**
  * This class handles matrix elements we want to display on character creation.
@@ -27,18 +20,12 @@ import de.fau.cs.mad.gamekobold.jackson.Row;
  */
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> implements Serializable {
+	// this flags is used to store visibility of UI elements
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
 	public static final int FLAG_MOD = 8; // Binary 01000
 
-	/*
-	 * JACKSON START
-	 */
-	// public MatrixTable jacksonTable;
-	/*
-	 * JACKSON END
-	 */
 	private Context context;
 	private ImageView highlightingImageView;
 
@@ -95,7 +82,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 
 		GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
 				.getDrawable();
-
+		// we want to see it from UI design directly if an item is selected
 		if (selectedMatrixItems.contains(curItem)) {
 			itemName.setTextColor(context.getResources()
 					.getColor(R.color.white));
@@ -116,8 +103,9 @@ public class NewCharacterMatrixViewArrayAdapter extends
 					itemModificator.setTextColor(context.getResources()
 							.getColor(R.color.white));
 			}
-
-		} else {
+		}
+		// not selected items are all grey
+		else {
 			itemName.setTextColor(context.getResources().getColor(R.color.grey));
 			itemValue.setTextColor(context.getResources()
 					.getColor(R.color.grey));

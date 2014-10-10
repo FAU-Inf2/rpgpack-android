@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,17 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
@@ -35,6 +28,7 @@ import de.fau.cs.mad.gamekobold.template_generator.GeneralFragment;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 
 public class MatrixFragment extends GeneralFragment {
+	// this flags is used to store visibility of UI elements
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
 	public static final int FLAG_VALUE = 4; // Binary 00100
@@ -82,7 +76,7 @@ public class MatrixFragment extends GeneralFragment {
 			// jacksonTable.entries
 			// FIXME comment is not correct, last fake item appears also in
 			// jacksonTable.entries and make problems!!!!
-			// now it is just fix and dirty!
+			// now it is fixed but dirty!
 			MatrixItem addNewMatrixItem = new MatrixItem(getResources()
 					.getString(R.string.new_matrix_item), "+", "");
 			itemsList.add(addNewMatrixItem);
@@ -218,10 +212,6 @@ public class MatrixFragment extends GeneralFragment {
 					selectedItems.add(item);
 				}
 			}
-
-			// // TODO: Test
-			// adapterPlay.setItems(selectedItems);
-			// adapterPlay.notifyDataSetChanged();
 
 			gridView.setAdapter(adapterPlayEditMode);
 			addListenersForCharacterPlayEditMode(selectedItems);
@@ -405,15 +395,12 @@ public class MatrixFragment extends GeneralFragment {
 					adapterCreateCharacter.notifyDataSetChanged();
 
 				}
-				// if is not yet selected then set as selected
+				// if is not yet selected then set as selected to show later
 				else {
 					curMatrixItem.setSelected(true);
 					// show popup to set current value
 					showSetValuePopup(curMatrixItem, adapterCreateCharacter,
 							null, selectedItems);
-					// selectedItems.add(curMatrixItem);
-					// adapterCreateCharacter.notifyDataSetChanged();
-					// newCharacter.addMatrixItem(curMatrixItem);
 				}
 			}
 		});
@@ -472,7 +459,7 @@ public class MatrixFragment extends GeneralFragment {
 				} else {
 					MatrixItem curMatrixItem = itemsList.get(position);
 					if (selectedItems.contains(curMatrixItem)) {
-						// deselect
+						// because we do not want to show this item anymore
 						curMatrixItem.setSelected(false);
 						selectedItems.remove(curMatrixItem);
 						adapterPlayEditMode.notifyDataSetChanged();
@@ -495,60 +482,10 @@ public class MatrixFragment extends GeneralFragment {
 						adapterPlay.addAll(selectedItems);
 						adapterPlayEditMode.notifyDataSetChanged();
 						adapterPlay.notifyDataSetChanged();
-						// selectedItems.add(curMatrixItem);
-						//
-						// Toast.makeText(
-						// getActivity(),
-						// ((TextView) view
-						// .findViewById(R.id.matrix_textItemTitle))
-						// .getText()
-						// +
-						// "-Attribut wird zu dem Charakter hinzugefuegt",
-						// Toast.LENGTH_SHORT).show();
-						//
-						// Log.d("add", "add");
-						// newCharacter.addMatrixItem(curMatrixItem);
 					}
 				}
 			}
 		});
-
-		// gridView.setOnItemLongClickListener(new
-		// AdapterView.OnItemLongClickListener() {
-		// @Override
-		// public boolean onItemLongClick(AdapterView<?> adapterView,
-		// View view, final int position, long id) {
-		// if (position == adapterPlayEditMode.getCount() - 1) {
-		// return true;
-		// }
-		// AlertDialog.Builder builder = new AlertDialog.Builder(
-		// getActivity());
-		// builder.setTitle(getResources().getString(
-		// R.string.msg_delete_item));
-		// builder.setMessage(getResources().getString(
-		// R.string.msg_yes_to_item_delete));
-		// builder.setNegativeButton(
-		// getResources().getString(R.string.no),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// }
-		// });
-		// builder.setPositiveButton(getResources()
-		// .getString(R.string.yes),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// removeMatrixItem(position,
-		// adapterPlayEditMode);
-		// }
-		// });
-		// builder.create().show();
-		// return true;
-		// }
-		// });
 	}
 
 	protected void addListenersForCharacterPlayNormalMode(
@@ -562,40 +499,6 @@ public class MatrixFragment extends GeneralFragment {
 						adapterPlayEditMode, selItems);
 			}
 		});
-
-		// gridView.setOnItemLongClickListener(new
-		// AdapterView.OnItemLongClickListener() {
-		// @Override
-		// public boolean onItemLongClick(AdapterView<?> adapterView,
-		// View view, final int position, long id) {
-		//
-		// AlertDialog.Builder builder = new AlertDialog.Builder(
-		// getActivity());
-		// builder.setTitle(getResources().getString(
-		// R.string.msg_delete_item));
-		// builder.setMessage(getResources().getString(
-		// R.string.msg_yes_to_item_delete));
-		// builder.setNegativeButton(
-		// getResources().getString(R.string.no),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// }
-		// });
-		// builder.setPositiveButton(
-		// getResources().getString(R.string.yes),
-		// new DialogInterface.OnClickListener() {
-		// @Override
-		// public void onClick(DialogInterface dialog,
-		// int which) {
-		// removeMatrixItem(position, adapterPlay);
-		// }
-		// });
-		// builder.create().show();
-		// return true;
-		// }
-		// });
 	}
 
 	@Override
@@ -609,7 +512,7 @@ public class MatrixFragment extends GeneralFragment {
 	}
 
 	/**
-	 * This Method is used every time we need to add new element into adapter
+	 * This Method is used every time we need to add new element into adapters
 	 * element list.
 	 * 
 	 */
@@ -619,6 +522,11 @@ public class MatrixFragment extends GeneralFragment {
 
 	}
 
+	/**
+	 * This Method is used every time we want remove some element from adapters
+	 * element list.
+	 * 
+	 */
 	public void removeMatrixItem(int position, ArrayAdapter adapter) {
 		if (position < 0 || position == adapter.getCount() - 1) {
 			return;

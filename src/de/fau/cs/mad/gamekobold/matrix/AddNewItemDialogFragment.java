@@ -18,6 +18,10 @@ import android.widget.Switch;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
+/**
+ * This class handles pop up to create new matrix item.
+ * 
+ */
 public class AddNewItemDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_ITEM_NAME = "KEY_SAVE_ITEM_NAME";
 	private static final String KEY_SAVE_RANGE_FROM = "KEY_SAVE_RANGE_FROM";

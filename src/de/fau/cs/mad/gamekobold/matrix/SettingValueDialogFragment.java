@@ -21,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
 
+/**
+ * This class handles pop up to set new value to the matrix element.
+ * 
+ */
 public class SettingValueDialogFragment extends DialogFragment {
 	private static final String KEY_SAVE_MATRIX_VALUE = "KEY_SAVE_MATRIX_VALUE";
 	private static final String KEY_SAVE_MATRIX_ITEM = "KEY_SAVE_MATRIX_ITEM";
@@ -74,7 +78,7 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 		editTextMatrixValue = (EditText) view
 				.findViewById(R.id.editTextMatrixValue);
-
+		// retain values
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(KEY_SAVE_MATRIX_VALUE)) {
 				editTextMatrixValue.setText((savedInstanceState
@@ -111,10 +115,10 @@ public class SettingValueDialogFragment extends DialogFragment {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int oldValue; 
+				int oldValue;
 				if (!(editTextMatrixValue.getText().equals(""))) {
-					oldValue = (Integer.parseInt(editTextMatrixValue
-							.getText().toString()));
+					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+							.toString()));
 				} else {
 					// if no value is set, then use a default one (here is 0)
 					oldValue = 0;
@@ -122,8 +126,6 @@ public class SettingValueDialogFragment extends DialogFragment {
 
 				int newValue = oldValue + 1;
 				editTextMatrixValue.setText(Integer.toString(newValue));
-				// adaptDialogTable(dialogTable,
-				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
 			}
 		});
 		ImageButton subtractButton = (ImageButton) view
@@ -131,12 +133,16 @@ public class SettingValueDialogFragment extends DialogFragment {
 		subtractButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int oldValue = (Integer.parseInt(editTextMatrixValue.getText()
-						.toString()));
+				int oldValue;
+				if (!(editTextMatrixValue.getText().equals(""))) {
+					oldValue = (Integer.parseInt(editTextMatrixValue.getText()
+							.toString()));
+				} else {
+					// if no value is set, then use a default one (here is 0)
+					oldValue = 0;
+				}
 				int newValue = oldValue - 1;
 				editTextMatrixValue.setText(Integer.toString(newValue));
-				// adaptDialogTable(dialogTable,
-				// (Integer.parseInt(editTextMatrixValue.getText().toString())));
 			}
 		});
 

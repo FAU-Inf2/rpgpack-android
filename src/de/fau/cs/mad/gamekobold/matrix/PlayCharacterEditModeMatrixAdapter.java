@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import de.fau.cs.mad.gamekobold.R;
  */
 public class PlayCharacterEditModeMatrixAdapter extends
 		ArrayAdapter<MatrixItem> implements Serializable {
-
 	// this flags is used to store visibility of UI elements
 	public static final int FLAG_FROM = 1; // Binary 00001
 	public static final int FLAG_TO = 2; // Binary 00010
@@ -101,6 +99,7 @@ public class PlayCharacterEditModeMatrixAdapter extends
 			GradientDrawable highlightingShape = (GradientDrawable) highlightingImageView
 					.getDrawable();
 
+			// we want to see it from UI design directly if an item is selected
 			if (selectedMatrixItems.contains(curItem)) {
 				itemName.setTextColor(context.getResources().getColor(
 						R.color.white));
@@ -121,8 +120,9 @@ public class PlayCharacterEditModeMatrixAdapter extends
 						itemModificator.setTextColor(context.getResources()
 								.getColor(R.color.white));
 				}
-
-			} else {
+			}
+			// not selected items are all grey
+			else {
 				itemName.setTextColor(context.getResources().getColor(
 						R.color.grey));
 				itemValue.setTextColor(context.getResources().getColor(

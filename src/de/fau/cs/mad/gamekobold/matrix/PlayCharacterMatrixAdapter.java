@@ -1,11 +1,9 @@
 package de.fau.cs.mad.gamekobold.matrix;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +64,6 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 			// combine min and max
 			TextView itemRange = (TextView) rowView
 					.findViewById(R.id.textRangeFromTo);
-
 			TextView itemModificator = (TextView) rowView
 					.findViewById(R.id.textModificator);
 
