@@ -85,6 +85,10 @@ public class SessionMonitorEditText extends EditText implements OnEditorActionLi
 		mSessionListener = l;
 	}
 	
+	public void notifyOnDemand(){
+		notifySessionListener();
+	}
+	
 	private void notifySessionListener() {
 		if(mSessionListener != null) {
 			mSessionListener.onEditSessionComplete(this);

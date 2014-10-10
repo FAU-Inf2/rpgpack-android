@@ -34,7 +34,10 @@ public class WarningLeaveDialog extends DialogFragment{
 				// JACKSON START
 				SlideoutNavigationActivity.saveOnNextOnPause = false;
 				// JACKSON END
-				((TemplateGeneratorActivity) SlideoutNavigationActivity.theActiveActivity).superBackPressed();
+//				((TemplateGeneratorActivity) SlideoutNavigationActivity.theActiveActivity).superBackPressed();
+				Intent intent = new Intent(getActivity(), MainMenu.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
 			} });
 		alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -50,6 +53,7 @@ public class WarningLeaveDialog extends DialogFragment{
 				 * JACKSON END
 				 */
 				Intent intent = new Intent(getActivity(), MainMenu.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}});
 		// when you done

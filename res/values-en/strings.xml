@@ -31,6 +31,7 @@
 
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
+    
 
     <!-- activity_alljoin_test -->
     <string name="btn_call_service">Call Service</string>
@@ -120,7 +121,7 @@
 
     <!-- FolderElementAdapter -->
     <string name="question_delete">Delete Element?</string>
-    <string name="long_click_dialog_message">Choose YES to delete the Elemente.</string>
+    <string name="long_click_dialog_message">Choose YES to delete the element.</string>
 
     <!-- TableFragment -->
     <string name="save_table">Save Table</string>
@@ -134,6 +135,9 @@
     <string name="column_name">Column Name</string>
     <string name="column_type">Column Type</string>
     <string name="dot">.</string>
+    <string name="question_delete_row">Delete row?</string>
+	<string name="text_delete_row">Choose YES to delete the row</string>
+    
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>
@@ -145,6 +149,10 @@
     <string name="loading_template">Loading Template&#8230;</string>
     <string name="wait">Please wait&#8230;</string>
     <string name="loading_template_failure">Unable to load Template!</string>
+    
+    <!-- Character Editor -->
+    <string name="menu_item_save_character">save character</string>
+    
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Do you really want to leave the Template Generator?</string>
