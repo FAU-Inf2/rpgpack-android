@@ -300,10 +300,15 @@
     <string name="set_time">Setze Zeit</string>
 
     <!-- fragment_game_toolbox -->
+    <string name="toolbox_title">Toolbox</string>
     <string name="open_dice">Würfel Tool</string>
+    <string name="desc_dice"></string>
     <string name="open_timer">Timer</string>
+    <string name="desc_timer"></string>
     <string name="open_tactical">Taktische Karte</string>
+    <string name="desc_tactical"></string>
     <string name="open_randomlist">Zufallsliste</string>
+    
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>

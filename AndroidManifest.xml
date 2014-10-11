@@ -86,7 +86,7 @@
         </activity>
 
         <!-- Toolbox Activities -->
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity2" >
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity"

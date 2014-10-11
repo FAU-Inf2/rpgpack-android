@@ -301,10 +301,14 @@
     <string name="set_time">Set Time</string>
 
     <!-- fragment_game_toolbox -->
-    <string name="open_dice">Dicel Tool</string>
+    <string name="toolbox_title">Toolbox</string>
+    <string name="open_dice">Dice Tool</string>
+    <string name="desc_dice"></string>
     <string name="open_timer">Timer</string>
+    <string name="desc_timer"></string>
     <string name="open_tactical">Tactical Map</string>
-    <string name="open_randomlist">Random List</string>
+    <string name="desc_tactical"></string>
+    <string name="open_randomlist">Zufallsliste</string>
 
     <!-- Template Store -->
     <string name="title_activity_template_store_main">Template Store</string>

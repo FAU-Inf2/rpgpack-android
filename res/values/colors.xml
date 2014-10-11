@@ -44,6 +44,8 @@
     <color name="menu_characters_end_color">#005500</color>
     <color name="menu_templates_start_color">#0000FF</color>
     <color name="menu_templates_end_color">#000055</color>
+    <color name="menu_toolbox_start_color">#FFFF00</color>
+    <color name="menu_toolbox_end_color">#555500</color>
     
     
 </resources>

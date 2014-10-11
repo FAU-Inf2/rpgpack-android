@@ -243,7 +243,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		
 		// File jsonFile = new File(curCharacter.getFileAbsPath());
 		// curCharacter.getFileAbsPath();
-		Intent intent = ToolboxActivity.createIntentForStarting(this, characterSheets);	
+		Intent intent = ToolboxActivity2.createIntentForStarting(this, characterSheets);	
 		startActivity(intent);
 	
 	}
