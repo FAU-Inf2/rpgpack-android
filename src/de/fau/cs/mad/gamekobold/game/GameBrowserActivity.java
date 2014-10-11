@@ -13,11 +13,12 @@ public class GameBrowserActivity extends SingleFragmentActivity {
 		return new GameBrowserFragment();
 	}
 	
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.play_actions, menu);
+		//getMenuInflater().inflate(R.menu.play_actions, menu);
 		return true;
 	}
 	
@@ -32,10 +33,5 @@ public class GameBrowserActivity extends SingleFragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	public void openTools() {
-		Intent intent = new Intent(GameBrowserActivity.this,
-				ToolboxActivity.class);
-		startActivity(intent);
-	}
+	*/
 }

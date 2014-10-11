@@ -88,23 +88,52 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		mapView = (ToolboxMapView) findViewById(R.id.map);
 		mapView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
 
-	        @Override
-	        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight,
-	                int oldBottom) {
-	            // its possible that the layout is not complete in which case
-	            // we will get all zero values for the positions, so ignore the event
-	            if (left == 0 && top == 0 && right == 0 && bottom == 0) {
-	                return;
-	            }
+			@Override
+			public void onLayoutChange(View v, int left, int top, int right,
+					int bottom, int oldLeft, int oldTop, int oldRight,
+					int oldBottom) {
+				// its possible that the layout is not complete in which case
+				// we will get all zero values for the positions, so ignore the
+				// event
+				if (left == 0 && top == 0 && right == 0 && bottom == 0) {
+					return;
+				}
 
-	            if (first){
-	            	initTest();
-		    		createCells();
-		    		first = false;
-	            }
-	            
-	        }
-	    });
+				if (first) {
+					initTest();
+					createCells();
+					loadCharinfo();
+					first = false;
+				}
+
+			}
+		});
+		Intent intent = getIntent();
+		final String[] characterAbsPaths = intent
+				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
+		if (savedInstanceState != null) {
+			characterSheets = (CharacterSheet[]) savedInstanceState
+					.getParcelableArray("characterSheets");
+		} else {
+			characterSheets = new CharacterSheet[characterAbsPaths.length];
+			if (characterAbsPaths != null) {
+				Log.d("ToolboxMap", "characterAbsPath != null");
+				try {
+					int index = 0;
+					for (String onePath : characterAbsPaths) {
+						characterSheets[index++] = JacksonInterface
+								.loadCharacterSheet(new File(onePath), false);
+					}
+
+					// characterSheet = JacksonInterface.loadCharacterSheet(new
+					// File(
+					// characterAbsPath), false);
+					Log.d("CharacterPlayActivity", "loaded sheets");
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		mapView.setOnTouchListener(mapView);
 		paintLayout = (LinearLayout) findViewById(R.id.paint_colors);
 		currPaint = (ImageButton) paintLayout.getChildAt(0);
@@ -193,11 +222,14 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		options.inJustDecodeBounds = true;
 		Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
 				options);
-		options.inSampleSize = calculateInSampleSize(options, mWidthPx, mHeightPx);
+		options.inSampleSize = calculateInSampleSize(options, mWidthPx,
+				mHeightPx);
 		options.inJustDecodeBounds = false;
 		image = BitmapFactory.decodeFileDescriptor(fileDescriptor, null,
 				options);
-		Log.i("ImageHeight, ImageWidth,actualHeight, actualWidth", options.inSampleSize + " " + options.outHeight + " " + options.outWidth + " " + mHeightPx + " " + mWidthPx);
+		Log.i("ImageHeight, ImageWidth,actualHeight, actualWidth",
+				options.inSampleSize + " " + options.outHeight + " "
+						+ options.outWidth + " " + mHeightPx + " " + mWidthPx);
 		if (options.inSampleSize < 2
 				&& (options.outHeight < mHeightPx || options.outWidth < mWidthPx)) {
 			image = null;
@@ -217,8 +249,7 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 						mapView.setFileToBackground(getBitmapFromUri(uri));
 					} else {
 						Toast.makeText(getApplicationContext(),
-								"Bild zu klein",
-								Toast.LENGTH_LONG).show();
+								"Bild zu klein", Toast.LENGTH_LONG).show();
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -254,10 +285,10 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		mNumColumns = (int) (mWidth / cell_size);
 		mNumLines = (int) (mHeight / cell_size);
 		mNumCells = mNumLines * mNumColumns;
-		trash = (ImageView) findViewById(R.id.trash); 
+		trash = (ImageView) findViewById(R.id.trash);
 		trash.setVisibility(View.INVISIBLE);
 		trash.setOnDragListener(this);
-		
+
 		Log.i("Width", "" + mWidth);
 		Log.i("Height", "" + mHeight);
 		Log.i("Cells", "" + mNumCells);
@@ -303,24 +334,27 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		final float height = options.outHeight;
 		final float width = options.outWidth;
 		int inSampleSize = 1;
-		/*if ((height * 2 > reqHeight) && (width * 2 > reqWidth)) {
-
-			final float halfHeight = height / 2;
-			final float halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and
-			// keeps both
-			// height and width larger than the requested height and width.*/
-			while ((height / (inSampleSize*2)) > reqHeight
-					&& (width / (inSampleSize*2)) > reqWidth) {
-				inSampleSize *= 2;
-			}
+		/*
+		 * if ((height * 2 > reqHeight) && (width * 2 > reqWidth)) {
+		 * 
+		 * final float halfHeight = height / 2; final float halfWidth = width /
+		 * 2;
+		 * 
+		 * // Calculate the largest inSampleSize value that is a power of 2 and
+		 * // keeps both // height and width larger than the requested height
+		 * and width.
+		 */
+		while ((height / (inSampleSize * 2)) > reqHeight
+				&& (width / (inSampleSize * 2)) > reqWidth) {
+			inSampleSize *= 2;
+		}
 
 		return inSampleSize;
 
 	}
 
 	public void loadCharinfo() {
+		Log.i("Load Char", "entered");
 		Intent intent = getIntent();
 		final String[] characterAbsPaths = intent
 				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
@@ -346,36 +380,49 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		Log.i("colors", colors.toString());
 	}
 
-
-
-@Override
-public boolean onDrag(View v, DragEvent event) {
-	switch (event.getAction()) {
-	case DragEvent.ACTION_DRAG_STARTED:
-		// Log.v("Test", "Entered start");
-		break;
-	case DragEvent.ACTION_DRAG_ENTERED:
-		// Log.v("Test", "Entered drag");
-		break;
-	case DragEvent.ACTION_DRAG_EXITED:
-		break;
-	case DragEvent.ACTION_DROP:
-		Log.v("Test", "Entered drop");
-		final View view = (View) event.getLocalState();
-		if (view != null && (view instanceof ImageView)) {
-			ImageView castedView = (ImageView) view;
-			if (castedView.getContentDescription().toString() == "grid") {
-				final ViewGroup owner = (ViewGroup) view.getParent();
-				owner.removeView(v);
+	@Override
+	public boolean onDrag(View v, DragEvent event) {
+		switch (event.getAction()) {
+		case DragEvent.ACTION_DRAG_STARTED:
+			// Log.v("Test", "Entered start");
+			break;
+		case DragEvent.ACTION_DRAG_ENTERED:
+			// Log.v("Test", "Entered drag");
+			break;
+		case DragEvent.ACTION_DRAG_EXITED:
+			break;
+		case DragEvent.ACTION_DROP:
+			Log.v("Test", "Entered drop");
+			final View view = (View) event.getLocalState();
+			if (view != null && (view instanceof ImageView)) {
+				ImageView castedView = (ImageView) view;
+				if (castedView.getContentDescription().toString() == "grid") {
+					final ViewGroup owner = (ViewGroup) view.getParent();
+					owner.removeView(v);
+				}
 			}
+			break;
+		case DragEvent.ACTION_DRAG_ENDED:
+			trash.setVisibility(View.INVISIBLE);
+			break;
+		default:
+			break;
 		}
-		break;
-	case DragEvent.ACTION_DRAG_ENDED:
-		trash.setVisibility(View.INVISIBLE);
-		break;
-	default:
-		break;
+		return true;
 	}
-	return true;
-}
+	
+	public static Intent createIntentForStarting(Context packageContext,
+			CharacterSheet[] sheets) {
+		Log.i("ToolboxMapActivity",
+				"createIntentForStarting: sheets.length == " + sheets.length);
+		Intent intent = new Intent(packageContext, ToolboxMapActivity.class);
+		String[] filePaths = new String[sheets.length];
+		int index = 0;
+		for (CharacterSheet oneSheet : sheets) {
+			filePaths[index++] = oneSheet.getFileAbsolutePath();
+		}
+		intent.putExtra(ToolboxMapActivity.EXTRA_CHARACTER_ABS_PATH,
+				filePaths);
+		return intent;
+	}
 }
