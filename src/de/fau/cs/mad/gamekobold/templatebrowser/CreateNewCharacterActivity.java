@@ -97,7 +97,7 @@ public class CreateNewCharacterActivity extends Activity implements
 							.getDirectoryForCharacters(template, this, true);
 					sheet = template.getCharacterSheet();
 					// change to default color
-					sheet.setColor(getResources().getColor(R.color.light_green));
+					sheet.setColor(getResources().getColor(R.color.background_green));
 				} catch (Throwable e) {
 					e.printStackTrace();
 					// TODO correct error handling
