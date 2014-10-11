@@ -41,6 +41,14 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
+            android:name="de.fau.cs.mad.gamekobold.alljoyn.Service"
+            android:label="@string/title_activity_alljoyn_test"
+            android:parentActivityName="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" />
+        </activity>
+        <activity
             android:name="de.fau.cs.mad.gamekobold.character.CharacterEditActivity"
             android:label="Root"
             android:theme="@style/template_generator_style"
