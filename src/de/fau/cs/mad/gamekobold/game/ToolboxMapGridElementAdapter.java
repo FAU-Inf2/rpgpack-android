@@ -36,7 +36,7 @@ import de.fau.cs.mad.gamekobold.R.drawable;
 public class ToolboxMapGridElementAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private final ArrayList<GradientDrawable> dotsList;
+	private final ArrayList<Drawable> dotsList;
 	private LayoutInflater mInflater;
 	private String tag;
 	ImageView trash;
@@ -45,7 +45,7 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	private long startClickTime;
 
 	public ToolboxMapGridElementAdapter(Context context,
-			ArrayList<GradientDrawable> dots, String tag, ImageView trash) {
+			ArrayList<Drawable> dots, String tag, ImageView trash) {
 		mContext = context;
 		dotsList = dots;
 		this.tag = tag;

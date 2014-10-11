@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -62,8 +63,9 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 	int mHeightPx;
 	private ArrayList<Integer> colors = new ArrayList();
 	//private int[] testColor = { R.color.red, R.color.green, R.color.blue,R.color.black, R.color.orange };
-	private ArrayList<GradientDrawable> dotsList = new ArrayList();
-	private ArrayList<GradientDrawable> justItems = new ArrayList();
+	private ArrayList<Drawable> dotsList = new ArrayList();
+	private ArrayList<Drawable> justItems = new ArrayList();
+	private ArrayList<Drawable> charPics = new ArrayList();
 	private int mNumCells;
 	private int mNumLines;
 	private int mNumColumns;
@@ -287,7 +289,11 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		trash.setVisibility(View.INVISIBLE);
 		trash.setOnDragListener(this);
 		for (CharacterSheet character : characterSheets){
-			colors.add(character.getColor());
+			Bitmap bmp = character.getIcon(this);
+			if (bmp != null)
+				charPics.add(new BitmapDrawable(getResources(), bmp));
+			else
+				charPics.add(createDrawable(character.getColor()));
 		}
 
 		Log.i("Width", "" + mWidth);
@@ -300,16 +306,12 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 	public void createCells() {
 		for (int i = 0; i < mNumCells; i++) {
 			dotsList.add(null);
-
-			if (i < colors.size()) {
-				justItems.add(i, createDrawable(colors.get(i)));
-			}
 		}
 		//dotsList.set(colors.size(), createDrawable(R.color.black));
-		justItems.add(colors.size(), createDrawable(Color.BLACK));
+		charPics.add(createDrawable(Color.BLACK));
 
 		mAdapterItems = new ToolboxMapGridElementAdapter(
-				ToolboxMapActivity.this, justItems, "item", trash);
+				ToolboxMapActivity.this, charPics, "item", trash);
 		mAdapter = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this,
 				dotsList, "grid", trash);
 		GridView gridView = (GridView) findViewById(R.id.map_items);
@@ -325,6 +327,7 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		GradientDrawable newItem = new GradientDrawable();
 		newItem.setShape(GradientDrawable.OVAL);
 		newItem.setColor(color);
+		
 		return newItem;
 	}
 
