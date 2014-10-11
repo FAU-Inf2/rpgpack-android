@@ -391,13 +391,24 @@ public class MatrixFragment extends GeneralFragment {
 				// if it is yet selected then remove
 				if (selectedItems.contains(curMatrixItem)) {
 					curMatrixItem.setSelected(false);
-					selectedItems.remove(curMatrixItem);
-					adapterCreateCharacter.notifyDataSetChanged();
 
+					selectedItems.clear();
+					for (MatrixItem ma : itemsList) {
+						if (ma.isSelected())
+							selectedItems.add(ma);
+					}
+					adapterCreateCharacter.notifyDataSetChanged();
 				}
 				// if is not yet selected then set as selected to show later
 				else {
 					curMatrixItem.setSelected(true);
+
+					selectedItems.clear();
+					for (MatrixItem ma : itemsList) {
+						if (ma.isSelected())
+							selectedItems.add(ma);
+					}
+					adapterCreateCharacter.notifyDataSetChanged();
 					// show popup to set current value
 					showSetValuePopup(curMatrixItem, adapterCreateCharacter,
 							null, selectedItems);
@@ -460,24 +471,24 @@ public class MatrixFragment extends GeneralFragment {
 					if (selectedItems.contains(curMatrixItem)) {
 						// because we do not want to show this item
 						curMatrixItem.setSelected(false);
+
 						selectedItems.clear();
 						for (MatrixItem ma : itemsList) {
 							if (ma.isSelected())
 								selectedItems.add(ma);
 						}
-					//	selectedItems.remove(curMatrixItem);
 						adapterPlayEditMode.notifyDataSetChanged();
 						adapterPlay.clear();
 						adapterPlay.addAll(selectedItems);
 						adapterPlay.notifyDataSetChanged();
 
 					} else {
-						// because it should show up in play mode
-						curMatrixItem.setSelected(true);
-
 						// show popup to set current value
 						showSetValuePopup(curMatrixItem, adapterPlayEditMode,
 								adapterPlay, selectedItems);
+
+						// because it should show up in play mode
+						curMatrixItem.setSelected(true);
 
 						selectedItems.clear();
 						for (MatrixItem ma : itemsList) {
