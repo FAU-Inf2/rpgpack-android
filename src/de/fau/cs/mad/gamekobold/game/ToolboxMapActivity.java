@@ -61,8 +61,7 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 	int mWidthPx;
 	int mHeightPx;
 	private ArrayList<Integer> colors = new ArrayList();
-	private int[] testColor = { R.color.red, R.color.green, R.color.blue,
-			R.color.black, R.color.orange };
+	//private int[] testColor = { R.color.red, R.color.green, R.color.blue,R.color.black, R.color.orange };
 	private ArrayList<GradientDrawable> dotsList = new ArrayList();
 	private ArrayList<GradientDrawable> justItems = new ArrayList();
 	private int mNumCells;
@@ -102,7 +101,6 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 				if (first) {
 					initTest();
 					createCells();
-					loadCharinfo();
 					first = false;
 				}
 
@@ -288,6 +286,9 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		trash = (ImageView) findViewById(R.id.trash);
 		trash.setVisibility(View.INVISIBLE);
 		trash.setOnDragListener(this);
+		for (CharacterSheet character : characterSheets){
+			colors.add(character.getColor());
+		}
 
 		Log.i("Width", "" + mWidth);
 		Log.i("Height", "" + mHeight);
@@ -300,12 +301,12 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		for (int i = 0; i < mNumCells; i++) {
 			dotsList.add(null);
 
-			if (i < testColor.length) {
-				justItems.add(i, createDrawable(testColor[i]));
+			if (i < colors.size()) {
+				justItems.add(i, createDrawable(colors.get(i)));
 			}
 		}
-		dotsList.set(testColor.length, createDrawable(R.color.black));
-		justItems.add(testColor.length, createDrawable(R.color.black));
+		//dotsList.set(colors.size(), createDrawable(R.color.black));
+		justItems.add(colors.size(), createDrawable(Color.BLACK));
 
 		mAdapterItems = new ToolboxMapGridElementAdapter(
 				ToolboxMapActivity.this, justItems, "item", trash);
@@ -321,10 +322,9 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 
 	// Remember to remove the getResources, when loading from charsheet
 	public GradientDrawable createDrawable(int color) {
-		int colorFromRes = getResources().getColor(color);
 		GradientDrawable newItem = new GradientDrawable();
 		newItem.setShape(GradientDrawable.OVAL);
-		newItem.setColor(colorFromRes);
+		newItem.setColor(color);
 		return newItem;
 	}
 
@@ -353,32 +353,6 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 
 	}
 
-	public void loadCharinfo() {
-		Log.i("Load Char", "entered");
-		Intent intent = getIntent();
-		final String[] characterAbsPaths = intent
-				.getStringArrayExtra(EXTRA_CHARACTER_ABS_PATH);
-		characterSheets = new CharacterSheet[characterAbsPaths.length];
-		if (characterAbsPaths != null) {
-			Log.d("CharacterPlayActivity", "characterAbsPath != null");
-			try {
-				int index = 0;
-				for (String onePath : characterAbsPaths) {
-					characterSheets[index++] = JacksonInterface
-							.loadCharacterSheet(new File(onePath), false);
-				}
-				Log.d("CharacterPlayActivity", "loaded sheets");
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
-		}
-		if (characterSheets != null) {
-			for (CharacterSheet characterSheet : characterSheets) {
-				colors.add(characterSheet.getColor());
-			}
-		}
-		Log.i("colors", colors.toString());
-	}
 
 	@Override
 	public boolean onDrag(View v, DragEvent event) {
