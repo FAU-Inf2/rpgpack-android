@@ -450,7 +450,6 @@ public class MatrixFragment extends GeneralFragment {
 					int position, long id) {
 
 				if (position == itemsList.size() - 1) {
-
 					Toast.makeText(getActivity(),
 							"Neues Element wird in Deinem Character erstellt!",
 							Toast.LENGTH_SHORT).show();
@@ -458,12 +457,15 @@ public class MatrixFragment extends GeneralFragment {
 					showPopup(adapterPlayEditMode);
 				} else {
 					MatrixItem curMatrixItem = itemsList.get(position);
-					
-					Log.e("CLICK", curMatrixItem.getItemName());
 					if (selectedItems.contains(curMatrixItem)) {
-						// because we do not want to show this item anymore
+						// because we do not want to show this item
 						curMatrixItem.setSelected(false);
-						selectedItems.remove(curMatrixItem);
+						selectedItems.clear();
+						for (MatrixItem ma : itemsList) {
+							if (ma.isSelected())
+								selectedItems.add(ma);
+						}
+					//	selectedItems.remove(curMatrixItem);
 						adapterPlayEditMode.notifyDataSetChanged();
 						adapterPlay.clear();
 						adapterPlay.addAll(selectedItems);
@@ -482,9 +484,9 @@ public class MatrixFragment extends GeneralFragment {
 							if (ma.isSelected())
 								selectedItems.add(ma);
 						}
+						adapterPlayEditMode.notifyDataSetChanged();
 						adapterPlay.clear();
 						adapterPlay.addAll(selectedItems);
-						adapterPlayEditMode.notifyDataSetChanged();
 						adapterPlay.notifyDataSetChanged();
 					}
 				}
