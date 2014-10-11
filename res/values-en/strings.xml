@@ -355,6 +355,7 @@
     <string name="loading_wait_single">Download in progress</string>
     <string name="no_templates_found">Sorry, no templates found</string>
     <string name="error_occured">An error occurred.</string>
+    <string name="invalid_template">Template has an invalid format.</string>
     <string name="download_successful">Template successfully stored on Device</string>
     <string name="confirm_template_exists">Template already saved to device. Replace?</string>
     <string name="buttonImport">Import</string>

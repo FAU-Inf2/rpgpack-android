@@ -354,6 +354,7 @@
     <string name="loading_wait_single">Template wird geladen</string>
     <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
     <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
+    <string name="invalid_template">Das Template ist nicht richtig formatiert.</string>
     <string name="download_successful">Das Template wurde erfolgreich auf dem Gerät gespeichert</string>
     <string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
     <string name="buttonImport">Importieren</string>

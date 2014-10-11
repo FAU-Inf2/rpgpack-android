@@ -60,7 +60,7 @@ public class DownloadTemplateMenu  extends AbstractThreeButtonMenu implements IF
 	    				JacksonInterface.saveTemplate(template, DownloadTemplateMenu.this, false);
 	    			} catch (IOException e) {
 	    				Log.e("store", "invalid template");
-	    				alertMessage(getResources().getString(R.string.error_occured));
+	    				alertMessage(getResources().getString(R.string.invalid_template));
 	    				return;
 	    			}
 	    			alertMessage(getResources().getString(R.string.download_successful));
