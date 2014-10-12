@@ -358,6 +358,7 @@ public class TemplateListActivity extends ListActivity {
             	try {
             	if (mSimpleInterface != null) {
             		String tpl = (String) msg.obj;
+            		Toast.makeText(TemplateListActivity.this, "Trying to send template",Toast.LENGTH_SHORT).show();
             		String response = mSimpleInterface.receiveTemplate(tpl);
             		sendUiMessage(MESSAGE_TEMPLATE_REPLY, response);
             	}

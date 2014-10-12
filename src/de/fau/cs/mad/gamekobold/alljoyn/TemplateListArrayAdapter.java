@@ -55,8 +55,9 @@ public class TemplateListArrayAdapter extends ArrayAdapter<Template> {
 				curTemplate.getAuthor(), curTemplate.getDate()));
 
 		// load image bitmap
-		final Bitmap icon = ThumbnailLoader.loadThumbnail(
-				curTemplate.getIconPath(), context);
+		final Bitmap icon = curTemplate.getIcon(context);
+		//ThumbnailLoader.loadThumbnail(
+		//		curTemplate.getIconPath(), context);
 		if (icon != null) {
 			imageView.setImageBitmap(icon);
 		}
