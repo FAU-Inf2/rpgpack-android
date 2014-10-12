@@ -1,4 +1,4 @@
-package de.fau.cs.mad.gamekobold.game;
+package de.fau.cs.mad.gamekobold.toolbox;
 
 import java.util.ArrayList;
 import java.util.HashMap;

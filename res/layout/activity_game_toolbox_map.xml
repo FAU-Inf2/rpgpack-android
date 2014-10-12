@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ToolboxMapActivity" >
 
-    <de.fau.cs.mad.gamekobold.game.ToolboxMapView
+    <de.fau.cs.mad.gamekobold.toolbox.ToolboxMapView
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="0dp"

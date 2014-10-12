@@ -1,4 +1,4 @@
-package de.fau.cs.mad.gamekobold.game;
+package de.fau.cs.mad.gamekobold.toolbox;
 
 import java.io.File;
 
@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class ToolboxActivity2 extends AbstractThreeButtonMenu {
+public class ToolboxMenuActivity extends AbstractThreeButtonMenu {
 		
 		private CharacterSheet[] characterSheets;
 		public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -111,21 +111,13 @@ public class ToolboxActivity2 extends AbstractThreeButtonMenu {
 			setButton3Color(gradient3);
 		}
 
-		public void onBackPressed() {
-			if (!leaveToast.getView().isShown()) {
-				leaveToast.show();
-			} else {
-				super.onBackPressed();
-			}
-		}
-
 		/**
 		 * This gets called when button 1 is clicked.
 		 */
 		@Override
 		protected void button1Action() {
 			// Go to Game sub menu
-			Intent intent = new Intent(ToolboxActivity2.this,
+			Intent intent = new Intent(ToolboxMenuActivity.this,
 					ToolboxDiceActivity.class);
 			startActivity(intent);
 		}
@@ -146,7 +138,7 @@ public class ToolboxActivity2 extends AbstractThreeButtonMenu {
 		@Override
 		protected void button3Action() {
 			// Go to template sub menu
-			Intent intent = new Intent(ToolboxActivity2.this, ToolboxTimerActivity.class);
+			Intent intent = new Intent(ToolboxMenuActivity.this, ToolboxTimerActivity.class);
 			startActivity(intent);
 			
 		}
@@ -156,13 +148,13 @@ public class ToolboxActivity2 extends AbstractThreeButtonMenu {
 			CharacterSheet[] sheets) {
 		Log.i("ToolboxActivity",
 				"createIntentForStarting: sheets.length == " + sheets.length);
-		Intent intent = new Intent(packageContext, ToolboxActivity2.class);
+		Intent intent = new Intent(packageContext, ToolboxMenuActivity.class);
 		String[] filePaths = new String[sheets.length];
 		int index = 0;
 		for (CharacterSheet oneSheet : sheets) {
 			filePaths[index++] = oneSheet.getFileAbsolutePath();
 		}
-		intent.putExtra(ToolboxActivity2.EXTRA_CHARACTER_ABS_PATH,
+		intent.putExtra(ToolboxMenuActivity.EXTRA_CHARACTER_ABS_PATH,
 				filePaths);
 		return intent;
 	}

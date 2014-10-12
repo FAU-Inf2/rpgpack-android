@@ -1,4 +1,4 @@
-package de.fau.cs.mad.gamekobold.game;
+package de.fau.cs.mad.gamekobold.toolbox;
 
 import java.util.Calendar;
 
@@ -14,7 +14,7 @@ import android.view.Window;
 import android.widget.TimePicker;
 
 import de.fau.cs.mad.gamekobold.R;
-import de.fau.cs.mad.gamekobold.game.ToolboxTimer.OnTimeChangedListener;
+import de.fau.cs.mad.gamekobold.toolbox.ToolboxTimer.OnTimeChangedListener;
 
 public class ToolboxTimerDialog extends AlertDialog implements OnClickListener, OnTimeChangedListener{
 

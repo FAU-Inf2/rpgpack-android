@@ -1,11 +1,11 @@
-package de.fau.cs.mad.gamekobold.game;
+package de.fau.cs.mad.gamekobold.toolbox;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import de.fau.cs.mad.gamekobold.game.ToolboxTimerDialog;
-import de.fau.cs.mad.gamekobold.game.ToolboxTimer;
+import de.fau.cs.mad.gamekobold.toolbox.ToolboxTimer;
+import de.fau.cs.mad.gamekobold.toolbox.ToolboxTimerDialog;
 
 import android.app.Activity;
 import android.media.AudioManager;
