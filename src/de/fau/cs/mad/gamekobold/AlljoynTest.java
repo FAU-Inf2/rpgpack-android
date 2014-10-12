@@ -310,7 +310,7 @@ public class AlljoynTest extends Activity {
                 		/* here the actual request is done */
                 		String reply = !((String) msg.obj).equals("json") 
                 				? mSimpleInterface.count()
-                				: mSimpleInterface.getJSON();
+                				: mSimpleInterface.count();
                 		
                 		sendUiMessage(MESSAGE_PING_REPLY, reply);
                 		//mHandler.sendEmptyMessage(SIGNAL_RECEIVED);

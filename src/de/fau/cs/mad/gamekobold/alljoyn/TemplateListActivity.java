@@ -9,19 +9,13 @@ import org.alljoyn.bus.SessionListener;
 import org.alljoyn.bus.SessionOpts;
 import org.alljoyn.bus.Status;
 
-
-import org.alljoyn.bus.annotation.BusSignalHandler;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.fau.cs.mad.gamekobold.AlljoynInterface;
-import de.fau.cs.mad.gamekobold.MainActivity;
-import de.fau.cs.mad.gamekobold.MainMenu;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 import de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity;
@@ -52,15 +46,13 @@ public class TemplateListActivity extends ListActivity {
 	static {
 		System.loadLibrary("alljoyn_java");
 	}
-    private static final int MESSAGE_PING = 1;
-    private static final int MESSAGE_PING_REPLY = 2;
-    private static final int MESSAGE_POST_TOAST = 3;
-    private static final int MESSAGE_START_PROGRESS_DIALOG = 4;
-    private static final int MESSAGE_STOP_PROGRESS_DIALOG = 5;
-    private static final int SIGNAL_RECEIVED = 6;
-    private static final int MESSAGE_TEMPLATE_REPLY = 7;
+
+    private static final int MESSAGE_POST_TOAST = 1;
+    private static final int MESSAGE_START_PROGRESS_DIALOG = 2;
+    private static final int MESSAGE_STOP_PROGRESS_DIALOG = 3;
+    private static final int MESSAGE_TEMPLATE_REPLY = 4;
 	
-    private static final String TAG = "Alljoyn";
+    private static final String TAG = "Alljoyn - Client";
     private ProgressDialog mDialog;
     TextView replyText;
     TextView signalText;
@@ -72,20 +64,14 @@ public class TemplateListActivity extends ListActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case MESSAGE_PING_REPLY:
-                String ret = (String) msg.obj;
-                //mListViewArrayAdapter.add("Reply:  " + ret);
-                //mEditText.setText("");
-                replyText.setText(ret);
-               //Toast.makeText(TemplateListActivity.this, "Signal received", Toast.LENGTH_SHORT).show();
-                break;
             case MESSAGE_POST_TOAST:
             	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
             	break;
             case MESSAGE_START_PROGRESS_DIALOG:
                 mDialog = ProgressDialog.show(TemplateListActivity.this, 
                                               "", 
-                                              "Finding Service.\nPlease wait...", 
+                                              "Finding Service.\nPlease wait...\n"
+                                              + "Dismiss this dialog and click on 'Start service' if you want to receive Temlates", 
                                               true,
                                               true);
                 break;
@@ -93,9 +79,8 @@ public class TemplateListActivity extends ListActivity {
                 mDialog.dismiss();
                 break;
             case MESSAGE_TEMPLATE_REPLY:
-            	Toast.makeText(TemplateListActivity.this, "Template sent to remote device " + (String)msg.obj, Toast.LENGTH_SHORT).show();
-            case SIGNAL_RECEIVED:
-            	Toast.makeText(TemplateListActivity.this, "Signal received", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(TemplateListActivity.this, "Template was sent to remote device " , Toast.LENGTH_SHORT).show();
+            	break;
             default:
                 break;
             }
@@ -114,8 +99,7 @@ public class TemplateListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_template_browser_alljoyn);
 
-		/** alljoyn stuff  **/
-	    replyText = (TextView) findViewById(R.id.answerFromService);	       
+		/** alljoyn  **/	       
 	    /* Make all AllJoyn calls through a separate handler thread to prevent blocking the UI. */
 	    HandlerThread busThread = new HandlerThread("BusHandler");
 	    busThread.start();
@@ -125,7 +109,7 @@ public class TemplateListActivity extends ListActivity {
 	   mBusHandler.sendEmptyMessage(BusHandler.CONNECT);
 	   mHandler.sendEmptyMessage(MESSAGE_START_PROGRESS_DIALOG);
 		
-	   /** end alljoyn stuff **/
+	   /** end alljoyn  **/
 	   
 		if (templateList == null) {
 			templateList = new ArrayList<Template>();
@@ -151,14 +135,8 @@ public class TemplateListActivity extends ListActivity {
 				
 				in.close();
 				} catch (Exception e) {
-						Toast.makeText(TemplateListActivity.this,
-								"error",
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(TemplateListActivity.this, "error",Toast.LENGTH_LONG).show();
 				}
-				
-				Toast.makeText(TemplateListActivity.this,
-						template,
-						Toast.LENGTH_LONG).show();
 				
 		        Message msg = mBusHandler.obtainMessage(BusHandler.TEMPLATE, template);
 		        mBusHandler.sendMessage(msg);
@@ -211,7 +189,6 @@ public class TemplateListActivity extends ListActivity {
         private AlljoynInterface mSimpleInterface;
         
         private int 	mSessionId;
-        private boolean mIsInASession;
         private boolean mIsConnected;
         private boolean mIsStoppingDiscovery;
         
@@ -224,8 +201,6 @@ public class TemplateListActivity extends ListActivity {
 
         public BusHandler(Looper looper) {
             super(looper);
-            
-            mIsInASession = false;
             mIsConnected = false;
             mIsStoppingDiscovery = false;
         }
@@ -372,32 +347,6 @@ public class TemplateListActivity extends ListActivity {
              * This will also print the String that was sent to the service and the String that was
              * received from the service to the user interface.
              */
-            case PING: {
-                try {
-                	if (mSimpleInterface != null) {
-                		// sendUiMessage(MESSAGE_PING, msg.obj);
-                		
-                		/* here the actual request is done */
-                		String request = (String) msg.obj;
-                		String reply = "";
-                		switch(request){
-                		case "count":
-                			reply = mSimpleInterface.count();
-                			break;
-                		case "json":
-                			break;
-                		case "message":
-                			reply = mSimpleInterface.getMessage("test");
-                			break;
-                		}
-                		
-                		sendUiMessage(MESSAGE_PING_REPLY, reply);
-                	}
-                } catch (BusException ex) {
-                    logException("SimpleInterface.Ping()", ex);
-                }
-                break;
-            }
             case TEMPLATE: {
             	try {
             	if (mSimpleInterface != null) {
@@ -406,7 +355,7 @@ public class TemplateListActivity extends ListActivity {
             		sendUiMessage(MESSAGE_TEMPLATE_REPLY, response);
             	}
                 } catch (BusException ex) {
-                    logException("SimpleInterface.Ping()", ex);
+                    logException("SimpleInterface.receiveTemplate()", ex);
                 }
             }
             default:

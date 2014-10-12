@@ -1,6 +1,8 @@
 
 package de.fau.cs.mad.gamekobold.alljoyn;
 
+import java.io.IOException;
+
 import org.alljoyn.bus.BusAttachment;
 import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.BusListener;
@@ -11,10 +13,11 @@ import org.alljoyn.bus.SessionPortListener;
 import org.alljoyn.bus.SignalEmitter;
 import org.alljoyn.bus.Status;
 
-
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
+import de.fau.cs.mad.gamekobold.jackson.Template;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +25,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class Service extends Activity {
@@ -34,18 +34,15 @@ public class Service extends Activity {
     }
     
     private static final String TAG = "SimpleService";
-    
-    private static final int MESSAGE_PING = 1;
-    private static final int MESSAGE_PING_REPLY = 2;
-    private static final int MESSAGE_POST_TOAST = 3;
+
+	protected static final int MESSAGE_TEMPLATE_SUCCESS = 1;
+	protected static final int MESSAGE_TEMPLATE_FAIL = 2;
+	protected static final int MESSAGE_POST_TOAST = 3;
  
     static int sessionId;
     static String joinerName;
     boolean sessionEstablished = true;
     
-    private ArrayAdapter<String> mListViewArrayAdapter;
-    private ListView mListView;
-    private Menu menu;
     static SignalEmitter emitter;
     static SimpleInterface myInterface;
     static SignalsInterface emitterInterface;
@@ -66,17 +63,13 @@ public class Service extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                case MESSAGE_PING:
-                    String ping = (String) msg.obj;
-                    mListViewArrayAdapter.add("Ping:  " + ping);
-                    break;
-                case MESSAGE_PING_REPLY:
-                    String reply = (String) msg.obj;
-                    mListViewArrayAdapter.add("Reply:  " + reply);
-                    break;
+                case MESSAGE_TEMPLATE_SUCCESS:
+                case MESSAGE_TEMPLATE_FAIL:
+                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
+                	break;
                 case MESSAGE_POST_TOAST:
-                    Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
-                    break;
+                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
+                	break;
                 default:
                     break;
                 }
@@ -153,8 +146,15 @@ public class Service extends Activity {
     
     /* The class that is our AllJoyn service.  It implements the SimpleInterface. */
     class SimpleService implements SimpleInterface, BusObject {
+    	Message msg;
     	private int i = 0;
-        /*
+ 
+        /* Helper function to send a message to the UI thread. */
+        private void sendUiMessage(int what, Object obj) {
+            mHandler.sendMessage(mHandler.obtainMessage(what, obj));
+        }
+        
+    	/*
          * This is the code run when the client makes a call to the Ping method of the
          * SimpleInterface.  This implementation just returns the received String to the caller.
          *
@@ -162,32 +162,22 @@ public class Service extends Activity {
          * returning to the user to the screen.
          */
         public String Ping(String inStr) {
-            sendUiMessage(MESSAGE_PING, inStr);
-
-            /* Simply echo the ping message. */
-            sendUiMessage(MESSAGE_PING_REPLY, inStr);
-            
             return String.valueOf(i++);
         }        
-
-        /* Helper function to send a message to the UI thread. */
-        private void sendUiMessage(int what, Object obj) {
-            mHandler.sendMessage(mHandler.obtainMessage(what, obj));
-        }
-
-        public String getMessage(String msg) {
-        	return msg;
+        
+        public String receiveTemplate(String tplStr) {
+        	ObjectMapper mapper = new ObjectMapper();
+        	Template template = new Template();
+        	try {
+				template = mapper.readValue(tplStr, Template.class);
+				JacksonInterface.saveTemplate(template, Service.this, false);
+			} catch (IOException e) {
+				sendUiMessage(MESSAGE_TEMPLATE_FAIL, "Template could not be stored");
+			}
+        	sendUiMessage(MESSAGE_TEMPLATE_SUCCESS, "Template was stored successfully!");
+        	return "template sent";
         }
         
-        public String receiveTemplate(String tpl) {
-        	return tpl;
-        }
-        
-		@Override
-		public String getJSON() throws BusException {
-			String json = "{\"name\":\"MyNode\", \"width\":200, \"height\":100}";
-			return json;
-		}
 		@Override
 		public String count() throws BusException {
             try {

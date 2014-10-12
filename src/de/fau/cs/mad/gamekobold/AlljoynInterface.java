@@ -12,15 +12,9 @@ import de.fau.cs.mad.gamekobold.templatebrowser.Template;
 public interface AlljoynInterface {
 	@BusMethod
 	String Ping(String inStr) throws BusException;
-	
-    @BusMethod
-    String getJSON() throws BusException;
     
     @BusMethod
     String count() throws BusException;
-
-    @BusMethod
-    String getMessage(String msg) throws BusException;
     
     @BusMethod 
     String receiveTemplate(String tpl) throws BusException;
