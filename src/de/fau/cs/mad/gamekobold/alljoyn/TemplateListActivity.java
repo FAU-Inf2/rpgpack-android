@@ -154,6 +154,15 @@ public class TemplateListActivity extends ListActivity {
 		TemplateListArrayAdapter adapter = (TemplateListArrayAdapter) getListAdapter();
 		a.loadTemplateList(this, adapter);
 	}
+	
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        /* Disconnect to prevent resource leaks. */
+        mBusHandler.sendEmptyMessage(BusHandler.DISCONNECT);
+    }
+    
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -365,10 +374,6 @@ public class TemplateListActivity extends ListActivity {
     }
 
     
-	public void onBtnClicked(View v) {
-        Message msg = mBusHandler.obtainMessage(BusHandler.PING, "message");
-        mBusHandler.sendMessage(msg);
-	}
 	
 	public void startService(View v) {
 		Intent intent = new Intent(TemplateListActivity.this, Service.class);
