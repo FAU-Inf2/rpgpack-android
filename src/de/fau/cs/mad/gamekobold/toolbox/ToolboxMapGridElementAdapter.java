@@ -1,4 +1,4 @@
-package de.fau.cs.mad.gamekobold.game;
+package de.fau.cs.mad.gamekobold.toolbox;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;

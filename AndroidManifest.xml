@@ -86,19 +86,19 @@
         </activity>
 
         <!-- Toolbox Activities -->
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxActivity2" >
+        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.ToolboxMenuActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.ToolboxMapActivity"
+            android:name="de.fau.cs.mad.gamekobold.toolbox.ToolboxMapActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxTimerActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.ToolboxTimerActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.ToolboxDiceActivity"
+            android:name="de.fau.cs.mad.gamekobold.toolbox.ToolboxDiceActivity"
             android:theme="@style/PopupStyle" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.game.ToolboxRandomListActivity" >
+        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.ToolboxRandomListActivity" >
         </activity>
 
         <!--  -->
