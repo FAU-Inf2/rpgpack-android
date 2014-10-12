@@ -463,5 +463,6 @@
     <!-- Alljoyn -->
     <string name="alljoyn_send_template">Klicke auf ein Template um es an ein wartendes Geräte zu schicken.</string>
     <string name="alljoyn_start_service">Start service</string>
+    <string name="title_activity_alljoyn_template_service">RPG-Pack Template Service</string>
 
 </resources>

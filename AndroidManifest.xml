@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name="de.fau.cs.mad.gamekobold.alljoyn.Service"
-            android:label="@string/title_activity_alljoyn_test"
+            android:label="@string/title_activity_alljoyn_template_service"
             android:parentActivityName="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

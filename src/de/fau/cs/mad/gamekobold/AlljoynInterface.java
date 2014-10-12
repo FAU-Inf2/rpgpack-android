@@ -5,8 +5,6 @@ import org.alljoyn.bus.BusException;
 import org.alljoyn.bus.annotation.BusInterface;
 import org.alljoyn.bus.annotation.BusMethod;
 
-import de.fau.cs.mad.gamekobold.templatebrowser.Template;
-
 
 @BusInterface(name="de.fau.cs.mad.gamekobold.SimpleInterface")
 public interface AlljoynInterface {

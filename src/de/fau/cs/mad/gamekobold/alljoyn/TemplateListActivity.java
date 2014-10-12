@@ -65,7 +65,7 @@ public class TemplateListActivity extends ListActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case MESSAGE_POST_TOAST:
-            	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_LONG).show();
+            	Toast.makeText(TemplateListActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
             	break;
             case MESSAGE_START_PROGRESS_DIALOG:
                 mDialog = ProgressDialog.show(TemplateListActivity.this, 
@@ -351,10 +351,8 @@ public class TemplateListActivity extends ListActivity {
             }
             
             /*
-             * Call the service's Ping method through the ProxyBusObject.
+             * Call the service's receiveTEmplate method through the ProxyBusObject.
              *
-             * This will also print the String that was sent to the service and the String that was
-             * received from the service to the user interface.
              */
             case TEMPLATE: {
             	try {
@@ -364,7 +362,8 @@ public class TemplateListActivity extends ListActivity {
             		sendUiMessage(MESSAGE_TEMPLATE_REPLY, response);
             	}
                 } catch (BusException ex) {
-                    logException("SimpleInterface.receiveTemplate()", ex);
+                    logInfo("SimpleInterface.receiveTemplate()");
+                    sendUiMessage(MESSAGE_POST_TOAST, "You are not connected to service");
                 }
             }
             default:
