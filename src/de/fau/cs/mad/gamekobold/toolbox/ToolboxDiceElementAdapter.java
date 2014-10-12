@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold.toolbox;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,28 +38,30 @@ public class ToolboxDiceElementAdapter extends BaseAdapter {
 				.findViewById(R.id.grid_dice_item);
 		textView.setText(textViewValues.get(position));
 		textView.setHint(textViewItems.get(position));
+		textView.setGravity(Gravity.CENTER);
 
-		switch (Integer.parseInt((String) textView.getHint())) {
-		case 4:
-			textView.setBackgroundResource(R.drawable.dice_4);
-			break;
-		case 6:
-			textView.setBackgroundResource(R.drawable.dice_6);
-			break;
-		case 8:
-			textView.setBackgroundResource(R.drawable.dice_8);
-			break;
-		case 10:
-			textView.setBackgroundResource(R.drawable.dice_10);
-			break;
-		case 12:
-			textView.setBackgroundResource(R.drawable.dice_12);
-			break;
-		case 20:
-			textView.setBackgroundResource(R.drawable.dice_20);
-			break;
-		default:
-			textView.setBackgroundResource(R.color.background_green);
+		if (textView.getHint() != null) {
+			switch (Integer.parseInt((String) textView.getHint())) {
+			case 4:
+				textView.setBackgroundResource(R.drawable.dice_4);
+				break;
+			case 6:
+				textView.setBackgroundResource(R.drawable.dice_6);
+				break;
+			case 8:
+				textView.setBackgroundResource(R.drawable.dice_8);
+				break;
+			case 10:
+				textView.setBackgroundResource(R.drawable.dice_10);
+				break;
+			case 12:
+				textView.setBackgroundResource(R.drawable.dice_12);
+				break;
+			case 20:
+				textView.setBackgroundResource(R.drawable.dice_20);
+				break;
+
+			}
 		}
 
 		return convertView;
