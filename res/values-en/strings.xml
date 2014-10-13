@@ -264,7 +264,7 @@
     <string name="played_character_title">Your Character to play the Game</string>
 
     <!-- activity_game_toolbox_dice -->
-    <string name="add_dice">Add Dice</string>
+    <string name="add_die">Add Die</string>
     <string name="roll_dice">Roll Dice</string>
     <string name="add_d4">d4</string>
     <string name="add_d6">d6</string>

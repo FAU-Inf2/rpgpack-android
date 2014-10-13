@@ -21,13 +21,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ToolboxRandomListElementAdapter extends BaseAdapter {
+public class RandomListElementAdapter extends BaseAdapter {
 	private Context context;
 	private final ArrayList<String> textViewItems;
 	private int selected;
 	LayoutInflater inflater;
 
-	public ToolboxRandomListElementAdapter(Context context,
+	public RandomListElementAdapter(Context context,
 			ArrayList<String> names, int position) {
 		this.context = context;
 		this.textViewItems = names;

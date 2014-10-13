@@ -8,7 +8,7 @@
 		android:layout_height="50dp"   
         android:id="@+id/grid_dice_item"
         android:layout_gravity="center"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center"
         android:textColor="@color/white" 
         android:textSize="20sp"
         android:clickable="false"

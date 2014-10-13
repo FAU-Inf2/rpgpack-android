@@ -14,8 +14,8 @@
 	android:layout_marginLeft="20dip"
 	android:layout_marginBottom="20dip"
 	android:background="@color/background_green"
-	android:onClick="addDice"
-	android:text="@string/add_dice"
+	android:onClick="addDie"
+	android:text="@string/add_die"
 	android:textColor="@color/white" />
     
     <Button

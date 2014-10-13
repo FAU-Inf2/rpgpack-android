@@ -20,7 +20,7 @@ import de.fau.cs.mad.gamekobold.jackson.ContainerTable;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.FolderFragment;
 import de.fau.cs.mad.gamekobold.template_generator.WelcomePlayCharacterFragment;
-import de.fau.cs.mad.gamekobold.toolbox.ToolboxMenuActivity;
+import de.fau.cs.mad.gamekobold.toolbox.MenuActivity;
 
 public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		OnItemSelectedListener {
@@ -244,7 +244,7 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		
 		// File jsonFile = new File(curCharacter.getFileAbsPath());
 		// curCharacter.getFileAbsPath();
-		Intent intent = ToolboxMenuActivity.createIntentForStarting(this, characterSheets);	
+		Intent intent = MenuActivity.createIntentForStarting(this, characterSheets);	
 		startActivity(intent);
 	
 	}

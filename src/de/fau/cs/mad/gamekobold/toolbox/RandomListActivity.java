@@ -17,7 +17,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.color;
 
-public class ToolboxRandomListActivity extends Activity {
+public class RandomListActivity extends Activity {
 
 	public String[] names = { "Albert", "Bertram", "Claudio", "Dennis",
 			"Emanuela", "Franzi", "Gretchen", "Hanna", "Ida" };
@@ -60,9 +60,9 @@ public class ToolboxRandomListActivity extends Activity {
 	public void setListView() {
 
 		RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.randomlist_layout);
-		lv_randomlist = new ListView(ToolboxRandomListActivity.this);
-		final ToolboxRandomListElementAdapter adp = new ToolboxRandomListElementAdapter(
-				ToolboxRandomListActivity.this, char_array, mSelectedItem);
+		lv_randomlist = new ListView(RandomListActivity.this);
+		final RandomListElementAdapter adp = new RandomListElementAdapter(
+				RandomListActivity.this, char_array, mSelectedItem);
 		lv_randomlist.setBackgroundColor(getResources().getColor(
 				R.color.background_dark));
 		lv_randomlist.setDivider(new ColorDrawable(this.getResources()

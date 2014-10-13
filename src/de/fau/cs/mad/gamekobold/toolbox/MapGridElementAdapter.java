@@ -33,7 +33,7 @@ import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.R.drawable;
 
-public class ToolboxMapGridElementAdapter extends BaseAdapter {
+public class MapGridElementAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private final ArrayList<Drawable> dotsList;
@@ -44,7 +44,7 @@ public class ToolboxMapGridElementAdapter extends BaseAdapter {
 	private static final int MIN_CLICK_DURATION = 2000;
 	private long startClickTime;
 
-	public ToolboxMapGridElementAdapter(Context context,
+	public MapGridElementAdapter(Context context,
 			ArrayList<Drawable> dots, String tag, ImageView trash) {
 		mContext = context;
 		dotsList = dots;

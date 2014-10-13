@@ -30,7 +30,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class ToolboxMapView extends GridView implements OnScaleGestureListener,
+public class MapView extends GridView implements OnScaleGestureListener,
 		OnTouchListener {
 
 	private Path drawPath;
@@ -53,7 +53,7 @@ public class ToolboxMapView extends GridView implements OnScaleGestureListener,
 			getContext(), this);
 	private float scale = 1f;
 
-	public ToolboxMapView(Context context, AttributeSet attrs) {
+	public MapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setupMap();
 	}

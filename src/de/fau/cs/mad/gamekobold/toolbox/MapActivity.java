@@ -50,10 +50,10 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
-public class ToolboxMapActivity extends Activity implements OnDragListener {
+public class MapActivity extends Activity implements OnDragListener {
 
 	private ImageButton currPaint;
-	private ToolboxMapView mapView;
+	private MapView mapView;
 	private LinearLayout paintLayout;
 
 	Activity mContext;
@@ -72,8 +72,8 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 	private int cell_size;
 	private float density;
 	private boolean drag_active;
-	private ToolboxMapGridElementAdapter mAdapter;
-	private ToolboxMapGridElementAdapter mAdapterItems;
+	private MapGridElementAdapter mAdapter;
+	private MapGridElementAdapter mAdapterItems;
 	private boolean first = true;
 	private ImageView trash;
 
@@ -86,7 +86,7 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_toolbox_map);
-		mapView = (ToolboxMapView) findViewById(R.id.map);
+		mapView = (MapView) findViewById(R.id.map);
 		mapView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
 
 			@Override
@@ -310,9 +310,9 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 		//dotsList.set(colors.size(), createDrawable(R.color.black));
 		charPics.add(createDrawable(Color.BLACK));
 
-		mAdapterItems = new ToolboxMapGridElementAdapter(
-				ToolboxMapActivity.this, charPics, "item", trash);
-		mAdapter = new ToolboxMapGridElementAdapter(ToolboxMapActivity.this,
+		mAdapterItems = new MapGridElementAdapter(
+				MapActivity.this, charPics, "item", trash);
+		mAdapter = new MapGridElementAdapter(MapActivity.this,
 				dotsList, "grid", trash);
 		GridView gridView = (GridView) findViewById(R.id.map_items);
 		gridView.setNumColumns(mNumColumns);
@@ -392,13 +392,13 @@ public class ToolboxMapActivity extends Activity implements OnDragListener {
 			CharacterSheet[] sheets) {
 		Log.i("ToolboxMapActivity",
 				"createIntentForStarting: sheets.length == " + sheets.length);
-		Intent intent = new Intent(packageContext, ToolboxMapActivity.class);
+		Intent intent = new Intent(packageContext, MapActivity.class);
 		String[] filePaths = new String[sheets.length];
 		int index = 0;
 		for (CharacterSheet oneSheet : sheets) {
 			filePaths[index++] = oneSheet.getFileAbsolutePath();
 		}
-		intent.putExtra(ToolboxMapActivity.EXTRA_CHARACTER_ABS_PATH,
+		intent.putExtra(MapActivity.EXTRA_CHARACTER_ABS_PATH,
 				filePaths);
 		return intent;
 	}

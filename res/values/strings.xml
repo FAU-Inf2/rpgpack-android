@@ -263,7 +263,7 @@
     <string name="played_character_title">Dein Charakter zum Spielen</string>
 
     <!-- activity_game_toolbox_dice -->
-    <string name="add_dice">Würfel hinzufügen</string>
+    <string name="add_die">Würfel hinzuf.</string>
     <string name="roll_dice">würfeln</string>
     <string name="add_d4">d4</string>
     <string name="add_d6">d6</string>

@@ -3,7 +3,6 @@ package de.fau.cs.mad.gamekobold.toolbox;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,35 +10,36 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 
-public class ToolboxDiceElementAdapter extends BaseAdapter {
-	private Context context;
-	private final ArrayList<String> textViewValues;
-	private final ArrayList<String> textViewItems;
-	LayoutInflater inflater;
+public class DiceElementAdapter extends BaseAdapter {
+	private Context mContext;
+	private ArrayList<String> textViewValues;
+	private ArrayList<String> textViewItems;
+	private LayoutInflater mInflater;
 
-	public ToolboxDiceElementAdapter(Context context, ArrayList<String> items,
+	public DiceElementAdapter(Context context, ArrayList<String> items,
 			ArrayList<String> values) {
-		this.context = context;
+		this.mContext = context;
 		this.textViewItems = items;
 		this.textViewValues = values;
-		inflater = (LayoutInflater) this.context
+		mInflater = (LayoutInflater) this.mContext
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		View gridView;
-
 		if (convertView == null)
-			convertView = inflater.inflate(
-					R.layout.activity_game_toolbox_dice_cell, null);
+			convertView = mInflater.inflate(
+					R.layout.activity_toolbox_dice_cell, null);
 
 		TextView textView = (TextView) convertView
 				.findViewById(R.id.grid_dice_item);
+		
+		//set text for actual value of die
 		textView.setText(textViewValues.get(position));
+	
+		//set hint to identify maxValue of die
 		textView.setHint(textViewItems.get(position));
-		textView.setGravity(Gravity.CENTER);
-
+		
+		//set background based on maxValue of die
 		if (textView.getHint() != null) {
 			switch (Integer.parseInt((String) textView.getHint())) {
 			case 4:
