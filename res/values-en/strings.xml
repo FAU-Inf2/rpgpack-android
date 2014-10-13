@@ -31,7 +31,6 @@
 
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
-    
 
     <!-- activity_alljoin_test -->
     <string name="btn_call_service">Call Service</string>
@@ -136,8 +135,7 @@
     <string name="column_type">Column Type</string>
     <string name="dot">.</string>
     <string name="question_delete_row">Delete row?</string>
-	<string name="text_delete_row">Choose YES to delete the row</string>
-    
+    <string name="text_delete_row">Choose YES to delete the row</string>
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>
@@ -149,10 +147,9 @@
     <string name="loading_template">Loading Template&#8230;</string>
     <string name="wait">Please wait&#8230;</string>
     <string name="loading_template_failure">Unable to load Template!</string>
-    
+
     <!-- Character Editor -->
     <string name="menu_item_save_character">save character</string>
-    
 
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Do you really want to leave the Template Generator?</string>
@@ -335,6 +332,7 @@
     <string name="msg_creating_new_game_p2">is created!</string>
     <string name="msg_want_to_delete_game">Do you really want to delete this game?</string>
     <string name="msg_yes_to_delete_game">Click YES to delete this game.</string>
+    <string name="warning_add_min_one_character">To start the game plase assign at lest one character to it!</string>
 
     <!-- activity_template_store_main -->
     <string name="template_store_title">Template Store</string>
@@ -458,7 +456,7 @@
     <!-- QR Code Scan -->
     <string name="scan_error">QR Code scan failed</string>
     <string name="invalid_qr_code">You have scanned an invalid QR code</string>
-    
+
     <!-- Alljoyn -->
     <string name="alljoyn_send_template">Click on a template to send it to a waiting device.</string>
     <string name="alljoyn_start_service">Start service</string>

@@ -65,6 +65,15 @@ public class CreateNewGameActivity extends SingleFragmentActivity implements
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
+				//if no character is assigned to a game warn user
+				if (curGame.getCharacterSheetList().size() == 0) {
+					Toast.makeText(
+							CreateNewGameActivity.this,
+							getResources().getString(
+									R.string.warning_add_min_one_character),
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 				 if (editMode) {
 				 Log.d("editmode!",
 				 "try to save new values!");

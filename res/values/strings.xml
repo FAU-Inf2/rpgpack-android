@@ -335,7 +335,8 @@
     <string name="msg_creating_new_game_p2">wird erstellt!</string>
     <string name="msg_want_to_delete_game">Moechtest du dieses Spiel wirklich loeschen?</string>
     <string name="msg_yes_to_delete_game">Klicke auf JA um das Spiel zu loeschen.</string>
-
+ <string name="warning_add_min_one_character">Um das Spiel zu starten fuege einen Charakter hinzu!</string>
+    
     <!-- activity_template_store_main -->
     <string name="template_store_title">Template Store</string>
     <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
