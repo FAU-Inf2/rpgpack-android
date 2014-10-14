@@ -308,7 +308,7 @@ public class MapActivity extends Activity implements OnDragListener {
 			dotsList.add(null);
 		}
 		//dotsList.set(colors.size(), createDrawable(R.color.black));
-		charPics.add(createDrawable(Color.BLACK));
+		charPics.add(getResources().getDrawable(R.drawable.dragonmap));//createDrawable(Color.BLACK));
 
 		mAdapterItems = new MapGridElementAdapter(
 				MapActivity.this, charPics, "item", trash);

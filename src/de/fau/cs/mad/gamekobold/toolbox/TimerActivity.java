@@ -22,7 +22,7 @@ import android.os.CountDownTimer;
 public class TimerActivity extends Activity {
 
 	private TextView mTVTime;
-	private Boolean mTimerIsRunning = false;
+	private Boolean mTimerIsRunning;
 	private CountDownTimer mTimer;
 
 	@Override
@@ -33,6 +33,7 @@ public class TimerActivity extends Activity {
 	}
 
 	private void init() {
+		mTimerIsRunning = false;
 		mTVTime = (TextView) findViewById(R.id.textViewTime);
 		mTVTime.setText("00:00:00");
 
