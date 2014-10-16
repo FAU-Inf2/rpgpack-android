@@ -221,7 +221,30 @@ public abstract class JacksonInterface {
 			return;
 		}
 		File dir = getTemplateRootDirectory(context);
+		//3 lines added
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		//comments added -> tried something when storing failed
+		//but problem was that date format wasn't given right in template.getFileName()
+//		String pathWithTime = dir.getAbsolutePath() + File.separator + template.getFileName();
+//		String path = pathWithTime;
+//		if (null != pathWithTime && pathWithTime.length() > 0 )
+//		{
+//		    int endIndex = pathWithTime.lastIndexOf(" ");
+//		    if (endIndex != -1)  
+//		    {
+//		        path = pathWithTime.substring(0, endIndex); // not forgot to put check if(endIndex != -1)
+//		    }
+//		}  
+//		Log.d("JacksonInterface", "path to store template: " + path);
+//		Log.d("JacksonInterface", "just template name: " + path);
+//		File theFileToWrite = new File(path);
+//		if(!theFileToWrite.exists()){
+//			theFileToWrite.createNewFile();
+//		}
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + template.getFileName());
+//		FileOutputStream outStream = new FileOutputStream(theFileToWrite);
 		saveTemplate(template, outStream);
 		if(setLastEditedFlag) {
 			// save in shared preferences the last edited template file name
