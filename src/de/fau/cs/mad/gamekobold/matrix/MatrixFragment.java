@@ -595,8 +595,11 @@ public class MatrixFragment extends GeneralFragment {
 		itemsList = jacksonTable.entries;
 
 		// check it the last item is a fake one, remove it
-		if (itemsList.get(itemsList.size() - 1).getValue().equals("+")) {
-			itemsList.remove(itemsList.get(itemsList.size() - 1));
+		// also before check if any item exists so we dont get ArrayOutOfBoundsException
+		if(itemsList.size() > 0){
+			if (itemsList.get(itemsList.size() - 1).getValue().equals("+")) {
+				itemsList.remove(itemsList.get(itemsList.size() - 1));
+			}
 		}
 		// add the "new item" entry
 		final MatrixItem newElement = new MatrixItem(appContext.getResources()
