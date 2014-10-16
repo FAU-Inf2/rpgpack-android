@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.game.CreateNewGameFragment.GameInfoDialogFragment;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
@@ -110,7 +111,7 @@ public class GameDetailsFragment extends Fragment {
 					int position, long id) {
 
 				// old version with only one character
-				
+				/*
 				curCharacter = (CharacterSheet) adapterView
 						.getItemAtPosition(position);
 
@@ -137,7 +138,35 @@ public class GameDetailsFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				*/
+				CharacterSheet sheets[] = new CharacterSheet[gameDetailsCharacterGridAdapter.getCount()];
+				//				 Log.d("GameDetailsFragment", "sheets.length ==" + sheets.length);
+				int index = 0;
+				for (CharacterSheet oneChar : gameDetailsCharacterGridAdapter
+						.getItems()) {
+					File jsonFile = new File(oneChar.getFileAbsolutePath());
+					try {
+						CharacterSheet sheet = JacksonInterface
+								.loadCharacterSheet(jsonFile, false);
+						sheets[index++] = sheet;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				Intent intent = CharacterPlayActivity.createIntentForStarting(
+						getActivity(), sheets);
+				intent.putExtra(CharacterPlayActivity.INFLATE_CHARACTER_NUMBER,
+						position);
+				startActivity(intent);
+				Toast.makeText(
+						getActivity(), 
+						getActivity().getResources().getString(
+								R.string.message_character_chosen_front_part) +
+								((TextView) view.findViewById(R.id.textItemTitle)).getText() +
+								getActivity().getResources().getString(
+										R.string.message_character_chosen_ending_part),
+										Toast.LENGTH_SHORT).show();
 			}
 		});
 
