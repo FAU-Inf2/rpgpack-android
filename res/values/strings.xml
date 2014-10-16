@@ -255,6 +255,7 @@
     <string name="world_name">Name der Spielwelt</string>
     <string name="creation_date">Erstellungsdatum</string>
     <string name="gamemaster">Gamemaster: </string>
+    <string name="message_no_characters">Bitte füge dem Spiel erst Charaktere hinzu um es zu starten.</string>
 
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>

@@ -109,6 +109,8 @@ public class GameDetailsFragment extends Fragment {
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
 
+				// old version with only one character
+				
 				curCharacter = (CharacterSheet) adapterView
 						.getItemAtPosition(position);
 
@@ -135,6 +137,7 @@ public class GameDetailsFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 			}
 		});
 
@@ -228,35 +231,27 @@ public class GameDetailsFragment extends Fragment {
 				CharacterSheet sheets[] = new CharacterSheet[gameDetailsCharacterGridAdapter
 						.getCount()];
 				int index = 0;
-				for (CharacterSheet oneChar : gameDetailsCharacterGridAdapter
-						.getItems()) {
-					File jsonFile = new File(oneChar.getFileAbsolutePath());
-					try {
-						CharacterSheet sheet = JacksonInterface
-								.loadCharacterSheet(jsonFile, false);
-						sheets[index++] = sheet;
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				if(gameDetailsCharacterGridAdapter.isEmpty()){
+					Toast.makeText(
+							getActivity(), R.string.message_no_characters, Toast.LENGTH_LONG).show();
 				}
-
-				// File jsonFile = new File(curCharacter.getFileAbsPath());
-				// curCharacter.getFileAbsPath();
-				Intent intent = CharacterPlayActivity.createIntentForStarting(
-						getActivity(), sheets);
-				startActivity(intent);
-				// try {
-				// CharacterSheet sheet = JacksonInterface.loadCharacterSheet(
-				// jsonFile, false);
-				// Intent intent = CharacterPlayActivity
-				// .createIntentForStarting(getActivity(), sheet);
-				// startActivity(intent);
-				//
-				// } catch (IOException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
+				else{
+					for (CharacterSheet oneChar : gameDetailsCharacterGridAdapter
+							.getItems()) {
+						File jsonFile = new File(oneChar.getFileAbsolutePath());
+						try {
+							CharacterSheet sheet = JacksonInterface
+									.loadCharacterSheet(jsonFile, false);
+							sheets[index++] = sheet;
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					Intent intent = CharacterPlayActivity.createIntentForStarting(
+							getActivity(), sheets);
+					startActivity(intent);
+				}
 			}
 		});
 
