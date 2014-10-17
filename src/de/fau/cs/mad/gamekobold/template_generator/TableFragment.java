@@ -1558,6 +1558,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	if(row == headerTable.getChildAt(0)) {
 //        		Log.d("row==headerTable", "col:"+columnIndex+ " row:"+rowIndex);
         		newElement = initTextField(row, jacksonTable.getColumnHeader(columnIndex), false);
+        		Log.d("TableFragment", "setting onclicklistener");
+        		newElement.setOnClickListener(new OnClickListener() {
+        			@Override
+        			public void onClick(View arg0) {
+        				showDialog();
+        			}
+        		});
         	}
         	else {
 //        		Log.d("row==ChildTable", "col:"+columnIndex+ " row:"+rowIndex);
@@ -1590,7 +1597,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	/**
 	 * adds one column to the table
 	 */
-	protected void addColumn() {
+	protected TableRow addColumn() {
 		Log.d("addColumn()","addColumn()!!!");
 		amountColumns++;
 		View headerRow = headerTable.getChildAt(0);
@@ -1607,12 +1614,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//
         addColumnToRow(row);
         //XXX: check if works
-        ((View) row).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				showDialog();
-			}
-		});
+//        ((View) row).setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				showDialog();
+//			}
+//		});
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
 
@@ -1621,6 +1628,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		        addColumnToRow(row);
 		    }
 		}
+		return row;
 	}
 	
 	/**
@@ -1737,6 +1745,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
 					StringClass.TYPE_STRING));
 			final TextView  col1 = new TextView(getActivity());
+			//manually set onclicklistener because its not set by addColumn (as it would be standard)
 			((View) col1).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
