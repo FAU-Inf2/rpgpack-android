@@ -253,7 +253,10 @@
     <string name="world_name">Gameworld Name</string>
     <string name="creation_date">Date Created</string>
     <string name="gamemaster">Gamemaster: </string>
-
+    <string name="message_no_characters">Please add characters to the game before you start to play</string>
+    <string name="message_character_chosen_front_part">"You are now in game mode. Character \""</string>
+    <string name="message_character_chosen_ending_part">"\"is currently chosen."</string>
+    
     <!-- fragment_games_list -->
     <string name="template_store">Template Store</string>
 

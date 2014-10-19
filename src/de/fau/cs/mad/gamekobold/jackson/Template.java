@@ -53,14 +53,20 @@ public class Template implements Parcelable{
 	public String getFileName() {
 		if(fileName.isEmpty()) {
 			final String sanitizedName = JacksonInterface.getSanitizedFileName(templateName); 
+			//extracted following 3 lines from else part
+			//in if case there is an error if we don't do it that way
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+			Date date = new Date();
+			fileName = format.format(date);
 			if(!sanitizedName.isEmpty()) {
 				fileName = sanitizedName + "-" + date;
 			}
-			else {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
-				Date date = new Date();
-				fileName = format.format(date);
-			}
+//			else {
+//				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+//				Date date = new Date();
+//				fileName = format.format(date);
+//				Log.d("Template.java", "formating date; filename: " + fileName);
+//			}
 		}
 		return fileName;
 	}

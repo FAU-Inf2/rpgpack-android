@@ -54,6 +54,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -117,6 +118,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				if(tv.getEditableText().toString().equals(getResources().getString(R.string.blank))) {
 					tv.setText("");
 				}
+				InputMethodManager imm = (InputMethodManager) SlideoutNavigationActivity.getAc().
+    					getSystemService(Context.INPUT_METHOD_SERVICE);
+    			imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
 //				// TODO horizontal scrolling bug testing; note: seems to work
 //				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
 //						        hsv.postDelayed(new Runnable() {
@@ -145,6 +149,9 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				if(tv.getEditableText().toString().isEmpty()) {
 					tv.setText(R.string.blank);
 				}
+				InputMethodManager imm = (InputMethodManager) SlideoutNavigationActivity.getAc().
+						getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(tv.getWindowToken(), 0);
 			}
 		}
 	};
@@ -591,17 +598,37 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	        for(int i=0; i<amountColumns; ++i){
 	        	addColumnToRow(row);
 	        }
-//	        table.addView(row);
-	        final ScrollView sv = (ScrollView) mainView.findViewById(R.id.table_scroll);
-	        //note: we have to do scrolling in seperate thread to make sure the new item is already inserted
-	        sv.post(new Runnable() {
-	            @Override
-	            public void run() {
-	            	sv.fullScroll(ScrollView.FOCUS_DOWN);
-	            }
-	        });
+	        
 	        for(int i=0; i<((TableRow) headerTable.getChildAt(0)).getChildCount(); i++){
 	        	setHeaderTableStyle((TextView) ((TableRow) headerTable.getChildAt(0)).getChildAt(i));
+	        }
+	        //search first row with edittext -> set focus to it
+	        boolean focusGiven = false;
+	        for(int i=0; i<row.getChildCount(); i++){
+	        	if(row.getChildAt(i) instanceof EditText){
+	        		EditText text = (EditText) row.getChildAt(i);
+	        		if(text.requestFocus()){
+	        			focusGiven = true;
+//	        			SlideoutNavigationActivity.getAc().getWindow().
+//	                    setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//	        			InputMethodManager imm = (InputMethodManager) SlideoutNavigationActivity.getAc().
+//	        					getSystemService(Context.INPUT_METHOD_SERVICE);
+//	        			imm.showSoftInput(text, InputMethodManager.SHOW_IMPLICIT);
+	        			//do not search further -> focus already given to first edittext
+	        			break;
+	        		}
+	        	}
+	        }
+	        //if focus couldn't be given to any field at least scroll down
+	        if(!focusGiven){
+	        	final ScrollView sv = (ScrollView) mainView.findViewById(R.id.table_scroll);
+		        //note: we have to do scrolling in seperate thread to make sure the new item is already inserted
+		        sv.post(new Runnable() {
+		            @Override
+		            public void run() {
+		            	sv.fullScroll(ScrollView.FOCUS_DOWN);
+		            }
+		        });
 	        }
 	}
 
@@ -1531,6 +1558,13 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
         	if(row == headerTable.getChildAt(0)) {
 //        		Log.d("row==headerTable", "col:"+columnIndex+ " row:"+rowIndex);
         		newElement = initTextField(row, jacksonTable.getColumnHeader(columnIndex), false);
+        		Log.d("TableFragment", "setting onclicklistener");
+        		newElement.setOnClickListener(new OnClickListener() {
+        			@Override
+        			public void onClick(View arg0) {
+        				showDialog();
+        			}
+        		});
         	}
         	else {
 //        		Log.d("row==ChildTable", "col:"+columnIndex+ " row:"+rowIndex);
@@ -1563,7 +1597,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	/**
 	 * adds one column to the table
 	 */
-	protected void addColumn() {
+	protected TableRow addColumn() {
 		Log.d("addColumn()","addColumn()!!!");
 		amountColumns++;
 		View headerRow = headerTable.getChildAt(0);
@@ -1580,12 +1614,12 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//
         addColumnToRow(row);
         //XXX: check if works
-        ((View) row).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				showDialog();
-			}
-		});
+//        ((View) row).setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				showDialog();
+//			}
+//		});
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
 
@@ -1594,6 +1628,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		        addColumnToRow(row);
 		    }
 		}
+		return row;
 	}
 	
 	/**
@@ -1710,6 +1745,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),
 					StringClass.TYPE_STRING));
 			final TextView  col1 = new TextView(getActivity());
+			//manually set onclicklistener because its not set by addColumn (as it would be standard)
 			((View) col1).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
