@@ -484,8 +484,11 @@ public class MatrixFragment extends GeneralFragment {
 
 					} else {
 						// show popup to set current value
-						showSetValuePopup(curMatrixItem, adapterPlayEditMode,
-								adapterPlay, selectedItems);
+						// showSetValuePopup(curMatrixItem, adapterPlayEditMode,
+						// adapterPlay, selectedItems);
+						
+						// show popup to edit item
+						showPopupForEditing(curMatrixItem, adapterPlayEditMode);
 
 						// because it should show up in play mode
 						curMatrixItem.setSelected(true);
