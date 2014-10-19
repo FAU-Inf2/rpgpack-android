@@ -70,12 +70,23 @@ public class NewCharacterMatrixViewArrayAdapter extends
 		MatrixItem curItem = items.get(position);
 
 		itemName.setText(curItem.getItemName());
-		itemValue.setText(curItem.getValue());
+		// check visibility
+		if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+				&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+			itemRange.setText(curItem.getRangeMin() + " - "
+					+ curItem.getRangeMax());
+		} else
+			itemRange.setText("");
 
-		itemRange
-				.setText(curItem.getRangeMin() + " - " + curItem.getRangeMax());
+		if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+			itemValue.setText(curItem.getValue());
+		} else
+			itemValue.setText("");
 
-		itemModificator.setText(curItem.getModificator());
+		if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+			itemModificator.setText(curItem.getModificator());
+		} else
+			itemModificator.setText("");
 
 		highlightingImageView = (ImageView) rowView
 				.findViewById(R.id.matrix_item_highlighting_circle);
@@ -106,6 +117,7 @@ public class NewCharacterMatrixViewArrayAdapter extends
 		}
 		// not selected items are all grey
 		else {
+			// set grey color
 			itemName.setTextColor(context.getResources().getColor(R.color.grey));
 			itemValue.setTextColor(context.getResources()
 					.getColor(R.color.grey));
@@ -113,6 +125,25 @@ public class NewCharacterMatrixViewArrayAdapter extends
 					.getColor(R.color.grey));
 			itemModificator.setTextColor(context.getResources().getColor(
 					R.color.grey));
+			// check visibility
+			if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+					&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+				itemRange.setText(curItem.getRangeMin() + " - "
+						+ curItem.getRangeMax());
+			} else
+				itemRange.setText("");
+
+			if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+				itemValue.setText(curItem.getValue());
+			} else
+				itemValue.setText("");
+
+			if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+				itemModificator.setText(curItem.getModificator());
+
+			} else
+				itemModificator.setText("");
+
 		}
 		highlightingShape
 				.setColor(selectedMatrixItems.contains(curItem) ? context

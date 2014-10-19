@@ -123,36 +123,74 @@ public class PlayCharacterEditModeMatrixAdapter extends
 
 			// we want to see it from UI design directly if an item is selected
 			if (selectedMatrixItems.contains(curItem)) {
+				// set white color
 				itemName.setTextColor(context.getResources().getColor(
 						R.color.white));
 				itemValue.setTextColor(context.getResources().getColor(
 						R.color.white));
 				itemRange.setTextColor(context.getResources().getColor(
 						R.color.white));
+				// check visibility
+				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+					itemRange.setText(curItem.getRangeMin() + " - "
+							+ curItem.getRangeMax());
+				} else
+					itemRange.setText("");
 
-				if ((!(curItem.getModificator() == null))
-						&& !curItem.getModificator().equals("")) {
-					if (Integer.valueOf(curItem.getModificator()) > 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.blue));
-					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.red));
-					} else
-						itemModificator.setTextColor(context.getResources()
-								.getColor(R.color.white));
-				}
+				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+					itemValue.setText(curItem.getValue());
+				} else
+					itemValue.setText("");
+
+				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+					itemModificator.setText(curItem.getModificator());
+					// // set modificator text color: blue for positive red for
+					// // negative
+					if (!curItem.getModificator().isEmpty()) {
+
+						if (Integer.valueOf(curItem.getModificator()) > 0) {
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.a_blue));
+						} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.a_red));
+						} else
+							itemModificator.setTextColor(context.getResources()
+									.getColor(R.color.white));
+					}
+				} else
+					itemModificator.setText("");
 			}
 			// not selected items are all grey
 			else {
+				// set grey color
 				itemName.setTextColor(context.getResources().getColor(
-						R.color.grey));
-				itemValue.setTextColor(context.getResources().getColor(
 						R.color.grey));
 				itemRange.setTextColor(context.getResources().getColor(
 						R.color.grey));
+				itemValue.setTextColor(context.getResources().getColor(
+						R.color.grey));
 				itemModificator.setTextColor(context.getResources().getColor(
 						R.color.grey));
+				// check visibility
+				if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+						&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+					itemRange.setText(curItem.getRangeMin() + " - "
+							+ curItem.getRangeMax());
+				} else
+					itemRange.setText("");
+
+				if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+					itemValue.setText(curItem.getValue());
+				} else
+					itemValue.setText("");
+
+				if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+					itemModificator.setText(curItem.getModificator());
+				} else
+					itemModificator.setText("");
+
 			}
 			highlightingShape
 					.setColor(selectedMatrixItems.contains(curItem) ? context

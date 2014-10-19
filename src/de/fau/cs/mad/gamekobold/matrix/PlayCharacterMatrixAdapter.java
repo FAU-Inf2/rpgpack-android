@@ -68,16 +68,43 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 					.findViewById(R.id.textModificator);
 
 			itemName.setText(curItem.getItemName());
-			itemValue.setText(curItem.getValue());
-			itemRange.setText(curItem.getRangeMin() + " - "
-					+ curItem.getRangeMax());
-			itemModificator.setText(curItem.getModificator());
+
+			if (((curItem.getVisibility() & FLAG_FROM) == FLAG_FROM)
+					&& ((curItem.getVisibility() & FLAG_TO) == FLAG_TO)) {
+				itemRange.setText(curItem.getRangeMin() + " - "
+						+ curItem.getRangeMax());
+			} else
+				itemRange.setText("");
+
+			if ((curItem.getVisibility() & FLAG_VALUE) == FLAG_VALUE) {
+				itemValue.setText(curItem.getValue());
+			} else
+				itemValue.setText("");
+
+			if ((curItem.getVisibility() & FLAG_MOD) == FLAG_MOD) {
+				itemModificator.setText(curItem.getModificator());
+				// // set modificator text color: blue for positive red for
+				// // negative
+				if (!curItem.getModificator().isEmpty()) {
+
+					if (Integer.valueOf(curItem.getModificator()) > 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_blue));
+					} else if (Integer.valueOf(curItem.getModificator()) < 0) {
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.a_red));
+					} else
+						itemModificator.setTextColor(context.getResources()
+								.getColor(R.color.white));
+				}
+			} else
+				itemModificator.setText("");
+
 			// favorites - not implemented yet, it is set as invisible in xml
 			// layout file
 			CheckBox favoriteItem = (CheckBox) rowView
 					.findViewById(R.id.favorite_checkbox);
 			favoriteItem.setChecked(curItem.isFavorite());
-
 			favoriteItem
 					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 						@Override
@@ -98,20 +125,6 @@ public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 							}
 						}
 					});
-
-			// set modificator text color: blue for positive red for
-			// negative
-			if (!curItem.getModificator().isEmpty()) {
-				if (Integer.valueOf(curItem.getModificator()) > 0) {
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.a_blue));
-				} else if (Integer.valueOf(curItem.getModificator()) < 0) {
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.a_red));
-				} else
-					itemModificator.setTextColor(context.getResources()
-							.getColor(R.color.white));
-			}
 
 		}
 		return rowView;
