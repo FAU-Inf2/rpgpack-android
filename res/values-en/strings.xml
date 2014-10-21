@@ -136,10 +136,12 @@
     <string name="dot">.</string>
     <string name="question_delete_row">Delete row?</string>
     <string name="text_delete_row">Choose YES to delete the row</string>
+    <string name="reference_inexistent"> does not exist</string>
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>
     <string name="new_matrix_item">New Element</string>
+
     <string name="msg_yes_to_item_delete">Choose YES to delete Element</string>
     <string name="text_new_element">New Element</string>
 

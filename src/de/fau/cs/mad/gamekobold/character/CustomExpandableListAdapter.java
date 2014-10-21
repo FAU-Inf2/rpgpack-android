@@ -474,7 +474,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 		  if(!jacksonEntry.getContent().isEmpty()) {
 			  //	        	inputPopup.setText(jacksonEntry.getContent());
 			  inputPopup.setText(jacksonEntry.getContent());
-			  if(SlideoutNavigationActivity.theActiveActivity instanceof CharacterEditActivity){
+			  if(SlideoutNavigationActivity.getAc().inSelectionMode()){
 				  Log.d("CustomExpendableListAdapter", "durchsuche Popup nach Referenzen!");
 				  String searchForReferences = inputPopup.getText().toString();
 				  Pattern p = Pattern.compile("@");

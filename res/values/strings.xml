@@ -136,7 +136,7 @@
     <string name="dot">.</string>
     <string name="question_delete_row">Zeile löschen?</string>
     <string name="text_delete_row">Klicke auf JA um diese Zeile zu löschen</string>
-
+    <string name="reference_inexistent"> existiert nicht</string>
         
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Element löschen?</string>

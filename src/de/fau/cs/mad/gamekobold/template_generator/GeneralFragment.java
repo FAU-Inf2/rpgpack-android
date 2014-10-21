@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

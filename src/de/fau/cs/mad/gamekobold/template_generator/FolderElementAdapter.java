@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.opengl.Visibility;
 import android.support.v4.view.GravityCompat;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -242,7 +241,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 								holder.favorite.setChecked(false);
 								data.jacksonTable.setFavorite(false);
 							}
-							// TODO: jackson store:
 							// enabling(check)/disabling(uncheck) this category
 							data.jacksonTable.setSelected(isChecked);
 						}
@@ -255,7 +253,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 						@Override
 						public void onCheckedChanged(CompoundButton buttonView,
 								boolean isChecked) {
-							// TODO save favorites - not implemented now
 							data.favorite = isChecked;
 							if (isChecked) {
 								holder.box.setChecked(true);
@@ -313,7 +310,6 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 					}
 					holder.box = cb;
 					holder.favorite = favorite;
-					// XXX: wahrs noetig: favorite setzen
 					if (data.checked) {
 						holder.box.setChecked(true);
 					} else {
