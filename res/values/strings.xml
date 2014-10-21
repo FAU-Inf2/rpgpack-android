@@ -137,8 +137,11 @@
     <string name="question_delete_row">Zeile löschen?</string>
     <string name="text_delete_row">Klicke auf JA um diese Zeile zu löschen</string>
     <string name="reference_inexistent"> existiert nicht</string>
-        
-    <!-- MatrixFragment -->
+    <string name="choose_reference">Wähle den zu referenzierenden Wert</string>
+    <string name="no_reference">Leider kein zu referenzierender Wert gefunden</string>
+    
+    
+<!-- MatrixFragment -->
     <string name="msg_delete_item">Element löschen?</string>
     <string name="new_matrix_item">Neues Element</string>
     <string name="msg_yes_to_item_delete">Klicke auf JA um dieses Element zu löschen</string>

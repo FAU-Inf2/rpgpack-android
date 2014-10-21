@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -25,15 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.gamekobold.R;
 import de.fau.cs.mad.gamekobold.SlideoutNavigationActivity;
-import de.fau.cs.mad.gamekobold.ThumbnailLoader;
 import de.fau.cs.mad.gamekobold.jackson.CharacterSheet;
 import de.fau.cs.mad.gamekobold.jackson.JacksonInterface;
 import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
@@ -43,7 +41,7 @@ import de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity;
 public class TemplateDetailsActivity extends Activity {
 	private Template curTemplate;
 	private CharacterGridArrayAdapter adapter;
-	private GridView gridView;
+//	private GridView gridView;
 	private static Activity myActivity;
 	private boolean templateChanged = false;
 	private long characterFolderTimeStamp;
@@ -477,6 +475,7 @@ public class TemplateDetailsActivity extends Activity {
 			return fragment;
 		}
 
+		@SuppressLint("InflateParams")
 		@Override
 		public Dialog onCreateDialog(Bundle SaveInstanceState) {
 			// Use the Builder class for convenient Dialog construction

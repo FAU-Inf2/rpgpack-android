@@ -3,6 +3,7 @@ package de.fau.cs.mad.gamekobold;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -92,6 +93,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 		return mode==modes.selection?true:false;
 	}
 	
+	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,7 +126,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 		myActivity = this;
 		boolean createTemplateMode = false;
 		boolean editTemplateMode = false;
-		boolean editCharacterMode = false;
+//		boolean editCharacterMode = false;
 		boolean playingMode = false;
 		Log.d("Saved instance state", "" + savedInstanceState);
 		if (savedInstanceState == null) {
@@ -161,7 +163,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			}
 			else if(getAc() instanceof CharacterEditActivity) {
 				Log.d("MainTemplateGenerator", "Character edit mode!");
-				editCharacterMode = true;
+//				editCharacterMode = true;
 				// we are in edit character mode
 			}
 //				else{
@@ -301,7 +303,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			}
 		}
 		if(getAc() instanceof CharacterPlayActivity){
-			//TODO julian: spinner might not be needed to be inflated every
+			//TODO spinner might not be needed to be inflated every
 			//time you open it?!
 			ArrayAdapter<CharacterSheet> characterAdapter =
 					new CharacterSelectAdapter(getAc(), android.R.layout.simple_spinner_item, characterSheets); //selected item will look like a spinner set from XML
@@ -373,7 +375,7 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 //			params.addRule(RelativeLayout.RIGHT_OF, titleTxtView.getId());
 			spinner.setLayoutParams(params);
-			//XXX: min API for this call is 17, atm we are developing for 14!!!
+			//not: min API for this call is 17, atm we are developing for 14!!!
 //			spinner.setId(View.generateViewId());
 //			spinner.setGravity(Gravity.RIGHT);
 //			myView.addView(spinner);
@@ -388,7 +390,6 @@ public class SlideoutNavigationActivity extends FragmentActivity{
 			});
 			characterSelectSpinner = spinner;
 //			spinner.setOnItemSelectedListener((CharacterPlayActivity) getAc());
-			//TODO julian
 		}
 	}
 	

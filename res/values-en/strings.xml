@@ -137,6 +137,9 @@
     <string name="question_delete_row">Delete row?</string>
     <string name="text_delete_row">Choose YES to delete the row</string>
     <string name="reference_inexistent"> does not exist</string>
+    <string name="choose_reference">Choose the value to reference</string>
+    <string name="no_reference">unfortunately nothing available to reference to</string>
+    
 
     <!-- MatrixFragment -->
     <string name="msg_delete_item">Delete Element?</string>

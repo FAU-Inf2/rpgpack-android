@@ -1,9 +1,7 @@
 package de.fau.cs.mad.gamekobold;
 
 import de.fau.cs.mad.gamekobold.template_generator.TableFragment;
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;

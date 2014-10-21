@@ -31,7 +31,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -41,13 +40,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
@@ -121,7 +116,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				InputMethodManager imm = (InputMethodManager) SlideoutNavigationActivity.getAc().
     					getSystemService(Context.INPUT_METHOD_SERVICE);
     			imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
-//				// TODO horizontal scrolling bug testing; note: seems to work
 //				final HorizontalScrollView hsv = (HorizontalScrollView)mainView.findViewById(R.id.horiz_scroll);
 //						        hsv.postDelayed(new Runnable() {
 //					@Override
@@ -965,7 +959,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 	
     boolean alreadyChangingText = false;
     
-    private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry, int columnIndex, int rowIndex){
+    @SuppressLint("InflateParams")
+	private LinearLayout initPopup(final TableRow row, final IEditableContent jacksonEntry, int columnIndex, int rowIndex){
 		Log.d("TABLE_FRAGMENT", "init_popup");
 		final LinearLayout ll = new LinearLayout(getActivity());
 		ll.setFocusable(true);
@@ -1366,8 +1361,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
                 //skip the last element (this is "new element")
                 if(allRefs.size() > 1){
                 	TextView oneLine = new TextView(SlideoutNavigationActivity.theActiveActivity);
-                	//TODO: translate
-            		oneLine.setText("Choose the value to reference");
+            		oneLine.setText(getResources().getString(R.string.choose_reference));
             		oneLine.setGravity(Gravity.CENTER);
             		oneLine.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
             				getResources().getDimension(R.dimen.text_large));
@@ -1404,8 +1398,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 
                 }
                 else{
-                	//TODO: translation
-            		Toast.makeText(getActivity(), "unfortunately nothing available to reference to" ,Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), getResources().getString(R.string.no_reference) ,Toast.LENGTH_SHORT).show();
                 }
         	}
         });
@@ -1443,7 +1436,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 				//old version... but we need to take the content as parent, not popupView
 //				popup.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 				popup.showAtLocation(SlideoutNavigationActivity.theActiveActivity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-				//XXX: might be needed?!
+				//XXX: might be needed?! but forcing the close should then also be done
+				//better would be a working method to give focus
 //				InputMethodManager inputMgr = (InputMethodManager)SlideoutNavigationActivity.theActiveActivity.
 //						getSystemService(Context.INPUT_METHOD_SERVICE);
 //					inputMgr.showSoftInput(inputPopup, InputMethodManager.SHOW_FORCED);
@@ -1613,13 +1607,6 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		//  JACKSON END
 		//
         addColumnToRow(row);
-        //XXX: check if works
-//        ((View) row).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				showDialog();
-//			}
-//		});
 		for (int i = 0; i < table.getChildCount(); i++) {
 		    View child = table.getChildAt(i);
 
@@ -1739,7 +1726,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		}
 		else {
 			// add the 2 default columns
-			//TODO do it with addColumn
+			//TODO do it with addColumn -> then setting the onClickListener wouldn't be necessary manually here
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline1),
 					StringClass.TYPE_STRING));
 			jacksonTable.addColumn(new ColumnHeader(getResources().getString(R.string.headline2),

@@ -8,7 +8,6 @@ import de.fau.cs.mad.gamekobold.character.CharacterEditActivity;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.gamekobold.colorpicker.ColorPickerDialogInterface;
 import de.fau.cs.mad.gamekobold.filebrowser.FileBrowser;
-import de.fau.cs.mad.gamekobold.filebrowser.FileCopyUtility;
 import de.fau.cs.mad.gamekobold.filebrowser.FileTargetIsSourceException;
 import de.fau.cs.mad.gamekobold.filebrowser.FileWouldOverwriteException;
 import de.fau.cs.mad.gamekobold.filebrowser.IFileBrowserReceiver;
