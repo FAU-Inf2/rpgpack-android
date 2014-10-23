@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
@@ -169,6 +170,9 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 				catch(Throwable e) {
 					e.printStackTrace();
 				}
+			 }
+			 else{
+				Toast.makeText(getAc(), getAc().getResources().getString(R.string.char_save_error), Toast.LENGTH_LONG).show();
 			 }
 		 }
 		 return super.onOptionsItemSelected(item);

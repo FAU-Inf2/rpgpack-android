@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.fau.cs.mad.rpgpack.R.string;
+import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.filebrowser.CharacterExportTask;
 import de.fau.cs.mad.rpgpack.filebrowser.FileTargetIsSourceException;
@@ -78,6 +80,7 @@ public abstract class JacksonInterface {
 	@SuppressLint("SimpleDateFormat")
 	public static void saveCharacterSheet(final CharacterSheet sheet, final File jsonFile) throws JsonGenerationException, JsonMappingException, IOException {
 		if(jsonFile == null || sheet == null) {
+			Toast.makeText(SlideoutNavigationActivity.getAc(), SlideoutNavigationActivity.getAc().getResources().getString(R.string.char_save_error), Toast.LENGTH_LONG).show();
 			return;
 		}
 		Log.d(LOG_TAG, " saving character. path:"+jsonFile.getAbsolutePath());
@@ -90,6 +93,7 @@ public abstract class JacksonInterface {
 		Date date = new Date();
 		sheet.setFileLastUpdated(dateFormat.format(date));
 		mapper.writer().writeValue(outStream, sheet);
+		Toast.makeText(SlideoutNavigationActivity.getAc(), SlideoutNavigationActivity.getAc().getResources().getString(R.string.char_saved), Toast.LENGTH_LONG).show();
 	}
 	//
 	// TEMPLATE FUNCTIONS START

@@ -31,6 +31,9 @@
 
     <!-- Template Generator -->
     <string name="tpg_actionbar_title">ABCD</string>
+    <string name="template_saved">Deine Vorlage wurde erfolgreich gespeichert</string>
+    <string name="template_save_error">Fehler! Vorlage konnte nicht gespeichrt werden.</string>
+    
 
     <!-- activity_alljoin_test -->
     <string name="btn_call_service">Dienst rufen</string>
@@ -154,8 +157,9 @@
     
     <!-- Character Editor -->
     <string name="menu_item_save_character">Charakter speichern</string>
+    <string name="char_saved">Charakter erfolgreich gespeichert.</string>
+    <string name="char_save_error">Fehler! Charakter konnte nicht gespeichert werden.</string>
     
-
     <!-- WarningLeaveDialog -->
     <string name="question_exit">Wollen Sie den Template-Generator wirklich verlassen?</string>
     <string name="yes_and_trash">Ja und verwerfen</string>

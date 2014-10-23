@@ -1,5 +1,6 @@
 package de.fau.cs.mad.rpgpack.jackson;
 
+import de.fau.cs.mad.rpgpack.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -41,9 +42,10 @@ public class TemplateSaverTask extends AsyncTask<Template, Void, Boolean>{
 	@Override
 	protected void onPostExecute(Boolean result) {
 		if(!result) {
-			Toast.makeText(appContext, "Failed to save template!", Toast.LENGTH_LONG).show();
+			Toast.makeText(appContext, appContext.getResources().getString(R.string.template_save_error), Toast.LENGTH_LONG).show();
 		}
 		else {
+			Toast.makeText(appContext, appContext.getResources().getString(R.string.template_saved), Toast.LENGTH_LONG).show();
 			Log.d("MainTemplateGenerator", "saved template async");
 		}
 	}

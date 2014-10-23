@@ -21,7 +21,7 @@ import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
  * <code>characterList</code>.
  * 
  */
-// TODO Benni, added new Element gameMaster and worldName
+// TODO added new Element gameMaster and worldName
 public class Game implements Parcelable, Serializable {
 	private String gameName;
 	private String gameMaster;
