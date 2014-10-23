@@ -65,8 +65,6 @@
         </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.rpgpack.matrix.MatrixViewActivity" >
-        </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.matrix.AddNewItemActivity" >
         </activity>
         <activity
