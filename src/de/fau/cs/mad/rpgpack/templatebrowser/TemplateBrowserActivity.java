@@ -494,8 +494,6 @@ public class TemplateBrowserActivity extends ListActivity {
 	public void setTemplateList(List<Template> templateList,
 			ArrayAdapter adapter) {
 		if (templateList != null) {
-			// TemplateBrowserArrayAdapter adapter =
-			// (TemplateBrowserArrayAdapter) getListAdapter();
 			adapter.clear();
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();

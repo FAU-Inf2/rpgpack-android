@@ -57,8 +57,6 @@
         </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.CreateNewTemplateActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.TemplateDetailsActivity" >
-        </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity" >
         </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.matrix.AddNewItemActivity" >
