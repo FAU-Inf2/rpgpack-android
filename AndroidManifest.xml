@@ -24,10 +24,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="de.fau.cs.mad.rpgpack.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="de.fau.cs.mad.rpgpack.AlljoynTest"
             android:label="@string/title_activity_alljoyn_test"
             android:parentActivityName="de.fau.cs.mad.rpgpack.MainActivity" >
