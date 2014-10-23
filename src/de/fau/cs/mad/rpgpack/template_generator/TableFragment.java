@@ -1275,7 +1275,8 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 //        			}
 //        			position--;
 //        			text.replace(position, position+1, "");
-        			inputPopup.setText(highlightedText);
+        			//TODO: uncomment
+//        			inputPopup.setText(highlightedText);
 //                    inputPopup.setText((Spanned)inputPopup.getText().delete(position , position+1));
                     myJacksonEntry.setContent(s.toString());
                     
