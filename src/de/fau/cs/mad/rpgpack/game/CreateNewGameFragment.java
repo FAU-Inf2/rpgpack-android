@@ -20,9 +20,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,13 +29,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
 import de.fau.cs.mad.rpgpack.characterbrowser.CharacterBrowserArrayAdapter;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
-import de.fau.cs.mad.rpgpack.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
@@ -127,23 +122,6 @@ public class CreateNewGameFragment extends Fragment {
 		mCallbacks.onSelCharAdapterPass(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-
-		// pickedCharacterGridView
-		// .setOnItemClickListener(new OnItemClickListener() {
-		// @Override
-		// public void onItemClick(AdapterView<?> adapterView,
-		// View view, int position, long id) {
-		// curCharacter = (CharacterSheet) adapterView
-		// .getItemAtPosition(position);
-		//
-		// Toast.makeText(
-		// getActivity(),
-		// ((TextView) view
-		// .findViewById(R.id.textItemTitle))
-		// .getText(), Toast.LENGTH_SHORT).show();
-		// // TODO do something on click?
-		// }
-		// });
 
 		// delete character on long click
 		pickedCharacterGridView

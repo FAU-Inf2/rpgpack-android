@@ -1,10 +1,6 @@
 package de.fau.cs.mad.rpgpack.game;
 
-import de.fau.cs.mad.rpgpack.R;
 import android.app.Fragment;
-import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class GameBrowserActivity extends SingleFragmentActivity {
 

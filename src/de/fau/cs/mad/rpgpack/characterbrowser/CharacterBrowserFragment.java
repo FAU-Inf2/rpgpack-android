@@ -10,20 +10,14 @@ import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.RelativeLayout;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.game.Game;
-import de.fau.cs.mad.rpgpack.game.GameCharacter;
 import de.fau.cs.mad.rpgpack.game.GameLab;
-import de.fau.cs.mad.rpgpack.game.PickedCharacterGridAdapter;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
 import de.fau.cs.mad.rpgpack.templatebrowser.CharacterDetailsActivity;
@@ -68,14 +62,6 @@ public class CharacterBrowserFragment extends ListFragment {
 			mode_pickCharacterForGameCreation = false;
 	}
 
-	// @Override
-	// public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	// Bundle savedInstanceState) {
-	// // Inflate the layout for this fragment
-	// return inflater.inflate(R.layout.fragment_character_browser, container,
-	// false);
-	// }
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -91,24 +77,6 @@ public class CharacterBrowserFragment extends ListFragment {
 					// change backgroud color for selected character and
 					// add it to the pickedCharacterGrid
 					view.setSelected(true);
-
-					// if (view.isSelected()) {
-					// int color = Color.TRANSPARENT;
-					// Drawable backgroundColor = view.getBackground();
-					// if (backgroundColor instanceof ColorDrawable)
-					// color = ((ColorDrawable) backgroundColor)
-					// .getColor();
-					// if ((color == getResources().getColor(
-					// R.color.background_green))) {
-					// view.setBackgroundColor(getResources().getColor(
-					// R.color.background_dark));
-					// } else {
-					// view.setBackgroundColor(getResources().getColor(
-					// R.color.background_green));
-					// }
-					// }
-					// RelativeLayout selRow = (RelativeLayout) view
-					// .findViewById(R.id.relativeLayout);
 
 					// pass selected character
 					mCallbacks.onCharacterSelected(clickedChar);

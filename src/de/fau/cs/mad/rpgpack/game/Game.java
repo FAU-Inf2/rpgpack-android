@@ -3,7 +3,6 @@ package de.fau.cs.mad.rpgpack.game;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.os.Parcel;
@@ -314,18 +313,4 @@ public class Game implements Parcelable, Serializable {
 			}
 		};
 
-		// PARCELABLE END
-//		public void print() {
-//			Log.d("GAME", "name:"+gameName);
-//			Log.d("GAME", "world:"+worldName);
-//			Log.d("GAME", "description:"+description);
-//			Log.d("GAME", "gameMaster:"+gameMaster);
-//			Log.d("GAME", "date:"+date);
-//			Log.d("GAME", "fileAbsPath:"+fileAbsolutePath);
-//			Log.d("GAME", "iconPath:"+iconPath);
-//			Log.d("GAME", "characters:"+characterSheetList.size());
-//			for(final CharacterSheet sheet : characterSheetList) {
-//				Log.d("GAME", "character:"+sheet.getName());
-//			}
-//		}
 }
