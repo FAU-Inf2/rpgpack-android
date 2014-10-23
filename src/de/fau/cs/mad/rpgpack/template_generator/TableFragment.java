@@ -331,6 +331,7 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		String[] groupList;
 		String[][] itemValues;
 		content_type[][] contentList;
+		//determine amount of selected lines to set array-length
 		int amountSelected = 0;
 		if(SlideoutNavigationActivity.getAc().onlySelected && !SlideoutNavigationActivity.getAc().showInvisible){
 			for(int i=0; i<jacksonRowNum; i++){
@@ -345,33 +346,47 @@ public class TableFragment extends GeneralFragment implements OnCheckedChangeLis
 		groupList = new String[amountSelected];
 		itemValues = new String[amountSelected][];
 		contentList = new content_type[amountSelected][];
-		for(int rowIndex=0; rowIndex<amountSelected; rowIndex++){
-			groupList[rowIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
-		}
-		
-		for(int rowIndex=0; rowIndex<amountSelected; rowIndex++){
-			itemValues[rowIndex] = new String[jacksonTableColumnNumber];
-			contentList[rowIndex] = new content_type[jacksonTableColumnNumber];
-			for(int columnIndex=0; columnIndex<jacksonTableColumnNumber; columnIndex++){
-				IEditableContent jacksonEntry = null;
-				jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
-				
-				final ColumnHeader header = jacksonTable.getColumnHeader(columnIndex);
-				if(header.isCheckBox()) {
-					contentList[rowIndex][columnIndex] = content_type.checkbox;
-				}
-				else if(header.isPopup()){
-					contentList[rowIndex][columnIndex] = content_type.popup;
-				}
-				else{
-					contentList[rowIndex][columnIndex] = content_type.editText;
-				}
-				if(jacksonEntry != null) {
-					String content = jacksonEntry.getContent();
-					itemValues[rowIndex][columnIndex] = content;
-				}
+		int shownIndex = 0;
+		//set group items
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			if(jacksonTable.getRow(rowIndex).isSelected()
+					|| !SlideoutNavigationActivity.getAc().onlySelected
+					|| SlideoutNavigationActivity.getAc().showInvisible){
+				groupList[shownIndex] = jacksonTable.getEntry(0, rowIndex).getContent();
+				itemValues[shownIndex] = new String[jacksonTableColumnNumber];
+				contentList[shownIndex] = new content_type[jacksonTableColumnNumber];
+				++shownIndex;
 			}
 		}
+		shownIndex = 0;
+		for(int rowIndex=0; rowIndex<jacksonRowNum; rowIndex++){
+			if(jacksonTable.getRow(rowIndex).isSelected()
+					|| !SlideoutNavigationActivity.getAc().onlySelected
+					|| SlideoutNavigationActivity.getAc().showInvisible){
+				for(int columnIndex=0; columnIndex<jacksonTableColumnNumber; columnIndex++){
+
+					IEditableContent jacksonEntry = null;
+					jacksonEntry = jacksonTable.getEntry(columnIndex, rowIndex);
+
+					final ColumnHeader header = jacksonTable.getColumnHeader(columnIndex);
+					if(header.isCheckBox()) {
+						contentList[shownIndex][columnIndex] = content_type.checkbox;
+					}
+					else if(header.isPopup()){
+						contentList[shownIndex][columnIndex] = content_type.popup;
+					}
+					else{
+						contentList[shownIndex][columnIndex] = content_type.editText;
+					}
+					if(jacksonEntry != null) {
+						String content = jacksonEntry.getContent();
+						itemValues[shownIndex][columnIndex] = content;
+					}
+				}
+				++shownIndex;
+			}
+		}
+		shownIndex=0;
 		ExpandableListView expListView = (ExpandableListView) mainView.findViewById(R.id.exp_table_list_view);
         final ExpandableListAdapter expListAdapter = new CustomExpandableListAdapter(
                 getActivity(), jacksonTable, this, headlines, contentList, groupList, itemValues);
