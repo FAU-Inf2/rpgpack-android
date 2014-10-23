@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.fau.cs.mad.rpgpack.templatebrowser.Template;
 
 // TODO no jackson annotations needed! 
+@SuppressWarnings("serial")
 public class GameCharacter implements Serializable{
 	// TODO CharakterInfo
 	private String characterName;

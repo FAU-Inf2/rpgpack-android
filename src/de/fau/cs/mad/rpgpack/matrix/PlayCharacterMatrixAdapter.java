@@ -20,6 +20,7 @@ import de.fau.cs.mad.rpgpack.R;
  * normal (not edit) mode.
  * 
  */
+@SuppressWarnings("serial")
 public class PlayCharacterMatrixAdapter extends ArrayAdapter<MatrixItem>
 		implements Serializable {
 	// this flags is used to store visibility of UI elements
