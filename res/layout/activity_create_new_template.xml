@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity"
+    tools:context="de.fau.cs.mad.rpgpack.templatebrowser.CreateNewTemplateActivity"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout

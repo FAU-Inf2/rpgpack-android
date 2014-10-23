@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:background="@color/background"
     android:foreground="@drawable/shape_window_dim"
-    tools:context="de.fau.cs.mad.gamekobold.TemplateStoreMainActivity" >
+    tools:context="de.fau.cs.mad.rpgpack.TemplateStoreMainActivity" >
     
  <RelativeLayout
     android:layout_width="fill_parent"

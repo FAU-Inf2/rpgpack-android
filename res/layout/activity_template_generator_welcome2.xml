@@ -1,4 +1,4 @@
-<de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<de.fau.cs.mad.rpgpack.template_generator.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view_empty"
     android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
+        tools:context="de.fau.cs.mad.rpgpack.slidingmenu.TemplateGeneratorWelcomeActivity"
         tools:ignore="MergeRootFrame" >
 
         <!--
@@ -70,4 +70,4 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-</de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout>
+</de.fau.cs.mad.rpgpack.template_generator.CustomDrawerLayout>

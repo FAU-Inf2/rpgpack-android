@@ -1,4 +1,4 @@
-<de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<de.fau.cs.mad.rpgpack.template_generator.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view_e"
     android:layout_width="match_parent"
@@ -19,4 +19,4 @@
         android:divider="@color/list_divider"
         android:dividerHeight="1dp" />
 
-</de.fau.cs.mad.gamekobold.template_generator.CustomDrawerLayout>
+</de.fau.cs.mad.rpgpack.template_generator.CustomDrawerLayout>

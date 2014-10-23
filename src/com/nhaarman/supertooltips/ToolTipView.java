@@ -36,7 +36,7 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
-import de.fau.cs.mad.gamekobold.R;
+import de.fau.cs.mad.rpgpack.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

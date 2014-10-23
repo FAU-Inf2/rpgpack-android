@@ -20,7 +20,7 @@
             android:text="@string/text_columns_number"
             android:textSize="18sp" />
 
-        <de.fau.cs.mad.gamekobold.template_generator.SessionMonitorEditText
+        <de.fau.cs.mad.rpgpack.template_generator.SessionMonitorEditText
             android:id="@+id/edit_spaltenanzahl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

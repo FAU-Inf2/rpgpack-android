@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MapActivity" >
 
-    <de.fau.cs.mad.gamekobold.toolbox.MapView
+    <de.fau.cs.mad.rpgpack.toolbox.MapView
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="0dp"

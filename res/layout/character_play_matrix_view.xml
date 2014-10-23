@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:background="@color/background_dark"
     android:layout_height="match_parent"
-    tools:context="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity"
+    tools:context="de.fau.cs.mad.rpgpack.matrix.MatrixViewActivity"
     tools:ignore="MergeRootFrame" >
 
     <TextView

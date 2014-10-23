@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.fau.cs.mad.gamekobold"
+    package="de.fau.cs.mad.rpgpack"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -24,95 +24,95 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="de.fau.cs.mad.gamekobold.MainActivity"
+            android:name="de.fau.cs.mad.rpgpack.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.AlljoynTest"
+            android:name="de.fau.cs.mad.rpgpack.AlljoynTest"
             android:label="@string/title_activity_alljoyn_test"
-            android:parentActivityName="de.fau.cs.mad.gamekobold.MainActivity" >
+            android:parentActivityName="de.fau.cs.mad.rpgpack.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.fau.cs.mad.gamekobold.MainActivity" />
+                android:value="de.fau.cs.mad.rpgpack.MainActivity" />
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.template_generator.TemplateGeneratorActivity"
+            android:name="de.fau.cs.mad.rpgpack.template_generator.TemplateGeneratorActivity"
             android:theme="@style/template_generator_style"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.alljoyn.Service"
+            android:name="de.fau.cs.mad.rpgpack.alljoyn.Service"
             android:label="@string/title_activity_alljoyn_template_service"
-            android:parentActivityName="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" >
+            android:parentActivityName="de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" />
+                android:value="de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity" />
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.character.CharacterEditActivity"
+            android:name="de.fau.cs.mad.rpgpack.character.CharacterEditActivity"
             android:label="Root"
             android:theme="@style/template_generator_style"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity"
+            android:name="de.fau.cs.mad.rpgpack.templatebrowser.TemplateBrowserActivity"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewTemplateActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.CreateNewTemplateActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.TemplateDetailsActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.alljoyn.TemplateListActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.matrix.MatrixViewActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.matrix.MatrixViewActivity" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.matrix.AddNewItemActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.matrix.AddNewItemActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.slidingmenu.TemplateGeneratorWelcomeActivity"
+            android:name="de.fau.cs.mad.rpgpack.slidingmenu.TemplateGeneratorWelcomeActivity"
             android:label="@string/title_activity_template_generator_welcome" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CharacterDetailsActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.CharacterDetailsActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.GameBrowserActivity"
+            android:name="de.fau.cs.mad.rpgpack.game.GameBrowserActivity"
             android:label="@string/title_activity_new_game" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.GameDetailsActivity"
+            android:name="de.fau.cs.mad.rpgpack.game.GameDetailsActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.CreateNewGameActivity"
+            android:name="de.fau.cs.mad.rpgpack.game.CreateNewGameActivity"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.game.CharacterPlayActivity"
+            android:name="de.fau.cs.mad.rpgpack.game.CharacterPlayActivity"
             android:theme="@style/template_generator_style"
             android:windowSoftInputMode="adjustResize" >
         </activity>
 
         <!-- Toolbox Activities -->
-        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.MenuActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.toolbox.MenuActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.toolbox.MapActivity"
+            android:name="de.fau.cs.mad.rpgpack.toolbox.MapActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.TimerActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.toolbox.TimerActivity" >
         </activity>
         <activity
-            android:name="de.fau.cs.mad.gamekobold.toolbox.DiceActivity"
+            android:name="de.fau.cs.mad.rpgpack.toolbox.DiceActivity"
             android:theme="@style/PopupStyle" >
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.toolbox.RandomListActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.toolbox.RandomListActivity" >
         </activity>
 
         <!--  -->
 
         <activity
-            android:name="de.fau.cs.mad.gamekobold.templatestore.TemplateStoreMainActivity"
+            android:name="de.fau.cs.mad.rpgpack.templatestore.TemplateStoreMainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden" >
@@ -124,26 +124,26 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/storesearchable" />
         </activity>
-        <activity android:name="de.fau.cs.mad.gamekobold.templatebrowser.CreateNewCharacterActivity" >
+        <activity android:name="de.fau.cs.mad.rpgpack.templatebrowser.CreateNewCharacterActivity" >
         </activity>
         <activity
-            android:name=".characterbrowser.CharacterBrowserActivity"
+            android:name="de.fau.cs.mad.rpgpack.characterbrowser.CharacterBrowserActivity"
             android:label="@string/title_activity_character_browser" >
         </activity>
-        <activity android:name="MainMenu" >
+        <activity android:name="de.fau.cs.mad.rpgpack.MainMenu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="GameMenu" >
+        <activity android:name="de.fau.cs.mad.rpgpack.GameMenu" >
         </activity>
-        <activity android:name="CharacterMenu" >
+        <activity android:name="de.fau.cs.mad.rpgpack.CharacterMenu" >
         </activity>
-        <activity android:name="TemplateMenu" >
+        <activity android:name="de.fau.cs.mad.rpgpack.TemplateMenu" >
         </activity>
-        <activity android:name="DownloadTemplateMenu" >
+        <activity android:name="de.fau.cs.mad.rpgpack.DownloadTemplateMenu" >
         </activity>
     </application>
 

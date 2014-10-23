@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity$PlaceholderFragment" >
+    tools:context="de.fau.cs.mad.rpgpack.templatebrowser.TemplateBrowserActivity$PlaceholderFragment" >
 
     <TextView
         android:layout_width="wrap_content"

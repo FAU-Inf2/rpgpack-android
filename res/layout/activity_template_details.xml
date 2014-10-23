@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="de.fau.cs.mad.gamekobold.templatebrowser.TemplateDetailsActivity"
+    tools:context="de.fau.cs.mad.rpgpack.templatebrowser.TemplateDetailsActivity"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout

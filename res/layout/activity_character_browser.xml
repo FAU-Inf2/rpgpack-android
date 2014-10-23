@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="de.fau.cs.mad.gamekobold.templatebrowser.TemplateBrowserActivity"
+    tools:context="de.fau.cs.mad.rpgpack.templatebrowser.TemplateBrowserActivity"
     tools:ignore="MergeRootFrame" >
 
     <ListView

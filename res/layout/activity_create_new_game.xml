@@ -10,7 +10,7 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="de.fau.cs.mad.gamekobold.game.CreateNewGameFragment" >
+        class="de.fau.cs.mad.rpgpack.game.CreateNewGameFragment" >
     </fragment>
 
     <fragment
@@ -20,7 +20,7 @@
         android:layout_alignParentLeft="true"
          android:layout_above="@+id/buttonCreateGame"
         android:layout_below="@+id/fragmentContainer"
-        class="de.fau.cs.mad.gamekobold.characterbrowser.CharacterBrowserFragment" >
+        class="de.fau.cs.mad.rpgpack.characterbrowser.CharacterBrowserFragment" >
     </fragment>
 
     <Button
