@@ -98,26 +98,26 @@ public class MapView extends GridView implements OnScaleGestureListener,
 
 		if (mScaleDetector.onTouchEvent(event))
 
-		if (!mScaleDetector.isInProgress() && paint_enabled) {
-			float x = event.getX();
-			float y = event.getY();
+			if (!mScaleDetector.isInProgress() && paint_enabled) {
+				float x = event.getX();
+				float y = event.getY();
 
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				touch_start(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_MOVE:
-				touch_move(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_UP:
-				touch_up();
-				invalidate();
-				break;
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					touch_start(x, y);
+					invalidate();
+					break;
+				case MotionEvent.ACTION_MOVE:
+					touch_move(x, y);
+					invalidate();
+					break;
+				case MotionEvent.ACTION_UP:
+					touch_up();
+					invalidate();
+					break;
+				}
 			}
-		}
-	
+
 		return true;
 
 	}
@@ -239,15 +239,15 @@ public class MapView extends GridView implements OnScaleGestureListener,
 
 	@Override
 	public boolean onScaleBegin(ScaleGestureDetector detector) {
-		isZoom = true;
 		return true;
 	}
 
 	@Override
 	public void onScaleEnd(ScaleGestureDetector detector) {
-		isZoom = false;
-		this.setScaleX(scale);
-		this.setScaleY(scale);
+		if (isZoom) {
+			this.setScaleX(scale);
+			this.setScaleY(scale);
+		}
 
 	}
 
