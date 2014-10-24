@@ -1,20 +1,12 @@
 package de.fau.cs.mad.rpgpack.toolbox;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.os.Handler;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -22,16 +14,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
-import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import de.fau.cs.mad.rpgpack.R;
-import de.fau.cs.mad.rpgpack.R.drawable;
 
 public class MapGridElementAdapter extends BaseAdapter {
 
@@ -73,6 +60,7 @@ public class MapGridElementAdapter extends BaseAdapter {
 				pieceView.setContentDescription(tag);
 
 				pieceView.setOnTouchListener(new View.OnTouchListener() {
+					@SuppressLint("ClickableViewAccessibility")
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						final ClipData data = ClipData.newPlainText("position",
@@ -86,18 +74,6 @@ public class MapGridElementAdapter extends BaseAdapter {
 						startClickTime = Calendar.getInstance()
 								.getTimeInMillis();
 						v.startDrag(data, pieceDragShadowBuilder, v, 0);
-						/*switch (event.getAction() & MotionEvent.ACTION_MASK) {
-
-						case MotionEvent.ACTION_DOWN:
-							startClickTime = Calendar.getInstance()
-									.getTimeInMillis();
-							break;
-						case MotionEvent.ACTION_MOVE:
-
-							break;
-						case MotionEvent.ACTION_UP:
-							break;
-						}*/
 						return true;
 					}
 				});
@@ -123,16 +99,12 @@ public class MapGridElementAdapter extends BaseAdapter {
 		return position;
 	}
 
-	private void createDrawable(int color) {
-
-	}
-
 	class MyDragListener implements OnDragListener {
 
 		private Context context;
 
 		public MyDragListener(Context pContext) {
-			this.context = pContext;
+			context = pContext;
 		}
 
 		@Override
@@ -190,6 +162,7 @@ public class MapGridElementAdapter extends BaseAdapter {
 		pieceView.setTag(position);
 		pieceView.setContentDescription("grid");
 		pieceView.setOnTouchListener(new View.OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				final ClipData data = ClipData.newPlainText("position",

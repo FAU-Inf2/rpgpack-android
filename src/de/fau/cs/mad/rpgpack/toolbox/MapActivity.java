@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
-import de.fau.cs.mad.rpgpack.jackson.ContainerTable;
 import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,12 +15,8 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -30,24 +24,17 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.WindowManager;
-import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 public class MapActivity extends Activity implements OnDragListener {
@@ -61,17 +48,13 @@ public class MapActivity extends Activity implements OnDragListener {
 	float mHeight;
 	int mWidthPx;
 	int mHeightPx;
-	private ArrayList<Integer> colors = new ArrayList();
-	//private int[] testColor = { R.color.red, R.color.green, R.color.blue,R.color.black, R.color.orange };
-	private ArrayList<Drawable> dotsList = new ArrayList();
-	private ArrayList<Drawable> justItems = new ArrayList();
-	private ArrayList<Drawable> charPics = new ArrayList();
+	private ArrayList<Drawable> dotsList = new ArrayList<Drawable>();
+	private ArrayList<Drawable> charPics = new ArrayList<Drawable>();
 	private int mNumCells;
 	private int mNumLines;
 	private int mNumColumns;
 	private int cell_size;
 	private float density;
-	private boolean drag_active;
 	private MapGridElementAdapter mAdapter;
 	private MapGridElementAdapter mAdapterItems;
 	private boolean first = true;
@@ -81,6 +64,7 @@ public class MapActivity extends Activity implements OnDragListener {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 	public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -125,10 +109,6 @@ public class MapActivity extends Activity implements OnDragListener {
 								.loadCharacterSheet(new File(onePath), false);
 					}
 
-					// characterSheet = JacksonInterface.loadCharacterSheet(new
-					// File(
-					// characterAbsPath), false);
-					Log.d("CharacterPlayActivity", "loaded sheets");
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
@@ -307,8 +287,6 @@ public class MapActivity extends Activity implements OnDragListener {
 		for (int i = 0; i < mNumCells; i++) {
 			dotsList.add(null);
 		}
-		//dotsList.set(colors.size(), createDrawable(R.color.black));
-		charPics.add(getResources().getDrawable(R.drawable.dragonmap));//createDrawable(Color.BLACK));
 
 		mAdapterItems = new MapGridElementAdapter(
 				MapActivity.this, charPics, "item", trash);
@@ -322,7 +300,6 @@ public class MapActivity extends Activity implements OnDragListener {
 		mapView.setAdapter(mAdapter);
 	}
 
-	// Remember to remove the getResources, when loading from charsheet
 	public GradientDrawable createDrawable(int color) {
 		GradientDrawable newItem = new GradientDrawable();
 		newItem.setShape(GradientDrawable.OVAL);
@@ -337,16 +314,9 @@ public class MapActivity extends Activity implements OnDragListener {
 		final float height = options.outHeight;
 		final float width = options.outWidth;
 		int inSampleSize = 1;
-		/*
-		 * if ((height * 2 > reqHeight) && (width * 2 > reqWidth)) {
-		 * 
-		 * final float halfHeight = height / 2; final float halfWidth = width /
-		 * 2;
-		 * 
-		 * // Calculate the largest inSampleSize value that is a power of 2 and
-		 * // keeps both // height and width larger than the requested height
-		 * and width.
-		 */
+
+		// Calculate the largest inSampleSize value that is a power of 2 and
+		// keeps both height and width larger than the requested height and width.
 		while ((height / (inSampleSize * 2)) > reqHeight
 				&& (width / (inSampleSize * 2)) > reqWidth) {
 			inSampleSize *= 2;
@@ -361,10 +331,8 @@ public class MapActivity extends Activity implements OnDragListener {
 	public boolean onDrag(View v, DragEvent event) {
 		switch (event.getAction()) {
 		case DragEvent.ACTION_DRAG_STARTED:
-			// Log.v("Test", "Entered start");
 			break;
 		case DragEvent.ACTION_DRAG_ENTERED:
-			// Log.v("Test", "Entered drag");
 			break;
 		case DragEvent.ACTION_DRAG_EXITED:
 			break;
