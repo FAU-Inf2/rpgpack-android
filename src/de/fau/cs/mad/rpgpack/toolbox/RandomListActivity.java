@@ -17,6 +17,8 @@ import android.widget.TextView;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.R.color;
 
+
+//maybe added in later releases just a activity to make a random list
 public class RandomListActivity extends Activity {
 
 	public String[] names = { "Albert", "Bertram", "Claudio", "Dennis",
