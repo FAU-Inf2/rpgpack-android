@@ -109,7 +109,7 @@
             android:layout_marginTop="2dip"
             android:text="@string/text_add_icon"
             android:textColor="@color/white"
-            android:textSize="9sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </FrameLayout>
