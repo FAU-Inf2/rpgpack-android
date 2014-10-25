@@ -162,22 +162,6 @@ public class TemplateBrowserActivity extends ListActivity {
 												Log.d("TempalteBrowser",
 														"delete template:"
 																+ longClickedTemplate);
-												// delete characters
-												final File characterDir = JacksonInterface
-														.getDirectoryForCharacters(
-																longClickedTemplate,
-																TemplateBrowserActivity.this,
-																false);
-												if (characterDir != null) {
-													// delete characters
-													final File[] characterFiles = characterDir
-															.listFiles();
-													for (final File character : characterFiles) {
-														character.delete();
-													}
-													// delete dircetory
-													characterDir.delete();
-												}
 												if (file.delete()) {
 													// check if we removed the
 													// last edited template
