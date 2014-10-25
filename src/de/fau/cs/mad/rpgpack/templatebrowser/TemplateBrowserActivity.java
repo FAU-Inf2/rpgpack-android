@@ -72,7 +72,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				// if we are only picking a tempalte for character creation
+				// if we are only picking a template for character creation
 				if (mode_pickTemplateForCharacterCreation) {
 					Intent i = new Intent(TemplateBrowserActivity.this,
 							CreateNewCharacterActivity.class);
@@ -265,6 +265,12 @@ public class TemplateBrowserActivity extends ListActivity {
 
 	private void startEditingOfTemplate(String fileName) {
 		if (fileName.equals("")) {
+			return;
+		}
+		// small check to see if the file exists
+		File templateFile = new File(JacksonInterface.getTemplateRootDirectory(this), fileName);
+		if(!templateFile.exists()) {
+			// if not return
 			return;
 		}
 		Intent intent = new Intent(TemplateBrowserActivity.this,
