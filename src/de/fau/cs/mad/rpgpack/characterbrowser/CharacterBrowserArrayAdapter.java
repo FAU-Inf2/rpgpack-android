@@ -3,10 +3,12 @@ package de.fau.cs.mad.rpgpack.characterbrowser;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
@@ -45,6 +47,8 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet> {
 				.findViewById(R.id.textView2);
 		final TextView textView3 = (TextView) rowView
 				.findViewById(R.id.textView3);
+		final ImageView characterIcon = (ImageView) rowView
+				.findViewById(R.id.imageView1);
 
 		final CharacterSheet character = characterList.get(position);
 		textView1.setText(character.getName());
@@ -55,6 +59,11 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet> {
 				.split("-")[0];
 		textView2.setText(curStr);
 		textView3.setText(character.getFileLastUpdated());
+		// set icon
+		Bitmap icon = character.getIcon(context);
+		if(icon != null) {
+			characterIcon.setImageBitmap(icon);
+		}
 		return rowView;
 	}
 }
