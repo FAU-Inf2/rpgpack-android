@@ -20,6 +20,10 @@ import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
+import de.fau.cs.mad.rpgpack.template_generator.GeneralFragment;
+import de.fau.cs.mad.rpgpack.template_generator.WelcomeFragment;
+import de.fau.cs.mad.rpgpack.template_generator.WelcomeNewCharacterFragment;
+import de.fau.cs.mad.rpgpack.template_generator.WelcomePlayCharacterFragment;
 
 public class CharacterEditActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
@@ -189,21 +193,39 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 		 //			transaction.commit();
 		 //			getFragmentManager().executePendingTransactions();
 		 //			mDrawerLayout.invalidate();
-
+		 
+		 
 		 FragmentTransaction transaction = getFragmentManager()
 				 .beginTransaction();
 		 transaction.remove(rootFragment);
-		 transaction.remove(currentFragment);
+//		 if(!(currentFragment instanceof WelcomeFragment || currentFragment instanceof WelcomePlayCharacterFragment
+//				 || currentFragment instanceof WelcomeNewCharacterFragment)){
+//			 Log.d("CharacterEditActivity", "removing; class: " + currentFragment.getClass().getName());
+			 transaction.remove(currentFragment);
+//		 }
+//		 else{
+//			 GeneralFragment newFragment;
+//			 newFragment = (currentFragment.getClass());
+//			 transaction.replace(R.id.frame_layout_container, new currentFragment.getClass());
+//		 }
 		 transaction.commit();
 		 getFragmentManager().executePendingTransactions();
 
 
 		 transaction = getFragmentManager()
 				 .beginTransaction();
+		 //TODO: fix bug: when swapping edit/selection mode with currentFragment as WelcomeFragment or similar
+		 // -> SEGFAULT because currentFragment somehow becomes a FolderFragment (don't know where this comes from)
+//		 if(!(currentFragment instanceof WelcomeFragment || currentFragment instanceof WelcomePlayCharacterFragment
+//				 || currentFragment instanceof WelcomeNewCharacterFragment)){
+//			 Log.d("CharacterEditActivity", "adding; class: " + currentFragment.getClass().getName());
+			 transaction.add(R.id.frame_layout_container, currentFragment);
+//		 }
 		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
-		 transaction.add(R.id.frame_layout_container, currentFragment, "currentFragment");
+//		 transaction.replace(R.id.frame_layout_container, currentFragment);
 		 transaction.commit();
 		 getFragmentManager().executePendingTransactions();
+		 
 	 }
 	 
 	 private class SetCheckboxVisibilityTask extends AsyncTask<Boolean, Void, Boolean> {
