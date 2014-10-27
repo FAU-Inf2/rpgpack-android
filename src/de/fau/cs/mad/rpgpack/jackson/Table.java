@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import de.fau.cs.mad.rpgpack.R;
-import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import android.util.Log;
 
 @JsonTypeName("table")
