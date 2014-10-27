@@ -3,18 +3,13 @@ package de.fau.cs.mad.rpgpack.templatebrowser;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
-import de.fau.cs.mad.rpgpack.game.GameCharacter;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 
 /**
@@ -25,6 +20,7 @@ import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
  * another values or another subset of modeled elements.
  * 
  */
+@SuppressWarnings("serial")
 public class Template implements Serializable {
 	private String templateName;
 	private String worldName;

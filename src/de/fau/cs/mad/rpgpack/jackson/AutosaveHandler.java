@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 /**
  * Handler for periodically auto saving a {@link Template} or {@link CharacterSheet}.
- * @author Benjamin
  *
  */
 public class AutosaveHandler extends Handler {

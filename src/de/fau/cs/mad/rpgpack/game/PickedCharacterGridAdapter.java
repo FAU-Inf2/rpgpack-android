@@ -4,16 +4,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.fau.cs.mad.rpgpack.R;
-import de.fau.cs.mad.rpgpack.ThumbnailLoader;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 import de.fau.cs.mad.rpgpack.templatebrowser.Template;
 
@@ -27,8 +24,6 @@ public class PickedCharacterGridAdapter extends ArrayAdapter<CharacterSheet> {
 
 	public PickedCharacterGridAdapter(Context context, int layoutID,
 			Template template) {
-		// super(context, R.layout.itemlayout_expandablelist_charakter, template
-		// .getCharacters());
 		super(context, layoutID, template.getCharacters());
 		this.context = context;
 		this.characters = template.getCharacters();

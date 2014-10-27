@@ -57,16 +57,7 @@ public class Template implements Parcelable{
 			//in if case there is an error if we don't do it that way
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
 			Date date = new Date();
-			fileName = format.format(date);
-			if(!sanitizedName.isEmpty()) {
-				fileName = sanitizedName + "-" + date;
-			}
-//			else {
-//				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
-//				Date date = new Date();
-//				fileName = format.format(date);
-//				Log.d("Template.java", "formating date; filename: " + fileName);
-//			}
+			fileName = sanitizedName +" "+ format.format(date);
 		}
 		return fileName;
 	}

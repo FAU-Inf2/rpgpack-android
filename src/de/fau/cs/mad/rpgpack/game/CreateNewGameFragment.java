@@ -7,10 +7,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,9 +18,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,13 +27,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
+import de.fau.cs.mad.rpgpack.URIUtils;
 import de.fau.cs.mad.rpgpack.characterbrowser.CharacterBrowserArrayAdapter;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
-import de.fau.cs.mad.rpgpack.templatestore.TemplateStoreMainActivity;
 
 public class CreateNewGameFragment extends Fragment {
 	public static final String EXTRA_GAME_TO_EDIT = "de.fau.cs.mad.gamekobold.gametoedit";
@@ -127,23 +121,6 @@ public class CreateNewGameFragment extends Fragment {
 		mCallbacks.onSelCharAdapterPass(pickedCharacterGridAdapter);
 
 		pickedCharacterGridView.setAdapter(pickedCharacterGridAdapter);
-
-		// pickedCharacterGridView
-		// .setOnItemClickListener(new OnItemClickListener() {
-		// @Override
-		// public void onItemClick(AdapterView<?> adapterView,
-		// View view, int position, long id) {
-		// curCharacter = (CharacterSheet) adapterView
-		// .getItemAtPosition(position);
-		//
-		// Toast.makeText(
-		// getActivity(),
-		// ((TextView) view
-		// .findViewById(R.id.textItemTitle))
-		// .getText(), Toast.LENGTH_SHORT).show();
-		// // TODO do something on click?
-		// }
-		// });
 
 		// delete character on long click
 		pickedCharacterGridView
@@ -454,21 +431,10 @@ public class CreateNewGameFragment extends Fragment {
 			// get the uri of selected image
 			imageUri = intent.getData();
 
-			// Assume user selects the image from sdcard using Gallery app. The
-			// uri from Gallery app does not give the real path to selected
-			// image, so it has to be resolved on content provider. Method
-			// getRealPathFromURI used to resolve the real path from the uri.
-			path = getRealPathFromURI(getActivity(), imageUri); // from Gallery
+			path = URIUtils.getPath(getActivity(), imageUri);
 
 			Log.i("Here is imageUri = ", "" + imageUri);
 			Log.i("Here is path = ", "" + path);
-
-			// If the path is null, assume user selects the image using File
-			// Manager app. File Manager app returns different information than
-			// Gallery app. To get the real path to selected image, use
-			// getImagePath method from the uri
-			if (path == null)
-				path = imageUri.getPath(); // from File Manager
 
 			if (path != null)
 				bitmap = ThumbnailLoader.loadThumbnail(path, getActivity());
@@ -493,23 +459,6 @@ public class CreateNewGameFragment extends Fragment {
 		// store image path for later use
 		curGame.setIconPath(path);
 		mCallbacks.onGamePass(curGame);
-	}
-
-	// TODO refactoring?
-	public String getRealPathFromURI(Context context, Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = context.getContentResolver().query(contentUri, proj,
-				null, null, null);
-		if (cursor == null)
-			return null;
-
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-		if (cursor.moveToFirst()) {
-			return cursor.getString(column_index);
-		} else
-			return null;
 	}
 
 	/**

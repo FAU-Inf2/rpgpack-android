@@ -202,7 +202,6 @@ public abstract class JacksonInterface {
 	 */
 	public static boolean doesTemplateFileExist(final Template template, final Context context) {
 		if(template == null || context == null) {
-			// TODO thats not right
 			return false;
 		}
 		File dir = getTemplateRootDirectory(context);
@@ -229,26 +228,8 @@ public abstract class JacksonInterface {
 		if(!dir.exists()){
 			dir.mkdirs();
 		}
-		//comments added -> tried something when storing failed
-		//but problem was that date format wasn't given right in template.getFileName()
-//		String pathWithTime = dir.getAbsolutePath() + File.separator + template.getFileName();
-//		String path = pathWithTime;
-//		if (null != pathWithTime && pathWithTime.length() > 0 )
-//		{
-//		    int endIndex = pathWithTime.lastIndexOf(" ");
-//		    if (endIndex != -1)  
-//		    {
-//		        path = pathWithTime.substring(0, endIndex); // not forgot to put check if(endIndex != -1)
-//		    }
-//		}  
-//		Log.d("JacksonInterface", "path to store template: " + path);
-//		Log.d("JacksonInterface", "just template name: " + path);
-//		File theFileToWrite = new File(path);
-//		if(!theFileToWrite.exists()){
-//			theFileToWrite.createNewFile();
-//		}
+
 		FileOutputStream outStream = new FileOutputStream(dir.getAbsolutePath() + File.separator + template.getFileName());
-//		FileOutputStream outStream = new FileOutputStream(theFileToWrite);
 		saveTemplate(template, outStream);
 		if(setLastEditedFlag) {
 			// save in shared preferences the last edited template file name
@@ -474,15 +455,7 @@ public abstract class JacksonInterface {
 		if(game == null || outStream == null) {
 			return;
 		}
-//		Log.d("JACKSONINTERFACE", "saving game");
-//		game.print();
 		ObjectMapper mapper = new ObjectMapper();
-//		if(use_pretty_writer) {
-//			mapper.writerWithDefaultPrettyPrinter().writeValue(outStream, game);
-//		}
-//		else {
-//			mapper.writer().writeValue(outStream, game);
-//		}
 		if(use_pretty_writer) {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		}
@@ -502,14 +475,7 @@ public abstract class JacksonInterface {
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//		if(onlyMetaData) {
-//			// in order to load only meta data we use mix in annotations
-//			// the Template.Character sheet won't be loaded.
-//			mapper.addMixInAnnotations(Template.class, TemplateMixInClass.class);
-//		}
 		Game game = mapper.readValue(inStream, Game.class);
-//		Log.d("JACKSONINTERFACE", "loading game");
-//		game.print();
 		return game;	
 	}
 	

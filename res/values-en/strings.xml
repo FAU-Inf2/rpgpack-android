@@ -294,6 +294,7 @@
     <string name="map_draw">draw</string>
     <string name="map_add">+</string>
     <string name="choose_image">Choose an image</string>
+    <string name="trash">trash</string>
 
     <!-- activity_game_toolbox_randomlist -->
     <string name="shuffle_list">Shuffle List</string>

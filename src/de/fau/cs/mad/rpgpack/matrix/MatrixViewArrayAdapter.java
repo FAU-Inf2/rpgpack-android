@@ -16,6 +16,7 @@ import de.fau.cs.mad.rpgpack.R;
  * or on template editing.
  * 
  */
+@SuppressWarnings("serial")
 public class MatrixViewArrayAdapter extends ArrayAdapter<MatrixItem> implements
 		Serializable {
 	public static final int FLAG_FROM = 1; // Binary 00001

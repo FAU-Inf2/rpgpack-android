@@ -18,6 +18,7 @@ import de.fau.cs.mad.rpgpack.R;
  * This class handles matrix elements we want to display on character creation.
  * 
  */
+@SuppressWarnings("serial")
 public class NewCharacterMatrixViewArrayAdapter extends
 		ArrayAdapter<MatrixItem> implements Serializable {
 	// this flags is used to store visibility of UI elements

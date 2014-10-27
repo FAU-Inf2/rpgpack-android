@@ -1,7 +1,6 @@
 package de.fau.cs.mad.rpgpack.game;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.fau.cs.mad.rpgpack.R;
-import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
 import de.fau.cs.mad.rpgpack.game.CreateNewGameFragment.GameInfoDialogFragment;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;

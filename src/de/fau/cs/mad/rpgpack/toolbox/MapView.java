@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.fau.cs.mad.rpgpack.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.View;
@@ -22,13 +19,9 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.view.MotionEvent;
 
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 public class MapView extends GridView implements OnScaleGestureListener,
 		OnTouchListener {
@@ -86,7 +79,6 @@ public class MapView extends GridView implements OnScaleGestureListener,
 		drawCanvas = new Canvas(canvasBitmap);
 		width = w;
 		height = h;
-		Log.i("froooom", "" + width + "");
 	}
 
 	@Override
@@ -100,32 +92,32 @@ public class MapView extends GridView implements OnScaleGestureListener,
 		canvas.drawPath(drawPath, drawPaint);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
 
 		if (mScaleDetector.onTouchEvent(event))
-			Log.i("Event started", "Zoomzoom");
 
-		if (!mScaleDetector.isInProgress() && paint_enabled) {
-			float x = event.getX();
-			float y = event.getY();
+			if (!mScaleDetector.isInProgress() && paint_enabled) {
+				float x = event.getX();
+				float y = event.getY();
 
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				touch_start(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_MOVE:
-				touch_move(x, y);
-				invalidate();
-				break;
-			case MotionEvent.ACTION_UP:
-				touch_up();
-				invalidate();
-				break;
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					touch_start(x, y);
+					invalidate();
+					break;
+				case MotionEvent.ACTION_MOVE:
+					touch_move(x, y);
+					invalidate();
+					break;
+				case MotionEvent.ACTION_UP:
+					touch_up();
+					invalidate();
+					break;
+				}
 			}
-		}
-	
+
 		return true;
 
 	}
@@ -198,8 +190,6 @@ public class MapView extends GridView implements OnScaleGestureListener,
 			rotateBackground(canvasBitmap);
 		}
 		canvasBitmap = canvasBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Log.i("Bitmaph", "" + canvasBitmap.getHeight());
-		Log.i("Bitmapw", "" + canvasBitmap.getWidth());
 		defaultbg = true;
 		invalidate();
 	}
@@ -244,24 +234,20 @@ public class MapView extends GridView implements OnScaleGestureListener,
 	public boolean onScale(ScaleGestureDetector detector) {
 		scale *= detector.getScaleFactor();
 		scale = Math.max(1.0f, Math.min(scale, 10.0f));
-		Log.d("View", "onScale");
-		Log.d("View", "zoom ongoing, scale: " + detector.getScaleFactor());
 		return true;
 	}
 
 	@Override
 	public boolean onScaleBegin(ScaleGestureDetector detector) {
-		Log.d("View", "onScaleBegin");
-		isZoom = true;
 		return true;
 	}
 
 	@Override
 	public void onScaleEnd(ScaleGestureDetector detector) {
-		Log.d("View", "onScaleEnd");
-		isZoom = false;
-		this.setScaleX(scale);
-		this.setScaleY(scale);
+		if (isZoom) {
+			this.setScaleX(scale);
+			this.setScaleY(scale);
+		}
 
 	}
 

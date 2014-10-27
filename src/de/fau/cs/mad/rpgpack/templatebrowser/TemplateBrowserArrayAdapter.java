@@ -2,8 +2,6 @@ package de.fau.cs.mad.rpgpack.templatebrowser;
 
 import java.util.List;
 
-import de.fau.cs.mad.rpgpack.R;
-import de.fau.cs.mad.rpgpack.ThumbnailLoader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -12,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import de.fau.cs.mad.rpgpack.R;
 
 public class TemplateBrowserArrayAdapter extends ArrayAdapter<Template> {
 	Context context;

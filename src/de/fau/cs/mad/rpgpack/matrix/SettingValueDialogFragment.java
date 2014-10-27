@@ -92,11 +92,11 @@ public class SettingValueDialogFragment extends DialogFragment {
 				playMatrixItems = (ArrayList<MatrixItem>) savedInstanceState
 						.getSerializable(KEY_SAVE_SEL_ITEMS);
 			}
-			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
+			if (savedInstanceState.containsKey(KEY_SAVE_ADAPTER)) {
 				editModeAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
 						.getSerializable(KEY_SAVE_ADAPTER);
 			}
-			if (savedInstanceState.containsKey(KEY_SAVE_SEL_ITEMS)) {
+			if (savedInstanceState.containsKey(KEY_SAVE_ADAPTER_ALL_ITEMS)) {
 				playAdapter = (ArrayAdapter<MatrixItem>) savedInstanceState
 						.getSerializable(KEY_SAVE_ADAPTER_ALL_ITEMS);
 			}

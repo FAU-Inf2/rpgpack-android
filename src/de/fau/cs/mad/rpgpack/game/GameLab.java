@@ -2,12 +2,11 @@ package de.fau.cs.mad.rpgpack.game;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
-import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
-import de.fau.cs.mad.rpgpack.templatebrowser.Template;
 import android.content.Context;
 import android.util.Log;
+import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
+import de.fau.cs.mad.rpgpack.templatebrowser.Template;
 
 public class GameLab {
 	// tag for logging

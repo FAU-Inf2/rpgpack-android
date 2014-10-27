@@ -72,7 +72,7 @@ public class TemplateBrowserActivity extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				// if we are only picking a tempalte for character creation
+				// if we are only picking a template for character creation
 				if (mode_pickTemplateForCharacterCreation) {
 					Intent i = new Intent(TemplateBrowserActivity.this,
 							CreateNewCharacterActivity.class);
@@ -162,22 +162,6 @@ public class TemplateBrowserActivity extends ListActivity {
 												Log.d("TempalteBrowser",
 														"delete template:"
 																+ longClickedTemplate);
-												// delete characters
-												final File characterDir = JacksonInterface
-														.getDirectoryForCharacters(
-																longClickedTemplate,
-																TemplateBrowserActivity.this,
-																false);
-												if (characterDir != null) {
-													// delete characters
-													final File[] characterFiles = characterDir
-															.listFiles();
-													for (final File character : characterFiles) {
-														character.delete();
-													}
-													// delete dircetory
-													characterDir.delete();
-												}
 												if (file.delete()) {
 													// check if we removed the
 													// last edited template
@@ -281,6 +265,12 @@ public class TemplateBrowserActivity extends ListActivity {
 
 	private void startEditingOfTemplate(String fileName) {
 		if (fileName.equals("")) {
+			return;
+		}
+		// small check to see if the file exists
+		File templateFile = new File(JacksonInterface.getTemplateRootDirectory(this), fileName);
+		if(!templateFile.exists()) {
+			// if not return
 			return;
 		}
 		Intent intent = new Intent(TemplateBrowserActivity.this,
@@ -494,8 +484,6 @@ public class TemplateBrowserActivity extends ListActivity {
 	public void setTemplateList(List<Template> templateList,
 			ArrayAdapter adapter) {
 		if (templateList != null) {
-			// TemplateBrowserArrayAdapter adapter =
-			// (TemplateBrowserArrayAdapter) getListAdapter();
 			adapter.clear();
 			adapter.addAll(templateList);
 			adapter.notifyDataSetChanged();

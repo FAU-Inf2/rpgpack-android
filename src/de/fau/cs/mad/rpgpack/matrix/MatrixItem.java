@@ -13,6 +13,7 @@ import de.fau.cs.mad.rpgpack.jackson.SelectAndFavorableItem;
  * Strength, Health, Dexterity etc.
  * 
  */
+@SuppressWarnings("serial")
 public class MatrixItem extends SelectAndFavorableItem implements Serializable {
 	private String itemName;
 	private String value;

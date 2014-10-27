@@ -4,34 +4,18 @@ import java.io.File;
 
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.AbstractThreeButtonMenu;
-import de.fau.cs.mad.rpgpack.CharacterMenu;
-import de.fau.cs.mad.rpgpack.GameMenu;
-import de.fau.cs.mad.rpgpack.MainMenu;
-import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
-import de.fau.cs.mad.rpgpack.TemplateMenu;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class MenuActivity extends AbstractThreeButtonMenu {
 		
 		private CharacterSheet[] characterSheets;
 		public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";
 		public static String INFLATE_CHARACTER_NUMBER = "INFLATE_CHARACTER_NUMBER";
-		
-		private Toast leaveToast = null;
 
 		@SuppressLint("ShowToast")
 		@Override
@@ -47,7 +31,6 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 			} else {
 				characterSheets = new CharacterSheet[characterAbsPaths.length];
 				if (characterAbsPaths != null) {
-					Log.d("Toolbox", "characterAbsPath != null");
 					try {
 						int index = 0;
 						for (String onePath : characterAbsPaths) {
@@ -55,10 +38,6 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 									.loadCharacterSheet(new File(onePath), false);
 						}
 
-						// characterSheet = JacksonInterface.loadCharacterSheet(new
-						// File(
-						// characterAbsPath), false);
-						Log.d("CharacterPlayActivity", "loaded sheets");
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
@@ -116,7 +95,7 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 		 */
 		@Override
 		protected void button1Action() {
-			// Go to Game sub menu
+			// Go to dice tool
 			Intent intent = new Intent(MenuActivity.this,
 					DiceActivity.class);
 			startActivity(intent);
@@ -127,7 +106,7 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 		 */
 		@Override
 		protected void button2Action() {
-			// Go to Character sub menu
+			// Go to tactical map tool
 			Intent intent = MapActivity.createIntentForStarting(this, characterSheets);	
 			startActivity(intent);
 		}
@@ -137,7 +116,7 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 		 */
 		@Override
 		protected void button3Action() {
-			// Go to template sub menu
+			// Go to timer tool
 			Intent intent = new Intent(MenuActivity.this, TimerActivity.class);
 			startActivity(intent);
 			
@@ -146,8 +125,6 @@ public class MenuActivity extends AbstractThreeButtonMenu {
 	
 	public static Intent createIntentForStarting(Context packageContext,
 			CharacterSheet[] sheets) {
-		Log.i("ToolboxActivity",
-				"createIntentForStarting: sheets.length == " + sheets.length);
 		Intent intent = new Intent(packageContext, MenuActivity.class);
 		String[] filePaths = new String[sheets.length];
 		int index = 0;

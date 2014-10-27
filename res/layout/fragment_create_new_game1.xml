@@ -78,7 +78,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/buttonInfoPopup"
         android:background="@drawable/character_grid_border"
-        android:numColumns="4" >
+        android:numColumns="4"
+        android:scrollbarFadeDuration="0" >
     </GridView>
 
 </RelativeLayout>
