@@ -12,7 +12,6 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +34,7 @@ import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.AsyncTaskWithProgressDialog;
 import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
+import de.fau.cs.mad.rpgpack.URIUtils;
 import de.fau.cs.mad.rpgpack.filebrowser.FileBrowser;
 import de.fau.cs.mad.rpgpack.filebrowser.FileTargetIsSourceException;
 import de.fau.cs.mad.rpgpack.filebrowser.FileWouldOverwriteException;
@@ -309,11 +309,8 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 		if (requestCode == PICK_FROM_FILE) {
 			// get the uri of selected image
 			imageUri = data.getData();
-
-			path = getRealPathFromURI(imageUri); // from Gallery
-
-			if (path == null)
-				path = imageUri.getPath(); // from File Manager
+			
+			path = URIUtils.getPath(this, imageUri);
 
 			if (path != null)
 				bitmap = ThumbnailLoader.loadThumbnail(path, this);
@@ -483,22 +480,6 @@ public class CreateNewTemplateActivity extends Activity implements IFileBrowserR
 					R.layout.fragment_create_new_template, container, false);
 			return rootView;
 		}
-	}
-
-	public String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = getContentResolver().query(contentUri, proj, null,
-				null, null);
-		if (cursor == null)
-			return null;
-
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-		if (cursor.moveToFirst()) {
-			return cursor.getString(column_index);
-		} else
-			return null;
 	}
 
 	@Override

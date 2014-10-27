@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.ThumbnailLoader;
+import de.fau.cs.mad.rpgpack.URIUtils;
 import de.fau.cs.mad.rpgpack.character.CharacterEditActivity;
 import de.fau.cs.mad.rpgpack.colorpicker.ColorPickerDialog;
 import de.fau.cs.mad.rpgpack.colorpicker.ColorPickerDialogInterface;
@@ -387,18 +387,7 @@ public class CreateNewCharacterActivity extends Activity implements
 			// get the uri of selected image
 			iconUri = data.getData();
 
-			// Assume user selects the image from sdcard using Gallery app. The
-			// uri from Gallery app does not give the real path to selected
-			// image, so it has to be resolved on content provider. Method
-			// getRealPathFromURI used to resolve the real path from the uri.
-			path = getRealPathFromURI(iconUri); // from Gallery
-
-			// If the path is null, assume user selects the image using File
-			// Manager app. File Manager app returns different information than
-			// Gallery app. To get the real path to selected image, use
-			// getImagePath method from the uri
-			if (path == null)
-				path = iconUri.getPath(); // from File Manager
+			path = URIUtils.getPath(this, iconUri);
 
 			if (path != null)
 				bitmap = ThumbnailLoader.loadThumbnail(path, this);
@@ -419,23 +408,6 @@ public class CreateNewCharacterActivity extends Activity implements
 		characterAltered = true;
 	}
 
-	// TODO refactoring?
-	public String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
-		Cursor cursor = getContentResolver().query(contentUri, proj, null,
-				null, null);
-		if (cursor == null)
-			return null;
-
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-		if (cursor.moveToFirst()) {
-			return cursor.getString(column_index);
-		} else
-			return null;
-	}
-	
 //	@Override
 //	public void onBackPressed() {
 //		//note: we should have reachen this character-edit mode from character-browser
