@@ -201,39 +201,12 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 		} else {
 			getMenuInflater().inflate(R.menu.play_actions, menu);
 		}
-		MenuItem invisibleItem = menu.findItem(R.id.action_show_invisible);
-		invisibleItem.setCheckable(true);
-		invisibleItem.setChecked(showInvisible);
-		// if(inEditMode()){
-		// Log.d("CharacterPlayActivity", "adapt menu for edit mode");
-		// MenuItem menuItem = menu.findItem(R.id.action_editable_mode);
-		// CharSequence menuTitle = menuItem.getTitle();
-		// SpannableString styledMenuTitle = new SpannableString(menuTitle);
-		// styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(),
-		// 0);
-		// menuItem.setTitle(styledMenuTitle);
-		// menuItem = menu.findItem(R.id.action_selection_mode);
-		// menuTitle = menuItem.getTitle();
-		// styledMenuTitle = new SpannableString(menuTitle);
-		// Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(),
-		// UnderlineSpan.class);
-		// styledMenuTitle.removeSpan(spans);
-		// }
-		// else if(inSelectionMode()){
-		// Log.d("CharacterPlayActivity", "adapt menu for selection mode");
-		// MenuItem menuItem = menu.findItem(R.id.action_selection_mode);
-		// CharSequence menuTitle = menuItem.getTitle();
-		// SpannableString styledMenuTitle = new SpannableString(menuTitle);
-		// styledMenuTitle.setSpan(new UnderlineSpan(), 0, menuTitle.length(),
-		// 0);
-		// menuItem.setTitle(styledMenuTitle);
-		// menuItem = menu.findItem(R.id.action_editable_mode);
-		// menuTitle = menuItem.getTitle();
-		// styledMenuTitle = new SpannableString(menuTitle);
-		// Object[] spans = styledMenuTitle.getSpans(0, menuTitle.length(),
-		// UnderlineSpan.class);
-		// styledMenuTitle.removeSpan(spans);
-		// }
+		//XXX: uncomment when invis is working again
+//		MenuItem invisibleItem = menu.findItem(R.id.action_show_invisible);
+//		invisibleItem.setCheckable(true);
+//		invisibleItem.setChecked(showInvisible);
+		
+		
 		MenuItem editModeItem = menu.findItem(R.id.action_editable_mode);
 		editModeItem.setCheckable(true);
 		editModeItem.setChecked(inEditMode());
@@ -281,16 +254,21 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 			invalidateOptionsMenu();
 			return true;
 		case R.id.action_show_invisible:
-			if (item.isChecked()) {
-				Log.d("CharacterPlayActivity", "showInvisible == false");
-				item.setChecked(false);
-				SlideoutNavigationActivity.getAc().showInvisible = false;
-				reinflate();
-			} else {
-				Log.d("CharacterPlayActivity", "showInvisible == true");
-				item.setChecked(true);
-				SlideoutNavigationActivity.getAc().showInvisible = true;
-				reinflate();
+			if(SlideoutNavigationActivity.getAc().inEditMode()){
+				//TODO
+			}
+			else{
+				if (item.isChecked()) {
+					Log.d("CharacterPlayActivity", "showInvisible == false");
+					item.setChecked(false);
+					SlideoutNavigationActivity.getAc().showInvisible = false;
+					refreshInvis();
+				} else {
+					Log.d("CharacterPlayActivity", "showInvisible == true");
+					item.setChecked(true);
+					SlideoutNavigationActivity.getAc().showInvisible = true;
+					refreshInvis();
+				}
 			}
 			return true;
 		case R.id.action_edit:
@@ -397,47 +375,33 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 	}
 
 	public void reinflate() {
+		 FragmentTransaction transaction = getFragmentManager()
+				 .beginTransaction();
+		 transaction.remove(rootFragment);
+		 transaction.remove(currentFragment);
+		 transaction.commit();
+		 getFragmentManager().executePendingTransactions();
+
+
+		 transaction = getFragmentManager()
+				 .beginTransaction();
+		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
+		 transaction.add(R.id.frame_layout_container, currentFragment, "currentFragment");
+		 transaction.commit();
+		 getFragmentManager().executePendingTransactions();
+	}
+	
+	//TODO: change; doesnt work atm
+	public void refreshInvis() {
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
-		Log.d("CharacterPlayActivity", "reinflate; editmode == "
-				+ getAc().inEditMode() + "; selectionMode == "
-				+ getAc().inSelectionMode());
-		// super.inflate(characterSheets[lastCharSelected].getRootTable());
-		// transaction.replace(R.id.navigation_drawer, rootFragment,
-		// "rootFragment");
-		// super.inflate(characterSheets[lastCharSelected].getRootTable());
-		// rootFragment = new FolderFragment();
-		// rootFragment.isATopFragment = true;
-		// //following is needed!
-		// rootFragment = new FolderFragment();
-		// rootFragment.isATopFragment = true;
-		// following is needed!
-		// super.inflate(characterSheets[lastCharSelected].getRootTable());
-		// mDrawerLayout.closeDrawers();
-		// TODO: find out why replacing the fragment in the drawer doesnt work
-		// as expected
-		// (works for character switching; see onItemSelected above)
-		transaction.replace(R.id.navigation_drawer, rootFragment,
-				"rootFragment");
-		// mDrawerLayout.invalidate();
-
-		// topFragment = new WelcomePlayCharacterFragment();
-		// topFragment.elementName = getResources().getString(
-		// R.string.titel_play_character_welcome);
-		// topFragment.isATopFragment = true;
-		// currentFragment = topFragment;
-		// transaction.replace(R.id.frame_layout_container,
-		// currentFragment, "currentFragment");
-		// transaction.replace(R.id.frame_layout_container, currentFragment,
-		// "currentFragment");
+		Log.d("CharacterPlayActivity", "reinflate; editmode == " + getAc().inEditMode()+
+				"; selectionMode == " + getAc().inSelectionMode());
+		transaction.replace(R.id.navigation_drawer, rootFragment);
 		transaction.replace(R.id.frame_layout_container, currentFragment);
 		transaction.commit();
 		getFragmentManager().executePendingTransactions();
 		mDrawerLayout.invalidate();
-
-		Log.d("CharacterPlayActivity", "reinflate; editmode == "
-				+ getAc().inEditMode() + "; matrix view for editing!");
-
 	}
 
 }

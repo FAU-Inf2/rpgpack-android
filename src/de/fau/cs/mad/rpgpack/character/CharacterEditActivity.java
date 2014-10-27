@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -179,16 +180,31 @@ public class CharacterEditActivity extends SlideoutNavigationActivity {
 	 }
 	 
 	 public void reinflate(){
-			FragmentTransaction transaction = getFragmentManager()
-					.beginTransaction();
-			Log.d("CharacterPlayActivity", "reinflate; editmode == " + getAc().inEditMode()+
-					"; selectionMode == " + getAc().inSelectionMode());
-			transaction.replace(R.id.navigation_drawer, rootFragment, "rootFragment");
-			transaction.replace(R.id.frame_layout_container, currentFragment);
-			transaction.commit();
-			getFragmentManager().executePendingTransactions();
-			mDrawerLayout.invalidate();
-		}
+		 //			FragmentTransaction transaction = getFragmentManager()
+		 //					.beginTransaction();
+		 //			Log.d("CharacterPlayActivity", "reinflate; editmode == " + getAc().inEditMode()+
+		 //					"; selectionMode == " + getAc().inSelectionMode());
+		 //			transaction.replace(R.id.navigation_drawer, rootFragment);
+		 //			transaction.replace(R.id.frame_layout_container, currentFragment);
+		 //			transaction.commit();
+		 //			getFragmentManager().executePendingTransactions();
+		 //			mDrawerLayout.invalidate();
+
+		 FragmentTransaction transaction = getFragmentManager()
+				 .beginTransaction();
+		 transaction.remove(rootFragment);
+		 transaction.remove(currentFragment);
+		 transaction.commit();
+		 getFragmentManager().executePendingTransactions();
+
+
+		 transaction = getFragmentManager()
+				 .beginTransaction();
+		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
+		 transaction.add(R.id.frame_layout_container, currentFragment, "currentFragment");
+		 transaction.commit();
+		 getFragmentManager().executePendingTransactions();
+	 }
 	 
 	 private class SetCheckboxVisibilityTask extends AsyncTask<Boolean, Void, Boolean> {
 			@Override

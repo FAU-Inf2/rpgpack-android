@@ -2,7 +2,6 @@ package de.fau.cs.mad.rpgpack.template_generator;
 
 import java.util.ArrayList;
 
-import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.*;
 import de.fau.cs.mad.rpgpack.character.CharacterEditActivity;
 import de.fau.cs.mad.rpgpack.game.CharacterPlayActivity;
@@ -14,7 +13,9 @@ import de.fau.cs.mad.rpgpack.template_generator.FolderElementData.element_type;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.support.v4.view.GravityCompat;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -268,7 +269,11 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 	@Override
 	public View getView(int viewPosition, View convertView, ViewGroup parent) {
 		final FolderElementData data = this.getItem(viewPosition);
-		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition);
+//		Log.d("FolderElementAdapter", "viewPosition == " + viewPosition +
+//				"; convertview null?" + (convertView==null));
+		Log.d("FolderElementAdapter", "getItemViewType == "
+				+ getItemViewType(viewPosition)
+				+ "; convertview null?" + (convertView==null));
 		View view = null;
 		// Check to see if this row has already been painted once.
 		if (convertView == null) {
@@ -284,6 +289,7 @@ public class FolderElementAdapter extends ArrayAdapter<FolderElementData> {
 			Log.d("FolderElementAdapter", "getItemViewType(viewPosition) == "
 					+ getItemViewType(viewPosition));
 			if (getItemViewType(viewPosition) == 4) {
+				Log.d("FolderElementAdapter", "inflate with button");
 				view = inflator.inflate(
 						R.layout.template_listview_row_editable,
 						new LinearLayout(SlideoutNavigationActivity.getAc()),
