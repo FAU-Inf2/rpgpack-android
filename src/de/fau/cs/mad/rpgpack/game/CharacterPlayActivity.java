@@ -385,8 +385,8 @@ public class CharacterPlayActivity extends SlideoutNavigationActivity implements
 
 		 transaction = getFragmentManager()
 				 .beginTransaction();
+		 transaction.add(R.id.frame_layout_container, currentFragment);
 		 transaction.add(R.id.navigation_drawer, rootFragment, "rootFragment");
-		 transaction.add(R.id.frame_layout_container, currentFragment, "currentFragment");
 		 transaction.commit();
 		 getFragmentManager().executePendingTransactions();
 	}
