@@ -577,7 +577,7 @@ public class TemplateStoreMainActivity extends ListActivity {
 		    if(tmpl.hasImage()) {
 		    	image.setImageBitmap(tmpl.getBm());
 		    } else {
-				Drawable defaultImage = getResources().getDrawable(R.drawable.game_default_white);
+				Drawable defaultImage = getResources().getDrawable(R.drawable.group_white);
 				image.setBackgroundColor(Color.TRANSPARENT);
 				image.setImageDrawable(defaultImage);
 		    }
