@@ -6,11 +6,8 @@
     android:background="@color/background_dark" >
 
     <item
-        android:id="@+id/item_forest"
-        android:title="@string/map_forest"/>
-    <item
-        android:id="@+id/item_rock"
-        android:title="@string/map_rock"/>
+        android:id="@+id/item_default"
+        android:title="@string/map_default"/>
     <item
         android:id="@+id/item_add"
         android:title="@string/map_add"/>

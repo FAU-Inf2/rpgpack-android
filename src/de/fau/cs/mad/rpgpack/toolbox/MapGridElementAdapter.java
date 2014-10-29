@@ -111,15 +111,12 @@ public class MapGridElementAdapter extends BaseAdapter {
 		public boolean onDrag(View v, DragEvent event) {
 			switch (event.getAction()) {
 			case DragEvent.ACTION_DRAG_STARTED:
-				// Log.v("Test", "Entered start");
 				break;
 			case DragEvent.ACTION_DRAG_ENTERED:
-				// Log.v("Test", "Entered drag");
 				break;
 			case DragEvent.ACTION_DRAG_EXITED:
 				break;
 			case DragEvent.ACTION_DROP:
-				// Log.v("Test", "Entered drop");
 				final View view = (View) event.getLocalState();
 				if (view != null && (view instanceof ImageView)) {
 					ImageView castedView = (ImageView) view;
@@ -177,18 +174,6 @@ public class MapGridElementAdapter extends BaseAdapter {
 				return true;
 			}
 		});
-
-		/*
-		pieceView.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View view) {
-				final ViewGroup owner = (ViewGroup) view.getParent();
-				owner.removeView(view);
-				return true;
-			}
-		}); */
-
 		return inputView;
 	}
 

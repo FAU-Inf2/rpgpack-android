@@ -33,7 +33,7 @@ public class MapView extends GridView implements OnScaleGestureListener,
 	private Bitmap canvasBitmap;
 	private int height;
 	private int width;
-	private String background = "forest";
+	private String background = "map_default";
 	private Map<Path, Integer> colorMap = new HashMap<Path, Integer>();
 	private ArrayList<Path> paths = new ArrayList<Path>();
 	private ArrayList<Path> undonePaths = new ArrayList<Path>();

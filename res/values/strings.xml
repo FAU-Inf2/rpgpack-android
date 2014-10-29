@@ -289,8 +289,7 @@
     <string name="description_undo">rückgängig machen</string>
     <string name="description_redo">wiederholen</string>
     <string name="description_switch_background">Hintergrund wechseln</string>
-    <string name="map_forest">Wald</string>
-    <string name="map_rock">Stein</string>
+    <string name="map_default">Standard</string>
     <string name="map_draw">zeichnen</string>
     <string name="map_add">+</string>
     <string name="choose_image">Wähle ein Bild aus</string>

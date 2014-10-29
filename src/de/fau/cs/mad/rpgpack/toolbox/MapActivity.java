@@ -165,12 +165,8 @@ public class MapActivity extends Activity implements OnDragListener {
 				String bg = "";
 
 				switch (item.getItemId()) {
-				case R.id.item_forest:
-					bg = "forest";
-					mapView.setBackground(bg);
-					break;
-				case R.id.item_rock:
-					bg = "rock";
+				case R.id.item_default:
+					bg = "map_default";
 					mapView.setBackground(bg);
 					break;
 				case R.id.item_add:
@@ -182,7 +178,8 @@ public class MapActivity extends Activity implements OnDragListener {
 							getString(R.string.choose_image));
 					startActivityForResult(intent, 1);
 				default:
-					bg = "forest";
+					bg = "map_default";
+					mapView.setBackground(bg);
 					break;
 				}
 
@@ -250,7 +247,7 @@ public class MapActivity extends Activity implements OnDragListener {
 	}
 
 	protected void initTest() {
-		mapView.setBackgroundResource(R.drawable.forest);
+		mapView.setBackgroundResource(R.drawable.map_default);
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		WindowManager wm = (WindowManager) getApplicationContext()
 				.getSystemService(Context.WINDOW_SERVICE);
