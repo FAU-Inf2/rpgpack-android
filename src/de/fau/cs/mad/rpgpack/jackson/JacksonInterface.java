@@ -80,7 +80,12 @@ public abstract class JacksonInterface {
 	@SuppressLint("SimpleDateFormat")
 	public static void saveCharacterSheet(final CharacterSheet sheet, final File jsonFile) throws JsonGenerationException, JsonMappingException, IOException {
 		if(jsonFile == null || sheet == null) {
-			Toast.makeText(SlideoutNavigationActivity.getAc(), SlideoutNavigationActivity.getAc().getResources().getString(R.string.char_save_error), Toast.LENGTH_LONG).show();
+			// null pointer check
+			// toast is only shown when getAc() is set.
+			Context context = SlideoutNavigationActivity.getAc();
+			if(context != null) {
+				Toast.makeText(context, context.getResources().getString(R.string.char_save_error), Toast.LENGTH_LONG).show();
+			}
 			return;
 		}
 		Log.d(LOG_TAG, " saving character. path:"+jsonFile.getAbsolutePath());
@@ -93,7 +98,12 @@ public abstract class JacksonInterface {
 		Date date = new Date();
 		sheet.setFileLastUpdated(dateFormat.format(date));
 		mapper.writer().writeValue(outStream, sheet);
-		Toast.makeText(SlideoutNavigationActivity.getAc(), SlideoutNavigationActivity.getAc().getResources().getString(R.string.char_saved), Toast.LENGTH_LONG).show();
+		// null pointer check
+		// toast is only shown when getAc() is set.
+		Context context = SlideoutNavigationActivity.getAc();
+		if(context != null) {
+			Toast.makeText(context, context.getResources().getString(R.string.char_saved), Toast.LENGTH_LONG).show();	
+		}		
 	}
 	//
 	// TEMPLATE FUNCTIONS START
