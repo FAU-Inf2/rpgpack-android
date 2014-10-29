@@ -74,7 +74,6 @@ public class ColorPickerDialog extends DialogFragment implements View.OnClickLis
 	    final View view = inflater.inflate(R.layout.color_picker_layout, null);
 	    ImageView triangle = (ImageView)view.findViewById(R.id.imageView1);
 	    triangle.setColorFilter(getActivity().getResources().getColor(R.color.background_light), Mode.SRC_ATOP);
-	    // shuffle colors
 	    // create button list
 	    buttons = new ImageButton[12];
 	    buttons[0] = (ImageButton)view.findViewById(R.id.imageButton1);

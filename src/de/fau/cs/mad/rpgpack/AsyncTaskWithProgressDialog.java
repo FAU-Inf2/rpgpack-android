@@ -3,7 +3,6 @@ package de.fau.cs.mad.rpgpack;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-//import android.util.Log;
 
 /**
  * Abstract class for faster creation of AsyncTask that should show a {@link ProgressDialog}.
@@ -41,7 +40,6 @@ public abstract class AsyncTaskWithProgressDialog<Params, Progress, Result> exte
 	protected void onPostExecute(Result result) {
 		// close progress dialog
 		if (pd != null) {
-//			Log.d("ASYNC TASK", "DISMISSING PD");
 			pd.dismiss();
 			pd = null;
 		}

@@ -27,7 +27,6 @@ public class CharacterExportTask extends AsyncTaskWithProgressDialog<File, Void,
 
 	@Override
 	protected void onPreExecute() {
-		// TODO STRING
 		super.onPreExecute(context, context.getString(R.string.msg_please_wait), context.getString(R.string.msg_exporting_template));
 	}
 

@@ -19,7 +19,7 @@ public class CharacterBrowserArrayAdapter extends ArrayAdapter<CharacterSheet> {
 
 	public CharacterBrowserArrayAdapter(Context context,
 			List<CharacterSheet> objects) {
-		// TODO layout aendern
+		// TODO change layout
 		super(context, R.layout.rowlayout_template_browser, objects);
 		this.characterList = objects;
 		this.context = context;

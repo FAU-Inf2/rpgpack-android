@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +19,6 @@ import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.SlideoutNavigationActivity;
 import de.fau.cs.mad.rpgpack.jackson.CharacterSheet;
 import de.fau.cs.mad.rpgpack.jackson.JacksonInterface;
-import de.fau.cs.mad.rpgpack.template_generator.GeneralFragment;
-import de.fau.cs.mad.rpgpack.template_generator.WelcomeFragment;
-import de.fau.cs.mad.rpgpack.template_generator.WelcomeNewCharacterFragment;
-import de.fau.cs.mad.rpgpack.template_generator.WelcomePlayCharacterFragment;
 
 public class CharacterEditActivity extends SlideoutNavigationActivity {
 	public static String EXTRA_CHARACTER_ABS_PATH = "EXTRA_CHARACTER_ABS_PATH";

@@ -4,12 +4,9 @@ import de.fau.cs.mad.rpgpack.R;
 import de.fau.cs.mad.rpgpack.alljoyn.TemplateListActivity;
 import de.fau.cs.mad.rpgpack.characterbrowser.CharacterBrowserFragment;
 import de.fau.cs.mad.rpgpack.game.CreateNewGameActivity;
-import de.fau.cs.mad.rpgpack.game.CreateNewGameFragment;
 import de.fau.cs.mad.rpgpack.game.GameBrowserActivity;
-import de.fau.cs.mad.rpgpack.templatebrowser.TemplateBrowserActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 public class GameMenu extends AbstractThreeButtonMenu {
 	@Override

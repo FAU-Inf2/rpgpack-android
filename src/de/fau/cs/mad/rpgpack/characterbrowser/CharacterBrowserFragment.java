@@ -74,7 +74,7 @@ public class CharacterBrowserFragment extends ListFragment {
 				final CharacterSheet clickedChar = adapter.getItem(position);
 
 				if (mode_pickCharacterForGameCreation) {
-					// change backgroud color for selected character and
+					// change background color for selected character and
 					// add it to the pickedCharacterGrid
 					view.setSelected(true);
 
