@@ -30,7 +30,7 @@
         android:maxWidth="50dip"
         android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/game_default_white" />
+        android:src="@drawable/group_white" />
 
     <TextView
         android:id="@+id/tv_store_worldname"

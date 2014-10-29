@@ -94,7 +94,7 @@ public class TemplateStoreArrayAdapter extends ArrayAdapter<StoreTemplate> {
 			}
 			holder.img.setImageBitmap(curr.getBm());
 		} else {
-			Drawable defaultImage = context.getResources().getDrawable(R.drawable.game_default_white);
+			Drawable defaultImage = context.getResources().getDrawable(R.drawable.group_white);
 			holder.img.setImageDrawable(defaultImage);
 		}
 
