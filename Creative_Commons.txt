@@ -1,0 +1,5 @@
+"Edit, new, write icon": res/drawable-hdpi/edit_icon.png
+has been taken from:
+https://www.iconfinder.com/icons/103173/edit_new_write_icon
+It is licenced under Creative Commons:
+http://creativecommons.org/licenses/by/3.0/
