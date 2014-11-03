@@ -474,4 +474,19 @@
     <string name="alljoyn_start_service">Start service</string>
     <string name="title_activity_alljoyn_template_service">RPG-Pack Template Service</string>
 
+    <!-- About-Page -->
+    <string name="about_page">
+        Benutzte Libraries:
+        \n\n
+        AllJoyn - Licenced under ISC-Licence. The Licence can be found here: http://opensource.org/licenses/isc-license.txt.
+        \n\n
+        SuperToolTips - Licenced under Apache License, Version 2.0. The Licence can be found here: http://www.apache.org/licenses/LICENSE-2.0.html.
+        \n\n
+        "Edit, new, write icon": res/drawable-hdpi/edit_icon.png was taken from https://www.iconfinder.com/icons/103173/edit_new_write_icon and modified.
+        \n
+        It is licenced under Creative Commons Version 3.0. It can be found here: http://creativecommons.org/licenses/by/3.0/.
+    </string>
+    
+    <string name="about_button">Über diese App</string>
+    
 </resources>

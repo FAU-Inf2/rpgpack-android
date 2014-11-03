@@ -2,18 +2,41 @@ package de.fau.cs.mad.rpgpack;
 
 import de.fau.cs.mad.rpgpack.R;
 import android.annotation.SuppressLint;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainMenu extends AbstractThreeButtonMenu {
 	// toast for managing double press to exit feature
 	private Toast leaveToast = null;
 
-	@SuppressLint("ShowToast")
+	@SuppressLint({ "ShowToast", "NewApi" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Button about = new Button(this);
+		LinearLayout ll = (LinearLayout)findViewById(R.id.three_parts_layout);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		about.setText(getResources().getString(R.string.about_button));
+		about.setLayoutParams(lp);
+		ll.addView(about);
+		about.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainMenu.this, AboutPage.class);
+				startActivity(intent);
+			}
+		});
+		
 
 		// create toast for managing double press to exit feature
 		leaveToast = Toast.makeText(this, getString(R.string.leave_toast),Toast.LENGTH_SHORT);

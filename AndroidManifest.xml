@@ -137,6 +137,8 @@
         </activity>
         <activity android:name="de.fau.cs.mad.rpgpack.DownloadTemplateMenu" >
         </activity>
+		<activity android:name="de.fau.cs.mad.rpgpack.AboutPage" >
+        </activity>
     </application>
 
 </manifest>

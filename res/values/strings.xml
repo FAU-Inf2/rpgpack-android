@@ -475,5 +475,21 @@
     <string name="alljoyn_send_template">Klicke auf ein Template um es an ein wartendes Geräte zu schicken.</string>
     <string name="alljoyn_start_service">Start service</string>
     <string name="title_activity_alljoyn_template_service">RPG-Pack Template Service</string>
+    
+    <!-- About-Page -->
+    <string name="about_page">
+        Benutzte Libraries:
+        \n\n
+        AllJoyn - Lizensiert unter ISC-Lizenz. Die Lizenz kann unter http://opensource.org/licenses/isc-license.txt gefunden werden.
+        \n\n
+        SuperToolTips - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0.html gefunden werden.
+        \n\n
+        "Edit, new, write icon": res/drawable-hdpi/edit_icon.png wurde übernommen von https://www.iconfinder.com/icons/103173/edit_new_write_icon und modifiziert.
+        \n
+        Es unterliegt den Creative Commons Version 3.0. Diese kann unter http://creativecommons.org/licenses/by/3.0/ gefunden werden.
+    </string>
+    
+    <string name="about_button">About</string>
+    
 
 </resources>
