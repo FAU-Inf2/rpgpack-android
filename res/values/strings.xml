@@ -487,6 +487,8 @@
         "Edit, new, write icon": res/drawable-hdpi/edit_icon.png wurde übernommen von https://www.iconfinder.com/icons/103173/edit_new_write_icon und modifiziert.
         \n
         Es unterliegt den Creative Commons Version 3.0. Diese kann unter http://creativecommons.org/licenses/by/3.0/ gefunden werden.
+    	\n\n
+    	"Chartbar icon": res/drawable/best.png ist Teil eines Icon-Sets auf http://iconleak.com 
     </string>
     
     <string name="about_button">Über diese App</string>
