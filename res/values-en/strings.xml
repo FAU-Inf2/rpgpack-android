@@ -476,11 +476,16 @@
 
     <!-- About-Page -->
     <string name="about_page">
-        Benutzte Libraries:
+        This App is licenced under the MIT-Licence. The Licence can be found at:
+        http://opensource.org/licenses/MIT
+        
+        Following Libraries are used:
         \n\n
-        AllJoyn - Licenced under ISC-Licence. The Licence can be found here: http://opensource.org/licenses/isc-license.txt.
+        AllJoyn - Licenced under ISC-Licence. The Licence can be found here: http://opensource.org/licenses/isc-license
         \n\n
-        SuperToolTips - Licenced under Apache License, Version 2.0. The Licence can be found here: http://www.apache.org/licenses/LICENSE-2.0.html.
+        SuperToolTips - Licenced under Apache License, Version 2.0. The Licence can be found here: http://www.apache.org/licenses/LICENSE-2.0
+        \n\n
+        ZXing - Licenced under Apache License, Version 2.0. The Licence can be found here: http://www.apache.org/licenses/LICENSE-2.0
         \n\n
         "Edit, new, write icon": res/drawable-hdpi/edit_icon.png was taken from https://www.iconfinder.com/icons/103173/edit_new_write_icon and modified.
         \n
