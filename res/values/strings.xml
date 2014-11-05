@@ -486,7 +486,8 @@
         \n\n
         SuperToolTips - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
         \n\n
-        ZXing - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
+        Die Klassen: com.google.zxing.integration.android.IntentIntegrator und
+        com.google.zxing.integration.android.IntentResult - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
         \n\n
         Jackson - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
         \n\n
