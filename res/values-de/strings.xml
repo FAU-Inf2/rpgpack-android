@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General -->
+    <string name="app_name">RPG Pack</string>
+    <string name="hello_world">Hallo Welt!</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_tools">Werkzeuge</string>
+    <string name="action_character">Charakter wählen</string>
+    <string name="action_edit">Editieren</string>
+    <string name="action_edit_mode">Editier-Modus</string>
+    <string name="action_selection_mode">Betrachten-Modus</string>
+    <string name="action_show_invisible">Unsichtbare Elemente anzeigen</string>
+    <string name="title_activity_alljoyn_test">Alljoyn-Test</string>
+    <string name="action_main">Main</string>
+    <string name="action_go_above">..</string>
+    <string name="action_showlists">Zeige Liste (1. Kategorie)</string>
+    <string name="choice_prompt">Wähle aus</string>
+    <string name="ok">OK</string>
+    <string name="empty"></string>
+    <string name="name">Name</string>
+
+    <!-- activity_main -->
+    <string name="start_game">Spiel starten</string>
+    <string name="load_game">Spiel laden</string>
+    <string name="template_generator">Templates verwalten</string>
+    <string name="manage_charackter">Charakter verwalten</string>
+    <string name="settings">Einstellungen</string>
+    <string name="alljoyn">Alljoyn</string>
+    <string name="leave_toast">Druecke erneut Zurueck um die App zu verlassen.</string>
+
+    <!-- Template Generator -->
+    <string name="tpg_actionbar_title">ABCD</string>
+    <string name="template_saved">Deine Vorlage wurde erfolgreich gespeichert</string>
+    <string name="template_save_error">Fehler! Vorlage konnte nicht gespeichrt werden.</string>
+    
+
+    <!-- activity_alljoin_test -->
+    <string name="btn_call_service">Dienst rufen</string>
+    <string name="answer_from_service">Antwort des Dienstes</string>
+    <string name="signal_from_service">Signal des Dienstes</string>
+
+    <string-array name="spaltentypen">
+        <item>Textfeld</item>
+        <item>CheckBox</item>
+        <item>PopUp</item>
+    </string-array>
+    
+    <!-- activity_template_generator_welcome -->
+    <string name="template_generator_welcom">Willkommen im Template-Generator!\n \n Um Dein eigenes Template zu erstellen öffne einfach das Menü und lege los!</string>
+    <string name="popup_titel">Item Information</string>
+    <string name="menu_item_save_template">Template speichern</string>
+    <string name="action_auto_save">Automatisches Speichern</string>
+    <string name="title_activity_template_generator_welcome">TemplateGeneratorWelcomeActivity</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Tabelle</item>
+        <item>Matrix</item>
+        <item>Ordner</item>
+        <item>Neue Zelle hinzufügen</item>
+    </string-array>
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_table2_red</item>
+        <item>@drawable/ic_matrix_red</item>
+        <item>@drawable/ic_folder_red</item>
+        <item>@drawable/ic_add_item2_grey</item>
+    </array>
+
+    <string name="drawer_open">Navigation öffnen</string>
+    <string name="drawer_close">Navigation schließen</string>
+
+    <!-- MatrixPopUp -->
+    <string name="add_item">Speichern</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="hint_matrix_item_name">Name des Elements&#8230;</string>
+    <string name="hint_description_text">Dein Beschreibungstext&#8230;</string>
+    <string name="hint_default_value_range_from">0</string>
+    <string name="hint_default_value_range_to">100</string>
+    <string name="hint_default_value_modificator">-2</string>
+    <string name="hint_default_value_defvalue">50</string>
+    <string name="text_default_value">Standardwert:</string>
+    <string name="text_range_from">Reichweite von:</string>
+    <string name="text_range_to">Reichweite bis:</string>
+    <string name="text_visible">sichtbar?</string>
+    <string name="text_modificator">Modifikator:</string>
+    <string name="text_description">Beschreibung:</string>
+
+    <!-- ItemLayout NewItem Matrix -->
+    <string name="text_item_add">+</string>
+    <string name="item_text">Text</string>
+    <string name="modifikator">mod</string>
+    <string name="from_to">von - bis</string>
+    <string name="matrix_item_title">Titel</string>
+    <string name="matrix_item_value">Wert</string>
+    <string name="item_range">Bereich</string>
+
+    <!-- ItemLayout Character Icon -->
+    <string name="character_icon_textview">TextView</string>
+
+    <!-- CreateNewTemplate -->
+    <string name="text_create_template">Template erstellen</string>
+    <string name="hint_template_name">Name des Templates&#8230;</string>
+    <string name="text_add_icon">Foto hinzufügen</string>
+    <string name="hint_world_name">Name der Welt&#8230;</string>
+    <string name="toast_create_template_now">Erstelle nun dein Template!</string>
+    <string name="toast_edit_template_now">Editiere nun dein Template!</string>
+    <string name="msg_template_file_already_exists">Es existiert bereits eine Vorlage mit dem gleichem Datei Namen.</string>
+    <string name="msg_yes_to_overwrite_no_to_edit">Klicke auf Ja um die Datei zu ueberschreiben oder auf Nein um den Namen zu aendern.</string>
+
+    <string-array name="image_picker_items">
+        <item>von Kamera</item>
+        <item>von SD-Karte</item>
+    </string-array>
+
+    <string name="add_icon">Bild hinzufügen</string>
+    <string name="warning_set_name">Dein Template braucht einen Namen!</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+
+    <!-- FolderElementAdapter -->
+    <string name="question_delete">Element löschen?</string>
+    <string name="long_click_dialog_message">Klicke auf JA um dieses Element zu löschen</string>
+
+    <!-- TableFragment -->
+    <string name="save_table">Tabelle speichern</string>
+    <string name="go_back">Zurück</string>
+    <string name="new_element">&#8230;</string>
+    <string name="headline">Überschrift</string>
+    <string name="headline1">Name</string>
+    <string name="headline2">Beschreibung</string>
+    <string name="blank"> - </string>
+    <string name="number">Nr.</string>
+    <string name="column_name">Spaltenname</string>
+    <string name="column_type">Spaltentyp</string>
+    <string name="dot">.</string>
+    <string name="question_delete_row">Zeile löschen?</string>
+    <string name="text_delete_row">Klicke auf JA um diese Zeile zu löschen</string>
+    <string name="reference_inexistent"> existiert nicht</string>
+    <string name="choose_reference">Wähle den zu referenzierenden Wert</string>
+    <string name="no_reference">Leider kein zu referenzierender Wert gefunden</string>
+    
+    
+<!-- MatrixFragment -->
+    <string name="msg_delete_item">Element löschen?</string>
+    <string name="new_matrix_item">Neues Element</string>
+    <string name="msg_yes_to_item_delete">Klicke auf JA um dieses Element zu löschen</string>
+    <string name="text_new_element">Neues Element</string>
+
+    <!-- TemplateGenerator -->
+    <string name="loading_template">Template wird geladen&#8230;</string>
+    <string name="wait">Warten Sie bitte einen Moment&#8230;</string>
+    <string name="loading_template_failure">Template konnte nicht geladen werden!</string>
+    
+    <!-- Character Editor -->
+    <string name="menu_item_save_character">Charakter speichern</string>
+    <string name="char_saved">Charakter erfolgreich gespeichert.</string>
+    <string name="char_save_error">Fehler! Charakter konnte nicht gespeichert werden.</string>
+    
+    <!-- WarningLeaveDialog -->
+    <string name="question_exit">Wollen Sie den Template-Generator wirklich verlassen?</string>
+    <string name="yes_and_trash">Ja und verwerfen</string>
+    <string name="yes_and_save">"Ja und speichern"</string>
+
+    <!-- activity_template_details -->
+    <string name="edit_template">Template bearbeiten</string>
+    <string name="medium_text">Mittlerer Text</string>
+    <string name="popup_template_details_info_titel">Template Beschreibung</string>
+    <string name="popup_template_details_tags_titel">Template Tags</string>
+    <string name="action_delete_template">Template löschen</string>
+    <string name="no_description_found">Keine Beschreibung gefunden</string>
+    <string name="create_new_character">Charakter erstellen</string>
+    <string name="lvl_label">Lvl:</string>
+    <string name="change_color_label">Farbe ändern</string>
+    <string name="hint_your_description">Deine Beschreibung</string>
+    <string name="back">Zurück</string>
+    <string name="msg_want_to_delete">Willst Du dieses Template wirklich löschen?</string>
+    <string name="msg_yes_to_delete">Klicke auf JA um dieses Template zu löschen.</string>
+    <string name="edit_character">Charakter bearbeiten</string>
+
+    <!-- alertdialog_template_generator_add_new_element -->
+    <string name="text_element_name">Name des Elements:</string>
+    <string name="text_element_type">Typ des Elements:</string>
+    <string name="text_tabelle">Tabelle</string>
+    <string name="text_matrix">Matrix</string>
+    <string name="text_ordner">Ordner</string>
+    <string name="hint_text_element_name">Name</string>
+    <string name="alert_set_element_name">Bitte trage einen Namen ein!</string>
+
+    <!-- activity_template_generator -->
+    <string name="text_press_to_add_new_folder">Neues Element hinzufügen</string>
+    <string name="text_create_your_folders_here">Erstelle hier Deine Ordner</string>
+
+    <!-- alertdialog_template_generator_tableview -->
+    <string name="text_columns_number">Spaltenanzahl</string>
+
+    <!-- table_view_popup -->
+    <string name="hint_headline">Dein Überschrift&#8230;</string>
+    <string name="hint_your_notes">Deine Notizen&#8230;</string>
+
+    <!-- TemplateBrowserActivity -->
+    <string name="msg_loading_template_list">Vorlagen werden geladen&#8230;</string>
+    <string name="msg_updating_template_list">Vorlagen werden geupdated&#8230;</string>
+    <string name="msg_please_wait">Einen Augenblick bitte&#8230;</string>
+    <string name="row_edit_last_template">Letztes Vorlage bearbeiten&#8230;</string>
+    <string name="row_create_new_template">Neues Vorlage erstellen&#8230;</string>
+    <string name="menu_label_export_template">Exportiere Vorlage als Datei</string>
+    <string name="menu_label_import_template">Importiere ein Vorlage aus einer Datei</string>
+    <string name="toast_exported_template">Vorlage exportiert nach: %1$s</string>
+    <string name="toast_exported_template_failed">Exportieren fehlgeschlagen!</string>
+    <string name="toast_fileexplorer_msg_pick_folder">Bitte waehle einen Ordner.</string>
+    <string name="toast_fileexplorer_msg_pick_template">Bitte waehle die Vorlage.</string>
+    <string name="toast_fileexplorer_msg_pick_character">Bitte waehle den Charakter.</string>
+    <string name="toast_imported_template">Vorlage importiert.</string>
+    <string name="toast_imported_template_failed">Importieren fehlgeschlagen!</string>
+    <string name="toast_file_is_not_template">Datei ist keine Vorlage!</string>
+    <string name="toast_no_last_edited_tempalte">Keine zuletzt bearbeitete Vorlage vorhanden.</string>
+    <string name="template_item_adapter_author_date_label">Von %1$s, %2$s</string>
+
+    <!-- template_generator_table_view -->
+    <string name="text_add_row"> + Zeile</string>
+    <string name="text_add_column"> + Spalte</string>
+    <string name="text_remove_column"> - Spalte</string>
+    <string name="text_press_to_add_new_row">Neue Zeile hinzufügen</string>
+
+    <!-- popup_template_details_info -->
+    <string name="hint_set_your_description_text">Hier hast Du Platz für deine Notizen&#8230;</string>
+    <string name="hint_tag_string">Durch Komma getrennte Tags&#8230;</string>
+    <string name="title_activity_new_game">NewGameActivity</string>
+
+    <!-- game -->
+    <string name="save">Speichern</string>
+    <string name="save_game">Spiel speichern</string>
+    <string name="game_browser_title">Deine Spiele</string>
+
+    <!-- character_editor -->
+    <string name="edit">editieren</string>
+
+    <!-- fragment_create_new_game -->
+    <string name="hint_game_name">Spielname&#8230;</string>
+    <string name="hint_playsystem">Spielwelt&#8230;</string>
+    <string name="hint_gamemaster">Gamemaster&#8230;</string>
+    <string name="hint_3">Tipp3&#8230;</string>
+
+    <!-- fragment_character_details -->
+    <string name="character_name">Charakter Name</string>
+    <string name="three">3</string>
+    <string name="menu_export_character">Charakter in eine Datei exportieren</string>
+    <string name="toast_exported_character">Charakter exportiert nach: %1$s</string>
+    <string name="toast_exported_character_failed">Exportieren fehlgeschlagen!</string>
+
+    <!-- fragment_game_details -->
+    <string name="text_change_game">Spiel anpassen</string>
+    <string name="text_play_game">Spielen</string>
+    <string name="text_remove_character_from_game">Charakter aus diesem Spiel löschen?</string>
+    <string name="text_click_to_remove_character_from_game">Klicke auf JA um diesen Charakter aus dem Spiel zu löschen.</string>
+    <string name="msg_edit_game_mode">Nun kannst Du das Spiel bearbeiten!</string>
+    <string name="game_name">Spielname</string>
+    <string name="world_name">Name der Spielwelt</string>
+    <string name="creation_date">Erstellungsdatum</string>
+    <string name="gamemaster">Gamemaster: </string>
+    <string name="message_no_characters">Bitte füge dem Spiel erst Charaktere hinzu um es zu starten.</string>
+    <string name="message_character_chosen_front_part">Du bist jetzt im Spielmodus. Charakter \""</string>
+    <string name="message_character_chosen_ending_part">"\"ist ausgewählt."</string>
+    
+    <!-- fragment_games_list -->
+    <string name="template_store">Template Store</string>
+
+    <!-- play_character_fragment -->
+    <string name="played_character_title">Dein Charakter zum Spielen</string>
+
+    <!-- activity_game_toolbox_dice -->
+    <string name="add_die">Würfel hinzuf.</string>
+    <string name="roll_dice">würfeln</string>
+    <string name="add_d4">d4</string>
+    <string name="add_d6">d6</string>
+    <string name="add_d8">d8</string>
+    <string name="add_d10">d10</string>
+    <string name="add_d12">d12</string>
+    <string name="add_d20">d20</string>
+
+    <!-- activity_game_toolbox_map -->
+    <string name="description_red">rot</string>
+    <string name="description_green">grün</string>
+    <string name="description_black">schwarz</string>
+    <string name="description_undo">rückgängig machen</string>
+    <string name="description_redo">wiederholen</string>
+    <string name="description_switch_background">Hintergrund wechseln</string>
+    <string name="map_default">Standard</string>
+    <string name="map_draw">zeichnen</string>
+    <string name="map_add">+</string>
+    <string name="choose_image">Wähle ein Bild aus</string>
+    <string name="trash">Mülleimer</string>
+
+    <!-- activity_game_toolbox_randomlist -->
+    <string name="shuffle_list">Liste mischen</string>
+
+    <!-- activity_game_toolbox_timer -->
+    <string name="timer_start">Start</string>
+    <string name="timer_pause">Pause</string>
+    <string name="add_hour">+h</string>
+    <string name="add_minute">+m</string>
+    <string name="add_second">+s</string>
+    <string name="remove_hour">-h</string>
+    <string name="remove_minute">-m</string>
+    <string name="remove_second">-s</string>
+    <string name="set_time">Setze Zeit</string>
+
+    <!-- fragment_game_toolbox -->
+    <string name="toolbox_title">Toolbox</string>
+    <string name="open_dice">Würfel Tool</string>
+    <string name="desc_dice"></string>
+    <string name="open_timer">Timer</string>
+    <string name="desc_timer"></string>
+    <string name="open_tactical">Taktische Karte</string>
+    <string name="desc_tactical"></string>
+    <string name="open_randomlist">Zufallsliste</string>
+    
+
+    <!-- Template Store -->
+    <string name="title_activity_template_store_main">Template Store</string>
+    <string name="store_template_name">Template Name</string>
+    <string name="store_world_name">Welt Name</string>
+    <string name="store_template_image">Template Bild</string>
+    <string name="store_added">Hinzugefügt:</string>
+
+    <!-- ExpandableLIstArrayAdapter -->
+    <string name="text_redirect_to_edit_character">Willst Du den Charakter ansehen und ggf. Ändern?</string>
+    <string name="click_to_redirect_to_edit_character">Klicke auf JA um zu Charakter-Editor zu gelangen.</string>
+    <string name="msg_added_to_game">wird zum Spiel hinzugefügt!</string>
+
+    <!-- CreateNewGameFragment -->
+    <string name="popup_create_game_info_titel">Spielnotizen</string>
+    <string name="titel_create_game">Neues Spiel</string>
+    <string name="warning_set_gamename">Dein Spiel braucht einen Namen!</string>
+    <string name="msg_ask_character_deletion">Moechtest du diesen Charakter wirklich loeschen?</string>
+    <string name="msg_yes_to_delete_character">Der Charakter wird auch aus allen aktiven Spielen gelöscht. Klicke auf JA um den Charakter zu loeschen.</string>
+    <string name="title_activity_logo">LogoActivity</string>
+    <string name="warning_set_character_name">Wähle bitte einen Namen für Deinen Charakter!</string>
+    <string name="create_new_game_last_item">Neues Spiel erstellen&#8230;</string>
+    <string name="msg_creating_new_game_p1">Dein neues Spiel</string>
+    <string name="msg_creating_new_game_p2">wird erstellt!</string>
+    <string name="msg_want_to_delete_game">Moechtest du dieses Spiel wirklich loeschen?</string>
+    <string name="msg_yes_to_delete_game">Klicke auf JA um das Spiel zu loeschen.</string>
+ <string name="warning_add_min_one_character">Um das Spiel zu starten fuege einen Charakter hinzu!</string>
+    
+    <!-- activity_template_store_main -->
+    <string name="template_store_title">Template Store</string>
+    <string name="template_store_main_heading"><h1>Willkommen im Template Store</h1></string>
+    <string name="template_store_main_desc">Hier siehst du erstmal die <u>neuesten</u> Templates....<br> wird ständig erweitert....</br></string>
+    <string name="search_title">Templates suchen</string>
+    <string name="hint_search">Store durchsuchen</string>
+    <string name="store_actions">Actions</string>
+    <string name="store_reload">Neu laden</string>
+    <string name="store_tags">Tags</string>
+    <string name="tag_horror">Horror</string>
+    <string name="tag_fantasy">Fantasy</string>
+    <string name="tag_future">Zukunft</string>
+    <string name="tag_dungeon_world">Dungeon World</string>
+    <string name="d_and_d">D &amp; D</string>
+    <string name="tag_best_rated">Bestbewertet</string>
+    <string name="tag_newest">Neu</string>
+    <string name="tag_recommended">Empfohlen</string>
+    <string name="buttonStore">Speichern</string>
+    <string name="loading">Laden</string>
+    <string name="loading_wait">Templates werden geladen</string>
+    <string name="loading_wait_single">Template wird geladen</string>
+    <string name="no_templates_found">Entschuldigung, es wurden keine Templates gefunden</string>
+    <string name="error_occured">Es ist ein Fehler aufgetreten.</string>
+    <string name="invalid_template">Das Template ist nicht richtig formatiert.</string>
+    <string name="download_successful">Das Template wurde erfolgreich auf dem Gerät gespeichert</string>
+    <string name="confirm_template_exists">Das Template wurde schon einmal heruntergeladen. Überschreiben?</string>
+    <string name="buttonImport">Importieren</string>
+    <string name="store_invalid_file">Ungültige Datei ausgewählt</string>
+    <string name="store_invalid_template">Ungültiges Template ausgewählt</string>
+    <string name="store_template_import_success">Template wurde erfolgreich importiert</string>
+
+    <!-- character_favorite_items.xml / fragment create new character.xml -->
+    <string name="hint_character_name">Charakter Name</string>
+    <string name="hint_character_lvl">lvl</string>
+    <string name="character_game_notices">Notizen</string>
+
+    <!-- character_edit_matrix_view -->
+
+    <string name="hint_select_items">Konfiguriere Deinen Charakter indem Du die passende Attribute auswählst oder neu erstellst!</string>
+    <string name="hint_edit_items">Konfiguriere Deinen Charakter indem Du die vorhandene Attribute editierst oder fehlende neu erstellst!</string>
+    <string name="hint_create_items">Erstelle hier die benötigten Attribute für Deine Vorlage!</string>
+
+    <!-- activity_character_generator_welcome -->
+    <string name="character_generator_welcome">Willkommen im Charakter-Generator! \n \n Um Deinen eigenen Charakter zu erstellen öffne einfach das Menü und wähle die Elemente, die Deinem Charakter zugeordnet sind!</string>
+
+    <!-- activity_play_character_welcome -->
+    <string name="play_character_welcome">Willkommen im Charakter-Spielmodus! \n \n Um die aktuelle Werte von Deinem Charakter anzusehen oder sie zu modifizieren einfach das Menü lege los!</string>
+    <string name="titel_play_character_welcome">Willkommen im Spielmodus!</string>
+    <string name="titel_character_generator_welcome">Willkommen im Charakter-Generator!</string>
+    <string name="titel_template_generator_welcome">Willkommen im Template-Generator!</string>
+
+    <!-- new_character_matrix_view_array_adapter -->
+    <string name="msg_added_to_matrix_favorite">-Attribut wird zu Deiner Charakter-Schnellansicht hinzugefuegt!</string>
+    <!-- new_matrix_item_popup -->
+    <string name="warning_set_matrixitem_name">Dein Matrix-Element braucht einen Namen!</string>
+    <string name="title_activity_character_browser">Charakter Browser</string>
+
+    <!-- autosave toast string -->
+    <string name="autosave_toast_text">Speichere#8230;</string>
+
+    <!-- SettingValueDialogFragment -->
+    <string name="string_set_matrix_value">Gib aktuellen Wert ein!</string>
+    <string name="msg_added_matrix_to_character">-Attribut wird zu Deinem Charakter hinzugefuegt!</string>
+
+    <!-- dialog_fragment_setting_matrix_value -->
+    <string name="matrix_value">Wert:</string>
+
+    <!-- MainMenu -->
+    <string name="menu_your_games">Deine Spiele</string>
+    <string name="menu_your_characters">Deine Charaktere</string>
+    <string name="menu_your_templates">Deine Vorlagen</string>
+    <string name="menu_your_games_description">Verwalte hier alle Deine RPG Spiele. \n Erstelle neue, modifiziere und setze die vorhandenen Spiele fort!</string>
+    <string name="menu_your_characters_description">Verwalte hier alle Deine RPG Charaktere, ganz egal aus welcher Welt sie kommen! \n Erstelle, modifiziere, importiere oder exportiere sie!</string>
+    <string name="menu_your_templates_description">Verwalte hier alle Deine Vorlagen, ganz egal in welcher Spielwelt Du gerade unterwegs bist! \n Erstelle, modifiziere, importiere oder exportiere sie!</string>
+
+    <!-- GameMenu -->
+    <string name="menu_new_game">Neues Spiel</string>
+    <string name="menu_continue_game">Spiel fortsetzen</string>
+    <string name="menu_alljoyn">Alljoyn</string>
+    <string name="menu_new_game_description">Erstelle hier eine neue Spielgruppe mit all den Charakteren die Du spielen möchtest, ganz egal in welcher Spielwelt Du gerade unterwegs bist! </string>
+    <string name="menu_continue_game_description">Hier kommst du wieder an Deine bisher gestarteten Spiele. \n Suche einfach eines deiner Spiele aus und schon hast du alle Spielcharaktere und alle Spielnotizen da!</string>
+    <string name="menu_alljoyn_description">Zum Spielabend sind schon alle da? \n Dann tauscht untereinander eure Lieblingsvorlagen aus: ganz einfach und direkt per Knopfdruck werden sie verschickt!</string>
+
+    <!-- CharacterMenu -->
+    <string name="menu_new_character">Neuer Charakter</string>
+    <string name="menu_edit_characters">Charaktere bearbeiten</string>
+    <string name="menu_new_character_description">Erstelle hier einen neuen Charakter basierend auf einer Deiner Vorlagen!</string>
+    <string name="menu_edit_characters_description">So kommst Du an alle Deine Charaktere. \n Suche einfach einen aus und schon kann Du ihn anschauen oder modifizieren.</string>
+    <string name="menu_import_character_from_file">Importiere einen Charakter</string>
+    <string name="menu_import_character_from_file_description">Du hast einen Charakter per E-Mail bekommen und auf Deinem Geraet gespeichert? \n Importiere einfach die Datei in die App.</string>
+    <string name="toast_please_pick_a_template">Bitte waehle eine Vorlage.</string>
+
+    <!-- TemplateMenu -->
+    <string name="menu_new_template">Neue Vorlage</string>
+    <string name="menu_edit_templates">Vorlagen bearbeiten</string>
+    <string name="menu_download_templates">Vorlagen herunterladen</string>
+    <string name="menu_new_template_description">Investiere ein bisschen Zeit und erstelle hier eine eigene Charakter-Vorlage nach Deinen Wuenschen.</string>
+    <string name="menu_edit_templates_description">Die Vorlage ist noch nicht ganz rund? \n Dann modifiziere sie einfach – fuege neue Elemente hinzu oder korrigiere die bestehenden.</string>
+    <string name="menu_download_templates_description">Hier kommst Du ganz schnell an die Vorlagen heran! \n Importiere oder suche und lade eine Vorlage aus dem Template Store herunter.</string>
+
+    <!-- DownloadTemplateMenu -->
+    <string name="menu_template_store">Template Store</string>
+    <string name="menu_template_import">Vorlage importieren</string>
+    <string name="menu_scan_qrcode">QR-Code scannen</string>
+    <string name="menu_template_store_description">Suche nach den neuesten oder bestbewerteten Vorlagen fuer deine Spielwelt im Template Store!</string>
+    <string name="menu_template_import_description">Du hast eine Vorlage per E-Mail bekommen und auf Deinem Geraet gespeichert? \n Importiere einfach die Datei in die App.</string>
+    <string name="menu_scan_qrcode_description">Du hast eine Vorlage mit unserem Online-Generator erstellt und einen QR-Code für sie bekommen? \n Um die Vorlage runterzuladen scanne ihn einfach ein!</string>
+
+    <!-- AlertDialog FileAlreadyExists -->
+    <string name="msg_file_with_same_name_already_exists">Eine Datei mit dem selben Namen existiert bereits!</string>
+    <string name="question_overwrite_file">Datei ueberschreiben?</string>
+
+    <!-- Character import -->
+    <string name="toast_imported_character">Charakter importiert.</string>
+    <string name="toast_imported_character_failed">Importieren fehlgeschlagen!</string>
+    <string name="toast_file_is_not_character">Datei ist kein Charakter!</string>
+
+    <!-- TempalteExportTask -->
+    <string name="msg_exporting_template">Exportiere Vorlage.</string>
+
+    <!-- QR Code Scan -->
+    <string name="scan_error">Beim Scannen des QR Codes ist ein Fehler aufgetreten</string>
+    <string name="invalid_qr_code">Es wurde ein ungültiger QR Code gescannt</string>
+    
+    <!-- Alljoyn -->
+    <string name="alljoyn_send_template">Klicke auf ein Template um es an ein wartendes Geräte zu schicken.</string>
+    <string name="alljoyn_start_service">Start service</string>
+    <string name="title_activity_alljoyn_template_service">RPG-Pack Template Service</string>
+    
+    <!-- About-Page -->
+    <string name="about_page">
+        Diese App ist lizensiert unter der MIT-Lizenz.
+        
+        Folgende Libraries werden benutzt:
+        \n\n
+        AllJoyn - Lizensiert unter ISC-Lizenz. Die Lizenz kann unter http://opensource.org/licenses/isc-license gefunden werden.
+        \n\n
+        SuperToolTips - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
+        \n\n
+        Die Klassen: com.google.zxing.integration.android.IntentIntegrator und
+        com.google.zxing.integration.android.IntentResult - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
+        \n\n
+        Jackson - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
+        \n\n
+        de.fau.cs.mad.rpgpack.URIUtils : Code benutzt von http://stackoverflow.com/a/20559175 , welcher Teil des aFileChooser Projektes ist - Lizensiert unter Apache License, Version 2.0. Die Lizenz kann unter http://www.apache.org/licenses/LICENSE-2.0 gefunden werden.
+        \n\n
+        "Edit, new, write icon": res/drawable-hdpi/edit_icon.png wurde übernommen von https://www.iconfinder.com/icons/103173/edit_new_write_icon und modifiziert.
+        \n
+        Es unterliegt den Creative Commons Version 3.0. Diese kann unter http://creativecommons.org/licenses/by/3.0/ gefunden werden.
+    	\n\n
+    	"Chartbar icon": res/drawable/best.png ist Teil eines Icon-Sets auf http://iconleak.com 
+    </string>
+    
+    <string name="about_button">Über diese App</string>
+    
+
+</resources>

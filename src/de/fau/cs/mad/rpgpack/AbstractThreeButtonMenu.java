@@ -31,9 +31,9 @@ public abstract class AbstractThreeButtonMenu extends Activity implements OnClic
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		getActionBar().setCustomView(R.layout.main_actionbar);
 		setContentView(R.layout.menu_with_3_buttons);
+		getActionBar().setCustomView(R.layout.main_actionbar);
+		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
 		// get the three rows
 		row1 = (LinearLayout)findViewById(R.id.row1);
